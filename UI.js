@@ -73,7 +73,7 @@ function displayTournamentOverview(tournament) {
         headerRow.appendChild(document.createElement('th')).textContent = 'P2';
         for (let match of round.matches) {
             const row = tbody.insertRow();
-            row.appendChild(document.createElement('td')).textContent = match.matchId;
+
             row.appendChild(document.createElement('td')).textContent = match.court;
             row.appendChild(document.createElement('td')).textContent = match.p1.name;
             row.appendChild(document.createElement('td')).textContent = match.p1.scorePoints;
@@ -87,6 +87,15 @@ function displayTournamentOverview(tournament) {
 }
 
 function displayPlayerOverview() {
+
+    // Sample players data
+// const players = [
+//     { id: 1, name: 'Player 1', scorePoints: Math.floor(Math.random() * 100), matchPoints: Math.floor(Math.random() * 10) },
+//     { id: 2, name: 'Player 2', scorePoints: Math.floor(Math.random() * 100), matchPoints: Math.floor(Math.random() * 10) },
+//     { id: 3, name: 'Player 3', scorePoints: Math.floor(Math.random() * 100), matchPoints: Math.floor(Math.random() * 10) },
+//     { id: 4, name: 'Player 4', scorePoints: Math.floor(Math.random() * 100), matchPoints: Math.floor(Math.random() * 10) },
+//     { id: 5, name: 'Player 5', scorePoints: Math.floor(Math.random() * 100), matchPoints: Math.floor(Math.random() * 10) },
+// ];
         //remove match setup
         const matchSetupContainer = document.getElementById('matchSetup');
         matchSetupContainer.innerHTML = '';
@@ -102,13 +111,24 @@ function displayPlayerOverview() {
     const thead = table.createTHead();
     const tbody = table.appendChild(document.createElement('tbody'));
     const headerRow = thead.insertRow();
+    headerRow.appendChild(document.createElement('th')).textContent = 'Pl.';
     headerRow.appendChild(document.createElement('th')).textContent = 'Id';
     headerRow.appendChild(document.createElement('th')).textContent = 'S';
     headerRow.appendChild(document.createElement('th')).textContent = 'SP';
     //headerRow.appendChild(document.createElement('th')).textContent = 'Ringer';
     headerRow.appendChild(document.createElement('th')).textContent = 'KP';
-    for (let player of players) {
+
+    // Sort players by matchPoints and then by scorePoints
+    const sortedPlayers = players.slice().sort((a, b) => {
+        if (b.matchPoints !== a.matchPoints) {
+            return b.matchPoints - a.matchPoints;
+        }
+        return b.scorePoints - a.scorePoints;
+    });
+
+    for (let player of sortedPlayers) {
         const row = tbody.insertRow();
+        row.appendChild(document.createElement('td')).textContent = sortedPlayers.indexOf(player) + 1;
         row.appendChild(document.createElement('td')).textContent = player.id;
         // Create a editable cell for the player name
         const cell = document.createElement('td');

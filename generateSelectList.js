@@ -23,7 +23,7 @@ function createPlayerCountSelect() {
     option.textContent = `${i} deltakere`;
 
     // Set the default value to 20
-    if (i === 20) {
+    if (i === 8) {
       option.selected = true;
     }
 
