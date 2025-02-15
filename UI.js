@@ -94,7 +94,6 @@ function displayPlayerOverview() {
         startTournamentButton.classList.remove('hidden');
     const playerOverviewContainer = document.getElementById('playerOverview');
     playerOverviewContainer.innerHTML = '';
-    const players = JSON.parse(localStorage.getItem('players'));
 
     const resultText = document.createElement('h2');
     resultText.textContent = `Resultater`;
@@ -128,7 +127,7 @@ function displayPlayerOverview() {
     playerOverviewContainer.appendChild(table);
 }
 
-function editCellValue(newValue, player, players) {    
+function editCellValue(newValue, player) {    
     if (newValue && typeof newValue === 'string') {
         console.log('Editing player name:', newValue, " old name:", player.name, " type:", typeof player.name);
         player.name = newValue;
@@ -146,7 +145,7 @@ function editInCell(cell, playerId) {
     input.value = originalValue;
     cell.textContent = '';
     cell.appendChild(input);
-    const players = JSON.parse(localStorage.getItem('players'));
+
     const player = players.find(p => p.id === playerId);
 
     input.addEventListener('blur', function() {

@@ -9,7 +9,7 @@ function createMatchSetup(totalPlayers, totalRounds, players) {
     const maximumRounds = totalPlayers -1;
     //const remainingRounds = maximumRounds - totalCourts;
     const gametypeElement = document.getElementById('gametypeSelect');
-    let schedule = [];
+    schedule = [];
 
     if(totalRounds > totalCourts){
         totalRounds = totalCourts;
@@ -18,7 +18,6 @@ function createMatchSetup(totalPlayers, totalRounds, players) {
         //roundRobinSystem(totalRounds, totalPlayers, totalCourts,schedule);
     }
 
-    savePlayers();
 
     if(gametypeElement.value === 'Gloppen'){
         
@@ -34,7 +33,7 @@ function createMatchSetup(totalPlayers, totalRounds, players) {
         swissMatchSystem(totalRounds,totalCourts, schedule, players);
         console.log(`Swiss system is selected`);
     }
-
+    console.log(`Total players: `,players.length);
 
 
     return schedule;
@@ -55,16 +54,16 @@ function cascadeMatchSystem(totalRounds, totalCourts, schedule, players){
     const tournamentName = "Test (Cascade)";
     const tournamentType = document.getElementById('gametypeSelect').value;
 
-
+    console.log(`players: `,players);
     for (let round = 1; round <= totalRounds; round++) {
-        let roundMatches = [];
+        roundMatches = [];
 
         for (let court = 1; court <= totalCourts; court++) {
             const p1Id = ((court - 1 + round - 1) % totalCourts) + 1;
             const p2Id = ((court - 1 + 2 * (round - 1)) % totalCourts) + 1 + totalCourts;
 
             const matchId = generateUniqueId(generatedIds);
-
+            
             pushMatches(roundMatches, matchId, court, p1Id, p2Id, players);
         }
         const tournamentId = generateUniqueId(generatedIds);
@@ -80,7 +79,7 @@ function swissMatchSystem(totalRounds, totalCourts, schedule, players){
     const generatedIds = new Set();
 
 
-        let roundMatches = [];
+        roundMatches = [];
 
         for (let court = 1; court <= totalCourts; court++) {
             const p1Id = ((court - 1 + 0) % totalCourts) + 1; // round - 1 is 0 for the first round
@@ -98,7 +97,7 @@ function swissMatchSystem(totalRounds, totalCourts, schedule, players){
 
 function roundRobinSystem(totalRounds, totalPlayers, totalCourts,schedule){
     for (let round = 1; round <= totalRounds; round++) {
-        let roundMatches = [];
+        roundMatches = [];
 
     // First player fixed, all others rotate
     for (let match = 0; match < totalPlayers / 2; match++) {

@@ -12,6 +12,8 @@ saveTournamentButton.addEventListener('click', function() {
 const startTournamentButton = document.getElementById('start-btn');
 
 startTournamentButton.addEventListener('click', function() {
+    schedule = [];
+    roundMatches = [];
   const matchSetup = createMatchSetup(playerCount, roundCount, players);
   const tournament = createTournament(roundCount, playerCount / 2, matchSetup, "Test turnering", gametypeSelect.value);
   saveTournament(matchSetup, tournament);
@@ -30,3 +32,5 @@ function saveTournament(matchSetup, tournament) {
     //const storedSchedule = localStorage.getItem('tournamentSchedule');
     //console.log(storedSchedule);
 }
+
+

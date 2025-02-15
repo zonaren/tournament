@@ -1,6 +1,4 @@
-let playerCount = 20;
-let roundCount = 10;
-let maximumRounds = 0;
+
 
 document.addEventListener('DOMContentLoaded', function() {
     const playerCountSelect = document.getElementById('playerCountSelect');
@@ -17,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
         createRoundCountSelect();
       }
       playerCount = this.value;
+      resetPlayers();
       const matchSetup = createMatchSetup(playerCount, roundCount, players);
       displayMatchSetup(matchSetup)
         console.log(playerCount, " deltakere er valgt");
