@@ -31,12 +31,16 @@ function createTournament(totalRounds, totalCourts, schedule, tournamentName, to
 function createPlayer(id) {
     return {
         id: id,
-        name: 'player ' + id,
+        name: 'Spiller ' + id,
         score: 0,
         details: [
             {points: 0, ringers: 0}
         ]
     };
+}
+
+function pushPlayers(players, id) {
+    players.push(createPlayer(id));
 }
 
 function pushSchedule(schedule, round, roundMatches) {

@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Generer kastnøkler</title>
   <style>
+    h1,h2,h3 {
+      text-align: center;
+    }
         table{
         width: 100%;
         border-collapse: collapse;
@@ -41,10 +44,20 @@
   .print-btn {
     float: right;
   }
+  #tournamentDetails {
+        display: flex;
+        justify-content: space-between;
+    }
+    #matchOverview {
+        width: 50%;
+    }
+    #playerOverview {
+        width: 40%;
+    }
 </style>
 </head>
 <body>
-  <div>
+  <div id="headerMenu">
   <h2 id="titleText"></h2>
     <div id="menu-buttons" class="no-print">
       <select id="gametypeSelect"></select>
@@ -55,8 +68,16 @@
       
     </div>
 
-  <div id="tournamentSchedule"></div>
-  <div id="matchOverview"></div>
+  <div id="matchSetup"></div>
+  <div id="tournamentOverview">
+    <div id="tournamentInfo"></div>
+    <div id="tournamentDetails">
+      <div id="matchOverview"></div>
+      <div id="playerOverview"></div>
+    </div>
+
+  </div>
+  
 </div>
 <script src="dataset.js"></script>
   <script src="kampoppsett.js"></script>

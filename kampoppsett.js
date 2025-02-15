@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
       playerCount = this.value;
       const matchSetup = createMatchSetup(playerCount, roundCount);
-      displaymatchSetup(matchSetup)
+      displayMatchSetup(matchSetup)
         console.log(playerCount, " deltakere er valgt");
         console.log(roundCount, " runder er valgt");
         titleTextElement.innerHTML = `Banefordelingsnøkkel - GM ${playerCount}`
@@ -29,42 +29,43 @@ document.addEventListener('DOMContentLoaded', function() {
       roundCount = this.value;
       console.log(roundCount, " runder er valgt");
       const matchSetup = createMatchSetup(playerCount, roundCount);
-      displaymatchSetup(matchSetup)
+      displayMatchSetup(matchSetup)
         console.log(playerCount, " deltakere er valgt");
   
     });
 
     gametypeSelect.addEventListener('change', function() {
       const matchSetup = createMatchSetup(playerCount, roundCount);
-      displaymatchSetup(matchSetup)
+      displayMatchSetup(matchSetup)
       console.log(gametypeSelect.value, " er valgt");
     });
     
 
     const startTournamentButton = document.getElementById('start-btn');
-    startTournamentButton.addEventListener('click', function() {
+    //startTournamentButton.addEventListener('click', function() {
       const matchSetup = createMatchSetup(playerCount, roundCount);
       const tournament = createTournament(roundCount, playerCount / 2, matchSetup, "Test turnering", gametypeSelect.value);
-      startTournament(matchSetup, tournament);
+      saveTournament(matchSetup, tournament);
       displayTournamentOverview(tournament);
-    });
+      displayPlayerOverview();
+    //});
   });
 
-  function startTournament(matchSetup, tournament) {
+  function saveTournament(matchSetup, tournament) {
         // Serialize JSON object to a string
         const tournamentJson = JSON.stringify(tournament);
         const matchSetupJson = JSON.stringify(matchSetup);
-        //console.log(matchSetupJson);
+
         // Store the string in local storage
         localStorage.setItem('tournament', tournamentJson);
         localStorage.setItem('matchSetup', matchSetupJson);
 
         const players = [];
         for (let i = 1; i <= playerCount; i++) {
-            players.push({id: i, name: `Spiller ${i}`, totalScore: 0, totalRingers: 0, details: []});
+            pushPlayers(players, i);
         }
-        const playersString = JSON.stringify(players);
-        localStorage.setItem('players', playersString);
+        const playersJson = JSON.stringify(players);
+        localStorage.setItem('players', playersJson);
         //const storedSchedule = localStorage.getItem('tournamentSchedule');
         //console.log(storedSchedule);
   }
