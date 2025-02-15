@@ -34,19 +34,15 @@ function displayMatchSetup(schedule) {
             }
         }
     }
-    console.log("Table appended to document:", table); // Log the table element
     document.getElementById('matchSetup').appendChild(table);
 }
 
 //displayTournamentSchedule(schedule);
 
 function displayTournamentOverview(tournament) {
-    //remove match setup
-    const matchSetupContainer = document.getElementById('matchSetup');
-    matchSetupContainer.innerHTML = '';
     // Create tournament info
     const tournamentInfoDiv = document.getElementById('tournamentInfo');
-    
+    tournamentInfoDiv.innerHTML = '';
     const tournamentName = document.createElement('h1');
     tournamentName.textContent = tournament.name + ' - ' + tournament.type;
     tournamentInfoDiv.appendChild(tournamentName);
@@ -77,18 +73,11 @@ function displayTournamentOverview(tournament) {
         headerRow.appendChild(document.createElement('th')).textContent = 'P2';
         for (let match of round.matches) {
             const row = tbody.insertRow();
-            //row.appendChild(document.createElement('td')).textContent = match.matchId;
+            row.appendChild(document.createElement('td')).textContent = match.matchId;
             row.appendChild(document.createElement('td')).textContent = match.court;
             row.appendChild(document.createElement('td')).textContent = match.p1.name;
-                    // Create a editable cell for the player name
-        const cell = document.createElement('td');
-        cell.textContent = match.p1.score;
-        cell.addEventListener('click', function() {
-            // Your onClick event handler code here
-            console.log('Player clicked:', match.p1.id);
-            editInCell(cell, match.p1.id);
-        });
-            row.appendChild(document.createElement('td')).textContent = match.p2.score;
+            row.appendChild(document.createElement('td')).textContent = match.p1.scorePoints;
+            row.appendChild(document.createElement('td')).textContent = match.p2.matchPoints;
             row.appendChild(document.createElement('td')).textContent = match.p2.name;
 
         }
@@ -98,6 +87,11 @@ function displayTournamentOverview(tournament) {
 }
 
 function displayPlayerOverview() {
+        //remove match setup
+        const matchSetupContainer = document.getElementById('matchSetup');
+        matchSetupContainer.innerHTML = '';
+        const startTournamentButton = document.getElementById('start-btn');
+        startTournamentButton.classList.remove('hidden');
     const playerOverviewContainer = document.getElementById('playerOverview');
     playerOverviewContainer.innerHTML = '';
     const players = JSON.parse(localStorage.getItem('players'));
@@ -126,22 +120,22 @@ function displayPlayerOverview() {
             editInCell(cell, player.id);
         });
         row.appendChild(cell);
-        row.appendChild(document.createElement('td')).textContent = player.totalPoints;
+        row.appendChild(document.createElement('td')).textContent = player.scorePoints;
         //row.appendChild(document.createElement('td')).textContent = player.totalRingers;
-        row.appendChild(document.createElement('td')).textContent = player.totalScore;
+        row.appendChild(document.createElement('td')).textContent = player.matchPoints;
     }
     playerOverviewContainer.appendChild(resultText);
     playerOverviewContainer.appendChild(table);
 }
 
-function editCellValue(newValue, player, players) {
-    
-    
+function editCellValue(newValue, player, players) {    
     if (newValue && typeof newValue === 'string') {
         console.log('Editing player name:', newValue, " old name:", player.name, " type:", typeof player.name);
         player.name = newValue;
         localStorage.setItem('players', JSON.stringify(players));
         displayPlayerOverview();
+        console.log("players: ", players)
+        
     }
 }
 
@@ -169,4 +163,6 @@ function editInCell(cell, playerId) {
 
     input.focus();
 }
+
+
 

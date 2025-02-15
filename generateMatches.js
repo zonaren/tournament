@@ -1,4 +1,4 @@
-function createMatchSetup(totalPlayers, totalRounds) {
+function createMatchSetup(totalPlayers, totalRounds, players) {
     if (totalPlayers % 2 !== 0) {
         console.log(`Total players is an odd number`,`(`,totalPlayers,`)`);
         totalPlayers = totalPlayers +1;
@@ -18,9 +18,11 @@ function createMatchSetup(totalPlayers, totalRounds) {
         //roundRobinSystem(totalRounds, totalPlayers, totalCourts,schedule);
     }
 
-    //else{
+    savePlayers();
+
     if(gametypeElement.value === 'Gloppen'){
-        cascadeMatchSystem(totalRounds,totalCourts, schedule);
+        
+        cascadeMatchSystem(totalRounds,totalCourts, schedule, players);
         console.log(`Gloppen system is selected`);
     }
 
@@ -29,7 +31,7 @@ function createMatchSetup(totalPlayers, totalRounds) {
         console.log(`Alle mot alle system is selected`);
     }
     else {
-        swissMatchSystem(totalRounds,totalCourts, schedule);
+        swissMatchSystem(totalRounds,totalCourts, schedule, players);
         console.log(`Swiss system is selected`);
     }
 
@@ -43,12 +45,12 @@ function createMatchSetup(totalPlayers, totalRounds) {
     const numberOfPlayers = playerCount;  // Should be an even number
     const numberOfRounds = roundCount;  // Should be an even number
     
-    const tournamentSchedule = createMatchSetup(numberOfPlayers, numberOfRounds);
+    //const matchSetup = createMatchSetup(numberOfPlayers, numberOfRounds, players);
     //const tournament = createTournament(numberOfRounds, numberOfPlayers / 2, tournamentSchedule, "Test", "Gloppen");
 
 
 
-function cascadeMatchSystem(totalRounds, totalCourts, schedule){
+function cascadeMatchSystem(totalRounds, totalCourts, schedule, players){
     const generatedIds = new Set();
     const tournamentName = "Test (Cascade)";
     const tournamentType = document.getElementById('gametypeSelect').value;
@@ -63,7 +65,7 @@ function cascadeMatchSystem(totalRounds, totalCourts, schedule){
 
             const matchId = generateUniqueId(generatedIds);
 
-            pushMatches(roundMatches, matchId, court, p1Id, p2Id);
+            pushMatches(roundMatches, matchId, court, p1Id, p2Id, players);
         }
         const tournamentId = generateUniqueId(generatedIds);
 
@@ -74,7 +76,7 @@ function cascadeMatchSystem(totalRounds, totalCourts, schedule){
 
 
 
-function swissMatchSystem(totalRounds, totalCourts, schedule){
+function swissMatchSystem(totalRounds, totalCourts, schedule, players){
     const generatedIds = new Set();
 
 
@@ -86,7 +88,7 @@ function swissMatchSystem(totalRounds, totalCourts, schedule){
     
             const matchId = generateUniqueId(generatedIds);
     
-            pushMatches(roundMatches, matchId, court, p1Id, p2Id);
+            pushMatches(roundMatches, matchId, court, p1Id, p2Id, players);
         }
 
         pushSchedule(schedule, 1, roundMatches);
