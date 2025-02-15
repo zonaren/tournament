@@ -1,5 +1,5 @@
 function generateRandomString(length) {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-';
     let result = '';
     for (let i = 0; i < length; i++) {
         result += characters.charAt(Math.floor(Math.random() * characters.length));
@@ -16,6 +16,18 @@ function generateUniqueId(existingIds, length = 10) {
     return id;
 }
 
+function createTournament(totalRounds, totalCourts, schedule, tournamentName, tournamentType) {
+    return {
+        id: generateUniqueId(new Set()), // Generate a unique ID for the tournament
+        name: tournamentName,
+        dateCreated: new Date().toLocaleString(),
+        type: tournamentType,
+        totalRounds: totalRounds,
+        totalCourts: totalCourts,
+        schedule: schedule
+    };
+}
+
 function createPlayer(id) {
     return {
         id: id,
@@ -27,13 +39,8 @@ function createPlayer(id) {
     };
 }
 
-function pushSchedule(schedule, round, roundMatches, tournamentId, tournamentName, tournamentDate, tournamentType) {
-    const formattedDate = new Date().toLocaleString();
+function pushSchedule(schedule, round, roundMatches) {
     schedule.push({
-        id: tournamentId,
-        name: tournamentName,
-        dateCreated: formattedDate,
-        type: tournamentType,
         roundNumber: round,
         matches: roundMatches,
     });

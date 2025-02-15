@@ -1,6 +1,6 @@
 
 
-function displayTournamentSchedule(schedule) {
+function displaymatchSetup(schedule) {
     const scheduleContainer = document.getElementById('tournamentSchedule');
     scheduleContainer.innerHTML = '';
     const table = document.createElement('table');
@@ -38,23 +38,23 @@ function displayTournamentSchedule(schedule) {
     document.getElementById('tournamentSchedule').appendChild(table);
 }
 
-displayTournamentSchedule(tournamentSchedule);
+//displayTournamentSchedule(schedule);
 
-function displayMatchOverview(schedule) {
+function displayTournamentOverview(tournament) {
     const scheduleContainer = document.getElementById('tournamentSchedule');
     scheduleContainer.innerHTML = '';
     const matchOverviewContainer = document.getElementById('matchOverview');
     matchOverviewContainer.innerHTML = '';
     const tournamentName = document.createElement('h1');
-    tournamentName.textContent = schedule[0].name + ' - ' + schedule[0].type;
+    tournamentName.textContent = tournament.name + ' - ' + tournament.type;
     matchOverviewContainer.appendChild(tournamentName);
     const tournamentDate = document.createElement('h2');
-    tournamentDate.textContent = schedule[0].date;
+    tournamentDate.textContent = tournament.dateCreated;
     matchOverviewContainer.appendChild(tournamentDate);
 
 
     // Populate table
-    for (let round of schedule) {
+    for (let round of tournament.schedule) {
         const h1 = document.createElement('h1');
         h1.textContent = `Runde ${round.roundNumber}`;
         matchOverviewContainer.appendChild(h1);

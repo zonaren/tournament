@@ -1,4 +1,4 @@
-function generateTournamentSchedule(totalPlayers, totalRounds) {
+function createMatchSetup(totalPlayers, totalRounds) {
     if (totalPlayers % 2 !== 0) {
         console.log(`Total players is an odd number`,`(`,totalPlayers,`)`);
         totalPlayers = totalPlayers +1;
@@ -7,7 +7,7 @@ function generateTournamentSchedule(totalPlayers, totalRounds) {
 
     const totalCourts = totalPlayers / 2;
     const maximumRounds = totalPlayers -1;
-    const remainingRounds = maximumRounds - totalCourts;
+    //const remainingRounds = maximumRounds - totalCourts;
     const gametypeElement = document.getElementById('gametypeSelect');
     let schedule = [];
 
@@ -17,6 +17,7 @@ function generateTournamentSchedule(totalPlayers, totalRounds) {
         //console.log(`Fill the remaining rounds randomly`,remainingRounds);
         //roundRobinSystem(totalRounds, totalPlayers, totalCourts,schedule);
     }
+
     //else{
     if(gametypeElement.value === 'Gloppen'){
         cascadeMatchSystem(totalRounds,totalCourts, schedule);
@@ -41,8 +42,9 @@ function generateTournamentSchedule(totalPlayers, totalRounds) {
 
     const numberOfPlayers = playerCount;  // Should be an even number
     const numberOfRounds = roundCount;  // Should be an even number
-    const tournamentSchedule = generateTournamentSchedule(numberOfPlayers, numberOfRounds);
-
+    
+    const tournamentSchedule = createMatchSetup(numberOfPlayers, numberOfRounds);
+    //const tournament = createTournament(numberOfRounds, numberOfPlayers / 2, tournamentSchedule, "Test", "Gloppen");
 
 
 
