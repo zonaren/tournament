@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generer kastnøkler</title>
+  <style>
+        table{
+        width: 100%;
+        border-collapse: collapse;
+    }
+    table, th, td {
+        border: 1px solid black;
+        
+
+    }
+    th, td {
+        padding: 1px;
+        text-align: center;
+    }
+    /* Alternate row colors */
+    tr:nth-child(even) {
+            background-color: lightgray;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+    #tournamentSchedule{
+      margin: 0 auto;
+      margin-top: 5px;
+    }
+    @media print {
+    .no-print {
+      display: none !important;
+    }
+    table{
+      width: 100%;
+    }
+  }
+  .print-btn {
+    float: right;
+  }
+</style>
+</head>
+<body>
+  <div>
+  <h2 id="titleText"></h2>
+    <div id="menu-buttons" class="no-print">
+      <select id="gametypeSelect"></select>
+      <select id="playerCountSelect"></select>
+      <select id="roundCountSelect"></select>
+      <button id="start-btn">Start turnering</button>
+      <button id="printContent" class="print-btn">Skriv ut</button>
+      
+    </div>
+
+  <div id="tournamentSchedule"></div>
+  <div id="matchOverview"></div>
+</div>
+<script src="dataset.js"></script>
+  <script src="kampoppsett.js"></script>
+  <script src="generateMatches.js"></script>
+  <script src="displayTournament.js"></script>
+  <script src="generateSelectList.js"></script>
+  
+</body>
+</html>
