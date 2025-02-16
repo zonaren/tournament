@@ -199,26 +199,33 @@ function editCellValue(newValue, player) {
 function editInCell(cell, playerId) {
     const originalValue = cell.textContent;
     const input = document.createElement('input');
+    const confirmButton = document.createElement('button');
+    confirmButton.id = 'confirmButton' + playerId;
+    confirmButton.classList.add('confirmPlayerNameButton');
+    confirmButton.textContent = 'OK';
     input.type = 'text';
     input.value = originalValue;
     cell.textContent = '';
     cell.appendChild(input);
+    cell.appendChild(confirmButton);
 
     const player = players.find(p => p.id === playerId);
 
-    input.addEventListener('blur', function() {
+    confirmButton.addEventListener('click', function() {
         const newValue = input.value;
         cell.textContent = newValue;
         editCellValue(newValue, player, players);
     });
 
-    input.addEventListener('keydown', function(event) {
-        if (event.key === 'Enter') {
-            input.blur();
-        }
-    });
+        // Stop event propagation when clicking inside the input
+        input.addEventListener('click', function(event) {
+            event.stopPropagation();
+            input.focus();
+    input.select();
+        });
 
     input.focus();
+    input.select();
 }
 
 
