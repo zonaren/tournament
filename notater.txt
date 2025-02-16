@@ -1,0 +1,25 @@
+Gloppen:
+- Skal det vere mulighet å lage flere runder enn halvparten av antall deltakere?
+    - For eksempel, ved 8 deltakere så blir antall runder 4
+        - Ja
+    - Dersom ønskelig, så vil det ikkje bli å følge standardsystem (banerokering en bane og to baner osv)
+    - Maks antall runder? Er no satt til 10
+
+
+NHM:
+- Endring av regelverk med tanke på 
+
+
+Legge inn poengsum og bekrefte
+- Viktig med tilbakemelding før eg fortsetter
+    - Trenger ikke bekreft: Lars Arne
+    - Lurt med bekreft med tanke på kontroll
+- Hvordan ønskes det å legge inn poengsum?
+- Skal stevneleder / jury bekrefte resultat, eller automatisk?
+
+Design
+- Er designet ok? Kom med tilbakemelding
+
+
+Generelt
+- Skal det være mulig å laste inn tidligere konkurranser / turnering?
