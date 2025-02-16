@@ -4,6 +4,7 @@ let schedule = [];
 let playerCount = 8;
 let roundCount = 4;
 let maximumRounds = 0;
+let currentRound = 0;
 
 function generateRandomString(length) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-';
