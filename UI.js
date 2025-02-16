@@ -37,7 +37,6 @@ function displayMatchSetup(schedule) {
     document.getElementById('matchSetup').appendChild(table);
 }
 
-//displayTournamentSchedule(schedule);
 
 function displayTournamentOverview(tournament) {
     // Create tournament info
@@ -54,7 +53,12 @@ function displayTournamentOverview(tournament) {
     matchOverviewContainer.innerHTML = '';
 
 
-    // Populate table
+    // Display matches
+    displayMatchOverview(tournament, matchOverviewContainer);
+    
+}
+
+function displayMatchOverview(tournament, matchOverviewContainer) {
     for (let round of tournament.schedule) {
 
         const roundText = document.createElement('h3');
@@ -64,7 +68,7 @@ function displayTournamentOverview(tournament) {
         const thead = table.createTHead();
         const tbody = table.appendChild(document.createElement('tbody'));
         const headerRow = thead.insertRow();
-                // Create header
+        // Create header
         //headerRow.appendChild(document.createElement('th')).textContent = 'Kamp';
         headerRow.appendChild(document.createElement('th')).textContent = 'B';
         headerRow.appendChild(document.createElement('th')).textContent = 'P1';
@@ -76,14 +80,48 @@ function displayTournamentOverview(tournament) {
 
             row.appendChild(document.createElement('td')).textContent = match.court;
             row.appendChild(document.createElement('td')).textContent = match.p1.name;
-            row.appendChild(document.createElement('td')).textContent = match.p1.scorePoints;
-            row.appendChild(document.createElement('td')).textContent = match.p2.matchPoints;
-            row.appendChild(document.createElement('td')).textContent = match.p2.name;
+            const p1ScoreCell = document.createElement('td');
+            p1ScoreCell.textContent = match.p1.scorePoints;
+            p1ScoreCell.addEventListener('click', function() {
+                match.p1.scorePoints += 1;
+                p1ScoreCell.textContent = match.p1.scorePoints;
+                updateTotalScores(match.p1.id, match.p1.scorePoints, match.p2.scorePoints);
+            });
+            row.appendChild(p1ScoreCell);
+
+            const p2ScoreCell = document.createElement('td');
+            p2ScoreCell.textContent = match.p2.matchPoints;
+            p2ScoreCell.addEventListener('click', function() {
+                match.p2.scorePoints += 1;
+                p2ScoreCell.textContent = match.p2.scorePoints;
+                updateTotalScores(match.p2.id, match.p2.scorePoints, match.p1.scorePoints);
+            });
+            row.appendChild(p2ScoreCell);    row.appendChild(document.createElement('td')).textContent = match.p2.name;
 
         }
         document.getElementById('matchOverview').appendChild(table);
     }
-    
+}
+
+function updateTotalScores(id, scorePointsCurrentPlayer, scorePointsOtherPlayer) {
+    // Calculate total scores
+    const player = players.find(p => p.id === id);
+    player.scorePoints += 1;
+
+    // Update match points
+    if (scorePointsCurrentPlayer >= 21 && scorePointsOtherPlayer < 21) {
+        player.matchPoints += 2;
+    } else if (scorePointsCurrentPlayer === 21 && scorePointsOtherPlayer === 21) {
+        player.matchPoints += 1,5;
+    }
+    else if (scorePointsCurrentPlayer < 21 && scorePointsCurrentPlayer >= 11 && scorePointsOtherPlayer >= 21) {
+    player.matchPoints += 1;
+    }
+    else if (scorePointsCurrentPlayer < 11 && scorePointsOtherPlayer >= 21) {
+    player.matchPoints += 0;
+    }
+    //player.matchPoints += 1;
+    displayPlayerOverview();
 }
 
 function displayPlayerOverview() {
