@@ -86,7 +86,13 @@ function displayMatchOverview(tournament, matchOverviewContainer) {
 
             const confirmButton = document.createElement('button');
             confirmButton.id = 'confirmButton-' + match.matchId;
+            confirmButton.classList.add('confirm-scores-btn');
             confirmButton.textContent = 'Bekreft';
+
+            const editScoresButton = document.createElement('button');
+            editScoresButton.id = 'editScoresButton-' + match.matchId;
+            editScoresButton.classList.add('edit-scores-btn');
+            editScoresButton.textContent = '+';
 
             row.appendChild(document.createElement('td')).textContent = match.court;
             row.appendChild(document.createElement('td')).textContent = match.p1.name;
@@ -104,13 +110,25 @@ function displayMatchOverview(tournament, matchOverviewContainer) {
             p2ScoreCell.addEventListener('click', function() {
                 openScorePopup(match, match.p1, match.p2);
             });
-            row.appendChild(p2ScoreCell);    row.appendChild(document.createElement('td')).textContent = match.p2.name;
-            row.appendChild(confirmButton);
+            row.appendChild(p2ScoreCell);    
+            row.appendChild(document.createElement('td')).textContent = match.p2.name;
+
+
+            // Create a cell to hold the buttons
+            const buttonCell = document.createElement('td');
+            buttonCell.classList.add('button-cell-container');
+            buttonCell.appendChild(editScoresButton);
+            buttonCell.appendChild(confirmButton);
+            row.appendChild(buttonCell);
+
+            confirmButton.disabled = true;
             confirmButton.addEventListener('click', function() {
                 updateTotalScores(match.p1.id, match.p2.id, match.p1.scorePoints, match.p2.scorePoints);
                 confirmButton.textContent = 'Bekreftet';
                 confirmButton.disabled = true;
-
+            });
+            editScoresButton.addEventListener('click', function() {
+                openScorePopup(match, match.p1, match.p2);
             });
 
         }
@@ -123,6 +141,8 @@ function displayMatchOverview(tournament, matchOverviewContainer) {
 function updateScoreDisplay(match, player1Score, player2Score) {
     const p1ScoreCell = document.getElementById(`p1-score-${match.matchId}`);
     const p2ScoreCell = document.getElementById(`p2-score-${match.matchId}`);
+    const confirmButton = document.getElementById('confirmButton-' + match.matchId);
+    confirmButton.disabled = false;
     match.p1.scorePoints = player1Score;
     match.p2.scorePoints = player2Score;
     p1ScoreCell.textContent = match.p1.scorePoints;
@@ -149,8 +169,8 @@ function displayPlayerOverview() {
     const playerOverviewContainer = document.getElementById('playerOverview');
     playerOverviewContainer.innerHTML = '';
 
-    const resultText = document.createElement('h2');
-    resultText.textContent = `Resultater`;
+    const resultText = document.createElement('h3');
+    resultText.textContent = `Stilling`;
 
     const table = document.createElement('table');
     const thead = table.createTHead();

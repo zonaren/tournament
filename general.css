@@ -6,7 +6,7 @@ button, select {
     background-color: grey;
     color: white;
     padding: 11px 15px;
-    margin: 8px 0;
+    margin: 2px 0;
     border: none;
     cursor: pointer;
 
@@ -147,4 +147,21 @@ width: 100%;
 
 .number-pad .zero {
     grid-column: 2;
+}
+.button-cell-container {
+    display: flex;
+}
+
+.confirm-scores-btn, .edit-scores-btn {
+    margin-right: 10px;
+}
+.edit-scores-btn {
+    background-color: #4CAF50;
+    color: white;
+    margin-right: 10px;
+}
+
+.active-btn {
+    background-color: #4CAF50;
+    color: white;
 }
