@@ -37,24 +37,40 @@ function openScorePopup(match, player1, player2) {
     numberPadContainer1.appendChild(numberPad1);
 
 
-        for (let i = 0; i <= 9; i++) {
-            const button = document.createElement('button');
-            button.textContent = i;
-            button.addEventListener('click', function() {
-                const newScore = parseInt(player1Score.toString() + i.toString());
-                if (newScore <= 30) {
-                    player1Score = newScore;
-                    player1ScoreLabel.textContent = player1Score;
-                } else {
-                    alert('Score cannot exceed 30');
-                    player1Score = 0;
-                    player1ScoreLabel.textContent = player1Score;
-                }
-            });
-            numberPad1.appendChild(button);
-        }
+    for (let i = 1; i <= 9; i++) {
+        const button = document.createElement('button');
+        button.textContent = i;
+        button.addEventListener('click', function() {
+            const newScore = parseInt(player1Score.toString() + i.toString());
+            if (newScore <= 30) {
+                player1Score = newScore;
+                player1ScoreLabel.textContent = player1Score;
+            } else {
+                alert('Score cannot exceed 30');
+                player1Score = 0;
+                player1ScoreLabel.textContent = player1Score;
+            }
+        });
+        numberPad1.appendChild(button);
+    }
 
-    // Create number pad for player 1
+    const zeroButton1 = document.createElement('button');
+    zeroButton1.textContent = 0;
+    zeroButton1.classList.add('zero');
+    zeroButton1.addEventListener('click', function() {
+        const newScore = parseInt(player1Score.toString() + '0');
+        if (newScore <= 30) {
+            player1Score = newScore;
+            player1ScoreLabel.textContent = player1Score;
+        } else {
+            alert('Score cannot exceed 30');
+            player1Score = 0;
+            player1ScoreLabel.textContent = player1Score;
+        }
+    });
+    numberPad1.appendChild(zeroButton1);
+
+    // Create number pad for player 2
     const numberPadContainer2 = document.createElement('div');
     numberPadContainer2.classList.add('number-pad-container');
 
@@ -74,22 +90,38 @@ function openScorePopup(match, player1, player2) {
     numberPad2.classList.add('number-pad');
     numberPadContainer2.appendChild(numberPad2);
 
-        for (let i = 0; i <= 9; i++) {
-            const button = document.createElement('button');
-            button.textContent = i;
-            button.addEventListener('click', function() {
-                const newScore = parseInt(player2Score.toString() + i.toString());
-                if (newScore <= 30) {
-                    player2Score = newScore;
-                    player2ScoreLabel.textContent = player2Score;
-                } else {
-                    alert('Score cannot exceed 30');
-                    player2Score = 0;
-                    player2ScoreLabel.textContent = player2Score;
-                }
-            });
-            numberPad2.appendChild(button);
+    for (let i = 1; i <= 9; i++) {
+        const button = document.createElement('button');
+        button.textContent = i;
+        button.addEventListener('click', function() {
+            const newScore = parseInt(player2Score.toString() + i.toString());
+            if (newScore <= 30) {
+                player2Score = newScore;
+                player2ScoreLabel.textContent = player2Score;
+            } else {
+                alert('Score cannot exceed 30');
+                player2Score = 0;
+                player2ScoreLabel.textContent = player2Score;
+            }
+        });
+        numberPad2.appendChild(button);
+    }
+
+    const zeroButton2 = document.createElement('button');
+    zeroButton2.textContent = 0;
+    zeroButton2.classList.add('zero');
+    zeroButton2.addEventListener('click', function() {
+        const newScore = parseInt(player2Score.toString() + '0');
+        if (newScore <= 30) {
+            player2Score = newScore;
+            player2ScoreLabel.textContent = player2Score;
+        } else {
+            alert('Score cannot exceed 30');
+            player2Score = 0;
+            player2ScoreLabel.textContent = player2Score;
         }
+    });
+    numberPad2.appendChild(zeroButton2);
 
     // Create confirm button
     const confirmButton = document.createElement('button');

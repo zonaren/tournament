@@ -110,24 +110,41 @@ width: 100%;
       color: white;
     }
 
-  .number-pads-container, .number-pads-container {
+.number-pads-container {
     display: flex;
     justify-content: space-between;
     width: 100%;
-  }
+}
 
-  .number-pad {
+.number-pad-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.player-info {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2vw;
+}
+
+
+.number-pad {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 15px;
     margin-bottom: 20px;
-  }
+}
 
 .number-pad button {
     background-color: #f2f2f2;
     color: black;
-    padding: 10px;
-    font-size: 25px;
-    width: 50px;
-    height: 50px;
+    font-size: 2vw;
+    width: 7vw;
+    height: 7vw;
+}
+
+.number-pad .zero {
+    grid-column: 2;
 }
