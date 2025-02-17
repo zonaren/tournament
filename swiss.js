@@ -80,48 +80,87 @@ function pairPlayers(unplayedMatches, playerStats, roundNumber, tournament) {
     let matches = [];
     let playersPaired = new Set();
 
-    // Sort players by matchPoints and scorePoints
-    playerStats.sort((a, b) => b.matchPoints - a.matchPoints || b.scorePoints - a.scorePoints);
+    // Function to attempt pairing players
+    function attemptPairing(playerStats) {
+        matches = [];
+        playersPaired = new Set();
 
-    // Pair players
-    for (let i = 0; i < playerStats.length; i++) {
-        const player = playerStats[i];
-        if (!playersPaired.has(player.id)) {
-            let opponentId = null;
-            for (let j = i + 1; j < playerStats.length; j++) {
-                const potentialOpponent = playerStats[j];
-                if (!playersPaired.has(potentialOpponent.id) && unplayedMatches[player.id].includes(potentialOpponent.id)) {
-                    opponentId = potentialOpponent.id;
-                    break;
+        for (let i = 0; i < playerStats.length; i++) {
+            const player = playerStats[i];
+            if (!playersPaired.has(player.id)) {
+                let opponentId = null;
+                for (let j = i + 1; j < playerStats.length; j++) {
+                    const potentialOpponent = playerStats[j];
+                    if (!playersPaired.has(potentialOpponent.id) && unplayedMatches[player.id].includes(potentialOpponent.id)) {
+                        opponentId = potentialOpponent.id;
+                        break;
+                    }
                 }
-            }
-                
+
                 let opponent = playerStats.find(p => p.id === opponentId);
                 if (opponent) {
-                matches.push({
-                    matchId: generateUniqueId(new Set()),
-                    court: matches.length + 1, // Assuming each match is on a separate court
-                    p1: {
-                        id: player.id,
-                        name: player.name,
-                        scorePoints: 0,
-                        matchPoints: 0,
-                        details: [] // Add details as needed
-                    },
-                    p2: {
-                        id: opponent.id,
-                        name: opponent.name,
-                        scorePoints: 0,
-                        matchPoints: 0,
-                        details: [] // Add details as needed
-                    }
-                });
-                playersPaired.add(player.id);
-                playersPaired.add(opponent.id);
-            } else {
-                console.log(`No valid opponent found for player ${player.id}`);
+                    matches.push({
+                        matchId: generateUniqueId(new Set()),
+                        court: matches.length + 1, // Assuming each match is on a separate court
+                        p1: {
+                            id: player.id,
+                            name: player.name,
+                            scorePoints: 0,
+                            matchPoints: 0,
+                            details: [] // Add details as needed
+                        },
+                        p2: {
+                            id: opponent.id,
+                            name: opponent.name,
+                            scorePoints: 0,
+                            matchPoints: 0,
+                            details: [] // Add details as needed
+                        }
+                    });
+                    playersPaired.add(player.id);
+                    playersPaired.add(opponent.id);
+                } else {
+                    console.error("Failed to find opponent for player with id ", player.id);
+                    return false; // Pairing failed
+                }
             }
         }
+        return true; // Pairing succeeded
+    }
+
+    // Try pairing with different sorting options
+    const sortingOptions = [
+        (a, b) => b.matchPoints - a.matchPoints || b.scorePoints - a.scorePoints,
+        (a, b) => b.scorePoints - a.scorePoints || b.matchPoints - a.matchPoints,
+        (a, b) => a.matchPoints - b.matchPoints || a.scorePoints - b.scorePoints,
+        (a, b) => a.scorePoints - b.scorePoints || a.matchPoints - b.matchPoints
+    ];
+
+    let pairingSucceeded = false;
+    for (const sortOption of sortingOptions) {
+        playerStats.sort(sortOption);
+        if (attemptPairing(playerStats)) {
+            pairingSucceeded = true;
+            break;
+        }
+    }
+
+    // If pairing still fails, try randomizing the playerStats
+    if (!pairingSucceeded) {
+        console.warn("Pairing failed with all sorting options, attempting random pairing.");
+        for (let i = 0; i < 10; i++) { // Try randomizing up to 10 times
+            playerStats.sort(() => Math.random() - 0.5);
+            if (attemptPairing(playerStats)) {
+                pairingSucceeded = true;
+                break;
+            }
+        }
+    }
+
+    if (!pairingSucceeded) {
+        console.error("Failed to pair all players after randomizing.");
+        // Handle the case where pairing failed (e.g., log an error, throw an exception, etc.)
+        return;
     }
 
     // Add new round to the tournament schedule
