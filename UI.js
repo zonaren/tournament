@@ -64,7 +64,7 @@ function displayMatchOverview(tournament, matchOverviewContainer) {
         const roundText = document.createElement('h3');
         roundText.textContent = `Runde ${round.roundNumber}`;
         matchOverviewContainer.appendChild(roundText);
-        const nextRoundButton = proceedToNextRoundBtn();
+        const nextRoundButton = proceedToNextRoundBtn(tournament, round.roundNumber);
         matchOverviewContainer.appendChild(nextRoundButton);
         const table = document.createElement('table');
         const thead = table.createTHead();
