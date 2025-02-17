@@ -84,13 +84,22 @@ function pairPlayers(unplayedMatches, playerStats, roundNumber, tournament) {
     playerStats.sort((a, b) => b.matchPoints - a.matchPoints || b.scorePoints - a.scorePoints);
 
     // Pair players
-    playerStats.forEach(player => {
+    for (let i = 0; i < playerStats.length; i++) {
+        const player = playerStats[i];
         if (!playersPaired.has(player.id)) {
-            let opponentId = unplayedMatches[player.id].find(opponentId => !playersPaired.has(opponentId));
-            if (opponentId) {
+            let opponentId = null;
+            for (let j = i + 1; j < playerStats.length; j++) {
+                const potentialOpponent = playerStats[j];
+                if (!playersPaired.has(potentialOpponent.id) && unplayedMatches[player.id].includes(potentialOpponent.id)) {
+                    opponentId = potentialOpponent.id;
+                    break;
+                }
+            }
+                
                 let opponent = playerStats.find(p => p.id === opponentId);
+                if (opponent) {
                 matches.push({
-                    matchId: matches.length + 1,
+                    matchId: generateUniqueId(new Set()),
                     court: matches.length + 1, // Assuming each match is on a separate court
                     p1: {
                         id: player.id,
@@ -110,31 +119,19 @@ function pairPlayers(unplayedMatches, playerStats, roundNumber, tournament) {
                 playersPaired.add(player.id);
                 playersPaired.add(opponent.id);
             } else {
-                // Handle bye (walkover) if no opponent is found
-                matches.push({
-                    matchId: matches.length + 1,
-                    court: matches.length + 1,
-                    p1: {
-                        id: player.id,
-                        name: player.name,
-                        scorePoints: 0,
-                        matchPoints: 0,
-                        details: [] // Add details as needed
-                    },
-                    p2: null // No opponent
-                });
-                playersPaired.add(player.id);
+                console.log(`No valid opponent found for player ${player.id}`);
             }
         }
-    });
+    }
 
     // Add new round to the tournament schedule
     tournament.schedule.push({
-        roundNumber: roundNumber +1,
+        roundNumber: roundNumber + 1,
         matches: matches
     });
 
     console.log("matches: ", matches);
+    console.log("tournament: ", tournament);
 
     // Save the tournament object to the database (localStorage)
     localStorage.setItem('tournament', JSON.stringify(tournament));
