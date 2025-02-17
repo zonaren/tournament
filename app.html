@@ -5,32 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Generer kastnøkler</title>
   <link rel="stylesheet" href="general.css">
+  <link rel="stylesheet" href="header.css">
 </head>
 <body>
-  <div id="headerMenu">
+  <div id="header">
   <h2 id="titleText"></h2>
     <div id="menu-buttons" class="no-print">
       <select id="gametypeSelect"></select>
       <select id="playerCountSelect"></select>
       <select id="roundCountSelect"></select>
-      <button id="save-btn">Lagre</button>
+      <button id="add-players-btn">Legg til spillere</button>
       <button id="start-btn" class="hidden">Start turnering</button>
-      <button id="printContent" class="print-btn">Skriv ut</button>
-      
+      <button id="printContent" class="print-btn hidden">Skriv ut</button>
     </div>
+  </div>
 
-  <div id="matchSetup"></div>
-  <div id="tournamentOverview">
+  <div class="main-container">
+    <div id="matchSetup"></div>
+    <div id="tournamentOverview">
     <div id="tournamentInfo"></div>
     <div id="tournamentDetails">
-      <div id="matchOverview"></div>
-      <div id="playerOverview"></div>
-    </div>
-
+    <div id="matchOverview"></div>
+    <div id="playerOverview"></div>
   </div>
   
-</div>
-  
+
   <script src="dataset.js"></script>
   <script src="kampoppsett.js"></script>
   <script src="generateMatches.js"></script>

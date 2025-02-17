@@ -1,8 +1,9 @@
-const saveTournamentButton = document.getElementById('save-btn');
+const addPlayersBtn = document.getElementById('add-players-btn');
 
-saveTournamentButton.addEventListener('click', function() {
+addPlayersBtn.addEventListener('click', function() {
 
     displayPlayerOverview();
+    addPlayersBtn.style.display = 'none';
 
 });
 
@@ -18,6 +19,9 @@ startTournamentButton.addEventListener('click', function() {
   const tournament = createTournament(roundCount, playerCount / 2, matchSetup, "Test turnering", gametypeSelect.value);
   saveTournament(matchSetup, tournament);
   displayTournamentOverview(tournament);
+    startTournamentButton.style.display = 'none';
+    const header = document.getElementById('header');
+    header.style.display = 'none';
 });
 
 function saveTournament(matchSetup, tournament) {

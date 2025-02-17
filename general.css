@@ -1,3 +1,8 @@
+/* main app colors */
+/*#3D679D Blå*/
+/*#F6F7FB Kvit*/
+/*#443F45 Svart*/
+
 h1,h2,h3 {
 text-align: center;
 }
@@ -6,7 +11,7 @@ button, select {
     background-color: grey;
     color: white;
     padding: 11px 15px;
-    margin: 2px 0;
+    margin: 2px;
     border: none;
     cursor: pointer;
 
