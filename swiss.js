@@ -133,13 +133,18 @@ function pairPlayers(unplayedMatches, playerStats, roundNumber, tournament) {
         (a, b) => b.matchPoints - a.matchPoints || b.scorePoints - a.scorePoints,
         (a, b) => b.scorePoints - a.scorePoints || b.matchPoints - a.matchPoints,
         (a, b) => a.matchPoints - b.matchPoints || a.scorePoints - b.scorePoints,
-        (a, b) => a.scorePoints - b.scorePoints || a.matchPoints - b.matchPoints
+        (a, b) => a.scorePoints - b.scorePoints || a.matchPoints - b.matchPoints,
+        (a, b) => b.matchPoints - a.matchPoints, // Only matchPoints
+        (a, b) => b.scorePoints - a.scorePoints, // Only scorePoints
+        (a, b) => a.matchPoints - b.matchPoints, // Only matchPoints (ascending)
+        (a, b) => a.scorePoints - b.scorePoints  // Only scorePoints (ascending)
     ];
 
     let pairingSucceeded = false;
     for (const sortOption of sortingOptions) {
         playerStats.sort(sortOption);
         if (attemptPairing(playerStats)) {
+            console.log("Pairing succeeded with sorting option: ", sortOption);
             pairingSucceeded = true;
             break;
         }
@@ -151,6 +156,7 @@ function pairPlayers(unplayedMatches, playerStats, roundNumber, tournament) {
         for (let i = 0; i < 10; i++) { // Try randomizing up to 10 times
             playerStats.sort(() => Math.random() - 0.5);
             if (attemptPairing(playerStats)) {
+                console.log("Pairing succeeded after randomizing.");
                 pairingSucceeded = true;
                 break;
             }
@@ -159,6 +165,7 @@ function pairPlayers(unplayedMatches, playerStats, roundNumber, tournament) {
 
     if (!pairingSucceeded) {
         console.error("Failed to pair all players after randomizing.");
+        console.error("Unpaired players: ", playerStats.filter(player => !playersPaired.has(player.id)));
         // Handle the case where pairing failed (e.g., log an error, throw an exception, etc.)
         return;
     }
