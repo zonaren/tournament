@@ -62,6 +62,7 @@ function pushSchedule(schedule, round, roundMatches) {
         roundNumber: round,
         matches: roundMatches,
     });
+    roundNumber = round;
 }
 
 // cointains all the matches for each round

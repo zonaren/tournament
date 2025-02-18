@@ -45,11 +45,9 @@ function displayTournamentOverview(tournament) {
     const tournamentName = document.createElement('h1');
     tournamentName.textContent = tournament.name + ' - ' + tournament.type;
     tournamentInfoDiv.appendChild(tournamentName);
-    const tournamentDate = document.createElement('h2');
-    tournamentDate.textContent = tournament.dateCreated;
-    tournamentInfoDiv.appendChild(tournamentDate);
-
-    
+    // const tournamentDate = document.createElement('h2');
+    // tournamentDate.textContent = tournament.dateCreated;
+    // tournamentInfoDiv.appendChild(tournamentDate);
 
     const matchOverviewContainer = document.getElementById('matchOverview');
     matchOverviewContainer.innerHTML = '';
@@ -68,12 +66,21 @@ function displayTournamentOverview(tournament) {
 
 function displayMatchOverview(tournament, matchOverviewContainer) {
 
-    
+        // if the tournament is NHM, sort the rounds in descending order
+        switch (tournament.type) {
+            case 'NHM':
+                tournament.schedule.reverse();
+                console.log('Gametype is ', tournament.type, ". Sorting rounds in descending order", tournament.schedule);
+                break;
+            default:
 
-    for (let round of tournament.schedule) {
+                break;
+        }
+
+    for (let index of tournament.schedule) {
 
         const roundText = document.createElement('h3');
-        roundText.textContent = `Runde ${round.roundNumber}`;
+        roundText.textContent = `Runde ${index.roundNumber}`;
         matchOverviewContainer.appendChild(roundText);
         
         
@@ -94,7 +101,8 @@ function displayMatchOverview(tournament, matchOverviewContainer) {
         headerRow.appendChild(document.createElement('th')).textContent = 'S2';
         headerRow.appendChild(document.createElement('th')).textContent = 'P2';
         headerRow.appendChild(document.createElement('th')).textContent = '';
-        for (let match of round.matches) {
+
+        for (let match of index.matches) {
             const row = tbody.insertRow();
 
             const confirmButton = document.createElement('button');

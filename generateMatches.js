@@ -91,7 +91,6 @@ function swissMatchSystem(totalRounds, totalCourts, schedule, players){
         }
 
         pushSchedule(schedule, 1, roundMatches);
-        currentRound += 1;
 
     
 }
