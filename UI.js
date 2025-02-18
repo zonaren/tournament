@@ -302,6 +302,15 @@ function editInCell(cell, playerId) {
         editCellValue(newValue, player, players);
     });
 
+    // also allow the user to press enter to confirm the input
+    input.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            const newValue = input.value;
+            cell.textContent = newValue;
+            editCellValue(newValue, player, players);
+        }
+    });
+
         // Stop event propagation when clicking inside the input
         input.addEventListener('click', function(event) {
             event.stopPropagation();
