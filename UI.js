@@ -73,7 +73,7 @@ function displayMatchOverview(tournament, matchOverviewContainer, tournamentInfo
             const toggleAllRoundsButton = toggleAllRoundsBtn(tournament);
             tournamentInfoDiv.appendChild(toggleAllRoundsButton);
 
-            tournament.schedule.reverse();
+            tournament.schedule.sort((a, b) => a.roundNumber - b.roundNumber);
             console.log('Gametype is ', tournament.type, ". Sorting rounds in descending order", tournament.schedule);
             console.log('Round', tournament.schedule[0].roundNumber);
 
@@ -84,7 +84,7 @@ function displayMatchOverview(tournament, matchOverviewContainer, tournamentInfo
                 }
             } else {
                 // Only display the last round
-                const lastRound = tournament.schedule[0];
+                const lastRound = tournament.schedule[tournament.schedule.length - 1];
                 displayRound(lastRound, matchOverviewContainer);
             }
             break;
@@ -181,11 +181,11 @@ function displayRound(round, matchOverviewContainer) {
 
         setTimeout(() => {
             p1NameCell.classList.add('visible');
-        }, 500 * (round.matches.indexOf(match) * 2)); // Adjust the delay as needed
+        }, 100 * (round.matches.indexOf(match) * 2)); // Adjust the delay as needed
 
         setTimeout(() => {
             p2NameCell.classList.add('visible');
-        }, 500 * (round.matches.indexOf(match) * 2 + 1)); // Adjust the delay as needed
+        }, 100 * (round.matches.indexOf(match) * 2 + 1)); // Adjust the delay as needed
     }
     document.getElementById('matchOverview').appendChild(table);
 }

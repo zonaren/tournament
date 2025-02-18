@@ -22,12 +22,15 @@ let showAllRounds = false; // State variable to keep track of whether all rounds
 
 function toggleAllRoundsBtn(tournament) {
     const showAllRoundsBtn = document.createElement('button');
-    showAllRoundsBtn.textContent = 'Show all';
+    showAllRoundsBtn.textContent = 'Vis alle runder';
     showAllRoundsBtn.classList.add('show-all-rounds-btn');
     showAllRoundsBtn.addEventListener('click', function() {
         showAllRounds = !showAllRounds; // Toggle the state
-        showAllRoundsBtn.textContent = showAllRounds ? 'Show latest' : 'Show all'; // Update the button text
+        showAllRoundsBtn.textContent = showAllRounds ? 'Vis siste runde' : 'Vis alle runder'; // Update the button text
         displayTournamentOverview(tournament);
     });
+    if (showAllRounds) {
+        showAllRoundsBtn.textContent = 'Vis siste runde';
+    }
     return showAllRoundsBtn;
 }
