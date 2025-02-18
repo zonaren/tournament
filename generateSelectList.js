@@ -4,7 +4,7 @@ const playerCountElement = document.getElementById('playerCountSelect');
 const roundCountElement = document.getElementById('roundCountSelect');
 
 function createGametypeSelect() {
-  const gametypes = ['Gloppen', 'NHM (Swiss)', "Alle mot alle"];
+  const gametypes = ['Gloppen', 'NHM', "Alle mot alle"];
   for (let i = 0; i < gametypes.length; i++) {
     const option = document.createElement('option');
     option.value = gametypes[i];

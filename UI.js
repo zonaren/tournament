@@ -49,23 +49,34 @@ function displayTournamentOverview(tournament) {
     tournamentDate.textContent = tournament.dateCreated;
     tournamentInfoDiv.appendChild(tournamentDate);
 
+    
+
     const matchOverviewContainer = document.getElementById('matchOverview');
     matchOverviewContainer.innerHTML = '';
 
 
     // Display matches
     displayMatchOverview(tournament, matchOverviewContainer);
+
+    if(tournament.type === 'NHM') {
+        const nextRoundButton = proceedToNextRoundBtn(tournament);
+        tournamentInfoDiv.appendChild(nextRoundButton);
+    }
+    
     
 }
 
 function displayMatchOverview(tournament, matchOverviewContainer) {
+
+    
+
     for (let round of tournament.schedule) {
 
         const roundText = document.createElement('h3');
         roundText.textContent = `Runde ${round.roundNumber}`;
         matchOverviewContainer.appendChild(roundText);
-        const nextRoundButton = proceedToNextRoundBtn(tournament, round.roundNumber);
-        matchOverviewContainer.appendChild(nextRoundButton);
+        
+        
         const table = document.createElement('table');
         const thead = table.createTHead();
         const tbody = table.appendChild(document.createElement('tbody'));
