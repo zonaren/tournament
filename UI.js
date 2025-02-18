@@ -50,112 +50,144 @@ function displayTournamentOverview(tournament) {
     // tournamentInfoDiv.appendChild(tournamentDate);
 
     const matchOverviewContainer = document.getElementById('matchOverview');
-    matchOverviewContainer.innerHTML = '';
+    
 
 
     // Display matches
-    displayMatchOverview(tournament, matchOverviewContainer);
+    displayMatchOverview(tournament, matchOverviewContainer, tournamentInfoDiv);
 
     if(tournament.type === 'NHM') {
-        const nextRoundButton = proceedToNextRoundBtn(tournament);
-        tournamentInfoDiv.appendChild(nextRoundButton);
+
     }
     
     
 }
 
-function displayMatchOverview(tournament, matchOverviewContainer) {
+function displayMatchOverview(tournament, matchOverviewContainer, tournamentInfoDiv) {
+    // if the tournament is NHM, sort the rounds in descending order
+    matchOverviewContainer.innerHTML = '';
+    switch (tournament.type) {
+        case 'NHM':
+            const nextRoundButton = proceedToNextRoundBtn(tournament);
+            tournamentInfoDiv.appendChild(nextRoundButton);
+            const toggleAllRoundsButton = toggleAllRoundsBtn(tournament);
+            tournamentInfoDiv.appendChild(toggleAllRoundsButton);
 
-        // if the tournament is NHM, sort the rounds in descending order
-        switch (tournament.type) {
-            case 'NHM':
-                tournament.schedule.reverse();
-                console.log('Gametype is ', tournament.type, ". Sorting rounds in descending order", tournament.schedule);
-                break;
-            default:
+            tournament.schedule.reverse();
+            console.log('Gametype is ', tournament.type, ". Sorting rounds in descending order", tournament.schedule);
+            console.log('Round', tournament.schedule[0].roundNumber);
 
-                break;
-        }
+            if (showAllRounds) {
+                // Display all rounds
+                for (let index of tournament.schedule) {
+                    displayRound(index, matchOverviewContainer);
+                }
+            } else {
+                // Only display the last round
+                const lastRound = tournament.schedule[0];
+                displayRound(lastRound, matchOverviewContainer);
+            }
+            break;
+        default:
+            // Display all rounds for other tournament types
+            for (let index of tournament.schedule) {
+                displayRound(index, matchOverviewContainer);
+            }
+            break;
+    }
+}
 
-    for (let index of tournament.schedule) {
+function displayRound(round, matchOverviewContainer) {
+    const roundText = document.createElement('h3');
+    roundText.textContent = `Runde ${round.roundNumber}`;
+    matchOverviewContainer.appendChild(roundText);
 
-        const roundText = document.createElement('h3');
-        roundText.textContent = `Runde ${index.roundNumber}`;
-        matchOverviewContainer.appendChild(roundText);
-        
-        
-        const table = document.createElement('table');
-        const thead = table.createTHead();
-        const tbody = table.appendChild(document.createElement('tbody'));
-        const headerRow = thead.insertRow();
+    const table = document.createElement('table');
+    table.id = 'matchTable-' + round.roundNumber;
+    const thead = table.createTHead();
+    const tbody = table.appendChild(document.createElement('tbody'));
+    const headerRow = thead.insertRow();
+
+    const confirmButton = document.createElement('button');
+    confirmButton.id = 'confirmButton';
+    confirmButton.textContent = 'Bekreft';
+
+    // Create header
+    headerRow.appendChild(document.createElement('th')).textContent = 'B';
+    headerRow.appendChild(document.createElement('th')).textContent = 'P1';
+    headerRow.appendChild(document.createElement('th')).textContent = 'S1';
+    headerRow.appendChild(document.createElement('th')).textContent = 'S2';
+    headerRow.appendChild(document.createElement('th')).textContent = 'P2';
+    headerRow.appendChild(document.createElement('th')).textContent = '';
+
+    for (let match of round.matches) {
+        const row = tbody.insertRow();
 
         const confirmButton = document.createElement('button');
-        confirmButton.id = 'confirmButton';
+        confirmButton.id = 'confirmButton-' + match.matchId;
+        confirmButton.classList.add('confirm-scores-btn');
         confirmButton.textContent = 'Bekreft';
 
-        // Create header
-        //headerRow.appendChild(document.createElement('th')).textContent = 'Kamp';
-        headerRow.appendChild(document.createElement('th')).textContent = 'B';
-        headerRow.appendChild(document.createElement('th')).textContent = 'P1';
-        headerRow.appendChild(document.createElement('th')).textContent = 'S1';
-        headerRow.appendChild(document.createElement('th')).textContent = 'S2';
-        headerRow.appendChild(document.createElement('th')).textContent = 'P2';
-        headerRow.appendChild(document.createElement('th')).textContent = '';
+        const editScoresButton = document.createElement('button');
+        editScoresButton.id = 'editScoresButton-' + match.matchId;
+        editScoresButton.classList.add('edit-scores-btn');
+        editScoresButton.textContent = '+';
 
-        for (let match of index.matches) {
-            const row = tbody.insertRow();
+        row.appendChild(document.createElement('td')).textContent = match.court;
 
-            const confirmButton = document.createElement('button');
-            confirmButton.id = 'confirmButton-' + match.matchId;
-            confirmButton.classList.add('confirm-scores-btn');
-            confirmButton.textContent = 'Bekreft';
+        const p1NameCell = document.createElement('td');
+        p1NameCell.classList.add('fade-in');
+        p1NameCell.textContent = match.p1.name;
+        row.appendChild(p1NameCell);
 
-            const editScoresButton = document.createElement('button');
-            editScoresButton.id = 'editScoresButton-' + match.matchId;
-            editScoresButton.classList.add('edit-scores-btn');
-            editScoresButton.textContent = '+';
+        const p1ScoreCell = document.createElement('td');
+        p1ScoreCell.id = 'p1-score-' + match.matchId;
+        p1ScoreCell.textContent = match.p1.scorePoints;
+        p1ScoreCell.addEventListener('click', function() {
+            openScorePopup(match, match.p1, match.p2);
+        });
+        row.appendChild(p1ScoreCell);
 
-            row.appendChild(document.createElement('td')).textContent = match.court;
-            row.appendChild(document.createElement('td')).textContent = match.p1.name;
-            const p1ScoreCell = document.createElement('td');
-            p1ScoreCell.id = 'p1-score-' + match.matchId;
-            p1ScoreCell.textContent = match.p1.scorePoints;
-            p1ScoreCell.addEventListener('click', function() {
-                openScorePopup(match, match.p1, match.p2);
-            });
-            row.appendChild(p1ScoreCell);
+        const p2ScoreCell = document.createElement('td');
+        p2ScoreCell.id = 'p2-score-' + match.matchId;
+        p2ScoreCell.textContent = match.p2.scorePoints;
+        p2ScoreCell.addEventListener('click', function() {
+            openScorePopup(match, match.p1, match.p2);
+        });
+        row.appendChild(p2ScoreCell);
 
-            const p2ScoreCell = document.createElement('td');
-            p2ScoreCell.id = 'p2-score-' + match.matchId;
-            p2ScoreCell.textContent = match.p2.scorePoints;
-            p2ScoreCell.addEventListener('click', function() {
-                openScorePopup(match, match.p1, match.p2);
-            });
-            row.appendChild(p2ScoreCell);    
-            row.appendChild(document.createElement('td')).textContent = match.p2.name;
+        const p2NameCell = document.createElement('td');
+        p2NameCell.classList.add('fade-in');
+        p2NameCell.textContent = match.p2.name;
+        row.appendChild(p2NameCell);
 
+        // Create a cell to hold the buttons
+        const buttonCell = document.createElement('td');
+        buttonCell.classList.add('button-cell-container');
+        buttonCell.appendChild(editScoresButton);
+        buttonCell.appendChild(confirmButton);
+        row.appendChild(buttonCell);
 
-            // Create a cell to hold the buttons
-            const buttonCell = document.createElement('td');
-            buttonCell.classList.add('button-cell-container');
-            buttonCell.appendChild(editScoresButton);
-            buttonCell.appendChild(confirmButton);
-            row.appendChild(buttonCell);
-
+        confirmButton.disabled = true;
+        confirmButton.addEventListener('click', function() {
+            updateTotalScores(match.p1.id, match.p2.id, match.p1.scorePoints, match.p2.scorePoints);
+            confirmButton.textContent = 'Bekreftet';
             confirmButton.disabled = true;
-            confirmButton.addEventListener('click', function() {
-                updateTotalScores(match.p1.id, match.p2.id, match.p1.scorePoints, match.p2.scorePoints);
-                confirmButton.textContent = 'Bekreftet';
-                confirmButton.disabled = true;
-                editScoresButton.disabled = true;
-            });
-            editScoresButton.addEventListener('click', function() {
-                openScorePopup(match, match.p1, match.p2);
-            });
+            editScoresButton.disabled = true;
+        });
+        editScoresButton.addEventListener('click', function() {
+            openScorePopup(match, match.p1, match.p2);
+        });
 
-        }
-        document.getElementById('matchOverview').appendChild(table);
+        setTimeout(() => {
+            p1NameCell.classList.add('visible');
+        }, 500 * (round.matches.indexOf(match) * 2)); // Adjust the delay as needed
+
+        setTimeout(() => {
+            p2NameCell.classList.add('visible');
+        }, 500 * (round.matches.indexOf(match) * 2 + 1)); // Adjust the delay as needed
     }
+    document.getElementById('matchOverview').appendChild(table);
 }
 
 

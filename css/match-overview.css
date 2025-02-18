@@ -1,3 +1,13 @@
 #matchOverview {
     width: 55%;
 }
+.fade-in {
+    opacity: 0;
+    transform: translateX(100%);
+    transition: opacity 1s ease-in, transform 1s ease-in;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateX(0);
+}

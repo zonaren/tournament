@@ -5,15 +5,29 @@ function proceedToNextRoundBtn(tournament) {
     proceedToNextRoundBtn.classList.add('proceed-to-next-round-btn');
     proceedToNextRoundBtn.addEventListener('click', function() {
         // calculate the next round
-        currentRound += 1;
-        console.log("currentRound: ", currentRound);
-        const nextRound = calculateNextRound(tournament, currentRound);
+
+        const round = tournament.schedule.length;
+
+        const nextRound = calculateNextRound(tournament, round);
         // if the next round is not null, update the current round and the UI
         if (nextRound !== null) {
-            console.log("currentRound: ", currentRound);
             //updateUI();
             displayTournamentOverview(tournament)
         }
     });
     return proceedToNextRoundBtn;
+}
+
+let showAllRounds = false; // State variable to keep track of whether all rounds are being shown
+
+function toggleAllRoundsBtn(tournament) {
+    const showAllRoundsBtn = document.createElement('button');
+    showAllRoundsBtn.textContent = 'Show all';
+    showAllRoundsBtn.classList.add('show-all-rounds-btn');
+    showAllRoundsBtn.addEventListener('click', function() {
+        showAllRounds = !showAllRounds; // Toggle the state
+        showAllRoundsBtn.textContent = showAllRounds ? 'Show latest' : 'Show all'; // Update the button text
+        displayTournamentOverview(tournament);
+    });
+    return showAllRoundsBtn;
 }
