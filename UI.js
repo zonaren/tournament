@@ -147,6 +147,7 @@ function displayMatchOverview(tournament, matchOverviewContainer) {
                 updateTotalScores(match.p1.id, match.p2.id, match.p1.scorePoints, match.p2.scorePoints);
                 confirmButton.textContent = 'Bekreftet';
                 confirmButton.disabled = true;
+                editScoresButton.disabled = true;
             });
             editScoresButton.addEventListener('click', function() {
                 openScorePopup(match, match.p1, match.p2);
