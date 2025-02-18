@@ -11,7 +11,6 @@
     font-size: 20px;
     font-weight: bold;
     color: black;
-    text-align: center;
 }
 /* Add a hover effect to the player names */
 .player-name:hover {
