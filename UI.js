@@ -127,7 +127,7 @@ function displayMatchOverview(tournament, matchOverviewContainer) {
 
             const p2ScoreCell = document.createElement('td');
             p2ScoreCell.id = 'p2-score-' + match.matchId;
-            p2ScoreCell.textContent = match.p2.matchPoints;
+            p2ScoreCell.textContent = match.p2.scorePoints;
             p2ScoreCell.addEventListener('click', function() {
                 openScorePopup(match, match.p1, match.p2);
             });
