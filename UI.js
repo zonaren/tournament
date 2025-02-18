@@ -179,8 +179,8 @@ function displayPlayerOverview() {
     const tbody = table.appendChild(document.createElement('tbody'));
     const headerRow = thead.insertRow();
     headerRow.appendChild(document.createElement('th')).textContent = 'Pl.';
-    headerRow.appendChild(document.createElement('th')).textContent = 'Id';
-    headerRow.appendChild(document.createElement('th')).textContent = 'S';
+
+    headerRow.appendChild(document.createElement('th')).textContent = 'Navn';
     headerRow.appendChild(document.createElement('th')).textContent = 'SP';
     //headerRow.appendChild(document.createElement('th')).textContent = 'Ringer';
     headerRow.appendChild(document.createElement('th')).textContent = 'KP';
@@ -196,19 +196,23 @@ function displayPlayerOverview() {
     for (let player of sortedPlayers) {
         const row = tbody.insertRow();
         row.appendChild(document.createElement('td')).textContent = sortedPlayers.indexOf(player) + 1;
-        row.appendChild(document.createElement('td')).textContent = player.id;
+
         // Create a editable cell for the player name
-        const cell = document.createElement('td');
-        cell.textContent = player.name;
-        cell.addEventListener('click', function() {
+        const playerNameCell = document.createElement('td');
+        playerNameCell.classList.add('player-name');
+        playerNameCell.textContent = player.name;
+        playerNameCell.addEventListener('click', function() {
             // Your onClick event handler code here
             console.log('Player clicked:', player.id);
-            editInCell(cell, player.id);
+            editInCell(playerNameCell, player.id);
         });
-        row.appendChild(cell);
+        row.appendChild(playerNameCell);
         row.appendChild(document.createElement('td')).textContent = player.scorePoints;
         //row.appendChild(document.createElement('td')).textContent = player.totalRingers;
-        row.appendChild(document.createElement('td')).textContent = player.matchPoints;
+        const totalPointsCell = document.createElement('td');
+        totalPointsCell.classList.add('total-points');
+        totalPointsCell.textContent = player.matchPoints;
+        row.appendChild(totalPointsCell);
     }
     playerOverviewContainer.appendChild(resultText);
     playerOverviewContainer.appendChild(table);

@@ -24,4 +24,4 @@
 // 5. Players cannot receive more than one bye (walkover) in a tournament.
 
 // general recommendations for swiss tournament
-1. Pairing should be seeded in the first round
+//1. Pairing should be seeded in the first round

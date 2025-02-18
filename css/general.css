@@ -24,47 +24,21 @@ select {
     font-size: 16px;
 }
 
+input {
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
 button:disabled {
     background-color: #cccccc;
     color: #666666;
     cursor: not-allowed;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    color: #333;
-}
 
-table, th, td {
-    border: 1px solid #ddd;
-}
-
-th, td {
-    padding: 7px;
-    text-align: left;
-}
-
-th {
-    background-color: #f2f2f2;
-    color: #333;
-}
-
-/* Alternate row colors */
-tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-tr:nth-child(odd) {
-    background-color: #ffffff;
-}
-
-/* Hover effect for rows */
-tr:hover {
-    background-color: #e0e0e0;
-}
 
 
 #tournamentSchedule{
@@ -86,12 +60,7 @@ width: 100%;
       display: flex;
       justify-content: space-between;
   }
-  #matchOverview {
-      width: 50%;
-  }
-  #playerOverview {
-      width: 40%;
-  }
+
   .hidden {
       display: none;
   }

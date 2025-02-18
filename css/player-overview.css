@@ -1,0 +1,22 @@
+#playerOverview {
+    width: 40%;
+}
+.total-points {
+    font-size: 20px;
+    font-weight: bold;
+    color: #3D679D;
+    text-align: center;
+}
+.player-name {
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
+    text-align: center;
+}
+/* Add a hover effect to the player names */
+.player-name:hover {
+    color: #3D679D;
+    cursor: pointer;
+}
+/* Add a hover effect to the player names */
+

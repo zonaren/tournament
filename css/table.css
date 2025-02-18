@@ -1,0 +1,47 @@
+/* main app colors */
+/*#3D679D Blue*/
+/*#e0e7f1 light blue */
+/*#F6F7FB White*/
+/*#443F45 Black*/
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    background-color: #ffffff; /* Change background to white for better readability */
+    color: #333;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow for modern look */
+    border-radius: 8px; /* Rounded corners */
+    overflow: hidden; /* Ensure rounded corners are visible */
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 7px;
+    text-align: left;
+    font-size: 16px; /* Increase font size for better readability */
+}
+
+th {
+    background-color: #3D679D; /* Use main app color for header background */
+    color: #F6F7FB; /* Use main app color for header text */
+}
+
+/* Alternate row colors */
+tr:nth-child(even) {
+    background-color: #e0e7f1;
+}
+
+tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+/* Hover effect for rows */
+tr:hover {
+    background-color: #e0e0e0;
+    color: #3D679D; /* Change text color on hover for better visibility */
+}
