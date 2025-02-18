@@ -7,10 +7,20 @@ function openScorePopup(match, player1, player2) {
     popup.classList.add('popup');
 
     // Create match id header
-    const matchIdHeader = document.createElement('h2');
-    matchIdHeader.textContent = `Kamp ${match.matchId}`;
-    console.log("Adding score for match ", match.matchId, " between ", player1.name, " and ", player2.name, " on court ", match.court);
-    popup.appendChild(matchIdHeader);
+    // const matchIdHeader = document.createElement('h2');
+    // matchIdHeader.textContent = `Kamp ${match.matchId}`;
+    // console.log("Adding score for match ", match.matchId, " between ", player1.name, " and ", player2.name, " on court ", match.court);
+    // popup.appendChild(matchIdHeader);
+
+        // Create confirm button
+        const saveBtn = document.createElement('button');
+        saveBtn.textContent = 'Lagre';
+        saveBtn.classList.add('popup-save-btn');
+        saveBtn.addEventListener('click', function() {
+            updateScoreDisplay(match, player1Score, player2Score);
+            document.body.removeChild(popup);
+        });
+        popup.appendChild(saveBtn);
     // create number pad container
     const numberPadContainer = document.createElement('div');
     numberPadContainer.classList.add('number-pads-container');
@@ -123,16 +133,9 @@ function openScorePopup(match, player1, player2) {
     });
     numberPad2.appendChild(zeroButton2);
 
-    // Create confirm button
-    const confirmButton = document.createElement('button');
-    confirmButton.textContent = 'Lagre';
-    confirmButton.addEventListener('click', function() {
-        updateScoreDisplay(match, player1Score, player2Score);
-        document.body.removeChild(popup);
-    });
 
     numberPadContainer.appendChild(numberPadContainer1);
     numberPadContainer.appendChild(numberPadContainer2);
-    popup.appendChild(confirmButton);
+    
     document.body.appendChild(popup);
 }
