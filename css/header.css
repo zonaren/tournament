@@ -3,9 +3,10 @@
 /*#F6F7FB Kvit*/
 /*#443F45 Svart*/
 
-.header {
+.header,.footer {
     background-color: #3D679D;
     color: #F6F7FB;
     padding: 10px;
     text-align: center;
+    margin-top: 80px;
 }
