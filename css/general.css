@@ -3,6 +3,13 @@
 /*#F6F7FB Kvit*/
 /*#443F45 Svart*/
 
+body {
+    font-family: Arial, sans-serif;
+    background-color: grey;
+
+    margin: 0;
+    padding: 0;
+}
 h1,h2,h3 {
 text-align: center;
 }
@@ -37,8 +44,6 @@ button:disabled {
     color: #666666;
     cursor: not-allowed;
 }
-
-
 
 
 #tournamentSchedule{

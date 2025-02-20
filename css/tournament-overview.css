@@ -1,0 +1,14 @@
+#tournamentOverview {
+    width: 98%;
+    margin: 0 auto;
+    padding: 0;
+    background-color: grey;
+
+}
+
+#tournamentInfo {
+    padding: 10px;
+    background-color: #3D679D;
+    color: white;
+    border-radius: 20px;
+}
