@@ -23,3 +23,6 @@ Design
 
 Generelt
 - Skal det være mulig å laste inn tidligere konkurranser / turnering?
+
+
+- 
