@@ -6,21 +6,21 @@ function openScorePopup(match, player1, player2) {
     const popup = document.createElement('div');
     popup.classList.add('popup');
 
-    // Create match id header
-    // const matchIdHeader = document.createElement('h2');
-    // matchIdHeader.textContent = `Kamp ${match.matchId}`;
-    // console.log("Adding score for match ", match.matchId, " between ", player1.name, " and ", player2.name, " on court ", match.court);
-    // popup.appendChild(matchIdHeader);
-
         // Create confirm button
         const saveBtn = document.createElement('button');
         saveBtn.textContent = 'Lagre';
         saveBtn.classList.add('popup-save-btn');
         saveBtn.addEventListener('click', function() {
+            console.log('Player 1 score: ', player1Score, 'Player 2 score: ', player2Score);
             if (player1Score < 21 && player2Score < 21) {
                 alert('Ingen spillere kan ha mindre enn 21 poeng');
-                player1ScoreLabel.textContent = 0;
-                player2ScoreLabel.textContent = 0;
+                
+                player1Score = 0;
+                player2Score = 0;
+                return;
+            }
+            if (player1Score > 30 || player2Score > 30) {
+                alert('Ingen spillere kan ha mer enn 30 poeng');
                 player1Score = 0;
                 player2Score = 0;
                 return;
@@ -30,120 +30,63 @@ function openScorePopup(match, player1, player2) {
         });
         popup.appendChild(saveBtn);
     // create number pad container
-    const numberPadContainer = document.createElement('div');
-    numberPadContainer.classList.add('number-pads-container');
-    popup.appendChild(numberPadContainer);
+    const numberPadsContainer = document.createElement('div');
+    numberPadsContainer.classList.add('number-pads-container');
+    popup.appendChild(numberPadsContainer);
 
-    // Create number pad for player 1
-    const numberPadContainer1 = document.createElement('div');
-    numberPadContainer1.classList.add('number-pad-container');
-
-    const player1Info = document.createElement('div');
-    player1Info.classList.add('player-info');
-
-    const player1Label = document.createElement('h2');
-    player1Label.textContent = player1.name;
-    numberPadContainer1.appendChild(player1Info);
-    player1Info.appendChild(player1Label);
-
-    const player1ScoreLabel = document.createElement('h1');
-    player1ScoreLabel.textContent = player1Score;
-    player1Info.appendChild(player1ScoreLabel);
-
-    const numberPad1 = document.createElement('div');
-    numberPad1.classList.add('number-pad');
-    numberPadContainer1.appendChild(numberPad1);
-
-
-    for (let i = 1; i <= 9; i++) {
-        const button = document.createElement('button');
-        button.textContent = i;
-        button.addEventListener('click', function() {
-            const newScore = parseInt(player1Score.toString() + i.toString());
-            if (newScore <= 30) {
-                player1Score = newScore;
-                player1ScoreLabel.textContent = player1Score;
-            } else {
-                alert('Score cannot exceed 30');
-                player1Score = 0;
-                player1ScoreLabel.textContent = player1Score;
-            }
-        });
-        numberPad1.appendChild(button);
-    }
-
-    const zeroButton1 = document.createElement('button');
-    zeroButton1.textContent = 0;
-    zeroButton1.classList.add('zero');
-    zeroButton1.addEventListener('click', function() {
-        const newScore = parseInt(player1Score.toString() + '0');
-        if (newScore <= 30) {
-            player1Score = newScore;
-            player1ScoreLabel.textContent = player1Score;
-        } else {
-            alert('Score cannot exceed 30');
-            player1Score = 0;
-            player1ScoreLabel.textContent = player1Score;
-        }
-    });
-    numberPad1.appendChild(zeroButton1);
-
-    // Create number pad for player 2
-    const numberPadContainer2 = document.createElement('div');
-    numberPadContainer2.classList.add('number-pad-container');
-
-    const player2Info = document.createElement('div');
-    player2Info.classList.add('player-info');
-
-    const player2Label = document.createElement('h2');
-    player2Label.textContent = player2.name;
-    numberPadContainer2.appendChild(player2Info);
-    player2Info.appendChild(player2Label);
-
-    const player2ScoreLabel = document.createElement('h1');
-    player2ScoreLabel.textContent = player2Score;
-    player2Info.appendChild(player2ScoreLabel);
-
-    const numberPad2 = document.createElement('div');
-    numberPad2.classList.add('number-pad');
-    numberPadContainer2.appendChild(numberPad2);
-
-    for (let i = 1; i <= 9; i++) {
-        const button = document.createElement('button');
-        button.textContent = i;
-        button.addEventListener('click', function() {
-            const newScore = parseInt(player2Score.toString() + i.toString());
-            if (newScore <= 30) {
-                player2Score = newScore;
-                player2ScoreLabel.textContent = player2Score;
-            } else {
-                alert('Score cannot exceed 30');
-                player2Score = 0;
-                player2ScoreLabel.textContent = player2Score;
-            }
-        });
-        numberPad2.appendChild(button);
-    }
-
-    const zeroButton2 = document.createElement('button');
-    zeroButton2.textContent = 0;
-    zeroButton2.classList.add('zero');
-    zeroButton2.addEventListener('click', function() {
-        const newScore = parseInt(player2Score.toString() + '0');
-        if (newScore <= 30) {
-            player2Score = newScore;
-            player2ScoreLabel.textContent = player2Score;
-        } else {
-            alert('Score cannot exceed 30');
-            player2Score = 0;
-            player2ScoreLabel.textContent = player2Score;
-        }
-    });
-    numberPad2.appendChild(zeroButton2);
-
-
-    numberPadContainer.appendChild(numberPadContainer1);
-    numberPadContainer.appendChild(numberPadContainer2);
+      // Create number pads for both players
+      createNumberPad(numberPadsContainer, player1, () => player1Score, (score) => player1Score = score);
+      createNumberPad(numberPadsContainer, player2, () => player2Score, (score) => player2Score = score);
     
     document.body.appendChild(popup);
+}
+
+    // Function to create number pad for a player
+    function createNumberPad(numberPadsContainer, player, getPlayerScore, setPlayerScore) {
+        const numberPadContainer = document.createElement('div');
+        numberPadContainer.classList.add('number-pad-container');
+
+        const playerInfo = document.createElement('div');
+        playerInfo.classList.add('player-info');
+
+        const playerLabel = document.createElement('h2');
+        playerLabel.textContent = player.name;
+        numberPadContainer.appendChild(playerInfo);
+        playerInfo.appendChild(playerLabel);
+
+        const playerScoreLabel = document.createElement('h1');
+        playerScoreLabel.textContent = getPlayerScore();
+        playerInfo.appendChild(playerScoreLabel);
+
+        const numberPad = document.createElement('div');
+        numberPad.classList.add('number-pad');
+        numberPadContainer.appendChild(numberPad);
+
+        for (let i = 1; i <= 9; i++) {
+            const button = document.createElement('button');
+            button.textContent = i;
+            button.addEventListener('click', function() {
+                updateScoreLabel(getPlayerScore, i, setPlayerScore, playerScoreLabel, player);
+            });
+            numberPad.appendChild(button);
+        }
+
+        const zeroButton = document.createElement('button');
+        zeroButton.textContent = 0;
+        zeroButton.classList.add('zero');
+        zeroButton.addEventListener('click', function() {
+            updateScoreLabel(getPlayerScore, zeroButton.textContent, setPlayerScore, playerScoreLabel, player);
+        });
+        numberPad.appendChild(zeroButton);
+
+        numberPadsContainer.appendChild(numberPadContainer);
+
+        return playerScoreLabel;
+    }
+
+function updateScoreLabel(getPlayerScore, value, setPlayerScore, playerScoreLabel, player) {
+    const newScore = parseInt(getPlayerScore().toString() + value.toString());
+    setPlayerScore(newScore);
+    playerScoreLabel.textContent = newScore;
+    console.log('Player score: ', newScore, 'Player: ', player.name);
 }
