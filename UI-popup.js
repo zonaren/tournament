@@ -17,6 +17,14 @@ function openScorePopup(match, player1, player2) {
         saveBtn.textContent = 'Lagre';
         saveBtn.classList.add('popup-save-btn');
         saveBtn.addEventListener('click', function() {
+            if (player1Score < 21 && player2Score < 21) {
+                alert('Ingen spillere kan ha mindre enn 21 poeng');
+                player1ScoreLabel.textContent = 0;
+                player2ScoreLabel.textContent = 0;
+                player1Score = 0;
+                player2Score = 0;
+                return;
+            }
             updateScoreDisplay(match, player1Score, player2Score);
             document.body.removeChild(popup);
         });
