@@ -5,6 +5,8 @@ addPlayersBtn.addEventListener('click', function() {
     matchSetupContainer.remove();
     displayPlayerOverview();
     addPlayersBtn.remove();
+    const startTournamentButton = document.getElementById('start-btn');
+        startTournamentButton.classList.remove('hidden');
 
 });
 

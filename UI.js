@@ -219,8 +219,7 @@ function displayPlayerOverview() {
 // ];
         //remove match setup
 
-        const startTournamentButton = document.getElementById('start-btn');
-        startTournamentButton.classList.remove('hidden');
+        
     const playerOverviewContainer = document.getElementById('playerOverview');
     playerOverviewContainer.innerHTML = '';
 
