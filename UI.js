@@ -257,6 +257,10 @@ function displayPlayerOverview() {
         playerNameCell.classList.add('player-name');
         playerNameCell.textContent = player.name;
         playerNameCell.addEventListener('click', function() {
+            if(schedule.length > 0) {
+                alert('Spillere kan ikke endres etter at turneringen har startet');
+                return;
+            }
             // Your onClick event handler code here
             console.log('Player clicked:', player.id);
             const currentRowIndex = Array.from(playerOverviewContainer.getElementsByTagName('tr')).indexOf(row);
