@@ -227,6 +227,7 @@ function displayPlayerOverview() {
     resultText.textContent = `Stilling`;
 
     const table = document.createElement('table');
+    table.id = 'playerTable';
     const thead = table.createTHead();
     const tbody = table.appendChild(document.createElement('tbody'));
     const headerRow = thead.insertRow();

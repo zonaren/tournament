@@ -1,14 +1,21 @@
 #tournamentOverview {
-    width: 98%;
-    margin: 0 auto;
     padding: 0;
     background-color: grey;
-
+    overflow: hidden;
+    position: relative; /* Ensure the parent container is positioned relatively */
+    width: 100%; /* Adjust as needed */
+    height: 100vh; /* Ensure it takes the full height of the viewport */
+    overflow: hidden; /* Prevent the parent container from being scrollable */
+    display: flex; /* Use flexbox to layout children */
 }
 
 #tournamentInfo {
-    padding: 10px;
     background-color: #3D679D;
     color: white;
-    border-radius: 20px;
+    width: 100%;
+
+}
+
+#tournamentDetails {
+
 }

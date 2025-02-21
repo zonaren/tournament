@@ -1,6 +1,47 @@
 #playerOverview {
     width: 40%;
+    overflow-y: auto; /* Make matchOverview scrollable */
+    height: 100%; /* Ensure it takes the full height of the parent */
+
+    padding: 10px 20px 10px 20px;
+    padding-bottom: 100px; /* Add padding to prevent content from being hidden under the fixed footer */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
+
+/* Hide scrollbar for Webkit-based browsers */
+#playerOverview::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge, and Firefox */
+#playerOverview {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+/* scrollable table, except the header */
+/* #playerTable {
+    width: 100%;
+    position: relative;
+    height: 100%;
+    border-collapse: collapse; 
+}
+#playerTable thead {
+    width: 100%;
+    display: table; 
+    table-layout: fixed; 
+}
+#playerTable tbody {
+    width: 100%;
+    display: block; 
+    height: 1000px; 
+    overflow-y: auto; 
+}
+#playerTable tbody tr {
+    display: table; 
+    width: 100%;
+    table-layout: fixed; 
+} */
 .total-points {
     font-size: 20px;
     font-weight: bold;
@@ -17,5 +58,3 @@
     color: #3D679D;
     cursor: pointer;
 }
-/* Add a hover effect to the player names */
-

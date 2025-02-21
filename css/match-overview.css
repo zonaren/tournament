@@ -1,5 +1,21 @@
 #matchOverview {
-    width: 55%;
+    width: 60%;
+    overflow-y: auto; /* Make matchOverview scrollable */
+    height: 100%; /* Ensure it takes the full height of the parent */
+    padding: 10px 20px 10px 20px;
+    padding-bottom: 100px; /* Add padding to prevent content from being hidden under the fixed footer */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+/* Hide scrollbar for Webkit-based browsers */
+#matchOverview::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge, and Firefox */
+#matchOverview {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
 .fade-in {
     opacity: 0;

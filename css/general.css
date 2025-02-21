@@ -3,6 +3,11 @@
 /*#F6F7FB Kvit*/
 /*#443F45 Svart*/
 
+html {
+    height: 100%;
+    overflow: hidden;
+}
+
 body {
     font-family: Arial, sans-serif;
     background-color: grey;
@@ -10,6 +15,16 @@ body {
     margin: 0;
     padding: 0;
 }
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: grey;
+    overflow: hidden;
+
+}
+
 h1,h2,h3 {
 text-align: center;
 }
@@ -46,10 +61,6 @@ button:disabled {
 }
 
 
-#tournamentSchedule{
-margin: 0 auto;
-margin-top: 5px;
-}
 @media print {
 .no-print {
 display: none !important;
@@ -61,10 +72,7 @@ width: 100%;
 .print-btn {
   float: right;
 }
-#tournamentDetails {
-      display: flex;
-      justify-content: space-between;
-  }
+
 
   .hidden {
       display: none;

@@ -8,5 +8,13 @@
     color: #F6F7FB;
     padding: 10px;
     text-align: center;
+    width: 100%;
+}
+
+.footer {
+    
+    left: 0;
+    bottom: 0;
+
     margin-top: 80px;
 }
