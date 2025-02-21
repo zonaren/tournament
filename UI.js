@@ -178,6 +178,10 @@ function displayRound(round, matchOverviewContainer) {
             confirmButton.disabled = true;
             editScoresButton.disabled = true;
         });
+
+        handleWalkover(match, p1ScoreCell, p2ScoreCell, confirmButton, editScoresButton);
+
+
         editScoresButton.addEventListener('click', function() {
             openScorePopup(match, match.p1, match.p2);
         });
@@ -193,7 +197,19 @@ function displayRound(round, matchOverviewContainer) {
     document.getElementById('matchOverview').appendChild(table);
 }
 
-
+function handleWalkover(match, p1ScoreCell, p2ScoreCell, confirmButton, editScoresButton) {
+    if (match.p2.name === 'Walkover') {
+        match.p1.scorePoints = 21;
+        match.p2.scorePoints = 0;
+        p1ScoreCell.textContent = match.p1.scorePoints;
+    } else if (match.p1.name === 'Walkover') {
+        match.p1.scorePoints = 0;
+        match.p2.scorePoints = 21;
+        p2ScoreCell.textContent = match.p2.scorePoints;
+    }
+    editScoresButton.disabled = true;
+    confirmButton.disabled = false;
+}
 
 function updateScoreDisplay(match, player1Score, player2Score) {
     const p1ScoreCell = document.getElementById(`p1-score-${match.matchId}`);
