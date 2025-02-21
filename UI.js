@@ -39,15 +39,17 @@ function displayMatchSetup(schedule) {
 
 
 function displayTournamentOverview(tournament) {
+    
     // Create tournament info
-    const tournamentInfoDiv = document.getElementById('tournamentInfo');
+    const tournamentInfoDiv = document.createElement('div');
+    tournamentInfoDiv.id = 'tournamentInfo';
     tournamentInfoDiv.innerHTML = '';
-    const tournamentName = document.createElement('h1');
+    const tournamentName = document.createElement('h3');
     tournamentName.textContent = tournament.name + ' - ' + tournament.type;
     tournamentInfoDiv.appendChild(tournamentName);
-    // const tournamentDate = document.createElement('h2');
-    // tournamentDate.textContent = tournament.dateCreated;
-    // tournamentInfoDiv.appendChild(tournamentDate);
+    
+    const mainContainer = document.getElementById('mainContainer');
+    mainContainer.appendChild(tournamentInfoDiv);
 
     const matchOverviewContainer = document.getElementById('matchOverview');
     
@@ -216,8 +218,7 @@ function displayPlayerOverview() {
 //     { id: 5, name: 'Player 5', scorePoints: Math.floor(Math.random() * 100), matchPoints: Math.floor(Math.random() * 10) },
 // ];
         //remove match setup
-        const matchSetupContainer = document.getElementById('matchSetup');
-        matchSetupContainer.innerHTML = '';
+
         const startTournamentButton = document.getElementById('start-btn');
         startTournamentButton.classList.remove('hidden');
     const playerOverviewContainer = document.getElementById('playerOverview');

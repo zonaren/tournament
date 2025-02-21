@@ -1,9 +1,10 @@
 const addPlayersBtn = document.getElementById('add-players-btn');
 
 addPlayersBtn.addEventListener('click', function() {
-
+    const matchSetupContainer = document.getElementById('matchSetup');
+    matchSetupContainer.remove();
     displayPlayerOverview();
-    addPlayersBtn.style.display = 'none';
+    addPlayersBtn.remove();
 
 });
 
@@ -19,9 +20,9 @@ startTournamentButton.addEventListener('click', function() {
   const tournament = createTournament(roundCount, playerCount / 2, matchSetup, "Test turnering", gametypeSelect.value);
   saveTournament(matchSetup, tournament);
   displayTournamentOverview(tournament);
-    startTournamentButton.style.display = 'none';
+    startTournamentButton.remove();
     const header = document.getElementById('header');
-    header.style.display = 'none';
+    header.remove();
 });
 
 function saveTournament(matchSetup, tournament) {
