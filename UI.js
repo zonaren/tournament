@@ -235,6 +235,9 @@ function displayPlayerOverview() {
     const table = document.createElement('table');
     table.id = 'playerTable';
     const thead = table.createTHead();
+    const theadForButtons = table.createTHead();
+    const headerRowForButtons = theadForButtons.insertRow();
+    headerRowForButtons.appendChild(document.createElement('th')).appendChild(addPlayerBtn());
     const tbody = table.appendChild(document.createElement('tbody'));
     const headerRow = thead.insertRow();
     headerRow.appendChild(document.createElement('th')).textContent = 'Pl.';
@@ -351,6 +354,44 @@ function goToNextPlayer(currentRowIndex = 0) {
         editInCell(nextRowPlayerNameCell, nextPlayerId, currentRowIndex);
     }
 }
+
+function addNewPlayer(playerName) {
+    //const newPlayerName = document.getElementById('newPlayerName').value;
+    const newPlayerName = playerName ? playerName : prompt('Navn på ny spiller:');
+    if (newPlayerName) {
+        const newPlayer = {
+            id: players.length + 1,
+            name: newPlayerName,
+            scorePoints: 0,
+            matchPoints: 0,
+            totalRingers: 0
+        };
+        players.push(newPlayer);
+        localStorage.setItem('players', JSON.stringify(players));
+        displayPlayerOverview();
+        totalPlayers = players.length;
+        console.log('Added new player:', newPlayer);
+    }
+}
+
+function addPlayerBtn() {
+    const addPlayerButton = document.createElement('button');
+    addPlayerButton.id = 'addPlayerButton';
+    addPlayerButton.textContent = 'Legg til spiller';
+    addPlayerButton.addEventListener('click', function() {
+        addNewPlayer();
+    });
+    return addPlayerButton;
+}
+
+// function deletePlayer(playerId) {
+//     const playerIndex = players.findIndex(p => p.id === playerId);
+//     players.splice(playerIndex, 1);
+//     localStorage.setItem('players', JSON.stringify(players));
+//     displayPlayerOverview();
+// }
+
+
 
 
 
