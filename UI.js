@@ -267,7 +267,8 @@ function displayPlayerOverview() {
         playerNameCell.addEventListener('click', function() {
             // Your onClick event handler code here
             console.log('Player clicked:', player.id);
-            editInCell(playerNameCell, player.id);
+            const currentRowIndex = Array.from(playerOverviewContainer.getElementsByTagName('tr')).indexOf(row);
+            editInCell(playerNameCell, player.id, currentRowIndex);
         });
         row.appendChild(playerNameCell);
         row.appendChild(document.createElement('td')).textContent = player.scorePoints;
@@ -292,7 +293,7 @@ function editCellValue(newValue, player) {
     }
 }
 
-function editInCell(cell, playerId, currentRowIndex = 0) {
+function editInCell(cell, playerId, currentRowIndex) {
     const originalValue = cell.textContent;
     const input = document.createElement('input');
     const confirmButton = document.createElement('button');
@@ -334,13 +335,13 @@ function editInCell(cell, playerId, currentRowIndex = 0) {
     input.select();
 }
 
-function goToNextPlayer(currentRowIndex = 0) {
+function goToNextPlayer(currentRowIndex) {
     const playerTable = document.getElementById('playerTable');
     const playerRows = playerTable.getElementsByTagName('tr');
     let nextRow;
 
-    if (currentRowIndex < playerRows.length - 1) {
-        nextRow = playerRows[currentRowIndex + 1];
+    if (currentRowIndex < playerRows.length) {
+        nextRow = playerRows[currentRowIndex];
         console.log('Going to next row:', nextRow);
     } else {
         console.log('No more rows to edit.');
