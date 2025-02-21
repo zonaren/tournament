@@ -115,12 +115,9 @@ function displayRound(round, matchOverviewContainer) {
     confirmButton.textContent = 'Bekreft';
 
     // Create header
-    headerRow.appendChild(document.createElement('th')).textContent = 'B';
-    headerRow.appendChild(document.createElement('th')).textContent = 'P1';
-    headerRow.appendChild(document.createElement('th')).textContent = 'S1';
-    headerRow.appendChild(document.createElement('th')).textContent = 'S2';
-    headerRow.appendChild(document.createElement('th')).textContent = 'P2';
-    headerRow.appendChild(document.createElement('th')).textContent = '';
+    ['B', 'P1', 'S1', 'S2', 'P2', ''].forEach(text => {
+        headerRow.appendChild(document.createElement('th')).textContent = text;
+    });
 
     for (let match of round.matches) {
         const row = tbody.insertRow();
