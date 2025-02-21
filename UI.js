@@ -224,14 +224,12 @@ function displayPlayerOverview() {
     playerOverviewContainer.innerHTML = '';
 
     const resultText = document.createElement('h3');
-    resultText.textContent = `Stilling`;
+    resultText.textContent = `${players.length} spillere`;
 
     const table = document.createElement('table');
     table.id = 'playerTable';
     const thead = table.createTHead();
-    const theadForButtons = table.createTHead();
-    const headerRowForButtons = theadForButtons.insertRow();
-    headerRowForButtons.appendChild(document.createElement('th')).appendChild(addPlayerBtn());
+
     const tbody = table.appendChild(document.createElement('tbody'));
     const headerRow = thead.insertRow();
     headerRow.appendChild(document.createElement('th')).textContent = 'Pl.';
@@ -273,6 +271,7 @@ function displayPlayerOverview() {
         row.appendChild(totalPointsCell);
     }
     playerOverviewContainer.appendChild(resultText);
+    playerOverviewContainer.appendChild(addPlayerBtn());
     playerOverviewContainer.appendChild(table);
 }
 

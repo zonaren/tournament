@@ -14,3 +14,10 @@
     color: #3D679D;
     cursor: pointer;
 }
+#addPlayerButton {
+    background-color: #F6F7FB;
+    color: black;
+    padding: 5px 5px;
+    font-size: 1vw;
+    cursor: pointer;
+}
