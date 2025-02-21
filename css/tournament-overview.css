@@ -17,6 +17,9 @@
 }
 
 #matchOverview, #playerOverview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 60%;
     overflow-y: scroll; /* Make matchOverview scrollable */
     height: 100%; /* Ensure it takes the full height of the parent */

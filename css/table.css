@@ -6,12 +6,11 @@
 
 
 table {
-    width: 100%;
+    width: 80%;
     border-collapse: collapse;
     font-family: Arial, sans-serif;
     background-color: #ffffff; /* Change background to white for better readability */
     color: #333;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow for modern look */
     border-radius: 8px; /* Rounded corners */
     overflow: hidden; /* Ensure rounded corners are visible */
 }
@@ -21,14 +20,17 @@ table, th, td {
 }
 
 th, td {
-    padding: 7px;
-    text-align: left;
+    padding: 3px;
+    text-align: center;
     font-size: 16px; /* Increase font size for better readability */
+    font-weight: bold;
 }
 
 th {
     background-color: #3D679D; /* Use main app color for header background */
     color: #F6F7FB; /* Use main app color for header text */
+    padding: 7px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add shadow for header */
 }
 
 /* Alternate row colors */

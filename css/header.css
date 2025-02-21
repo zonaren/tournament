@@ -3,18 +3,11 @@
 /*#F6F7FB Kvit*/
 /*#443F45 Svart*/
 
-.header,.footer {
+.header{
     background-color: #3D679D;
     color: #F6F7FB;
     padding: 10px;
+    margin-bottom: 10px;
     text-align: center;
-    width: 100%;
-}
 
-.footer {
-    
-    left: 0;
-    bottom: 0;
-
-    margin-top: 80px;
 }
