@@ -248,6 +248,7 @@ function displayPlayerOverview() {
 
     for (let player of sortedPlayers) {
         const row = tbody.insertRow();
+        row.setAttribute('data-player-id', player.id);
         row.appendChild(document.createElement('td')).textContent = sortedPlayers.indexOf(player) + 1;
 
         // Create a editable cell for the player name
@@ -282,7 +283,7 @@ function editCellValue(newValue, player) {
     }
 }
 
-function editInCell(cell, playerId) {
+function editInCell(cell, playerId, currentRowIndex = 0) {
     const originalValue = cell.textContent;
     const input = document.createElement('input');
     const confirmButton = document.createElement('button');
@@ -298,29 +299,53 @@ function editInCell(cell, playerId) {
     const player = players.find(p => p.id === playerId);
 
     confirmButton.addEventListener('click', function() {
-        const newValue = input.value;
-        cell.textContent = newValue;
-        editCellValue(newValue, player, players);
+        addNewValues();
     });
 
     // also allow the user to press enter to confirm the input
     input.addEventListener('keypress', function(event) {
         if (event.key === 'Enter') {
-            const newValue = input.value;
-            cell.textContent = newValue;
-            editCellValue(newValue, player, players);
+            addNewValues();
         }
     });
+
+    function addNewValues() {
+        const newValue = input.value;
+        cell.textContent = newValue;
+        editCellValue(newValue, player, players);
+        goToNextPlayer(currentRowIndex + 1);
+    }
 
         // Stop event propagation when clicking inside the input
         input.addEventListener('click', function(event) {
             event.stopPropagation();
             input.focus();
-    input.select();
+            input.select();
         });
 
     input.focus();
     input.select();
+}
+
+function goToNextPlayer(currentRowIndex = 0) {
+    const playerTable = document.getElementById('playerTable');
+    const playerRows = playerTable.getElementsByTagName('tr');
+    let nextRow;
+
+    if (currentRowIndex < playerRows.length - 1) {
+        nextRow = playerRows[currentRowIndex + 1];
+        console.log('Going to next row:', nextRow);
+    } else {
+        console.log('No more rows to edit.');
+        return;
+    }
+
+    if (nextRow) {
+        const nextRowPlayerNameCell = nextRow.getElementsByClassName('player-name')[0];
+        const nextPlayerId = parseInt(nextRow.getAttribute('data-player-id'));
+        console.log('Going to next player:', nextPlayerId);
+        editInCell(nextRowPlayerNameCell, nextPlayerId, currentRowIndex);
+    }
 }
 
 
