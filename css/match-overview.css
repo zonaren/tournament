@@ -1,0 +1,11 @@
+.button-cell-container {
+    display: flex;
+}
+.confirm-scores-btn, .edit-scores-btn {
+    margin-right: 10px;
+}
+.edit-scores-btn {
+    background-color: #4CAF50;
+    color: white;
+    margin-right: 10px;
+}
