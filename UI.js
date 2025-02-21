@@ -169,6 +169,10 @@ function displayRound(round, matchOverviewContainer) {
 
         confirmButton.disabled = true;
         confirmButton.addEventListener('click', function() {
+            if(match.p1.scorePoints < 21 && match.p2.scorePoints < 21) {
+                alert('Ingen spillere kan ha mindre enn 21 poeng');
+                return;
+            }
             updateTotalScores(match.p1.id, match.p2.id, match.p1.scorePoints, match.p2.scorePoints);
             confirmButton.textContent = 'Bekreftet';
             confirmButton.disabled = true;
