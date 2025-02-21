@@ -32,7 +32,7 @@
     width: 60%;
     overflow-y: scroll; /* Make matchOverview scrollable */
     height: 100%; /* Ensure it takes the full height of the parent */
-    padding: 10px 20px 10px 20px;
+    padding: 10px 0px 20px 0px;
     box-sizing: border-box; /* Include padding and border in the element's total width and height */
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
