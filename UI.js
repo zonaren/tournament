@@ -110,10 +110,6 @@ function displayRound(round, matchOverviewContainer) {
     const tbody = table.appendChild(document.createElement('tbody'));
     const headerRow = thead.insertRow();
 
-    const confirmButton = document.createElement('button');
-    confirmButton.id = 'confirmButton';
-    confirmButton.textContent = 'Bekreft';
-
     // Create header
     ['B', 'P1', 'S1', 'S2', 'P2', ''].forEach(text => {
         headerRow.appendChild(document.createElement('th')).textContent = text;
@@ -198,17 +194,15 @@ function displayRound(round, matchOverviewContainer) {
 }
 
 function handleWalkover(match, p1ScoreCell, p2ScoreCell, confirmButton, editScoresButton) {
-    if (match.p2.name === 'Walkover') {
-        match.p1.scorePoints = 21;
-        match.p2.scorePoints = 0;
+    const isWalkover = match.p1.name === 'Walkover' || match.p2.name === 'Walkover';
+    if (isWalkover) {
+        match.p1.scorePoints = match.p1.name === 'Walkover' ? 0 : 21;
+        match.p2.scorePoints = match.p2.name === 'Walkover' ? 0 : 21;
         p1ScoreCell.textContent = match.p1.scorePoints;
-    } else if (match.p1.name === 'Walkover') {
-        match.p1.scorePoints = 0;
-        match.p2.scorePoints = 21;
         p2ScoreCell.textContent = match.p2.scorePoints;
+        editScoresButton.disabled = true;
+        confirmButton.disabled = false;
     }
-    editScoresButton.disabled = true;
-    confirmButton.disabled = false;
 }
 
 function updateScoreDisplay(match, player1Score, player2Score) {
