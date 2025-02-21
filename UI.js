@@ -209,17 +209,6 @@ function updateScoreDisplay(match, player1Score, player2Score) {
 
 function displayPlayerOverview() {
 
-    // Sample players data
-// const players = [
-//     { id: 1, name: 'Player 1', scorePoints: Math.floor(Math.random() * 100), matchPoints: Math.floor(Math.random() * 10) },
-//     { id: 2, name: 'Player 2', scorePoints: Math.floor(Math.random() * 100), matchPoints: Math.floor(Math.random() * 10) },
-//     { id: 3, name: 'Player 3', scorePoints: Math.floor(Math.random() * 100), matchPoints: Math.floor(Math.random() * 10) },
-//     { id: 4, name: 'Player 4', scorePoints: Math.floor(Math.random() * 100), matchPoints: Math.floor(Math.random() * 10) },
-//     { id: 5, name: 'Player 5', scorePoints: Math.floor(Math.random() * 100), matchPoints: Math.floor(Math.random() * 10) },
-// ];
-        //remove match setup
-
-        
     const playerOverviewContainer = document.getElementById('playerOverview');
     playerOverviewContainer.innerHTML = '';
 
@@ -298,16 +287,14 @@ function editInCell(cell, playerId, currentRowIndex = 0) {
 
     const player = players.find(p => p.id === playerId);
 
-    confirmButton.addEventListener('click', function() {
-        addNewValues();
-    });
-
-    // also allow the user to press enter to confirm the input
-    input.addEventListener('keypress', function(event) {
-        if (event.key === 'Enter') {
+    function handleEvent(event) {
+        if (event.type === 'click' || (event.type === 'keypress' && event.key === 'Enter')) {
             addNewValues();
         }
-    });
+    }
+
+    confirmButton.addEventListener('click', handleEvent);
+    input.addEventListener('keypress', handleEvent);
 
     function addNewValues() {
         const newValue = input.value;
