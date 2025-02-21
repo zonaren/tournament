@@ -273,6 +273,9 @@ function displayPlayerOverview() {
         totalPointsCell.classList.add('total-points');
         totalPointsCell.textContent = player.matchPoints;
         row.appendChild(totalPointsCell);
+        if(player.name === 'Walkover') {
+            row.remove();
+        }
     }
     playerOverviewContainer.appendChild(resultText);
     playerOverviewContainer.appendChild(addPlayerBtn());
