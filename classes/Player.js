@@ -1,3 +1,9 @@
+class Players {
+    constructor() { 
+        this.players = [];
+    }
+}
+
 class Player {
     constructor(id) {
         this.id = id; // this is also the startnumber of the player
@@ -49,8 +55,5 @@ class Player {
         console.log("spillere lagret");
     }
 }
-
-Player.players = [];
-Player.playerCount = 8; // default number of players
 
 export default Player;

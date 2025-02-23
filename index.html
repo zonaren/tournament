@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Generer kastnøkler</title>
+  <title>Turnering</title>
   <link rel="stylesheet" href="css/general.css">
   <link rel="stylesheet" href="css/header.css">
   <link rel="stylesheet" href="css/match-setup.css">
@@ -17,38 +17,17 @@
   <script src="warning.js"></script>
 </head>
 <body>
-  <div id="header" class="header">
-    <h2 id="titleText"></h2>
-    <div id="menu-buttons" class="no-print">
-      <select id="gametypeSelect"></select>
-      <select id="playerCountSelect"></select>
-      <select id="roundCountSelect"></select>
-      <button id="add-players-btn">Opprett turnering</button>
-      <button id="start-btn" class="hidden">Start turnering</button>
-      <button id="printContent" class="print-btn hidden">Skriv ut</button>
-    </div>
-  </div>
-  <div id="matchSetup"></div>
-  <div id="mainContainer" class="main-container">
-    
-    <div id="tournamentOverview">
-        <div id="matchOverview"></div>
-        <div id="playerOverview"></div>
-    </div>
-  </div>
 
-
-
-  <script src="dataset.js"></script>
-  <script src="kampoppsett.js"></script>
+  <script src="UI-main.js"></script>
   <script src="generateMatches.js"></script>
   <script src="UI.js"></script>
   <script src="UI-swiss.js"></script>
   <script src="generateSelectList.js"></script>
-  <script src="events.js"></script>
   <script src="swiss.js"></script>
   <script src="score-logics.js"></script>
   <script src="UI-popup.js"></script>
+  <script src="utils.js"></script>
+  <script src="events.js"></script>
 
   
   
