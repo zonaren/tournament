@@ -32,9 +32,10 @@ function createPlayerCountSelectOptions() {
 }
 
 function createRoundCountSelectOptions() {
+  const maximumRounds = TournamentSettings.getMaximumRounds();
   // Clear existing options
   roundCountSelect.innerHTML = '';
-  for (let i = 2; i <= 10; i += 1) {
+  for (let i = 2; i <= maximumRounds; i += 1) {
     // Create a new option element
     const option = document.createElement('option');
     // Set the value and text of the option
@@ -42,7 +43,7 @@ function createRoundCountSelectOptions() {
     option.textContent = `${i} runder`;
   
     // Check if the iteration is at the default value (10)
-    if (i === 10) {
+    if (i === maximumRounds) {
       option.selected = true; // Set the 'selected' attribute to make it the default
     }
     // Append the option to the select element
@@ -55,3 +56,5 @@ function createRoundCountSelectOptions() {
 createGametypeSelectOptions();
 createPlayerCountSelectOptions();
 createRoundCountSelectOptions();
+
+export { createGametypeSelectOptions, createPlayerCountSelectOptions, createRoundCountSelectOptions };
