@@ -19,7 +19,7 @@ class Player {
         return new Player(id);
     }
 
-    static read(id) {
+    static get(id) {
         return Player.players.find(player => player.id === id);
     }
 
@@ -37,14 +37,14 @@ class Player {
         }
     }
 
-    static addPlayer(id) {
+    static addPlayers(id) {
         Player.players.push(Player.create(id));
     }
 
     static resetPlayers() {
         Player.players = [];
         for (let i = 1; i <= Player.playerCount; i++) {
-            Player.addPlayer(i);
+            Player.addPlayers(i);
         }
         Player.saveToLocalStorage();
     }

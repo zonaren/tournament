@@ -5,28 +5,28 @@ class Tournaments {
         this.tournaments = [];
     }
 
-    createTournament(totalRounds, totalCourts, matches, tournamentName, tournamentType) {
+    create(totalRounds, totalCourts, matches, tournamentName, tournamentType) {
         const tournament = new Tournament(totalRounds, totalCourts, matches, tournamentName, tournamentType);
         this.tournaments.push(tournament);
         return tournament;
     }
 
-    getTournament(id) {
+    get(id) {
         return this.tournaments.find(tournament => tournament.id === id);
     }
 
-    getAllTournaments() {
+    getAll() {
         return this.tournaments;
     }
 
-    updateTournament(id, data) {
-        const tournament = this.getTournament(id);
+    update(id, data) {
+        const tournament = this.get(id);
         if (tournament) {
             Object.assign(tournament, data);
         }
     }
 
-    deleteTournament(id) {
+    delete(id) {
         const index = this.tournaments.findIndex(tournament => tournament.id === id);
         if (index !== -1) {
             this.tournaments.splice(index, 1);
