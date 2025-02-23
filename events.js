@@ -1,47 +1,37 @@
 import TournamentSettings from './classes/TournamentSettings.js';
 import Tournaments from './classes/Tournament.js';
+import Players from './classes/Player.js';
 import { displayPlayerOverview } from './UI.js';
+import { createMatchSetup } from './generateMatches.js';
+import { playerCountSelect, roundCountSelect, gametypeSelect, titleText } from './UI-main.js';
+import { createRoundCountSelectOptions } from './generateSelectList.js';
+import { displayMatchSetup, displayTournamentOverview } from './UI.js';
 
-const playerCountSelect = document.getElementById('playerCountSelect');
-const roundCountSelect = document.getElementById('roundCountSelect');
-const gametypeSelect = document.getElementById('gametypeSelect');
-const titleTextElement = document.getElementById('titleText');
-
-titleTextElement.innerHTML = `Banefordelingsnøkkel - GM ${TournamentSettings.getPlayerCount()}`;
+function onGametypeChange() {
+    const gametype = this.value;
+    TournamentSettings.setGametype(gametype);
+    console.log('Gametype was set to ', TournamentSettings.getGametype());
+}
 
 function onPlayerCountChange() {
     const playerCount = parseInt(this.value, 10);
     TournamentSettings.setPlayerCount(playerCount);
+    createRoundCountSelectOptions();
 
-    if (playerCount < 20 && roundCountSelect.value > playerCount / 2) {
-        repopulateRoundCountSelect(this, roundCountSelect);
-    } else {
-        createRoundCountSelect();
-    }
-
-    resetPlayers();
-    console.log(playerCount, ' deltakere er valgt');
-    titleTextElement.innerHTML = `Banefordelingsnøkkel - GM ${playerCount}`;
+    console.log('Player count was set to ', TournamentSettings.getPlayerCount());
+    titleText.innerHTML = `Banefordelingsnøkkel - GM ${playerCount}`;
 }
 
 function onRoundCountChange() {
     const roundCount = parseInt(this.value, 10);
     TournamentSettings.setRoundCount(roundCount);
-    console.log(roundCount, ' runder er valgt');
-    console.log(TournamentSettings.getPlayerCount(), ' deltakere er valgt');
+    console.log('Round count was set to ', TournamentSettings.getRoundCount());
 }
 
-function onGametypeChange() {
-    const gametype = this.value;
-    TournamentSettings.setGametype(gametype);
-    console.log(gametypeSelect.value, ' er valgt');
-}
 
-function onPrintContent() {
-    window.print();
-}
 
 function onPrepareTournament() {
+    Players.resetPlayers(TournamentSettings.getPlayerCount());
     displayPlayerOverview();
     this.classList.add('hidden');
     const startTournamentButton = document.getElementById('start-btn');
@@ -59,8 +49,13 @@ function onStartTournament() {
 }
 
 function onShowMatchSetup() {
-    const createMatchSetup = createMatchSetup(TournamentSettings.getPlayerCount(), TournamentSettings.getRoundCount());
-    displayMatchSetup(createMatchSetup);
+
+    const matchSetup = createMatchSetup(TournamentSettings.getPlayerCount(), TournamentSettings.getRoundCount(), Players.getAll());
+    displayMatchSetup(matchSetup);
+}
+
+function onPrintContent() {
+    window.print();
 }
 
 function loadEventListeners() {
