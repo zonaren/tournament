@@ -5,8 +5,8 @@ class Tournaments {
         this.tournaments = [];
     }
 
-    create(totalRounds, totalCourts, matches, tournamentName, tournamentType) {
-        const tournament = new Tournament(totalRounds, totalCourts, matches, tournamentName, tournamentType);
+    create(totalRounds, totalCourts, matchSchedule, tournamentName, tournamentType) {
+        const tournament = new Tournament(totalRounds, totalCourts, matchSchedule, tournamentName, tournamentType);
         this.tournaments.push(tournament);
         return tournament;
     }
