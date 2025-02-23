@@ -39,7 +39,7 @@ export function displayMatchSetup(matchSetup) {
 }
 
 
-function displayTournamentOverview(tournament) {
+export function displayTournamentOverview(tournament) {
     
     // Create tournament info
     const tournamentInfoDiv = document.createElement('div');
@@ -76,24 +76,24 @@ function displayMatchOverview(tournament, matchOverviewContainer, tournamentInfo
             const toggleAllRoundsButton = toggleAllRoundsBtn(tournament);
             tournamentInfoDiv.appendChild(toggleAllRoundsButton);
 
-            tournament.schedule.sort((a, b) => a.roundNumber - b.roundNumber);
+            tournament.matchSchedule.sort((a, b) => a.roundNumber - b.roundNumber);
             console.log('Gametype is ', tournament.type, ". Sorting rounds in descending order", tournament.schedule);
-            console.log('Round', tournament.schedule[0].roundNumber);
+            console.log('Round', tournament.matchSchedule[0].roundNumber);
 
             if (showAllRounds) {
                 // Display all rounds
-                for (let index of tournament.schedule) {
+                for (let index of tournament.matchSchedule) {
                     displayRound(index, matchOverviewContainer);
                 }
             } else {
                 // Only display the last round
-                const lastRound = tournament.schedule[tournament.schedule.length - 1];
+                const lastRound = tournament.matchSchedule[tournament.matchSchedule.length - 1];
                 displayRound(lastRound, matchOverviewContainer);
             }
             break;
         default:
             // Display all rounds for other tournament types
-            for (let index of tournament.schedule) {
+            for (let index of tournament.matchSchedule) {
                 displayRound(index, matchOverviewContainer);
             }
             break;
@@ -258,7 +258,7 @@ export function displayPlayerOverview() {
         playerNameCell.classList.add('player-name');
         playerNameCell.textContent = player.name;
         playerNameCell.addEventListener('click', function() {
-            if(schedule.length > 0) {
+            if(matchSchedule.length > 0) {
                 alert('Spillere kan ikke endres etter at turneringen har startet');
                 return;
             }
