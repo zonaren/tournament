@@ -1,4 +1,4 @@
-import Round from "./Match";
+import Round from "./Match.js";
 
 class Tournaments {
     constructor() {

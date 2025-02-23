@@ -1,7 +1,16 @@
 class TournamentSettings {
     constructor() {
-        this.playerCount = 0;
-        this.roundCount = 0;
+        this.gametype = 'Gloppen';
+        this.playerCount = 8;
+        this.roundCount = 4;
+    }
+
+    setGametype(gametype) {
+        this.gametype = gametype;
+    }
+
+    getGametype() {
+        return this.gametype;
     }
 
     setPlayerCount(count) {
