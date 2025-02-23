@@ -1,4 +1,5 @@
 import Round from "./Match.js";
+import { generateUniqueId } from "../utils.js";
 
 class Tournaments {
     constructor() {
@@ -53,4 +54,4 @@ class Tournament {
 
 }
 
-export default Tournaments;
+export default new Tournaments();
