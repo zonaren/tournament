@@ -39,11 +39,9 @@ function onPrepareTournament() {
 }
 
 function onStartTournament() {
-    const matchSetup = createMatchSetup(players.length, TournamentSettings.getRoundCount(), players);
-    const tournament = createTournament(TournamentSettings.getRoundCount(), players.length / 2, matchSetup, 'Test turnering', gametypeSelect.value);
-    saveTournament(matchSetup, tournament);
+    const matchSetup = createMatchSetup(TournamentSettings.getPlayerCount(), TournamentSettings.getRoundCount(), Players.getAll());
+    const tournament = Tournaments.create(TournamentSettings.getRoundCount(), TournamentSettings.getPlayerCount() / 2, matchSetup, 'Test turnering', TournamentSettings.getGametype());
     displayTournamentOverview(tournament);
-    startTournamentButton.remove();
     const header = document.getElementById('header');
     header.remove();
 }
