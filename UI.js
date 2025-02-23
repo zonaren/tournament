@@ -1,6 +1,7 @@
 import  Players from './classes/Player.js';
 
-function displayMatchSetup(schedule) {
+export function displayMatchSetup(matchSetup) {
+    console.log('Displaying match setup:', matchSetup);
     const matchSetupContainer = document.getElementById('matchSetup');
     matchSetupContainer.innerHTML = '';
     const table = document.createElement('table');
@@ -11,21 +12,21 @@ function displayMatchSetup(schedule) {
     // Create header
     headerRow.appendChild(document.createElement('th')).textContent = 'S';
     headerRow.appendChild(document.createElement('th')).textContent = 'R';
-    for (let i = 1; i <= schedule.length; i++) {
+    for (let i = 1; i <= matchSetup.length; i++) {
         headerRow.appendChild(document.createElement('th')).textContent = `${i}`;
     }
 
     // Populate table
-    const playerCount = schedule[0].matches.length * 2; // Total players are twice the number of matches (each match has 2 players)
+    const playerCount = matchSetup.length * 2; // Total players are twice the number of matches (each match has 2 players)
     for (let player = 1; player <= playerCount; player++) {
         const row = tbody.insertRow();
         row.appendChild(document.createElement('th')).textContent = `${player}`;
         row.appendChild(document.createElement('td')).textContent = `B-M`;
 
-        for (let round of schedule) {
-            const match = round.matches.find(m => m.p1.id === player || m.p2.id === player);
+        for (let round of matchSetup) {
+            const match = round.matches.find(m => m.p1Id === player || m.p2Id === player);
             if (match) {
-                const opponent = match.p1.id === player ? match.p2.id : match.p1.id;
+                const opponent = match.p1Id === player ? match.p2Id : match.p1Id;
                 const cellText = `${match.court}-${opponent}`;
                 row.appendChild(document.createElement('td')).textContent = cellText;
             } else {
