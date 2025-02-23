@@ -17,6 +17,10 @@ class Players {
         return this.players;
     }
 
+    count() {
+        return this.players.length;
+    }
+
     update(id, data) {
         const player = this.get(id);
         if (player) {
@@ -50,8 +54,6 @@ class Players {
     }
 }
 
-export default Players;
-
 class Player {
     constructor(id) {
         this.id = id; // this is also the start number of the player
@@ -63,3 +65,5 @@ class Player {
         ];
     }
 }
+
+export default new Players();
