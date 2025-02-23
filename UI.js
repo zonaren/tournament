@@ -218,7 +218,7 @@ function updateScoreDisplay(match, player1Score, player2Score) {
 
 
 
-function displayPlayerOverview() {
+export function displayPlayerOverview() {
 
     const playerOverviewContainer = document.getElementById('playerOverview');
     playerOverviewContainer.innerHTML = '';

@@ -23,16 +23,21 @@ const roundCountSelect = document.createElement('select');
 roundCountSelect.id = 'roundCountSelect';
 menuButtons.appendChild(roundCountSelect);
 
-const addPlayersBtn = document.createElement('button');
-addPlayersBtn.id = 'add-players-btn';
-addPlayersBtn.textContent = 'Opprett turnering';
-menuButtons.appendChild(addPlayersBtn);
+const prepareTournamentBtn = document.createElement('button');
+prepareTournamentBtn.id = 'prepareTournamentBtn';
+prepareTournamentBtn.textContent = 'Opprett turnering';
+menuButtons.appendChild(prepareTournamentBtn);
 
 const startBtn = document.createElement('button');
 startBtn.id = 'start-btn';
 startBtn.className = 'hidden';
 startBtn.textContent = 'Start turnering';
 menuButtons.appendChild(startBtn);
+
+const showMatchSetupBtn = document.createElement('button');
+showMatchSetupBtn.id = 'showMatchSetup';
+showMatchSetupBtn.textContent = 'Vis banefordelingsnøkkel';
+menuButtons.appendChild(showMatchSetupBtn);
 
 const printContentBtn = document.createElement('button');
 printContentBtn.id = 'printContent';
@@ -42,8 +47,8 @@ menuButtons.appendChild(printContentBtn);
 
 header.appendChild(menuButtons);
 
-const matchSetup = document.createElement('div');
-matchSetup.id = 'matchSetup';
+const matchSetupContainer = document.createElement('div');
+matchSetupContainer.id = 'matchSetup';
 
 const mainContainer = document.createElement('div');
 mainContainer.id = 'mainContainer';
@@ -64,5 +69,7 @@ mainContainer.appendChild(tournamentOverview);
 
 // Append elements to the body
 document.body.appendChild(header);
-document.body.appendChild(matchSetup);
+document.body.appendChild(matchSetupContainer);
 document.body.appendChild(mainContainer);
+
+export { gametypeSelect, playerCountSelect, roundCountSelect, prepareTournamentBtn, startBtn, showMatchSetupBtn, printContentBtn, matchSetupContainer, mainContainer, tournamentOverview, matchOverview, playerOverview, titleText };

@@ -1,19 +1,18 @@
-// Select the element by its ID
-const gametypeElement = document.getElementById('gametypeSelect');
-const playerCountElement = document.getElementById('playerCountSelect');
-const roundCountElement = document.getElementById('roundCountSelect');
+import TournamentSettings from "./classes/TournamentSettings.js";
+import { gametypeSelect, playerCountSelect, roundCountSelect,  } from "./UI-main.js";
 
-function createGametypeSelect() {
+
+function createGametypeSelectOptions() {
   const gametypes = ['Gloppen', 'NHM', "Alle mot alle"];
   for (let i = 0; i < gametypes.length; i++) {
     const option = document.createElement('option');
     option.value = gametypes[i];
     option.textContent = gametypes[i];
-    gametypeElement.appendChild(option);
+    gametypeSelect.appendChild(option);
   }
 }
 
-function createPlayerCountSelect() {
+function createPlayerCountSelectOptions() {
   // Loop from 12 to 100 to create options for even numbers
   for (let i = 4; i <= 100; i += 2) {
     // Create a new option element
@@ -28,13 +27,13 @@ function createPlayerCountSelect() {
     }
 
     // Append the option to the select element
-    playerCountElement.appendChild(option);
+    playerCountSelect.appendChild(option);
   }
 }
 
-function createRoundCountSelect() {
+function createRoundCountSelectOptions() {
   // Clear existing options
-  roundCountElement.innerHTML = '';
+  roundCountSelect.innerHTML = '';
   for (let i = 2; i <= 10; i += 1) {
     // Create a new option element
     const option = document.createElement('option');
@@ -47,12 +46,12 @@ function createRoundCountSelect() {
       option.selected = true; // Set the 'selected' attribute to make it the default
     }
     // Append the option to the select element
-    roundCountElement.appendChild(option);
-    roundCountElement.value = roundCount;;
+    roundCountSelect.appendChild(option);
+    TournamentSettings.setRoundCount(i);
   }
 }
 
 
-createGametypeSelect();
-createPlayerCountSelect();
-createRoundCountSelect();
+createGametypeSelectOptions();
+createPlayerCountSelectOptions();
+createRoundCountSelectOptions();
