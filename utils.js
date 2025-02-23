@@ -16,20 +16,4 @@ function generateUniqueId(existingIds, length = 10) {
     return id;
 }
 
-function repopulateRoundCountSelect(playerCountElement, roundCountElement) {
-    const maxRounds = Math.floor(playerCountElement.value / 2);
-    roundCountElement.innerHTML = '';
-  
-    for (let i = 2; i <= maxRounds; i++) {
-      const option = document.createElement('option');
-      option.value = i;
-      option.textContent = `${i} runder`;
-      roundCountElement.appendChild(option);
-    }
-
-    roundCountElement.value = maxRounds;
-    roundCount = maxRounds;
-
-  }
-
-export { generateUniqueId, repopulateRoundCountSelect };
+export { generateUniqueId };
