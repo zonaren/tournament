@@ -1,4 +1,4 @@
-
+import  Players from './classes/Player.js';
 
 function displayMatchSetup(schedule) {
     const matchSetupContainer = document.getElementById('matchSetup');
@@ -224,7 +224,7 @@ export function displayPlayerOverview() {
     playerOverviewContainer.innerHTML = '';
 
     const resultText = document.createElement('h3');
-    resultText.textContent = `${players.length} spillere`;
+    resultText.textContent = `${Players.count()} spillere`;
 
     const table = document.createElement('table');
     table.id = 'playerTable';
@@ -240,7 +240,7 @@ export function displayPlayerOverview() {
     headerRow.appendChild(document.createElement('th')).textContent = 'KP';
 
     // Sort players by matchPoints and then by scorePoints
-    const sortedPlayers = players.slice().sort((a, b) => {
+    const sortedPlayers = Players.getAll().slice().sort((a, b) => {
         if (b.matchPoints !== a.matchPoints) {
             return b.matchPoints - a.matchPoints;
         }
