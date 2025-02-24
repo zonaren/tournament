@@ -1,11 +1,12 @@
 import TournamentSettings from './classes/TournamentSettings.js';
 import Tournaments from './classes/Tournament.js';
 import Players from './classes/Player.js';
-import { displayPlayerOverview } from './UI.js';
+import { displayPlayerOverview } from './UI-players.js';
 import { createMatchSetup } from './generateMatches.js';
 import { playerCountSelect, roundCountSelect, gametypeSelect, titleText } from './UI-main.js';
 import { createRoundCountSelectOptions } from './generateSelectList.js';
-import { displayMatchSetup, displayTournamentOverview } from './UI.js';
+import { displayTournamentOverview } from './UI-tournament.js';
+import { displayMatchSetup } from './UI-matchSetup.js';
 
 function onGametypeChange() {
     const gametype = this.value;
