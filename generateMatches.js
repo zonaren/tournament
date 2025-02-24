@@ -1,4 +1,5 @@
 import {generateUniqueId} from './utils.js';
+import Players from './classes/Player.js';
 
 export function createMatchSetup(totalPlayers, totalRounds, players) {
     if (totalPlayers % 2 !== 0) {
@@ -8,6 +9,7 @@ export function createMatchSetup(totalPlayers, totalRounds, players) {
         //addNewPlayer('Walkover');
     }
 
+    
     const totalCourts = totalPlayers / 2;
     const maximumRounds = totalPlayers -1;
     //const remainingRounds = maximumRounds - totalCourts;
@@ -34,20 +36,19 @@ export function createMatchSetup(totalPlayers, totalRounds, players) {
         console.log(`Alle mot alle system is selected`);
     }
     else {
-        //swissMatchSystem(totalRounds,totalCourts, schedule, players);
+        swissMatchSystem(totalCourts, matchSetup);
         console.log(`Swiss system is selected`);
     }
-    console.log(`Total players: `,totalPlayers);
 
 
     return matchSetup;
 
 }
 
-function cascadeMatchSystem(totalRounds, totalCourts, matchSetup, players){
-    const generatedIds = new Set();
+function cascadeMatchSystem(totalRounds, totalCourts, matchSetup){
     const tournamentName = "Test (Cascade)";
     const tournamentType = document.getElementById('gametypeSelect').value;
+    
 
     for (let round = 1; round <= totalRounds; round++) {
         let matches = [];
@@ -56,37 +57,75 @@ function cascadeMatchSystem(totalRounds, totalCourts, matchSetup, players){
             const p1Id = ((court - 1 + round - 1) % totalCourts) + 1;
             const p2Id = ((court - 1 + 2 * (round - 1)) % totalCourts) + 1 + totalCourts;
 
-            //const matchId = generateUniqueId(generatedIds);
-            matches.push({matchId: generateUniqueId(generatedIds), court: court, p1Id: p1Id, p2Id: p2Id, players: players});
-            console.log(`Pushed the folowwing data: Round: `,round,` Court: `,court,` Player 1: `,p1Id,` Player 2: `,p2Id);
-            //pushMatches(roundMatches, matchId, court, p1Id, p2Id, players);
-        }
-        //const tournamentId = generateUniqueId(generatedIds);
 
-        matchSetup.push({roundNumber: round, matches: matches});
-        console.log(`Pushed the following data: Round: `,round,` Matches: `,matches);
+            pushMatches(matches, court, p1Id, p2Id);
+        }
+
+
+        pushSchedule(matchSetup, round, matches);
 
     }
 }
 
+// cointains the match schedule for the tournament
+function pushSchedule(matchSetup, round, matches) {
+    matchSetup.push({
+        roundNumber: round,
+        matches: matches,
+    });
+}
 
-
-function swissMatchSystem(totalRounds, totalCourts, schedule, players){
+// cointains all the matches for each round
+function pushMatches(matches, court, p1, p2) {
     const generatedIds = new Set();
+    const players = Players.getAll();
+    const player1 = players.find(p => p.id === p1);
+    const player2 = players.find(p => p.id === p2);
+
+    if (!player1 || !player2) {
+        throw new Error('Player not found');
+    }
 
 
-        roundMatches = [];
+    matches.push({
+        matchId: generateUniqueId(generatedIds),
+        court: court,
+        p1: {
+            id: p1,
+            name: player1.name,
+            scorePoints: 0,
+            matchPoints: 0,
+            details: [
+                {points: 0, ringers: 0}
+            ]
+        },
+        p2: {
+            id: p2,
+            name: player2.name,
+            scorePoints: 0,
+            matchPoints: 0,
+            details: [
+                {points: 0, ringers: 0}
+            ]
+        }
+    });
+}
+
+
+
+function swissMatchSystem(totalCourts, matchSetup){
+        const players = Players.getAll();
+        let matches = [];
 
         for (let court = 1; court <= totalCourts; court++) {
             const p1Id = ((court - 1 + 0) % totalCourts) + 1; // round - 1 is 0 for the first round
             const p2Id = ((court - 1 + 2 * 0) % totalCourts) + 1 + totalCourts; // round - 1 is 0 for the first round
     
-            const matchId = generateUniqueId(generatedIds);
-    
-            //pushMatches(roundMatches, matchId, court, p1Id, p2Id, players);
+            pushMatches(matches, court, p1Id, p2Id, players);
         }
 
-        //pushSchedule(schedule, 1, roundMatches);
+
+        pushSchedule(matchSetup, 1, matches);
 
     
 }
