@@ -1,5 +1,5 @@
 // create proceed to next round button
-function proceedToNextRoundBtn(tournament) {
+export function proceedToNextRoundBtn(tournament) {
     const proceedToNextRoundBtn = document.createElement('button');
     proceedToNextRoundBtn.textContent = 'Gå til neste runde';
     proceedToNextRoundBtn.classList.add('proceed-to-next-round-btn');
@@ -18,9 +18,9 @@ function proceedToNextRoundBtn(tournament) {
     return proceedToNextRoundBtn;
 }
 
-let showAllRounds = false; // State variable to keep track of whether all rounds are being shown
+export let showAllRounds = false; // State variable to keep track of whether all rounds are being shown
 
-function toggleAllRoundsBtn(tournament) {
+export function toggleAllRoundsBtn(tournament) {
     const showAllRoundsBtn = document.createElement('button');
     showAllRoundsBtn.textContent = 'Vis alle runder';
     showAllRoundsBtn.classList.add('show-all-rounds-btn');

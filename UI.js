@@ -1,4 +1,5 @@
 import  Players from './classes/Player.js';
+import { proceedToNextRoundBtn, toggleAllRoundsBtn, showAllRounds } from './UI-swiss.js';
 
 export function displayMatchSetup(matchSetup) {
     console.log('Displaying match setup:', matchSetup);
@@ -77,7 +78,7 @@ function displayMatchOverview(tournament, matchOverviewContainer, tournamentInfo
             tournamentInfoDiv.appendChild(toggleAllRoundsButton);
 
             tournament.matchSchedule.sort((a, b) => a.roundNumber - b.roundNumber);
-            console.log('Gametype is ', tournament.type, ". Sorting rounds in descending order", tournament.schedule);
+            console.log('Gametype is ', tournament.type, ". Sorting rounds in descending order", tournament.matchSchedule);
             console.log('Round', tournament.matchSchedule[0].roundNumber);
 
             if (showAllRounds) {
