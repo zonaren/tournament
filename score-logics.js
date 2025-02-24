@@ -28,3 +28,15 @@ function updateTotalScores(p1id, p2id, p1Score, p2Score) {
 
     displayPlayerOverview();
 }
+
+function handleWalkover(match, p1ScoreCell, p2ScoreCell, confirmButton, editScoresButton) {
+    const isWalkover = match.p1.name === 'Walkover' || match.p2.name === 'Walkover';
+    if (isWalkover) {
+        match.p1.scorePoints = match.p1.name === 'Walkover' ? 0 : 21;
+        match.p2.scorePoints = match.p2.name === 'Walkover' ? 0 : 21;
+        p1ScoreCell.textContent = match.p1.scorePoints;
+        p2ScoreCell.textContent = match.p2.scorePoints;
+        editScoresButton.disabled = true;
+        confirmButton.disabled = false;
+    }
+}
