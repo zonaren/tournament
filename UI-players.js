@@ -143,18 +143,10 @@ function addNewPlayer(playerName) {
     //const newPlayerName = document.getElementById('newPlayerName').value;
     const newPlayerName = playerName ? playerName : prompt('Navn på ny spiller:');
     if (newPlayerName) {
-        const newPlayer = {
-            id: players.length + 1,
-            name: newPlayerName,
-            scorePoints: 0,
-            matchPoints: 0,
-            totalRingers: 0
-        };
-        players.push(newPlayer);
-        localStorage.setItem('players', JSON.stringify(players));
+        Players.create(Players.count() + 1, newPlayerName);
         displayPlayerOverview();
         totalPlayers = players.length;
-        console.log('Added new player:', newPlayer);
+        console.log('Added new player:', newPlayerName);
     }
 }
 
@@ -164,6 +156,7 @@ function addPlayerBtn() {
     addPlayerButton.textContent = 'Legg til spiller';
     addPlayerButton.addEventListener('click', function() {
         addNewPlayer();
+        
     });
     return addPlayerButton;
 }
