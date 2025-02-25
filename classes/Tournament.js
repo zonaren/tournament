@@ -73,6 +73,18 @@ class Tournament {
         this.matchSchedule = matchSchedule.map(round => new Round(round.roundNumber, round.matches));
     }
 
+    addRound(roundNumber, matches) {
+        this.matchSchedule.push(new Round(roundNumber, matches));
+        this.saveToLocalStorage();
+    }
+
+    saveToLocalStorage() {
+        const tournaments = JSON.parse(localStorage.getItem('tournaments'));
+        const index = tournaments.findIndex(tournament => tournament.id === this.id);
+        tournaments[index] = this;
+        localStorage.setItem('tournaments', JSON.stringify(tournaments));
+    }
+
 }
 
 export default new Tournaments();

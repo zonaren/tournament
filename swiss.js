@@ -177,17 +177,10 @@ function pairPlayers(unplayedMatches, playerStats, roundNumber, tournament) {
         return;
     }
 
-    // Add new round to the tournament schedule
-    tournament.matchSchedule.push({
-        roundNumber: roundNumber + 1,
-        matches: matches
-    });
+    tournament.addRound(roundNumber + 1, matches);
 
     console.log("matches: ", matches);
     console.log("tournament: ", tournament);
-
-    // Save the tournament object to the database (localStorage)
-    localStorage.setItem('tournament', JSON.stringify(tournament));
 
     return matches;
 }
