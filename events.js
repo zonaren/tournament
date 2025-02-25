@@ -46,7 +46,8 @@ function onPrepareTournament() {
 
 function onStartTournament() {
     const matchSetup = createMatchSetup(Players.count(), TournamentSettings.getRoundCount());
-    const tournament = Tournaments.create(TournamentSettings.getRoundCount(), TournamentSettings.getPlayerCount() / 2, matchSetup, 'Test turnering', TournamentSettings.getGametype());
+
+    const tournament = Tournaments.create(TournamentSettings.getRoundCount(), TournamentSettings.getPlayerCount() / 2, matchSetup, 'Test turnering', TournamentSettings.getGametype(), Players.getAll());
     displayTournamentOverview(tournament);
     console.log('Tournament was created', tournament);
     const header = document.getElementById('header');
