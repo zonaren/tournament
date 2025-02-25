@@ -149,7 +149,7 @@ function navigateToNextPlayer(nextRowIndex) {
  * Creates a new player
  * @param {string} [playerName] - Optional name for the new player
  */
-function createNewPlayer(playerName) {
+function createNewPlayerPrompt(playerName) {
     const name = playerName || prompt('Navn på ny spiller:');
     if (name) {
         Players.create(Players.count() + 1, name);
@@ -165,7 +165,7 @@ function createAddPlayerButton() {
     const button = document.createElement('button');
     button.id = 'addPlayerButton';
     button.textContent = 'Legg til spiller';
-    button.addEventListener('click', () => createNewPlayer());
+    button.addEventListener('click', () => createNewPlayerPrompt());
     return button;
 }
 
