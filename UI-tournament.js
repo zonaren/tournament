@@ -1,9 +1,13 @@
 import { proceedToNextRoundBtn, toggleAllRoundsBtn, showAllRounds } from './UI-swiss.js';
 import { handleWalkover, updateTotalScores} from './score-logics.js';
 import { openScorePopup } from './UI-popup.js';
+import { displayPlayerOverview } from './UI-players.js';
 
 export function displayTournamentOverview(tournament) {
     
+    const tournamentOverview = document.createElement('div');
+    tournamentOverview.id = 'tournamentOverview';
+
     // Create tournament info
     const tournamentInfoDiv = document.createElement('div');
     tournamentInfoDiv.id = 'tournamentInfo';
@@ -13,9 +17,19 @@ export function displayTournamentOverview(tournament) {
     tournamentInfoDiv.appendChild(tournamentName);
     
     const mainContainer = document.getElementById('mainContainer');
-    mainContainer.appendChild(tournamentInfoDiv);
+    mainContainer.replaceChildren(tournamentOverview);
+    tournamentOverview.appendChild(tournamentInfoDiv);
 
-    const matchOverviewContainer = document.getElementById('matchOverview');
+    
+
+    const matchOverviewContainer = document.createElement('div');
+    matchOverviewContainer.id = 'matchOverview';
+
+    const playerOverviewContainer = document.createElement('div');
+    playerOverviewContainer.id = 'playerOverview';
+
+    tournamentOverview.appendChild(matchOverviewContainer);
+    displayPlayerOverview(tournamentOverview);
     
 
 

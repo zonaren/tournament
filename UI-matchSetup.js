@@ -1,7 +1,9 @@
 export function displayMatchSetup(matchSetup) {
     console.log('Displaying match setup:', matchSetup);
-    const matchSetupContainer = document.getElementById('matchSetup');
-    matchSetupContainer.innerHTML = '';
+    const mainContainer = document.getElementById('mainContainer');
+    mainContainer.innerHTML = '';
+    const matchSetupContainer = document.createElement('div');
+    matchSetupContainer.id = 'matchSetup';
     const table = document.createElement('table');
     const thead = table.createTHead();
     const tbody = table.appendChild(document.createElement('tbody'));
@@ -33,5 +35,6 @@ export function displayMatchSetup(matchSetup) {
             }
         }
     }
+    mainContainer.appendChild(matchSetupContainer);
     document.getElementById('matchSetup').appendChild(table);
 }

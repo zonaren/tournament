@@ -125,7 +125,8 @@ function updatePlayerName(newName, playerId) {
         const player = Players.get(playerId);
         player.name = newName;
         Players.saveToLocalStorage();
-        displayPlayerOverview();
+        const mainContainer = document.getElementById('mainContainer');
+        displayPlayerOverview(mainContainer);
     }
 }
 
@@ -151,9 +152,10 @@ function navigateToNextPlayer(nextRowIndex) {
  */
 function createNewPlayerPrompt(playerName) {
     const name = playerName || prompt('Navn på ny spiller:');
+    const mainContainer = document.getElementById('mainContainer');
     if (name) {
         Players.create(Players.count() + 1, name);
-        displayPlayerOverview();
+        displayPlayerOverview(mainContainer);
     }
 }
 
@@ -172,20 +174,26 @@ function createAddPlayerButton() {
 /**
  * Displays the player overview table
  */
-export function displayPlayerOverview() {
-    const container = document.getElementById('playerOverview');
-    container.innerHTML = '';
+function displayPlayerOverview(parentContainer) {
+    let playerOverview = document.getElementById('playerOverview');
+    if (!playerOverview) {
+        playerOverview = document.createElement('div');
+        playerOverview.id = 'playerOverview';
+        parentContainer.appendChild(playerOverview);
+    }
+    playerOverviewContent(playerOverview);
+}
 
-    const playerCount = document.createElement('h3');
-    playerCount.textContent = `${Players.count()} spillere`;
-
-    const table = document.createElement('table');
-    table.id = 'playerTable';
+/**
+ * Updates only the player table contents
+ */
+function updatePlayerTable() {
+    const table = document.getElementById('playerTable');
+    if (!table) return;
     
-    const thead = table.createTHead();
-    thead.appendChild(createTableHeader());
-    
-    const tbody = table.createTBody();
+    // Clear existing tbody
+    const tbody = table.getElementsByTagName('tbody')[0];
+    tbody.innerHTML = '';
     
     const sortedPlayers = Players.getAll()
         .sort((a, b) => b.matchPoints !== a.matchPoints
@@ -195,10 +203,37 @@ export function displayPlayerOverview() {
     sortedPlayers
         .filter(player => player.name !== 'Walkover')
         .forEach((player, index) => {
-            tbody.appendChild(createPlayerRow(player, index, container));
+            tbody.appendChild(createPlayerRow(player, index, table.parentElement));
         });
-
-    container.appendChild(playerCount);
-    container.appendChild(createAddPlayerButton());
-    container.appendChild(table);
+    
+    // Update player count
+    const playerCount = document.querySelector('#playerOverview h3');
+    if (playerCount) {
+        playerCount.textContent = `${Players.count()} spillere`;
+    }
 }
+
+function playerOverviewContent(playerOverview) {
+    // Clear existing content
+    playerOverview.innerHTML = '';
+    
+    const playerCount = document.createElement('h3');
+    playerCount.textContent = `${Players.count()} spillere`;
+
+    const table = document.createElement('table');
+    table.id = 'playerTable';
+    
+    const thead = table.createTHead();
+    thead.appendChild(createTableHeader());
+    
+    table.createTBody(); // Create empty tbody
+
+    playerOverview.appendChild(playerCount);
+    playerOverview.appendChild(createAddPlayerButton());
+    playerOverview.appendChild(table);
+    
+    // Update the table contents
+    updatePlayerTable();
+}
+
+export { displayPlayerOverview, updatePlayerTable };

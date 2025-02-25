@@ -1,5 +1,5 @@
 import Players from './classes/Player.js';
-import { displayPlayerOverview } from './UI-players.js';
+import { updatePlayerTable } from './UI-players.js';
 
 function updateTotalScores(p1id, p2id, p1Score, p2Score) {
     const players = Players.getAll();
@@ -29,8 +29,7 @@ function updateTotalScores(p1id, p2id, p1Score, p2Score) {
         player1.matchPoints += 1.5;
         player2.matchPoints += 1.5;
     }
-
-    displayPlayerOverview();
+    updatePlayerTable();
 }
 
 function updateMatchScores(match, player1Score, player2Score) {

@@ -53,29 +53,13 @@ menuButtons.appendChild(printContentBtn);
 
 header.appendChild(menuButtons);
 
-const matchSetupContainer = document.createElement('div');
-matchSetupContainer.id = 'matchSetup';
-
 const mainContainer = document.createElement('div');
 mainContainer.id = 'mainContainer';
 mainContainer.className = 'main-container';
 
-const tournamentOverview = document.createElement('div');
-tournamentOverview.id = 'tournamentOverview';
-
-const matchOverview = document.createElement('div');
-matchOverview.id = 'matchOverview';
-tournamentOverview.appendChild(matchOverview);
-
-const playerOverview = document.createElement('div');
-playerOverview.id = 'playerOverview';
-tournamentOverview.appendChild(playerOverview);
-
-mainContainer.appendChild(tournamentOverview);
 
 // Append elements to the body
 document.body.appendChild(header);
-document.body.appendChild(matchSetupContainer);
 document.body.appendChild(mainContainer);
 
-export { gametypeSelect, playerCountSelect, roundCountSelect, prepareTournamentBtn, startBtn, showMatchSetupBtn, printContentBtn, matchSetupContainer, mainContainer, tournamentOverview, matchOverview, playerOverview, titleText };
+export { gametypeSelect, playerCountSelect, roundCountSelect, prepareTournamentBtn, startBtn, showMatchSetupBtn, printContentBtn, mainContainer, titleText };

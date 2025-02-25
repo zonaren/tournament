@@ -9,6 +9,9 @@ import { displayTournamentOverview } from './UI-tournament.js';
 import { displayMatchSetup } from './UI-matchSetup.js';
 import { displayTournamentsList } from './UI-tournaments-list.js';
 
+const mainContainer = document.getElementById('mainContainer');
+    mainContainer.innerHTML = '';
+
 function onGametypeChange() {
     const gametype = this.value;
     TournamentSettings.setGametype(gametype);
@@ -34,7 +37,8 @@ function onRoundCountChange() {
 
 function onPrepareTournament() {
     Players.resetPlayers(TournamentSettings.getPlayerCount());
-    displayPlayerOverview();
+    mainContainer.innerHTML = '';
+    displayPlayerOverview(mainContainer);
     this.classList.add('hidden');
     const startTournamentButton = document.getElementById('start-btn');
     startTournamentButton.classList.remove('hidden');
