@@ -1,5 +1,8 @@
 // create a function that will calculate the next round based on the current round and the players scores
 
+import Player from "./classes/Player.js";
+import { generateUniqueId } from "./utils.js";
+
 // rules for swiss tournament:
 // 1. Competitors meet one-on-one in each round and are paired using a set of rules designed to ensure that each competitor plays opponents 
 // with a similar score (except in the first round, which is random or seeded).
@@ -18,15 +21,16 @@
 // 2. check total matchPoints and scorePoints for each player so that we can use this information to pair the players in the next round (players)
 
 function calculateNextRound(tournament, roundNumber) {
-    const matches = tournament.schedule.slice(0, roundNumber).flatMap(round => round.matches);
+    const matches = tournament.matchSchedule.slice(0, roundNumber).flatMap(round => round.matches);
     console.log(matches);
  // call function to check all matches in all previous rounds and create a list of players that have not played against each other
- const { unplayedMatches, playerStats } = checkMatches(players, matches);
+ const { unplayedMatches, playerStats } = checkMatches(matches);
  pairPlayers(unplayedMatches, playerStats, roundNumber, tournament);
 }
 
-function checkMatches(players, matches) {
+function checkMatches(matches) {
     let unplayedMatches = {};
+    const players = Player.getAll();
 
     // Initialize unplayedMatches with all possible pairs
     players.forEach(player1 => {
@@ -174,7 +178,7 @@ function pairPlayers(unplayedMatches, playerStats, roundNumber, tournament) {
     }
 
     // Add new round to the tournament schedule
-    tournament.schedule.push({
+    tournament.matchSchedule.push({
         roundNumber: roundNumber + 1,
         matches: matches
     });
@@ -187,6 +191,8 @@ function pairPlayers(unplayedMatches, playerStats, roundNumber, tournament) {
 
     return matches;
 }
+
+export { calculateNextRound };
 
 
 

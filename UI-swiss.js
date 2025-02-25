@@ -1,3 +1,6 @@
+import { calculateNextRound } from './swiss.js';
+import { displayTournamentOverview } from './UI-tournament.js';
+
 // create proceed to next round button
 export function proceedToNextRoundBtn(tournament) {
     const proceedToNextRoundBtn = document.createElement('button');
@@ -6,7 +9,7 @@ export function proceedToNextRoundBtn(tournament) {
     proceedToNextRoundBtn.addEventListener('click', function() {
         // calculate the next round
 
-        const round = tournament.schedule.length;
+        const round = tournament.matchSchedule.length;
 
         const nextRound = calculateNextRound(tournament, round);
         // if the next round is not null, update the current round and the UI
