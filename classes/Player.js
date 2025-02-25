@@ -3,7 +3,7 @@ class Players {
         this.players = [];
     }
 
-    create(id, name) {
+    create(id, name = "Spiller" + id) {
         const player = new Player(id);
         player.name = name;
         this.players.push(player);
