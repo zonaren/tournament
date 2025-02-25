@@ -5,7 +5,8 @@
     height: 100vh;
     display: flex;
     margin-top: 50px;
-    overflow: hidden;
+    overflow: hidden;  /* Ensures parent doesn't scroll */
+    position: fixed;   /* Fix the container to prevent any scrolling */
 }
 
 #tournamentInfo {
@@ -28,8 +29,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow-y: auto;
-    height: 100%;
+    overflow-y: auto;  /* Keep these containers scrollable */
+    height: calc(100vh - 70px);  /* Adjust height to account for tournament info and margins */
     padding: 20px;
     box-sizing: border-box;
     background-color: #ffffff;
