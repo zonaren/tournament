@@ -4,11 +4,13 @@ import { generateUniqueId } from "../utils.js";
 class Tournaments {
     constructor() {
         this.tournaments = [];
+        this.loadFromLocalStorage();
     }
 
     create(totalRounds, totalCourts, matchSchedule, tournamentName, tournamentType) {
         const tournament = new Tournament(totalRounds, totalCourts, matchSchedule, tournamentName, tournamentType);
         this.tournaments.push(tournament);
+        this.saveToLocalStorage();
         return tournament;
     }
 
@@ -38,6 +40,25 @@ class Tournaments {
         const tournamentsJson = JSON.stringify(this.tournaments);
         localStorage.setItem('tournaments', tournamentsJson);
         console.log("turneringer lagret");
+    }
+
+    loadFromLocalStorage() {
+        const savedTournaments = localStorage.getItem('tournaments');
+        if (savedTournaments) {
+            const parsedTournaments = JSON.parse(savedTournaments);
+            this.tournaments = parsedTournaments.map(tournamentData => {
+                const tournament = new Tournament(
+                    tournamentData.totalRounds,
+                    tournamentData.totalCourts,
+                    tournamentData.matchSchedule,
+                    tournamentData.name,
+                    tournamentData.type
+                );
+                tournament.id = tournamentData.id;
+                tournament.dateCreated = tournamentData.dateCreated;
+                return tournament;
+            });
+        }
     }
 }
 

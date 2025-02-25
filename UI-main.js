@@ -35,6 +35,11 @@ startBtn.className = 'hidden';
 startBtn.textContent = 'Start turnering';
 menuButtons.appendChild(startBtn);
 
+const showTournamentsBtn = document.createElement('button');
+showTournamentsBtn.id = 'showTournamentsBtn';
+showTournamentsBtn.textContent = 'Vis turneringer';
+menuButtons.appendChild(showTournamentsBtn);
+
 const showMatchSetupBtn = document.createElement('button');
 showMatchSetupBtn.id = 'showMatchSetup';
 showMatchSetupBtn.textContent = 'Vis banefordelingsnøkkel';

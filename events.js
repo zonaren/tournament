@@ -7,6 +7,7 @@ import { playerCountSelect, roundCountSelect, gametypeSelect, titleText } from '
 import { createRoundCountSelectOptions } from './generateSelectList.js';
 import { displayTournamentOverview } from './UI-tournament.js';
 import { displayMatchSetup } from './UI-matchSetup.js';
+import { displayTournamentsList } from './UI-tournaments-list.js';
 
 function onGametypeChange() {
     const gametype = this.value;
@@ -50,6 +51,10 @@ function onStartTournament() {
     header.remove();
 }
 
+function onShowTournaments() {
+    displayTournamentsList();
+}
+
 function onShowMatchSetup() {
     Players.resetPlayers(TournamentSettings.getPlayerCount());
     const matchSetup = createMatchSetup(Players.count(), TournamentSettings.getRoundCount());
@@ -69,6 +74,7 @@ function loadEventListeners() {
     document.getElementById('printContent').addEventListener('click', onPrintContent);
     document.getElementById('prepareTournamentBtn').addEventListener('click', onPrepareTournament);
     document.getElementById('start-btn').addEventListener('click', onStartTournament);
+    document.getElementById('showTournamentsBtn').addEventListener('click', onShowTournaments);
 }
 
 // Remove existing event listeners and call loadEventListeners
@@ -79,4 +85,5 @@ document.getElementById('showMatchSetup').removeEventListener('click', onShowMat
 document.getElementById('printContent').removeEventListener('click', onPrintContent);
 document.getElementById('prepareTournamentBtn').removeEventListener('click', onPrepareTournament);
 document.getElementById('start-btn').removeEventListener('click', onStartTournament);
+document.getElementById('showTournamentsBtn').removeEventListener('click', onShowTournaments);
 loadEventListeners();

@@ -69,3 +69,35 @@ tr:hover {
 td, th {
     transition: all 0.2s ease;
 }
+
+.tournaments-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+.tournaments-table th,
+.tournaments-table td {
+    padding: 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.tournaments-table th {
+
+    font-weight: bold;
+}
+
+.tournaments-table button {
+    margin: 0 0.25rem;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.tournaments-table button:hover {
+    background-color: #f0f0f0;
+    color: #3D679D;
+}
