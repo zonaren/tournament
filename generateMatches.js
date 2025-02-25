@@ -27,7 +27,7 @@ export function createMatchSetup(totalPlayers, totalRounds, players) {
 
     if(gametypeElement.value === 'Gloppen'){
         
-        cascadeMatchSystem(totalRounds,totalCourts, matchSetup, players);
+        cascadeMatchSystem(totalRounds,totalCourts, matchSetup);
         console.log(`Gloppen system is selected`);
     }
 
@@ -48,6 +48,7 @@ export function createMatchSetup(totalPlayers, totalRounds, players) {
 function cascadeMatchSystem(totalRounds, totalCourts, matchSetup){
     const tournamentName = "Test (Cascade)";
     const tournamentType = document.getElementById('gametypeSelect').value;
+    const players = Players.getAll();
     
 
     for (let round = 1; round <= totalRounds; round++) {
@@ -58,7 +59,7 @@ function cascadeMatchSystem(totalRounds, totalCourts, matchSetup){
             const p2Id = ((court - 1 + 2 * (round - 1)) % totalCourts) + 1 + totalCourts;
 
 
-            pushMatches(matches, court, p1Id, p2Id);
+            pushMatches(matches, court, p1Id, p2Id, players);
         }
 
 

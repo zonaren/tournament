@@ -49,7 +49,7 @@ function onStartTournament() {
 }
 
 function onShowMatchSetup() {
-
+    Players.resetPlayers(TournamentSettings.getPlayerCount());
     const matchSetup = createMatchSetup(TournamentSettings.getPlayerCount(), TournamentSettings.getRoundCount(), Players.getAll());
     displayMatchSetup(matchSetup);
 }
