@@ -1,7 +1,7 @@
 import {generateUniqueId} from './utils.js';
 import Players from './classes/Player.js';
 
-export function createMatchSetup(totalPlayers, totalRounds, players) {
+export function createMatchSetup(totalPlayers, totalRounds) {
     if (totalPlayers % 2 !== 0) {
         console.log(`Total players is an odd number`,`(`,totalPlayers,`)`);
         totalPlayers = totalPlayers +1;

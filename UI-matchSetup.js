@@ -5,6 +5,7 @@ export function displayMatchSetup(matchSetup) {
     const matchSetupContainer = document.createElement('div');
     matchSetupContainer.id = 'matchSetup';
     const table = document.createElement('table');
+    table.id = 'matchSetupTable';
     const thead = table.createTHead();
     const tbody = table.appendChild(document.createElement('tbody'));
     const headerRow = thead.insertRow();
@@ -18,15 +19,16 @@ export function displayMatchSetup(matchSetup) {
 
     // Populate table
     const playerCount = matchSetup.length * 2; // Total players are twice the number of matches (each match has 2 players)
+    console.log('Match setup:', matchSetup);
     for (let player = 1; player <= playerCount; player++) {
         const row = tbody.insertRow();
         row.appendChild(document.createElement('th')).textContent = `${player}`;
         row.appendChild(document.createElement('td')).textContent = `B-M`;
 
         for (let round of matchSetup) {
-            const match = round.matches.find(m => m.p1Id === player || m.p2Id === player);
+            const match = round.matches.find(m => m.p1.id === player || m.p2.id === player);
             if (match) {
-                const opponent = match.p1Id === player ? match.p2Id : match.p1Id;
+                const opponent = match.p1.id === player ? match.p2.id : match.p1.id;
                 const cellText = `${match.court}-${opponent}`;
                 row.appendChild(document.createElement('td')).textContent = cellText;
             } else {

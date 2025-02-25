@@ -11,6 +11,11 @@ body {
     color: #2c3e50;
 }
 
+.main-container {
+    display: flex;
+    justify-content: center;
+}
+
 h1, h2, h3 {
     text-align: center;
     color: #2c3e50;
