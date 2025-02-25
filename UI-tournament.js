@@ -1,4 +1,6 @@
 import { proceedToNextRoundBtn, toggleAllRoundsBtn, showAllRounds } from './UI-swiss.js';
+import { handleWalkover} from './score-logics.js';
+import { openScorePopup } from './UI-popup.js';
 
 export function displayTournamentOverview(tournament) {
     

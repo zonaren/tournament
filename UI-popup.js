@@ -1,4 +1,4 @@
-function openScorePopup(match, player1, player2) {
+export function openScorePopup(match, player1, player2) {
     let player1Score = 0;
     let player2Score = 0;
 
