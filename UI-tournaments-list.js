@@ -6,6 +6,7 @@ export function displayTournamentsList() {
     mainContainer.innerHTML = '';
 
     const tableContainer = document.createElement('div');
+    tableContainer.id = 'tournamentsList';
     tableContainer.className = 'tournaments-list';
 
     const table = document.createElement('table');
@@ -54,6 +55,8 @@ export function displayTournamentsList() {
 function loadTournament(id) {
     const tournament = Tournaments.get(id);
     if (tournament) {
+        const tournamentsList = document.getElementById('tournamentsList');
+        tournamentsList.remove();
         displayTournamentOverview(tournament);
     }
 }
