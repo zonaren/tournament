@@ -1,3 +1,5 @@
+import { updateMatchScores } from "./score-logics.js";
+
 export function openScorePopup(match, player1, player2) {
     let player1Score = 0;
     let player2Score = 0;
@@ -34,7 +36,7 @@ export function openScorePopup(match, player1, player2) {
             player2Score = 0;
             return;
         }
-        updateScoreDisplay(match, player1Score, player2Score);
+        updateMatchScores(match, player1Score, player2Score);
         document.body.removeChild(popup);
     });
     popup.appendChild(saveBtn);

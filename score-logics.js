@@ -1,4 +1,5 @@
 import Players from './classes/Player.js';
+import { displayPlayerOverview } from './UI-players.js';
 
 function updateTotalScores(p1id, p2id, p1Score, p2Score) {
     const players = Players.getAll();
@@ -32,6 +33,17 @@ function updateTotalScores(p1id, p2id, p1Score, p2Score) {
     displayPlayerOverview();
 }
 
+function updateMatchScores(match, player1Score, player2Score) {
+    const p1ScoreCell = document.getElementById(`p1-score-${match.matchId}`);
+    const p2ScoreCell = document.getElementById(`p2-score-${match.matchId}`);
+    const confirmButton = document.getElementById('confirmButton-' + match.matchId);
+    confirmButton.disabled = false;
+    match.p1.scorePoints = player1Score;
+    match.p2.scorePoints = player2Score;
+    p1ScoreCell.textContent = match.p1.scorePoints;
+    p2ScoreCell.textContent = match.p2.scorePoints;
+}
+
 function handleWalkover(match, p1ScoreCell, p2ScoreCell, confirmButton, editScoresButton) {
     const isWalkover = match.p1.name === 'Walkover' || match.p2.name === 'Walkover';
     if (isWalkover) {
@@ -44,4 +56,4 @@ function handleWalkover(match, p1ScoreCell, p2ScoreCell, confirmButton, editScor
     }
 }
 
-export { updateTotalScores, handleWalkover };
+export { updateTotalScores, handleWalkover, updateMatchScores };

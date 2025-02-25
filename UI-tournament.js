@@ -1,5 +1,5 @@
 import { proceedToNextRoundBtn, toggleAllRoundsBtn, showAllRounds } from './UI-swiss.js';
-import { handleWalkover} from './score-logics.js';
+import { handleWalkover, updateTotalScores} from './score-logics.js';
 import { openScorePopup } from './UI-popup.js';
 
 export function displayTournamentOverview(tournament) {
@@ -154,15 +154,4 @@ function displayRound(round, matchOverviewContainer) {
         }, 100 * (round.matches.indexOf(match) * 2 + 1)); // Adjust the delay as needed
     }
     document.getElementById('matchOverview').appendChild(table);
-}
-
-function updateScoreDisplay(match, player1Score, player2Score) {
-    const p1ScoreCell = document.getElementById(`p1-score-${match.matchId}`);
-    const p2ScoreCell = document.getElementById(`p2-score-${match.matchId}`);
-    const confirmButton = document.getElementById('confirmButton-' + match.matchId);
-    confirmButton.disabled = false;
-    match.p1.scorePoints = player1Score;
-    match.p2.scorePoints = player2Score;
-    p1ScoreCell.textContent = match.p1.scorePoints;
-    p2ScoreCell.textContent = match.p2.scorePoints;
 }
