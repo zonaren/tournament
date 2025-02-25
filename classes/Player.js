@@ -7,7 +7,9 @@ class Players {
         const player = new Player(id);
         player.name = name;
         this.players.push(player);
+        this.saveToLocalStorage();
         return player;
+        
     }
 
     get(id) {
@@ -27,6 +29,7 @@ class Players {
         if (player) {
             Object.assign(player, data);
         }
+        this.saveToLocalStorage();
     }
 
     delete(id) {
@@ -34,9 +37,10 @@ class Players {
         if (index !== -1) {
             this.players.splice(index, 1);
         }
+        this.saveToLocalStorage();
     }
 
-    addPlayers(count) {
+    addDefaultPlayers(count) {
         for (let i = 1; i <= count; i++) {
             this.create(i);
         }
@@ -45,7 +49,7 @@ class Players {
 
     resetPlayers(count) {
         this.players = [];
-        this.addPlayers(count);
+        this.addDefaultPlayers(count);
     }
 
     saveToLocalStorage() {
