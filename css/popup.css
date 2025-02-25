@@ -1,3 +1,8 @@
+/* main app colors */
+/*#3D679D Blå*/
+/*#F6F7FB Kvit*/
+/*#443F45 Svart*/
+
 .popup {
     display: flex;
     flex-direction: column;
@@ -7,22 +12,41 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: black;
-    padding: 10px;
+    background-color: #3D679D;
+    padding: 20px;
     width: 60%;
     height: 90vh;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     z-index: 1000;
-    color: white;
+    color: #2c3e50;
+    transition: all 0.3s ease;
 }
 
 .popup-save-btn {
-    background-color: #4CAF50;
+    background-color: #3D679D;
     color: white;
-    padding: 10px 20px;
-    margin-top: 10px;
-    font-size: 1.5vw;
+    padding: 12px 24px;
+    margin-top: 20px;
+    font-size: 1.2rem;
     cursor: pointer;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.popup-save-btn:hover {
+    background-color: #4b7ab5;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.popup-save-btn:disabled {
+    background-color: #e2e8f0;
+    color: #a0aec0;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
