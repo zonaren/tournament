@@ -6,7 +6,7 @@ export function createMatchSetup(totalPlayers, totalRounds, players) {
         console.log(`Total players is an odd number`,`(`,totalPlayers,`)`);
         totalPlayers = totalPlayers +1;
         console.log(`Startnumber `,totalPlayers, ` is set to be Walkover`)
-        //addNewPlayer('Walkover');
+        Players.create(totalPlayers, 'Walkover');
     }
 
     
