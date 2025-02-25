@@ -1,161 +1,204 @@
-import  Players from './classes/Player.js';
+import Players from './classes/Player.js';
 
-export function displayPlayerOverview() {
-
-    const playerOverviewContainer = document.getElementById('playerOverview');
-    playerOverviewContainer.innerHTML = '';
-
-    const resultText = document.createElement('h3');
-    resultText.textContent = `${Players.count()} spillere`;
-
-    const table = document.createElement('table');
-    table.id = 'playerTable';
-    const thead = table.createTHead();
-
-    const tbody = table.appendChild(document.createElement('tbody'));
-    const headerRow = thead.insertRow();
-    headerRow.appendChild(document.createElement('th')).textContent = 'Pl.';
-
-    headerRow.appendChild(document.createElement('th')).textContent = 'Navn';
-    headerRow.appendChild(document.createElement('th')).textContent = 'SP';
-    //headerRow.appendChild(document.createElement('th')).textContent = 'Ringer';
-    headerRow.appendChild(document.createElement('th')).textContent = 'KP';
-
-    // Sort players by matchPoints and then by scorePoints
-    const sortedPlayers = Players.getAll().slice().sort((a, b) => {
-        if (b.matchPoints !== a.matchPoints) {
-            return b.matchPoints - a.matchPoints;
-        }
-        return b.scorePoints - a.scorePoints;
+/**
+ * Creates and returns the table header row for the player overview
+ * @returns {HTMLTableRowElement} The header row element
+ */
+function createTableHeader() {
+    const headerRow = document.createElement('tr');
+    const headers = ['Pl.', 'Navn', 'SP', 'KP'];
+    
+    headers.forEach(text => {
+        const th = document.createElement('th');
+        th.textContent = text;
+        headerRow.appendChild(th);
     });
-
-    for (let player of sortedPlayers) {
-        const row = tbody.insertRow();
-        row.setAttribute('data-player-id', player.id);
-        row.appendChild(document.createElement('td')).textContent = sortedPlayers.indexOf(player) + 1;
-
-        // Create a editable cell for the player name
-        const playerNameCell = document.createElement('td');
-        playerNameCell.classList.add('player-name');
-        playerNameCell.textContent = player.name;
-        playerNameCell.addEventListener('click', function() {
-            if(matchSchedule.length > 0) {
-                alert('Spillere kan ikke endres etter at turneringen har startet');
-                return;
-            }
-            // Your onClick event handler code here
-            console.log('Player clicked:', player.id);
-            const currentRowIndex = Array.from(playerOverviewContainer.getElementsByTagName('tr')).indexOf(row);
-            editInCell(playerNameCell, player.id, currentRowIndex);
-        });
-        row.appendChild(playerNameCell);
-        row.appendChild(document.createElement('td')).textContent = player.scorePoints;
-        //row.appendChild(document.createElement('td')).textContent = player.totalRingers;
-        const totalPointsCell = document.createElement('td');
-        totalPointsCell.classList.add('total-points');
-        totalPointsCell.textContent = player.matchPoints;
-        row.appendChild(totalPointsCell);
-        if(player.name === 'Walkover') {
-            row.remove();
-        }
-    }
-    playerOverviewContainer.appendChild(resultText);
-    playerOverviewContainer.appendChild(addPlayerBtn());
-    playerOverviewContainer.appendChild(table);
+    
+    return headerRow;
 }
 
+/**
+ * Creates a player row in the table
+ * @param {Player} player - The player object
+ * @param {number} index - The player's position in the ranking
+ * @param {HTMLElement} playerOverviewContainer - The container element
+ * @returns {HTMLTableRowElement} The created row element
+ */
+function createPlayerRow(player, index, playerOverviewContainer) {
+    const row = document.createElement('tr');
+    row.setAttribute('data-player-id', player.id);
 
-function editInCell(cell, playerId, currentRowIndex) {
-    const originalValue = cell.textContent;
+    // Position column
+    const positionCell = document.createElement('td');
+    positionCell.textContent = index + 1;
+    row.appendChild(positionCell);
+
+    // Name column with edit functionality
+    const nameCell = createEditableNameCell(player, row, playerOverviewContainer);
+    row.appendChild(nameCell);
+
+    // Score points column
+    const scoreCell = document.createElement('td');
+    scoreCell.textContent = player.scorePoints;
+    row.appendChild(scoreCell);
+
+    // Match points column
+    const matchPointsCell = document.createElement('td');
+    matchPointsCell.classList.add('total-points');
+    matchPointsCell.textContent = player.matchPoints;
+    row.appendChild(matchPointsCell);
+
+    return row;
+}
+
+/**
+ * Creates an editable cell for the player name
+ * @param {Player} player - The player object
+ * @param {HTMLTableRowElement} row - The row containing the cell
+ * @param {HTMLElement} container - The container element
+ * @returns {HTMLTableCellElement} The created cell element
+ */
+function createEditableNameCell(player, row, container) {
+    const cell = document.createElement('td');
+    cell.classList.add('player-name');
+    cell.textContent = player.name;
+    
+    cell.addEventListener('click', () => {
+        if (window.matchSchedule?.length > 0) {
+            alert('Spillere kan ikke endres etter at turneringen har startet');
+            return;
+        }
+        const currentRowIndex = Array.from(container.getElementsByTagName('tr')).indexOf(row);
+        startCellEdit(cell, player.id, currentRowIndex);
+    });
+    
+    return cell;
+}
+
+/**
+ * Initiates the edit mode for a cell
+ * @param {HTMLTableCellElement} cell - The cell to edit
+ * @param {number} playerId - The ID of the player
+ * @param {number} currentRowIndex - The current row index
+ */
+function startCellEdit(cell, playerId, currentRowIndex) {
     const input = document.createElement('input');
     const confirmButton = document.createElement('button');
+    
+    input.type = 'text';
+    input.value = cell.textContent;
+    
     confirmButton.id = 'confirmButton' + playerId;
     confirmButton.classList.add('confirmPlayerNameButton');
     confirmButton.textContent = 'OK';
-    input.type = 'text';
-    input.value = originalValue;
+    
     cell.textContent = '';
     cell.appendChild(input);
     cell.appendChild(confirmButton);
 
-    const player = players.find(p => p.id === playerId);
+    const handleConfirm = () => {
+        updatePlayerName(input.value, playerId);
+        navigateToNextPlayer(currentRowIndex + 1);
+    };
 
-    function handleEvent(event) {
-        if (event.type === 'click' || (event.type === 'keypress' && event.key === 'Enter')) {
-            addNewValues();
-        }
-    }
-
-    confirmButton.addEventListener('click', handleEvent);
-    input.addEventListener('keypress', handleEvent);
-
-    function addNewValues() {
-        const newValue = input.value;
-        cell.textContent = newValue;
-        editCellValue(newValue, player, players);
-        goToNextPlayer(currentRowIndex + 1);
-    }
-
-        // Stop event propagation when clicking inside the input
-        input.addEventListener('click', function(event) {
-            event.stopPropagation();
-            input.focus();
-            input.select();
-        });
+    confirmButton.addEventListener('click', handleConfirm);
+    input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleConfirm();
+    });
+    input.addEventListener('click', (e) => {
+        e.stopPropagation();
+        input.focus();
+        input.select();
+    });
 
     input.focus();
     input.select();
 }
 
-function editCellValue(newValue, player) {    
-    if (newValue && typeof newValue === 'string') {
-        console.log('Editing player name:', newValue, " old name:", player.name, " type:", typeof player.name);
-        player.name = newValue;
-        localStorage.setItem('players', JSON.stringify(players));
+/**
+ * Updates a player's name
+ * @param {string} newName - The new name for the player
+ * @param {number} playerId - The ID of the player to update
+ */
+function updatePlayerName(newName, playerId) {
+    if (newName && typeof newName === 'string') {
+        const player = Players.get(playerId);
+        player.name = newName;
+        Players.saveToLocalStorage();
         displayPlayerOverview();
-        console.log("players: ", players)
-        
     }
 }
 
-function goToNextPlayer(currentRowIndex) {
+/**
+ * Navigates to the next player for editing
+ * @param {number} nextRowIndex - The index of the next row
+ */
+function navigateToNextPlayer(nextRowIndex) {
     const playerTable = document.getElementById('playerTable');
-    const playerRows = playerTable.getElementsByTagName('tr');
-    let nextRow;
-
-    if (currentRowIndex < playerRows.length) {
-        nextRow = playerRows[currentRowIndex];
-        console.log('Going to next row:', nextRow);
-    } else {
-        console.log('No more rows to edit.');
-        return;
-    }
-
-    if (nextRow) {
-        const nextRowPlayerNameCell = nextRow.getElementsByClassName('player-name')[0];
-        const nextPlayerId = parseInt(nextRow.getAttribute('data-player-id'));
-        console.log('Going to next player:', nextPlayerId);
-        editInCell(nextRowPlayerNameCell, nextPlayerId, currentRowIndex);
+    const rows = playerTable.getElementsByTagName('tr');
+    
+    if (nextRowIndex < rows.length) {
+        const nextRow = rows[nextRowIndex];
+        const nameCell = nextRow.getElementsByClassName('player-name')[0];
+        const playerId = parseInt(nextRow.getAttribute('data-player-id'));
+        startCellEdit(nameCell, playerId, nextRowIndex);
     }
 }
 
-function addNewPlayer(playerName) {
-    //const newPlayerName = document.getElementById('newPlayerName').value;
-    const newPlayerName = playerName ? playerName : prompt('Navn på ny spiller:');
-    if (newPlayerName) {
-        Players.create(Players.count() + 1, newPlayerName);
+/**
+ * Creates a new player
+ * @param {string} [playerName] - Optional name for the new player
+ */
+function createNewPlayer(playerName) {
+    const name = playerName || prompt('Navn på ny spiller:');
+    if (name) {
+        Players.create(Players.count() + 1, name);
         displayPlayerOverview();
-        console.log('Added new player:', newPlayerName);
     }
 }
 
-function addPlayerBtn() {
-    const addPlayerButton = document.createElement('button');
-    addPlayerButton.id = 'addPlayerButton';
-    addPlayerButton.textContent = 'Legg til spiller';
-    addPlayerButton.addEventListener('click', function() {
-        addNewPlayer();
-        
-    });
-    return addPlayerButton;
+/**
+ * Creates the "Add Player" button
+ * @returns {HTMLButtonElement} The created button
+ */
+function createAddPlayerButton() {
+    const button = document.createElement('button');
+    button.id = 'addPlayerButton';
+    button.textContent = 'Legg til spiller';
+    button.addEventListener('click', () => createNewPlayer());
+    return button;
+}
+
+/**
+ * Displays the player overview table
+ */
+export function displayPlayerOverview() {
+    const container = document.getElementById('playerOverview');
+    container.innerHTML = '';
+
+    const playerCount = document.createElement('h3');
+    playerCount.textContent = `${Players.count()} spillere`;
+
+    const table = document.createElement('table');
+    table.id = 'playerTable';
+    
+    const thead = table.createTHead();
+    thead.appendChild(createTableHeader());
+    
+    const tbody = table.createTBody();
+    
+    const sortedPlayers = Players.getAll()
+        .sort((a, b) => b.matchPoints !== a.matchPoints
+            ? b.matchPoints - a.matchPoints
+            : b.scorePoints - a.scorePoints);
+
+    sortedPlayers
+        .filter(player => player.name !== 'Walkover')
+        .forEach((player, index) => {
+            tbody.appendChild(createPlayerRow(player, index, container));
+        });
+
+    container.appendChild(playerCount);
+    container.appendChild(createAddPlayerButton());
+    container.appendChild(table);
 }
