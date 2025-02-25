@@ -7,12 +7,15 @@
 
 table {
     width: 90%;
-    border-collapse: collapse;
-    font-family: Arial, sans-serif;
-    background-color: #ffffff; /* Change background to white for better readability */
-    color: #333;
-    border-radius: 8px; /* Rounded corners */
-    overflow: hidden; /* Ensure rounded corners are visible */
+    border-collapse: separate;
+    border-spacing: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: #ffffff;
+    color: #2c3e50;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
 }
 
 table, th, td {
@@ -20,22 +23,35 @@ table, th, td {
 }
 
 th, td {
-    padding: 3px;
+    padding: 12px 16px;
     text-align: center;
-    font-size: 16px; /* Increase font size for better readability */
+    font-size: 15px;
     font-weight: bold;
 }
 
+td {
+    border-bottom: 1px solid #edf2f7;
+}
+
 th {
-    background-color: #3D679D; /* Use main app color for header background */
-    color: #F6F7FB; /* Use main app color for header text */
+    background-color: #3D679D;
+    color: #ffffff;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 14px;
+    border: none;
     padding: 7px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add shadow for header */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+tr:last-child td {
+    border-bottom: none;
 }
 
 /* Alternate row colors */
 tr:nth-child(even) {
-    background-color: #e0e7f1;
+    background-color: #f8fafc;
 }
 
 tr:nth-child(odd) {
@@ -44,6 +60,12 @@ tr:nth-child(odd) {
 
 /* Hover effect for rows */
 tr:hover {
-    background-color: #e0e0e0;
-    color: #3D679D; /* Change text color on hover for better visibility */
+    background-color: #edf2f7;
+    color: #3D679D;
+    transition: background-color 0.2s ease;
+}
+
+/* Add subtle transition for interactive elements */
+td, th {
+    transition: all 0.2s ease;
 }

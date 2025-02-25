@@ -1,13 +1,35 @@
-
-
 .button-cell-container {
     display: flex;
+    gap: 8px;
+    justify-content: center;
+    padding: 4px;
 }
+
 .confirm-scores-btn, .edit-scores-btn {
-    margin-right: 10px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.2s ease;
 }
-.edit-scores-btn {
-    background-color: #4CAF50;
+
+.confirm-scores-btn {
+    background-color: #38a169;
     color: white;
-    margin-right: 10px;
+}
+
+.confirm-scores-btn:hover {
+    background-color: #2f855a;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.edit-scores-btn {
+    background-color: #3D679D;
+    color: white;
+}
+
+.edit-scores-btn:hover {
+    background-color: #4b7ab5;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }

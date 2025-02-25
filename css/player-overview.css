@@ -1,23 +1,41 @@
 .total-points {
-    font-size: 20px;
-    font-weight: bold;
+    font-size: 1.25rem;
+    font-weight: 600;
     color: #3D679D;
     text-align: center;
+    padding: 8px;
+    background-color: #f8fafc;
+    border-radius: 6px;
+    margin: 8px 0;
 }
+
 .player-name {
-    font-size: 20px;
-    font-weight: bold;
-    color: black;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #2c3e50;
+    transition: all 0.2s ease;
 }
+
 /* Add a hover effect to the player names */
 .player-name:hover {
     color: #3D679D;
     cursor: pointer;
+    transform: translateX(2px);
 }
+
 #addPlayerButton {
-    background-color: #F6F7FB;
-    color: black;
-    padding: 5px 5px;
-    font-size: 1vw;
+    background-color: #ffffff;
+    color: #2c3e50;
+    padding: 8px 16px;
+    font-size: 1rem;
     cursor: pointer;
+    border: 2px solid #e2e8f0;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+#addPlayerButton:hover {
+    background-color: #f8fafc;
+    border-color: #3D679D;
+    color: #3D679D;
 }

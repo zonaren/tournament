@@ -4,38 +4,51 @@
 /*#443F45 Svart*/
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: grey;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: #f5f7fa;
     margin: 0;
     padding: 0;
+    color: #2c3e50;
 }
+
 .main-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: grey;
-    height: 100vh;
+    min-height: 100vh;
+    padding: 20px;
 }
 
-h1,h2,h3 {
-text-align: center;
+h1, h2, h3 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 1rem;
 }
 
 button, select {
-    background-color: grey;
+    background-color: #3D679D;
     color: white;
-    padding: 11px 15px;
-    margin: 2px;
+    padding: 12px 20px;
+    margin: 4px;
     border: none;
+    border-radius: 6px;
     cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
 
+button:hover {
+    background-color: #4b7ab5;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
 select {
     background-color: white;
-    color: black;
-    border: 1px solid #ccc;
+    color: #2c3e50;
+    border: 2px solid #e2e8f0;
     font-size: 16px;
 }
 
@@ -43,33 +56,44 @@ input {
     padding: 12px 20px;
     margin: 8px 0;
     box-sizing: border-box;
-    border: 1px solid #ccc;
+    border: 2px solid #e2e8f0;
+    border-radius: 6px;
     font-size: 16px;
+    transition: border-color 0.2s ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: #3D679D;
 }
 
 button:disabled {
-    background-color: #cccccc;
-    color: #666666;
+    background-color: #e2e8f0;
+    color: #a0aec0;
     cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
 
 .active-btn {
-    background-color: #4CAF50;
+    background-color: #38a169;
     color: white;
 }
+
 .print-btn {
     float: right;
 }
+
 .hidden {
     display: none;
 }
 
 @media print {
-.no-print {
-display: none !important;
-}
-table{
-width: 100%;
-}
+    .no-print {
+        display: none !important;
+    }
+    table {
+        width: 100%;
+    }
 }
 
