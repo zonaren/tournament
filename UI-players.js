@@ -145,7 +145,6 @@ function addNewPlayer(playerName) {
     if (newPlayerName) {
         Players.create(Players.count() + 1, newPlayerName);
         displayPlayerOverview();
-        totalPlayers = players.length;
         console.log('Added new player:', newPlayerName);
     }
 }
