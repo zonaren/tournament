@@ -6,29 +6,38 @@ export function openScorePopup(match, player1, player2) {
     const popup = document.createElement('div');
     popup.classList.add('popup');
 
-        // Create confirm button
-        const saveBtn = document.createElement('button');
-        saveBtn.textContent = 'Lagre';
-        saveBtn.classList.add('popup-save-btn');
-        saveBtn.addEventListener('click', function() {
-            console.log('Player 1 score: ', player1Score, 'Player 2 score: ', player2Score);
-            if (player1Score < 21 && player2Score < 21) {
-                alert('Ingen spillere kan ha mindre enn 21 poeng');
-                
-                player1Score = 0;
-                player2Score = 0;
-                return;
-            }
-            if (player1Score > 30 || player2Score > 30) {
-                alert('Ingen spillere kan ha mer enn 30 poeng');
-                player1Score = 0;
-                player2Score = 0;
-                return;
-            }
-            updateScoreDisplay(match, player1Score, player2Score);
-            document.body.removeChild(popup);
-        });
-        popup.appendChild(saveBtn);
+    // Add close button
+    const closeBtn = document.createElement('button');
+    closeBtn.textContent = 'X';
+    closeBtn.classList.add('popup-close-btn');
+    closeBtn.addEventListener('click', function() {
+        document.body.removeChild(popup);
+    });
+    popup.appendChild(closeBtn);
+
+    // Create confirm button
+    const saveBtn = document.createElement('button');
+    saveBtn.textContent = 'Lagre';
+    saveBtn.classList.add('popup-save-btn');
+    saveBtn.addEventListener('click', function() {
+        console.log('Player 1 score: ', player1Score, 'Player 2 score: ', player2Score);
+        if (player1Score < 21 && player2Score < 21) {
+            alert('Ingen spillere kan ha mindre enn 21 poeng');
+            
+            player1Score = 0;
+            player2Score = 0;
+            return;
+        }
+        if (player1Score > 30 || player2Score > 30) {
+            alert('Ingen spillere kan ha mer enn 30 poeng');
+            player1Score = 0;
+            player2Score = 0;
+            return;
+        }
+        updateScoreDisplay(match, player1Score, player2Score);
+        document.body.removeChild(popup);
+    });
+    popup.appendChild(saveBtn);
     // create number pad container
     const numberPadsContainer = document.createElement('div');
     numberPadsContainer.classList.add('number-pads-container');
