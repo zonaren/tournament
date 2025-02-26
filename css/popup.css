@@ -24,6 +24,13 @@
     transition: all 0.3s ease;
 }
 
+.player-info h1,h2,h3 {
+    font-weight: 700;
+    color: white;
+    padding: 0.1rem;
+    margin: 0.5rem;
+}
+
 .popup-close-btn {
     position: absolute;
     top: 10px;
@@ -44,11 +51,11 @@
 }
 
 .popup-save-btn {
-    background-color: #3D679D;
-    color: white;
+    background-color: white;
+    color: #3D679D;
     padding: 12px 24px;
     margin-top: 20px;
-    font-size: 1.2rem;
+    font-size: 1.9rem;
     cursor: pointer;
     border: none;
     border-radius: 6px;
@@ -58,6 +65,7 @@
 
 .popup-save-btn:hover {
     background-color: #4b7ab5;
+    color:white;
     transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
