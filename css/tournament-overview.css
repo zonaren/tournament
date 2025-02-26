@@ -1,6 +1,6 @@
 #tournamentOverview {
     padding: 0;
-    background-color: #f5f7fa;
+    background-color: grey;
     width: 100%;
     height: 100vh;
     display: flex;
@@ -31,10 +31,10 @@
     align-items: center;
     overflow-y: auto;  /* Keep these containers scrollable */
     height: calc(100vh - 70px);  /* Adjust height to account for tournament info and margins */
-    padding: 20px;
+    padding: 5px;
     box-sizing: border-box;
-    background-color: #ffffff;
-    margin: 10px;
+    background-color: grey;
+    margin: 5px;
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
@@ -49,7 +49,7 @@
 
 #matchOverview::-webkit-scrollbar, 
 #playerOverview::-webkit-scrollbar {
-    width: 8px;
+    width: 15px;
 }
 
 #matchOverview::-webkit-scrollbar-track, 
