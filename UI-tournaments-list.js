@@ -58,6 +58,10 @@ function loadTournament(id) {
         const tournamentsList = document.getElementById('tournamentsList');
         tournamentsList.remove();
         displayTournamentOverview(tournament);
+        const header = document.getElementById('header');
+        const addPlayerButton = document.getElementById('addPlayerButton');
+        addPlayerButton.remove();
+        header.remove();
     }
 }
 
