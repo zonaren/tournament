@@ -42,7 +42,7 @@ menuButtons.appendChild(showTournamentsBtn);
 
 const showMatchSetupBtn = document.createElement('button');
 showMatchSetupBtn.id = 'showMatchSetup';
-showMatchSetupBtn.textContent = 'Vis banefordelingsnøkkel';
+showMatchSetupBtn.textContent = 'Banefordelingsnøkkel';
 menuButtons.appendChild(showMatchSetupBtn);
 
 const printContentBtn = document.createElement('button');
