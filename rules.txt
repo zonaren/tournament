@@ -15,13 +15,17 @@
 // 3. A loss is worth 1 matchpoint if the player has scored at least 11 scorepoints in the match, otherwise 0 matchpoints
 // 4. A bye (or walkover) is worth 2 matchpoints and 21 scorepoints
 
-// rules for swiss tournament:
+// rules for cascade match system (Gloppen)
+// 
+
+// rules for swiss tournament (NHM):
 // 1. Competitors meet one-on-one in each round and are paired using a set of rules designed to ensure that each competitor plays opponents 
 // with a similar score (except in the first round, which is random or seeded).
 // 2. No player is paired against the same opponent twice.
-// 3. If there is an odd number of players, one player is given a bye, which counts as a win.
+// 3. If there is an odd number of players, one player is given a bye (walkover), which counts as a win.
 // 4. The player with the lowest score, should, if possible receive a bye (walkover).
 // 5. Players cannot receive more than one bye (walkover) in a tournament.
+// 6. The highest ranked player after each round will we playing on court 1.
 
 // general recommendations for swiss tournament
 //1. Pairing should be seeded in the first round
