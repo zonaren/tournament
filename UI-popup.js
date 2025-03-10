@@ -99,5 +99,4 @@ function updateScoreLabel(getPlayerScore, value, setPlayerScore, playerScoreLabe
     const newScore = parseInt(getPlayerScore().toString() + value.toString());
     setPlayerScore(newScore);
     playerScoreLabel.textContent = newScore;
-    console.log('Player score: ', newScore, 'Player: ', player.name);
 }
