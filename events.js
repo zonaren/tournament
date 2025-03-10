@@ -16,6 +16,13 @@ function onGametypeChange() {
     const gametype = this.value;
     TournamentSettings.setGametype(gametype);
     console.log('Gametype was set to ', TournamentSettings.getGametype());
+    if (gametype === 'Alle mot alle') {
+        roundCountSelect.disabled = true;
+        TournamentSettings.setRoundCount(TournamentSettings.getPlayerCount() - 1);
+        console.log('Round count was set to ', TournamentSettings.getRoundCount());
+    } else {
+        roundCountSelect.disabled = false;
+    }
 }
 
 function onPlayerCountChange() {

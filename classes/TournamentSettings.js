@@ -18,7 +18,11 @@ class TournamentSettings {
         this.playerCount = count;
         if (this.playerCount < 20 && this.gametype === 'Gloppen') {
             this.maximumRounds = this.playerCount / 2;
-        } else {
+        } else if (this.gametype === 'Alle mot alle') {
+            this.maximumRounds = this.playerCount - 1; // or any other default value you prefer
+            this.roundCount = this.maximumRounds;
+        }
+        else {
             this.maximumRounds = 10; // or any other default value you prefer
         }
     }

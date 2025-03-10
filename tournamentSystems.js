@@ -5,10 +5,7 @@ import {generateUniqueId} from './utils.js';
 // Players in group 1, moves one court after each round. Players in group 2, moves two courts after each round
 // walkover is given if there is an odd number of players (random player)
 function cascadeSystem(totalRounds, totalCourts, matchSetup){
-    const tournamentName = "Test (Cascade)";
-    const tournamentType = document.getElementById('gametypeSelect').value;
     const players = Players.getAll();
-    
 
     for (let round = 1; round <= totalRounds; round++) {
         let matches = [];
@@ -39,9 +36,60 @@ function swissSystem(totalCourts, matchSetup){
     pushSchedule(matchSetup, 1, matches);
 }
 
-// all players play against each other once
-function roundRobinSystem(totalRounds, totalPlayers, totalCourts,schedule){
-
+// all players play against each other once (round robin)
+function roundRobinSystem(totalRounds, totalCourts, matchSetup){
+    const players = Players.getAll();
+    const totalPlayers = players.length;
+    
+    // For a round robin tournament where each player plays exactly once against 
+    // all other players, we need (n-1) rounds for n players
+    const requiredRounds = totalPlayers - 1;
+    
+    // If the number of players is odd, we need to add a dummy player for byes
+    const needDummy = totalPlayers % 2 !== 0;
+    const effectivePlayers = needDummy ? totalPlayers + 1 : totalPlayers;
+    
+    // Create arrays representing players (using their IDs)
+    // For the algorithm, we need a fixed player and a rotating array
+    const playerIds = [];
+    for (let i = 1; i <= effectivePlayers; i++) {
+        // For the dummy player (if needed), use a value that won't match any real player
+        playerIds.push(i <= totalPlayers ? i : -1); // -1 represents the dummy player
+    }
+    
+    // We'll use the "circle method" - one player stays fixed, others rotate
+    for (let round = 1; round <= requiredRounds; round++) {
+        let matches = [];
+        let court = 1;
+        
+        // Make the pairings for this round
+        for (let i = 0; i < effectivePlayers / 2; i++) {
+            // Get the paired players
+            const firstIdx = i;
+            const secondIdx = effectivePlayers - 1 - i;
+            
+            const p1Id = playerIds[firstIdx];
+            const p2Id = playerIds[secondIdx];
+            
+            // Skip matches involving the dummy player
+            if (p1Id === -1 || p2Id === -1) {
+                continue;
+            }
+            
+            pushMatches(matches, court, p1Id, p2Id, players);
+            court++;
+        }
+        
+        // Rotate players (keeping the first player fixed)
+        // Rotation: the second element goes to the end, and everything else shifts
+        const secondElement = playerIds[1];
+        for (let i = 1; i < effectivePlayers - 1; i++) {
+            playerIds[i] = playerIds[i + 1];
+        }
+        playerIds[effectivePlayers - 1] = secondElement;
+        
+        pushSchedule(matchSetup, round, matches);
+    }
 }
 
 // single elimination system. Loser is out of the tournament
