@@ -62,6 +62,7 @@ function loadTournament(id) {
         const addPlayerButton = document.getElementById('addPlayerButton');
         addPlayerButton.remove();
         header.remove();
+        Tournaments.setCurrentTournament(tournament.id);
     }
 }
 

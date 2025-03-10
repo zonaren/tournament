@@ -4,6 +4,7 @@ import { generateUniqueId } from "../utils.js";
 class Tournaments {
     constructor() {
         this.tournaments = [];
+        this.currentTournament = null;
         this.loadFromLocalStorage();
     }
 
@@ -34,6 +35,15 @@ class Tournaments {
         if (index !== -1) {
             this.tournaments.splice(index, 1);
         }
+    }
+
+    setCurrentTournament(id) {
+        this.currentTournament = this.get(id);
+        return this.currentTournament;
+    }
+
+    getCurrentTournament() {
+        return this.currentTournament;
     }
 
     saveToLocalStorage() {
@@ -97,4 +107,5 @@ class Tournament {
 
 }
 
+export { Tournament };
 export default new Tournaments();

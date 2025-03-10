@@ -1,8 +1,9 @@
-import Players from './classes/Player.js';
+import Tournaments from './classes/Tournament.js';
 import { updatePlayerTable } from './UI-players.js';
 
 function updateTotalScores(p1id, p2id, p1Score, p2Score) {
-    const players = Players.getAll();
+    const currentTournament = Tournaments.getCurrentTournament();
+    const players = currentTournament.getPlayers();
     // Calculate total scores
     const player1 = players.find(p => p.id === p1id);
     const player2 = players.find(p => p.id === p2id);

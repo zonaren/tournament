@@ -49,6 +49,7 @@ function onStartTournament() {
 
     const tournament = Tournaments.create(TournamentSettings.getRoundCount(), TournamentSettings.getPlayerCount() / 2, matchSetup, 'Test turnering', TournamentSettings.getGametype(), Players.getAll());
     displayTournamentOverview(tournament);
+    Tournaments.setCurrentTournament(tournament.id);
     console.log('Tournament was created', tournament);
     const header = document.getElementById('header');
     const addPlayerButton = document.getElementById('addPlayerButton');
