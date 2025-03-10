@@ -8,15 +8,16 @@ class Round {
 
 
 class Match {
-    constructor(matchId, court, p1, p2) {
+    constructor(matchId, court, p1, p2, isCompleted) {
         this.matchId = matchId;
         this.court = court;
         this.p1 = p1;
         this.p2 = p2;
+        this.isCompleted = false;
     }
 
-    static create(matchId, court, p1, p2) {
-        return new Match(matchId, court, p1, p2);
+    static create(matchId, court, p1, p2, isCompleted) {
+        return new Match(matchId, court, p1, p2, isCompleted);
     }
 
     static read(matchId) {

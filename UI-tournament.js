@@ -98,12 +98,13 @@ function displayRound(round, matchOverviewContainer) {
         const confirmButton = document.createElement('button');
         confirmButton.id = 'confirmButton-' + match.matchId;
         confirmButton.classList.add('confirm-scores-btn');
-        confirmButton.textContent = 'Bekreft';
+        confirmButton.textContent = match.isCompleted ? 'Bekreftet' : 'Bekreft';
 
         const editScoresButton = document.createElement('button');
         editScoresButton.id = 'editScoresButton-' + match.matchId;
         editScoresButton.classList.add('edit-scores-btn');
         editScoresButton.textContent = '+';
+        editScoresButton.disabled = match.isCompleted;
 
         row.appendChild(document.createElement('td')).textContent = match.court;
 
@@ -146,6 +147,7 @@ function displayRound(round, matchOverviewContainer) {
                 alert('Ingen spillere kan ha mindre enn 21 poeng');
                 return;
             }
+            match.isCompleted = true
             updateTotalScores(match.p1.id, match.p2.id, match.p1.scorePoints, match.p2.scorePoints);
             confirmButton.textContent = 'Bekreftet';
             confirmButton.disabled = true;
