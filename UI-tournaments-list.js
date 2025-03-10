@@ -15,7 +15,7 @@ export function displayTournamentsList() {
     
     const thead = table.createTHead();
     const headerRow = thead.insertRow();
-    ['Navn', 'Type', 'Opprettet', 'Runder', 'Handlinger'].forEach(text => {
+    ['Navn', 'Type', 'Opprettet', 'Runder', 'Spillere', 'Handlinger'].forEach(text => {
         const th = document.createElement('th');
         th.textContent = text;
         headerRow.appendChild(th);
@@ -31,6 +31,7 @@ export function displayTournamentsList() {
         row.insertCell().textContent = tournament.type;
         row.insertCell().textContent = tournament.dateCreated;
         row.insertCell().textContent = tournament.totalRounds;
+        row.insertCell().textContent = tournament.getPlayers().length;
 
         const actionsCell = row.insertCell();
         
@@ -46,7 +47,7 @@ export function displayTournamentsList() {
         deleteBtn.textContent = 'Slett';
         deleteBtn.onclick = () => deleteTournament(tournament.id);
 
-        actionsCell.append(loadBtn, editBtn, deleteBtn);
+        actionsCell.append(loadBtn, deleteBtn);
     });
 
     tableContainer.appendChild(table);
@@ -72,6 +73,7 @@ function loadTournament(id) {
 function editTournament(id) {
     // TODO: Implement tournament editing
     console.log('Edit tournament:', id);
+    
 }
 
 function deleteTournament(id) {
