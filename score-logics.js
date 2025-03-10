@@ -1,3 +1,4 @@
+import Players from './classes/Player.js';
 import Tournaments from './classes/Tournament.js';
 import { updatePlayerTable } from './UI-players.js';
 
@@ -30,6 +31,9 @@ function updateTotalScores(p1id, p2id, p1Score, p2Score) {
         player1.matchPoints += 1.5;
         player2.matchPoints += 1.5;
     }
+    Players.update(player1.id, player1);
+    Players.update(player2.id, player2);
+    currentTournament.addPlayers(Players.getAll());
     updatePlayerTable();
 }
 

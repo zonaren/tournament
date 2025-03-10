@@ -35,6 +35,7 @@ class Tournaments {
         if (index !== -1) {
             this.tournaments.splice(index, 1);
         }
+        this.saveToLocalStorage();
     }
 
     setCurrentTournament(id) {
@@ -62,7 +63,8 @@ class Tournaments {
                     tournamentData.totalCourts,
                     tournamentData.matchSchedule,
                     tournamentData.name,
-                    tournamentData.type
+                    tournamentData.type,
+                    tournamentData.players
                 );
                 tournament.id = tournamentData.id;
                 tournament.dateCreated = tournamentData.dateCreated;

@@ -1,3 +1,4 @@
+import Players from './classes/Player.js';
 import Tournaments from './classes/Tournament.js';
 import { displayTournamentOverview } from './UI-tournament.js';
 
@@ -55,6 +56,8 @@ export function displayTournamentsList() {
 function loadTournament(id) {
     const tournament = Tournaments.get(id);
     if (tournament) {
+        console.log('Load tournament:', tournament);
+        Players.loadPlayersFromTournament(tournament.getPlayers());
         const tournamentsList = document.getElementById('tournamentsList');
         tournamentsList.remove();
         displayTournamentOverview(tournament);

@@ -52,6 +52,11 @@ class Players {
         this.addDefaultPlayers(count);
     }
 
+    loadPlayersFromTournament(players) {
+        this.players = players;
+        this.saveToLocalStorage();
+    }
+
     saveToLocalStorage() {
         const playersJson = JSON.stringify(this.players);
         localStorage.setItem('players', playersJson);
