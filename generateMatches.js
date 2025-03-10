@@ -1,4 +1,3 @@
-import {generateUniqueId} from './utils.js';
 import Players from './classes/Player.js';
 import { cascadeSystem, swissSystem, roundRobinSystem } from './tournamentSystems.js';
 

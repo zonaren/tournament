@@ -1,4 +1,5 @@
-import { Players } from './classes/Player.js';
+import Players from './classes/Player.js';
+import {generateUniqueId} from './utils.js';
 
 // Players are divided into two groups. Players in group 1 plays against players in group 2 (maximum 10 rounds)
 // Players in group 1, moves one court after each round. Players in group 2, moves two courts after each round
