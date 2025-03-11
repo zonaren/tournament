@@ -24,16 +24,20 @@ export function openScorePopup(match, player1, player2) {
     saveBtn.addEventListener('click', function() {
         console.log('Player 1 score: ', player1Score, 'Player 2 score: ', player2Score);
         if (player1Score < 21 && player2Score < 21) {
-            alert('Ingen spillere kan ha mindre enn 21 poeng');
+            alert('Minimum en spiller må ha minst 21 poeng');
             
             player1Score = 0;
             player2Score = 0;
+            updateScoreLabel(() => player1Score, 0, (score) => player1Score = score, player1ScoreLabel, player1);
+            updateScoreLabel(() => player2Score, 0, (score) => player2Score = score, player2ScoreLabel, player2);
             return;
         }
-        if (player1Score > 30 || player2Score > 30) {
-            alert('Ingen spillere kan ha mer enn 30 poeng');
+        if (player1Score > 32 || player2Score > 32) {
+            alert('Ingen spillere kan ha mer enn 32 poeng');
             player1Score = 0;
             player2Score = 0;
+            updateScoreLabel(() => player1Score, 0, (score) => player1Score = score, player1ScoreLabel, player1);
+            updateScoreLabel(() => player2Score, 0, (score) => player2Score = score, player2ScoreLabel, player2);
             return;
         }
         updateMatchScores(match, player1Score, player2Score);
@@ -46,8 +50,8 @@ export function openScorePopup(match, player1, player2) {
     popup.appendChild(numberPadsContainer);
 
       // Create number pads for both players
-      createNumberPad(numberPadsContainer, player1, () => player1Score, (score) => player1Score = score);
-      createNumberPad(numberPadsContainer, player2, () => player2Score, (score) => player2Score = score);
+      const player1ScoreLabel = createNumberPad(numberPadsContainer, player1, () => player1Score, (score) => player1Score = score);
+      const player2ScoreLabel = createNumberPad(numberPadsContainer, player2, () => player2Score, (score) => player2Score = score);
     
     document.body.appendChild(popup);
 }
