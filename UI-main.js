@@ -5,7 +5,7 @@ header.className = 'header';
 
 const titleText = document.createElement('h2');
 titleText.id = 'titleText';
-titleText.textContent = 'Banefordelingsnøkkel - GM 8';
+titleText.textContent = 'Gloppen - 8 spillere';
 header.appendChild(titleText);
 
 const menuButtons = document.createElement('div');
