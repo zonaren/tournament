@@ -3,7 +3,7 @@ import Tournaments from './classes/Tournament.js';
 import Players from './classes/Player.js';
 import { displayPlayerOverview } from './UI-players.js';
 import { createMatchSetup } from './generateMatches.js';
-import { playerCountSelect, roundCountSelect, gametypeSelect, titleText } from './UI-main.js';
+import { playerCountSelect, roundCountSelect, gametypeSelect, titleText, showMatchSetupBtn } from './UI-main.js';
 import { createRoundCountSelectOptions } from './generateSelectList.js';
 import { displayTournamentOverview } from './UI-tournament.js';
 import { displayMatchSetup } from './UI-matchSetup.js';
@@ -15,14 +15,20 @@ const mainContainer = document.getElementById('mainContainer');
 function onGametypeChange() {
     const gametype = this.value;
     TournamentSettings.setGametype(gametype);
-    console.log('Gametype was set to ', TournamentSettings.getGametype());
+
     if (gametype === 'Alle mot alle') {
         roundCountSelect.disabled = true;
         TournamentSettings.setRoundCount(TournamentSettings.getPlayerCount() - 1);
-        console.log('Round count was set to ', TournamentSettings.getRoundCount());
-    } else {
-        roundCountSelect.disabled = false;
+        showMatchSetupBtn.classList.add('hidden');
+    } else if (gametype === 'NHM') {
+        showMatchSetupBtn.classList.add('hidden');
     }
+    else {
+        roundCountSelect.disabled = false;
+        showMatchSetupBtn.classList.remove('hidden');
+    }
+    createRoundCountSelectOptions();
+
 }
 
 function onPlayerCountChange() {
@@ -31,7 +37,7 @@ function onPlayerCountChange() {
     createRoundCountSelectOptions();
 
     console.log('Player count was set to ', TournamentSettings.getPlayerCount());
-    titleText.innerHTML = `Banefordelingsnøkkel - GM ${playerCount}`;
+    titleText.textContent = `${playerCount} spillere`;
 }
 
 function onRoundCountChange() {
