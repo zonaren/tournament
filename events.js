@@ -19,13 +19,13 @@ function onGametypeChange() {
     if (gametype === 'Alle mot alle') {
         roundCountSelect.disabled = true;
         TournamentSettings.setRoundCount(TournamentSettings.getPlayerCount() - 1);
-        showMatchSetupBtn.classList.add('hidden');
+        showMatchSetupBtn.disabled = true;
     } else if (gametype === 'NHM') {
-        showMatchSetupBtn.classList.add('hidden');
+        showMatchSetupBtn.disabled = true;
     }
     else {
         roundCountSelect.disabled = false;
-        showMatchSetupBtn.classList.remove('hidden');
+        showMatchSetupBtn.disabled = false;
     }
     createRoundCountSelectOptions();
 
