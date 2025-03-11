@@ -1,14 +1,3 @@
-#tournamentOverview {
-    padding: 0;
-    background-color: grey;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    margin-top: 50px;
-    overflow: hidden;  /* Ensures parent doesn't scroll */
-    position: fixed;   /* Fix the container to prevent any scrolling */
-}
-
 #tournamentInfo {
     display: flex;
     align-items: center;
@@ -25,46 +14,97 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-#matchOverview, #playerOverview {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow-y: auto;  /* Keep these containers scrollable */
-    height: calc(100vh - 70px);  /* Adjust height to account for tournament info and margins */
-    padding: 5px;
-    box-sizing: border-box;
-    background-color: grey;
-    margin: 5px;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+@media screen and (min-width: 715px) {
+
+    #tournamentOverview {
+        padding: 0;
+        background-color: grey;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        margin-top: 50px;
+        overflow: hidden;  /* Ensures parent doesn't scroll */
+        position: fixed;   /* Fix the container to prevent any scrolling */
+    }
+    
+    #matchOverview, #playerOverview {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow-y: auto;  /* Keep these containers scrollable */
+        height: calc(100vh - 70px);  /* Adjust height to account for tournament info and margins */
+        padding: 5px;
+        box-sizing: border-box;
+        background-color: grey;
+        margin: 5px;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    
+    #matchOverview {
+        width: 60%;
+    }
+    
+    #playerOverview {
+        width: 40%;
+    }
+    
+    #matchOverview::-webkit-scrollbar, 
+    #playerOverview::-webkit-scrollbar {
+        width: 15px;
+    }
+    
+    #matchOverview::-webkit-scrollbar-track, 
+    #playerOverview::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+    }
+    
+    #matchOverview::-webkit-scrollbar-thumb, 
+    #playerOverview::-webkit-scrollbar-thumb {
+        background: #cbd5e0;
+        border-radius: 4px;
+    }
+    
+    #matchOverview::-webkit-scrollbar-thumb:hover, 
+    #playerOverview::-webkit-scrollbar-thumb:hover {
+        background: #a0aec0;
+    }
+    
 }
 
-#matchOverview {
-    width: 60%;
+@media screen and (max-width: 715px) {
+    #tournamentOverview {
+        padding: 0;
+        background-color: grey;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 50px;
+    }
+
+
+    #matchOverview, #playerOverview {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 5px;
+        box-sizing: border-box;
+        background-color: grey;
+        margin: 5px;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    
+    #matchOverview {
+        width: 100%;
+    }
+    
+    #playerOverview {
+        width: 100%;
+    }
+
+    
 }
 
-#playerOverview {
-    width: 40%;
-}
-
-#matchOverview::-webkit-scrollbar, 
-#playerOverview::-webkit-scrollbar {
-    width: 15px;
-}
-
-#matchOverview::-webkit-scrollbar-track, 
-#playerOverview::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 4px;
-}
-
-#matchOverview::-webkit-scrollbar-thumb, 
-#playerOverview::-webkit-scrollbar-thumb {
-    background: #cbd5e0;
-    border-radius: 4px;
-}
-
-#matchOverview::-webkit-scrollbar-thumb:hover, 
-#playerOverview::-webkit-scrollbar-thumb:hover {
-    background: #a0aec0;
-}
