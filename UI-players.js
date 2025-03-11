@@ -6,7 +6,7 @@ import Players from './classes/Player.js';
  */
 function createTableHeader() {
     const headerRow = document.createElement('tr');
-    const headers = ['Pl.', 'Navn', 'SP', 'KP'];
+    const headers = ['Pl.', 'S', 'Navn', 'SP', 'KP'];
     
     headers.forEach(text => {
         const th = document.createElement('th');
@@ -32,6 +32,10 @@ function createPlayerRow(player, index, playerOverviewContainer) {
     const positionCell = document.createElement('td');
     positionCell.textContent = index + 1;
     row.appendChild(positionCell);
+
+    const startNumberCell = document.createElement('td');
+    startNumberCell.textContent = player.id;
+    row.appendChild(startNumberCell);
 
     // Name column with edit functionality
     const nameCell = createEditableNameCell(player, row, playerOverviewContainer);
