@@ -56,7 +56,7 @@ function handleWalkover(match, p1ScoreCell, p2ScoreCell, confirmButton, editScor
         p1ScoreCell.textContent = match.p1.scorePoints;
         p2ScoreCell.textContent = match.p2.scorePoints;
         editScoresButton.disabled = true;
-        confirmButton.disabled = false;
+        confirmButton.disabled = match.isCompleted;
     }
 }
 
