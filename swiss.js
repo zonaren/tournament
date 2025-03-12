@@ -2,6 +2,7 @@
 
 import Player from "./classes/Player.js";
 import { generateUniqueId } from "./utils.js";
+import { Match } from './classes/Match.js';
 
 // rules for swiss tournament:
 // 1. Competitors meet one-on-one in each round and are paired using a set of rules designed to ensure that each competitor plays opponents 
@@ -83,6 +84,7 @@ function checkMatches(matches) {
 function pairPlayers(unplayedMatches, playerStats, roundNumber, tournament) {
     let matches = [];
     let playersPaired = new Set();
+    const generatedIds = new Set();
 
     // Function to attempt pairing players
     function attemptPairing(playerStats) {
@@ -103,24 +105,29 @@ function pairPlayers(unplayedMatches, playerStats, roundNumber, tournament) {
 
                 let opponent = playerStats.find(p => p.id === opponentId);
                 if (opponent) {
-                    matches.push({
-                        matchId: generateUniqueId(new Set()),
-                        court: matches.length + 1, // Assuming each match is on a separate court
-                        p1: {
-                            id: player.id,
-                            name: player.name,
-                            scorePoints: 0,
-                            matchPoints: 0,
-                            details: [] // Add details as needed
-                        },
-                        p2: {
-                            id: opponent.id,
-                            name: opponent.name,
-                            scorePoints: 0,
-                            matchPoints: 0,
-                            details: [] // Add details as needed
-                        }
-                    });
+                    // Create player objects for match
+                    const player1Obj = {
+                        id: player.id,
+                        name: player.name,
+                        scorePoints: 0,
+                        matchPoints: 0,
+                        details: []
+                    };
+                    
+                    const player2Obj = {
+                        id: opponent.id,
+                        name: opponent.name,
+                        scorePoints: 0,
+                        matchPoints: 0,
+                        details: []
+                    };
+
+                    // Use the Match class
+                    const matchId = generateUniqueId(generatedIds);
+                    const court = matches.length + 1;
+                    const match = new Match(matchId, court, player1Obj, player2Obj, false);
+                    
+                    matches.push(match);
                     playersPaired.add(player.id);
                     playersPaired.add(opponent.id);
                 } else {

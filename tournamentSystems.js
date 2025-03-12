@@ -1,5 +1,6 @@
 import Players from './classes/Player.js';
-import {generateUniqueId} from './utils.js';
+import { generateUniqueId } from './utils.js';
+import { Match } from './classes/Match.js';
 
 // Players are divided into two groups. Players in group 1 plays against players in group 2 (maximum 10 rounds)
 // Players in group 1, moves one court after each round. Players in group 2, moves two courts after each round
@@ -104,7 +105,7 @@ function doubleEliminationSystem(totalPlayers, totalCourts,schedule){
 
 }
 
-// cointains the match schedule for the tournament
+// contains the match schedule for the tournament
 function pushSchedule(matchSetup, round, matches) {
     matchSetup.push({
         roundNumber: round,
@@ -112,7 +113,7 @@ function pushSchedule(matchSetup, round, matches) {
     });
 }
 
-// cointains all the matches for each round
+// contains all the matches for each round
 function pushMatches(matches, court, p1, p2) {
     const generatedIds = new Set();
     const players = Players.getAll();
@@ -123,29 +124,33 @@ function pushMatches(matches, court, p1, p2) {
         throw new Error('Player not found');
     }
 
+    // Create player objects for match
+    const player1Obj = {
+        id: p1,
+        name: player1.name,
+        scorePoints: 0,
+        matchPoints: 0,
+        details: [
+            {points: 0, ringers: 0}
+        ]
+    };
+    
+    const player2Obj = {
+        id: p2,
+        name: player2.name,
+        scorePoints: 0,
+        matchPoints: 0,
+        details: [
+            {points: 0, ringers: 0}
+        ]
+    };
 
-    matches.push({
-        matchId: generateUniqueId(generatedIds),
-        court: court,
-        p1: {
-            id: p1,
-            name: player1.name,
-            scorePoints: 0,
-            matchPoints: 0,
-            details: [
-                {points: 0, ringers: 0}
-            ]
-        },
-        p2: {
-            id: p2,
-            name: player2.name,
-            scorePoints: 0,
-            matchPoints: 0,
-            details: [
-                {points: 0, ringers: 0}
-            ]
-        }
-    });
+    // Create a Match instance using the Match class
+    const matchId = generateUniqueId(generatedIds);
+    const match = new Match(matchId, court, player1Obj, player2Obj, false);
+    
+    // Push the Match instance to the matches array
+    matches.push(match);
 }
 
 export { cascadeSystem, swissSystem, roundRobinSystem, singleEliminationSystem, doubleEliminationSystem };

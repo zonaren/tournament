@@ -1,4 +1,5 @@
 import Round from "./Match.js";
+import { Match } from "./Match.js";
 import { generateUniqueId } from "../utils.js";
 
 class Tournaments {
@@ -82,12 +83,45 @@ class Tournament {
         this.type = tournamentType;
         this.totalRounds = totalRounds;
         this.totalCourts = totalCourts;
-        this.matchSchedule = matchSchedule.map(round => new Round(round.roundNumber, round.matches));
+        
+        // Convert plain match objects to Match instances in each round
+        this.matchSchedule = matchSchedule.map(round => {
+            const matches = round.matches.map(matchData => {
+                // If the match is already a Match instance, use it as is
+                if (matchData instanceof Match) {
+                    return matchData;
+                }
+                // Otherwise, create a new Match instance
+                return new Match(
+                    matchData.matchId, 
+                    matchData.court, 
+                    matchData.p1, 
+                    matchData.p2, 
+                    matchData.isCompleted || false
+                );
+            });
+            return new Round(round.roundNumber, matches);
+        });
+        
         this.players = players;
     }
 
     addRound(roundNumber, matches) {
-        this.matchSchedule.push(new Round(roundNumber, matches));
+        // Ensure all matches are Match instances
+        const matchInstances = matches.map(match => {
+            if (match instanceof Match) {
+                return match;
+            }
+            return new Match(
+                match.matchId,
+                match.court,
+                match.p1,
+                match.p2,
+                match.isCompleted || false
+            );
+        });
+        
+        this.matchSchedule.push(new Round(roundNumber, matchInstances));
         this.saveToLocalStorage();
     }
 
@@ -106,7 +140,6 @@ class Tournament {
         tournaments[index] = this;
         localStorage.setItem('tournaments', JSON.stringify(tournaments));
     }
-
 }
 
 export { Tournament };
