@@ -11,6 +11,17 @@ export function proceedToNextRoundBtn(tournament) {
 
         const round = tournament.matchSchedule.length;
 
+        console.log('Current round: ', round);
+
+        // if all matches are played, calculate the next round
+        const allMatchesCompleted = tournament.matchSchedule[round - 1].matches.every(match => match.isCompleted === true);
+        if (!allMatchesCompleted) {
+            const courtsNotCompleted = tournament.matchSchedule[round - 1].matches.filter(match => match.isCompleted === false).map(match => match.court);
+            console.log('Courts not played: ', courtsNotCompleted);
+            alert('Kamper er ikke fullført på bane: ' + courtsNotCompleted.join(', '));
+            return;
+        }
+
         const nextRound = calculateNextRound(tournament, round);
         // if the next round is not null, update the current round and the UI
         if (nextRound !== null) {
