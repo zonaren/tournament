@@ -4,7 +4,7 @@ import { cascadeSystem, swissSystem, roundRobinSystem } from './tournamentSystem
 export function createMatchSetup(totalPlayers, totalRounds) {
     const gametypeElement = document.getElementById('gametypeSelect');
     if(gametypeElement.value !== 'Alle mot alle') {
-        addWalkover(totalPlayers);
+        totalPlayers = addWalkover(totalPlayers);
     }
     
     const totalCourts = totalPlayers / 2;
@@ -37,4 +37,5 @@ function addWalkover(totalPlayers) {
         console.log(`Startnumber `,totalPlayers, ` is set to be Walkover`)
         Players.create(totalPlayers, 'Walkover');
     }
+    return totalPlayers;
 }
