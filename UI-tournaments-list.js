@@ -45,7 +45,13 @@ export function displayTournamentsList() {
         
         const deleteBtn = document.createElement('button');
         deleteBtn.textContent = 'Slett';
-        deleteBtn.onclick = () => deleteTournament(tournament.id);
+        deleteBtn.onclick = function() {
+            this.replaceWith(confirmDelete);
+        };
+
+        const confirmDelete = document.createElement('button');
+        confirmDelete.textContent = 'Bekreft sletting';
+        confirmDelete.onclick = () => deleteTournament(tournament.id, row);
 
         actionsCell.append(loadBtn, deleteBtn);
     });
@@ -76,9 +82,7 @@ function editTournament(id) {
     
 }
 
-function deleteTournament(id) {
-    if (confirm('Er du sikker på at du vil slette denne turneringen?')) {
+function deleteTournament(id, row) {
         Tournaments.delete(id);
-        displayTournamentsList(); // Refresh the list
-    }
+        row.remove();
 }
