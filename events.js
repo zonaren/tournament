@@ -1,7 +1,7 @@
 import TournamentSettings from './classes/TournamentSettings.js';
 import Tournaments from './classes/Tournament.js';
 import Players from './classes/Player.js';
-import { displayPlayerOverview } from './UI-players.js';
+import { displayPlayerOverview, createButtonsContainer } from './UI-players.js';
 import { createMatchSetup } from './generateMatches.js';
 import { playerCountSelect, roundCountSelect, gametypeSelect, titleText, showMatchSetupBtn } from './UI-main.js';
 import { createRoundCountSelectOptions } from './generateSelectList.js';
@@ -51,6 +51,7 @@ function onRoundCountChange() {
 function onPrepareTournament() {
     Players.resetPlayers(TournamentSettings.getPlayerCount());
     mainContainer.innerHTML = '';
+    mainContainer.appendChild(createButtonsContainer());
     displayPlayerOverview(mainContainer);
     this.classList.add('hidden');
     const startTournamentButton = document.getElementById('start-btn');
@@ -65,8 +66,6 @@ function onStartTournament() {
     Tournaments.setCurrentTournament(tournament.id);
     console.log('Tournament was created', tournament);
     const header = document.getElementById('header');
-    const addPlayerButton = document.getElementById('addPlayerButton');
-    addPlayerButton.remove();
     header.remove();
 }
 

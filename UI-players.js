@@ -150,30 +150,7 @@ function navigateToNextPlayer(nextRowIndex) {
     }
 }
 
-/**
- * Creates a new player
- * @param {string} [playerName] - Optional name for the new player
- */
-function createNewPlayerPrompt(playerName) {
-    const name = playerName || prompt('Navn på ny spiller:');
-    const mainContainer = document.getElementById('mainContainer');
-    if (name) {
-        Players.create(Players.count() + 1, name);
-        displayPlayerOverview(mainContainer);
-    }
-}
 
-/**
- * Creates the "Add Player" button
- * @returns {HTMLButtonElement} The created button
- */
-function createAddPlayerButton() {
-    const button = document.createElement('button');
-    button.id = 'addPlayerButton';
-    button.textContent = 'Legg til spiller';
-    button.addEventListener('click', () => createNewPlayerPrompt());
-    return button;
-}
 
 /**
  * Displays the player overview table
@@ -233,11 +210,71 @@ function playerOverviewContent(playerOverview) {
     table.createTBody(); // Create empty tbody
 
     playerOverview.appendChild(playerCount);
-    playerOverview.appendChild(createAddPlayerButton());
     playerOverview.appendChild(table);
     
     // Update the table contents
     updatePlayerTable();
 }
 
-export { displayPlayerOverview, updatePlayerTable };
+function createButtonsContainer() {
+    const container = document.createElement('div');
+    container.classList.add('buttons-container');
+    container.appendChild(createAddPlayerButton());
+    container.appendChild(createShuffleButton());
+    return container;
+}
+
+/**
+ * Creates a new player
+ * @param {string} [playerName] - Optional name for the new player
+ */
+function createNewPlayerPrompt(playerName) {
+    const name = playerName || prompt('Navn på ny spiller:');
+    const mainContainer = document.getElementById('mainContainer');
+    if (name) {
+        Players.create(Players.count() + 1, name);
+        displayPlayerOverview(mainContainer);
+    }
+}
+
+/**
+ * Creates the "Add Player" button
+ * @returns {HTMLButtonElement} The created button
+ */
+function createAddPlayerButton() {
+    const button = document.createElement('button');
+    button.id = 'addPlayerButton';
+    button.textContent = 'Legg til spiller';
+    button.addEventListener('click', () => createNewPlayerPrompt());
+    return button;
+}
+
+function createShuffleButton() {
+    const button = document.createElement('button');
+    button.id = 'shuffleStartNumbers';
+    button.textContent = 'Tilfeldige startnummer';
+    button.addEventListener('click', () => shuffleStartNumbers());
+    return button;
+}
+
+function shuffleStartNumbers() {
+    const players = Players.getAll();
+    const shuffled = shuffle(players);
+    shuffled.forEach((player, index) => {
+        player.id = index + 1;
+    });
+    Players.saveToLocalStorage();
+    updatePlayerTable();
+}
+
+function shuffle(array) {
+
+    const shuffled = [...array]
+        .map(a => ({sort: Math.random(), value: a}))
+        .sort((a, b) => a.sort - b.sort)
+        .map(a => a.value);
+
+    return shuffled;
+}
+
+export { displayPlayerOverview, updatePlayerTable, createButtonsContainer };
