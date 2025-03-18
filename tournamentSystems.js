@@ -27,13 +27,17 @@ function cascadeSystem(totalRounds, totalCourts, matchSetup){
 function swissSystem(totalCourts, matchSetup){
     const players = Players.getAll();
     let matches = [];
+    let court = 1;
 
-    for (let court = 1; court <= totalCourts; court++) {
-        const p1Id = ((court - 1 + 0) % totalCourts) + 1; // round - 1 is 0 for the first round
-        const p2Id = ((court - 1 + 2 * 0) % totalCourts) + 1 + totalCourts; // round - 1 is 0 for the first round
-
-        pushMatches(matches, court, p1Id, p2Id, players);
+    // Pair odd players with even players
+    for (let i = 1; i <= players.length; i += 2) {
+        // Check if we have both players and haven't exceeded court count
+        if (i+1 <= players.length && court <= totalCourts) {
+            pushMatches(matches, court, i, i+1, players);
+            court++;
+        }
     }
+    
     pushSchedule(matchSetup, 1, matches);
 }
 
