@@ -1,4 +1,4 @@
-export function displayMatchSetup(matchSetup) {
+export function displayMatchSetup(matchSetup, playerCount) {
     console.log('Displaying match setup:', matchSetup);
     const mainContainer = document.getElementById('mainContainer');
     mainContainer.innerHTML = '';
@@ -18,7 +18,7 @@ export function displayMatchSetup(matchSetup) {
     }
 
     // Populate table
-    const playerCount = matchSetup.length * 2; // Total players are twice the number of matches (each match has 2 players)
+    //const playerCount = matchSetup.length * 2; // Total players are twice the number of matches (each match has 2 players)
     console.log('Match setup:', matchSetup);
     for (let player = 1; player <= playerCount; player++) {
         const row = tbody.insertRow();

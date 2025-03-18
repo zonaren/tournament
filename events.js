@@ -76,7 +76,7 @@ function onShowTournaments() {
 function onShowMatchSetup() {
     Players.resetPlayers(TournamentSettings.getPlayerCount());
     const matchSetup = createMatchSetup(Players.count(), TournamentSettings.getRoundCount());
-    displayMatchSetup(matchSetup);
+    displayMatchSetup(matchSetup, TournamentSettings.getPlayerCount());
 }
 
 function onPrintContent() {
