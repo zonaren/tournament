@@ -1,0 +1,412 @@
+[
+    {
+        "name": "Playoff - Number of Players with walkovers in the first round (maximum 2 walkovers and limited to 1st round)",
+        "3 players per court": [
+            {
+                "totalPlayers": 8,
+                "rounds": [
+                    {"round": 1, "playing": 6, "courts": 2},
+                    {"round": 2, "playing": 6, "courts": 2},
+                    {"round": 3, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 2
+            },
+            {
+                "totalPlayers": 11,
+                "rounds": [
+                    {"round": 1, "playing": 9, "courts": 3},
+                    {"round": 2, "playing": 8, "courts": 4},
+                    {"round": 3, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 2
+            },
+            {
+                "totalPlayers": 13,
+                "rounds": [
+                    {"round": 1, "playing": 12, "courts": 4},
+                    {"round": 2, "playing": 9, "courts": 3},
+                    {"round": 3, "playing": 6, "courts": 2},
+                    {"round": 4, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 1
+            },
+            {
+                "totalPlayers": 17,
+                "rounds": [
+                    {"round": 1, "playing": 15, "courts": 5},
+                    {"round": 2, "playing": 12, "courts": 4},
+                    {"round": 3, "playing": 8, "courts": 4},
+                    {"round": 4, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 2
+            },
+            {
+                "totalPlayers": 23,
+                "rounds": [
+                    {"round": 1, "playing": 21, "courts": 7},
+                    {"round": 2, "playing": 16, "courts": 8},
+                    {"round": 3, "playing": 8, "courts": 4},
+                    {"round": 4, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 2
+            },
+            {
+                "totalPlayers": 26,
+                "rounds": [
+                    {"round": 1, "playing": 24, "courts": 8},
+                    {"round": 2, "playing": 18, "courts": 6},
+                    {"round": 3, "playing": 12, "courts": 4},
+                    {"round": 4, "playing": 8, "courts": 4},
+                    {"round": 5, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 2
+            },
+            {
+                "totalPlayers": 35,
+                "rounds": [
+                    {"round": 1, "playing": 33, "courts": 11},
+                    {"round": 2, "playing": 24, "courts": 8},
+                    {"round": 3, "playing": 16, "courts": 8},
+                    {"round": 4, "playing": 8, "courts": 4},
+                    {"round": 5, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 2
+            },
+            {
+                "totalPlayers": 40,
+                "rounds": [
+                    {"round": 1, "playing": 39, "courts": 13},
+                    {"round": 2, "playing": 27, "courts": 9},
+                    {"round": 3, "playing": 18, "courts": 6},
+                    {"round": 4, "playing": 12, "courts": 4},
+                    {"round": 5, "playing": 8, "courts": 4},
+                    {"round": 6, "playing": 4, "courts": 4}
+                ],
+                "totalWalkovers": 1
+            },
+            {
+                "totalPlayers": 47,
+                "rounds": [
+                    {"round": 1, "playing": 45, "courts": 15},
+                    {"round": 2, "playing": 32, "courts": 16},
+                    {"round": 3, "playing": 16, "courts": 8},
+                    {"round": 4, "playing": 8, "courts": 4},
+                    {"round": 5, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 2
+            },
+            {
+                "totalPlayers": 53,
+                "rounds": [
+                    {"round": 1, "playing": 51, "courts": 17},
+                    {"round": 2, "playing": 36, "courts": 12},
+                    {"round": 3, "playing": 24, "courts": 8},
+                    {"round": 4, "playing": 16, "courts": 8},
+                    {"round": 5, "playing": 8, "courts": 4},
+                    {"round": 6, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 2
+            },
+            {
+                "totalPlayers": 71,
+                "rounds": [
+                    {"round": 1, "playing": 69, "courts": 23},
+                    {"round": 2, "playing": 48, "courts": 16},
+                    {"round": 3, "playing": 32, "courts": 16},
+                    {"round": 4, "playing": 16, "courts": 8},
+                    {"round": 5, "playing": 8, "courts": 4},
+                    {"round": 6, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 2
+            },
+            {
+                "totalPlayers": 80,
+                "rounds": [
+                    {"round": 1, "playing": 78, "courts": 26},
+                    {"round": 2, "playing": 54, "courts": 18},
+                    {"round": 3, "playing": 36, "courts": 12},
+                    {"round": 4, "playing": 24, "courts": 8},
+                    {"round": 5, "playing": 16, "courts": 8},
+                    {"round": 6, "playing": 8, "courts": 4},
+                    {"round": 7, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 2
+            }
+        ],
+        "2 players per court": [
+            {
+                "totalPlayers": 5,
+                "rounds": [
+                    {"round": 1, "playing": 4, "courts": 2},
+                    {"round": 2, "playing": 3, "courts": 1},
+                    {"round": 3, "playing": 2, "courts": 1}
+                ],
+                "totalWalkovers": 1
+            },
+            {
+                "totalPlayers": 10,
+                "rounds": [
+                    {"round": 1, "playing": 8, "courts": 4},
+                    {"round": 2, "playing": 6, "courts": 2},
+                    {"round": 3, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 2
+            },
+            {
+                "totalPlayers": 14,
+                "rounds": [
+                    {"round": 1, "playing": 12, "courts": 6},
+                    {"round": 2, "playing": 8, "courts": 4},
+                    {"round": 3, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 2
+            },
+            {
+                "totalPlayers": 15,
+                "rounds": [
+                    {"round": 1, "playing": 14, "courts": 7},
+                    {"round": 2, "playing": 8, "courts": 4},
+                    {"round": 3, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 1
+            },
+            {
+                "totalPlayers": 30,
+                "rounds": [
+                    {"round": 1, "playing": 28, "courts": 14},
+                    {"round": 2, "playing": 16, "courts": 8},
+                    {"round": 3, "playing": 8, "courts": 4},
+                    {"round": 4, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 2
+            },
+            {
+                "totalPlayers": 31,
+                "rounds": [
+                    {"round": 1, "playing": 30, "courts": 15},
+                    {"round": 2, "playing": 16, "courts": 8},
+                    {"round": 3, "playing": 8, "courts": 4},
+                    {"round": 4, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 1
+            },
+            {
+                "totalPlayers": 63,
+                "rounds": [
+                    {"round": 1, "playing": 62, "courts": 31},
+                    {"round": 2, "playing": 32, "courts": 16},
+                    {"round": 3, "playing": 16, "courts": 8},
+                    {"round": 4, "playing": 8, "courts": 4},
+                    {"round": 5, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 1
+            }
+        ]
+    },
+    {
+        "name": "Playoff Number of Players - No walkovers",
+        "3 players per court": [
+            {
+                "totalPlayers": 6,
+                "rounds": [
+                    {"round": 1, "playing": 6, "courts": 2},
+                    {"round": 2, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 0
+            },
+            {
+                "totalPlayers": 9,
+                "rounds": [
+                    {"round": 1, "playing": 9, "courts": 3},
+                    {"round": 2, "playing": 6, "courts": 2},
+                    {"round": 3, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 0
+            },
+            {
+                "totalPlayers": 12,
+                "rounds": [
+                    {"round": 1, "playing": 12, "courts": 4},
+                    {"round": 2, "playing": 8, "courts": 4},
+                    {"round": 3, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 0
+            },
+            {
+                "totalPlayers": 18,
+                "rounds": [
+                    {"round": 1, "playing": 18, "courts": 6},
+                    {"round": 2, "playing": 12, "courts": 4},
+                    {"round": 3, "playing": 8, "courts": 4},
+                    {"round": 4, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 0
+            },
+            {
+                "totalPlayers": 24,
+                "rounds": [
+                    {"round": 1, "playing": 24, "courts": 8},
+                    {"round": 2, "playing": 16, "courts": 8},
+                    {"round": 3, "playing": 8, "courts": 4},
+                    {"round": 4, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 0
+            },
+            {
+                "totalPlayers": 27,
+                "rounds": [
+                    {"round": 1, "playing": 27, "courts": 9},
+                    {"round": 2, "playing": 18, "courts": 6},
+                    {"round": 3, "playing": 12, "courts": 4},
+                    {"round": 4, "playing": 8, "courts": 4},
+                    {"round": 5, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 0
+            },
+            {
+                "totalPlayers": 36,
+                "rounds": [
+                    {"round": 1, "playing": 36, "courts": 12},
+                    {"round": 2, "playing": 24, "courts": 8},
+                    {"round": 3, "playing": 16, "courts": 8},
+                    {"round": 4, "playing": 8, "courts": 4},
+                    {"round": 5, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 0
+            },
+            {
+                "totalPlayers": 48,
+                "rounds": [
+                    {"round": 1, "playing": 48, "courts": 16},
+                    {"round": 2, "playing": 32, "courts": 16},
+                    {"round": 3, "playing": 16, "courts": 8},
+                    {"round": 4, "playing": 8, "courts": 4},
+                    {"round": 5, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 0
+            },
+            {
+                "totalPlayers": 54,
+                "rounds": [
+                    {"round": 1, "playing": 54, "courts": 18},
+                    {"round": 2, "playing": 36, "courts": 12},
+                    {"round": 3, "playing": 24, "courts": 8},
+                    {"round": 4, "playing": 16, "courts": 8},
+                    {"round": 5, "playing": 8, "courts": 4},
+                    {"round": 6, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 0
+            },
+            {
+                "totalPlayers": 72,
+                "rounds": [
+                    {"round": 1, "playing": 72, "courts": 24},
+                    {"round": 2, "playing": 48, "courts": 16},
+                    {"round": 3, "playing": 32, "courts": 16},
+                    {"round": 4, "playing": 16, "courts": 8},
+                    {"round": 5, "playing": 8, "courts": 4},
+                    {"round": 6, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 0
+            },
+            {
+                "totalPlayers": 81,
+                "rounds": [
+                    {"round": 1, "playing": 81, "courts": 27},
+                    {"round": 2, "playing": 54, "courts": 18},
+                    {"round": 3, "playing": 36, "courts": 12},
+                    {"round": 4, "playing": 24, "courts": 8},
+                    {"round": 5, "playing": 16, "courts": 8},
+                    {"round": 6, "playing": 8, "courts": 4},
+                    {"round": 7, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 0
+            },
+            {
+                "totalPlayers": 96,
+                "rounds": [
+                    {"round": 1, "playing": 96, "courts": 32},
+                    {"round": 2, "playing": 64, "courts": 32},
+                    {"round": 3, "playing": 32, "courts": 16},
+                    {"round": 4, "playing": 16, "courts": 8},
+                    {"round": 5, "playing": 8, "courts": 4},
+                    {"round": 6, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 0
+            }
+        ],
+        "2 players per court": [
+            {
+                "totalPlayers": 4,
+                "rounds": [
+                    {"round": 1, "playing": 4, "courts": 2},
+                    {"round": 2, "playing": 2, "courts": 1}
+                ],
+                "totalWalkovers": 0
+            },
+            {
+                "totalPlayers": 8,
+                "rounds": [
+                    {"round": 1, "playing": 8, "courts": 4},
+                    {"round": 2, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 0
+            },
+            {
+                "totalPlayers": 16,
+                "rounds": [
+                    {"round": 1, "playing": 16, "courts": 8},
+                    {"round": 2, "playing": 8, "courts": 4},
+                    {"round": 3, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 0
+            },
+            {
+                "totalPlayers": 32,
+                "rounds": [
+                    {"round": 1, "playing": 32, "courts": 16},
+                    {"round": 2, "playing": 16, "courts": 8},
+                    {"round": 3, "playing": 8, "courts": 4},
+                    {"round": 4, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 0
+            },
+            {
+                "totalPlayers": 64,
+                "rounds": [
+                    {"round": 1, "playing": 64, "courts": 32},
+                    {"round": 2, "playing": 32, "courts": 16},
+                    {"round": 3, "playing": 16, "courts": 8},
+                    {"round": 4, "playing": 8, "courts": 4},
+                    {"round": 5, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 0
+            },
+            {
+                "totalPlayers": 128,
+                "rounds": [
+                    {"round": 1, "playing": 128, "courts": 64},
+                    {"round": 2, "playing": 64, "courts": 32},
+                    {"round": 3, "playing": 32, "courts": 16},
+                    {"round": 4, "playing": 16, "courts": 8},
+                    {"round": 5, "playing": 8, "courts": 4},
+                    {"round": 6, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 0
+            },
+            {
+                "totalPlayers": 256,
+                "rounds": [
+                    {"round": 1, "playing": 256, "courts": 128},
+                    {"round": 2, "playing": 128, "courts": 64},
+                    {"round": 3, "playing": 64, "courts": 32},
+                    {"round": 4, "playing": 32, "courts": 16},
+                    {"round": 5, "playing": 16, "courts": 8},
+                    {"round": 6, "playing": 8, "courts": 4},
+                    {"round": 7, "playing": 4, "courts": 2}
+                ],
+                "totalWalkovers": 0
+            }
+        ]
+    }
+]
