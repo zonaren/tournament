@@ -73,6 +73,18 @@ export function openScorePopup(match, player1, player2) {
         playerScoreLabel.textContent = getPlayerScore();
         playerInfo.appendChild(playerScoreLabel);
 
+        const resetScoreButton = document.createElement('button');
+        resetScoreButton.textContent = 'Reset';
+        resetScoreButton.classList.add('reset-score-btn');
+        resetScoreButton.addEventListener('click', function() {
+            setPlayerScore(0);
+            playerScoreLabel.textContent = 0;
+        });
+        
+        playerInfo.appendChild(resetScoreButton);
+
+
+
         const numberPad = document.createElement('div');
         numberPad.classList.add('number-pad');
         numberPadContainer.appendChild(numberPad);
