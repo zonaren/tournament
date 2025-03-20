@@ -69,8 +69,6 @@ function loadTournament(id) {
         tournamentsList.remove();
         displayTournamentOverview(tournament);
         const header = document.getElementById('header');
-        const addPlayerButton = document.getElementById('addPlayerButton');
-        addPlayerButton.remove();
         header.remove();
         Tournaments.setCurrentTournament(tournament.id);
     }
