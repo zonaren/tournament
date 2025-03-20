@@ -139,19 +139,10 @@ function pairPlayers(unplayedMatches, playerStats, roundNumber, tournament) {
         return true; // Pairing succeeded
     }
 
-    // Try pairing with different sorting options
     // Sort by matchPoints and scorePoints in descending order (highest first)
     const sortingOptions = [
-        (a, b) => b.matchPoints - a.matchPoints || b.scorePoints - a.scorePoints, // MatchPoints first, then scorePoints
+        (a, b) => b.matchPoints - a.matchPoints || b.scorePoints - a.scorePoints || b.id - a.id, // MatchPoints first, then scorePoints, then id (startnumber)
         
-        (a, b) => b.scorePoints - a.scorePoints || b.matchPoints - a.matchPoints, // ScorePoints first, then matchPoints
-        (a, b) => b.matchPoints - a.matchPoints, // Only matchPoints
-        (a, b) => b.scorePoints - a.scorePoints, // Only scorePoints
-        // Ascending order. Make sure to place the top players on court 1, 2, 3, etc.
-        (a, b) => a.matchPoints - b.matchPoints || a.scorePoints - b.scorePoints, // MatchPoints first, then scorePoints (ascending)
-        (a, b) => a.scorePoints - b.scorePoints || a.matchPoints - b.matchPoints, // ScorePoints first, then matchPoints (ascending)
-        (a, b) => a.matchPoints - b.matchPoints, // Only matchPoints (ascending)
-        (a, b) => a.scorePoints - b.scorePoints  // Only scorePoints (ascending)
     ];
 
     let pairingSucceeded = false;
