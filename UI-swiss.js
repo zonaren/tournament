@@ -5,7 +5,7 @@ import { displayTournamentOverview } from './UI-tournament.js';
 export function proceedToNextRoundBtn(tournament) {
     const proceedToNextRoundBtn = document.createElement('button');
     proceedToNextRoundBtn.textContent = 'Gå til neste runde';
-    proceedToNextRoundBtn.classList.add('proceed-to-next-round-btn');
+    proceedToNextRoundBtn.classList.add('swiss-btn');
     proceedToNextRoundBtn.addEventListener('click', function() {
         // calculate the next round
 
@@ -37,7 +37,7 @@ export let showAllRounds = false; // State variable to keep track of whether all
 export function toggleAllRoundsBtn(tournament) {
     const showAllRoundsBtn = document.createElement('button');
     showAllRoundsBtn.textContent = 'Vis alle runder';
-    showAllRoundsBtn.classList.add('show-all-rounds-btn');
+    showAllRoundsBtn.classList.add('swiss-btn');
     showAllRoundsBtn.addEventListener('click', function() {
         showAllRounds = !showAllRounds; // Toggle the state
         showAllRoundsBtn.textContent = showAllRounds ? 'Vis siste runde' : 'Vis alle runder'; // Update the button text
