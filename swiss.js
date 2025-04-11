@@ -141,44 +141,33 @@ function pairPlayers(unplayedMatches, playerStats, roundNumber, tournament) {
 
     // Sort by matchPoints and scorePoints in descending order (highest first)
     const sortingOptions = [
-        (a, b) => b.matchPoints - a.matchPoints || b.scorePoints - a.scorePoints || b.id - a.id, // MatchPoints first, then scorePoints, then id (startnumber)
+        (a, b) => b.matchPoints - a.matchPoints || b.scorePoints - a.scorePoints || a.id - b.id, // MatchPoints first, then scorePoints, then id (startnumber)
         
     ];
+
+    // TODO
+    // always make sure that the players with the highest score is placed first in the list (playing on the first courts)
+    // always make sure that the player with the lowest score gets a bye, but maximum one bye (walkover) in the tournament
+
 
     let pairingSucceeded = false;
     for (const sortOption of sortingOptions) {
         playerStats.sort(sortOption);
         if (attemptPairing(playerStats)) {
-            console.log("Pairing succeeded with sorting option: ", sortOption);
+            console.log("Pairing succeeded");
             pairingSucceeded = true;
-            break;
-        }
-    }
-
-    // If pairing still fails, try randomizing the playerStats
-    if (!pairingSucceeded) {
-        console.warn("Pairing failed with all sorting options, attempting random pairing.");
-        for (let i = 0; i < 10; i++) { // Try randomizing up to 10 times
-            playerStats.sort(() => Math.random() - 0.5);
-            if (attemptPairing(playerStats)) {
-                console.log("Pairing succeeded after randomizing.");
-                pairingSucceeded = true;
-                break;
-            }
+            break; // Exit the loop if pairing succeeded
         }
     }
 
     if (!pairingSucceeded) {
-        console.error("Failed to pair all players after randomizing.");
+        console.error("Failed to pair all players.");
         console.error("Unpaired players: ", playerStats.filter(player => !playersPaired.has(player.id)));
-        // Handle the case where pairing failed (e.g., log an error, throw an exception, etc.)
+        alert("Paring er ikke mulig. Se loggen for mer informasjon.");
         return;
     }
 
     tournament.addRound(roundNumber + 1, matches);
-
-    console.log("matches: ", matches);
-    console.log("tournament: ", tournament);
 
     return matches;
 }
