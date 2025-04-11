@@ -73,27 +73,19 @@ export function openScorePopup(match, player1, player2) {
         playerScoreLabel.textContent = getPlayerScore();
         playerInfo.appendChild(playerScoreLabel);
 
-        const resetScoreButton = document.createElement('button');
-        resetScoreButton.textContent = 'Reset';
-        resetScoreButton.classList.add('reset-score-btn');
-        resetScoreButton.addEventListener('click', function() {
-            setPlayerScore(0);
-            playerScoreLabel.textContent = 0;
-        });
-        
-        playerInfo.appendChild(resetScoreButton);
-
-
-
         const numberPad = document.createElement('div');
         numberPad.classList.add('number-pad');
         numberPadContainer.appendChild(numberPad);
+
+        const resetScoreButton = createResetBtn();
+        playerInfo.appendChild(resetScoreButton);
 
         for (let i = 1; i <= 9; i++) {
             const button = document.createElement('button');
             button.textContent = i;
             button.addEventListener('click', function() {
                 updateScoreLabel(getPlayerScore, i, setPlayerScore, playerScoreLabel, player);
+                resetScoreButton.disabled = false; // Enable reset button after first click
             });
             numberPad.appendChild(button);
         }
@@ -109,6 +101,20 @@ export function openScorePopup(match, player1, player2) {
         numberPadsContainer.appendChild(numberPadContainer);
 
         return playerScoreLabel;
+
+        function createResetBtn() {
+            const resetScoreButton = document.createElement('button');
+            resetScoreButton.textContent = 'Reset';
+            resetScoreButton.classList.add('reset-score-btn');
+            resetScoreButton.disabled = true; // Initially disabled
+            resetScoreButton.addEventListener('click', function () {
+                setPlayerScore(0);
+                playerScoreLabel.textContent = 0;
+                this.disabled = true; // Disable the button after use
+            });
+
+            return resetScoreButton;
+        }
     }
 
 function updateScoreLabel(getPlayerScore, value, setPlayerScore, playerScoreLabel, player) {
