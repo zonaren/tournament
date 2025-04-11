@@ -23,8 +23,8 @@
         height: 100vh;
         display: flex;
         margin-top: 50px;
-        overflow: auto;  /* Change from hidden to auto */
-        position: absolute;  /* Change from fixed to absolute */
+        overflow: hidden;  /* Ensures parent doesn't scroll */
+        position: fixed;   /* Fix the container to prevent any scrolling */
     }
     
     #matchOverview, #playerOverview {
