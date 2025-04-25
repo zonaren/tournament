@@ -3,20 +3,19 @@ import { cascadeSystem, swissSystem, roundRobinSystem } from './tournamentSystem
 
 export function createMatchSetup(totalPlayers, totalRounds) {
     const gametypeElement = document.getElementById('gametypeSelect');
-    if(gametypeElement.value !== 'Alle mot alle') {
-        totalPlayers = addWalkover(totalPlayers);
-    }
+    const gametype = gametypeElement.value;
+    totalPlayers = addWalkover(totalPlayers);
     
     const totalCourts = totalPlayers / 2;
     let matchSetup = [];
 
 
-    if(gametypeElement.value === 'Gloppen'){
+    if(gametype === 'Gloppen'){
         cascadeSystem(totalRounds,totalCourts, matchSetup);
         console.log(`Cascade system is selected`);
     }
 
-    else if(gametypeElement.value === 'Alle mot alle'){
+    else if(gametype === 'Alle mot alle'){
         roundRobinSystem(totalRounds, totalCourts,matchSetup);
         console.log(`Round robin system is selected`);
     }
