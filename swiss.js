@@ -22,11 +22,12 @@ import { Match } from './classes/Match.js';
 // 2. check total matchPoints and scorePoints for each player so that we can use this information to pair the players in the next round (players)
 
 function calculateNextRound(tournament, roundNumber) {
+    // Do NOT reset total scores here! Only per-match points are reset in match objects.
     const matches = tournament.matchSchedule.slice(0, roundNumber).flatMap(round => round.matches);
     console.log(matches);
- // call function to check all matches in all previous rounds and create a list of players that have not played against each other
- const { unplayedMatches, playerStats } = checkMatches(matches);
- pairPlayers(unplayedMatches, playerStats, roundNumber, tournament);
+    // call function to check all matches in all previous rounds and create a list of players that have not played against each other
+    const { unplayedMatches, playerStats } = checkMatches(matches);
+    pairPlayers(unplayedMatches, playerStats, roundNumber, tournament);
 }
 
 function checkMatches(matches) {
@@ -86,90 +87,70 @@ function pairPlayers(unplayedMatches, playerStats, roundNumber, tournament) {
     let playersPaired = new Set();
     const generatedIds = new Set();
 
-    // Function to attempt pairing players
-    function attemptPairing(playerStats) {
-        matches = [];
-        playersPaired = new Set();
+    // Track byes for each player (store in tournament object if not present)
+    if (!tournament.byes) tournament.byes = {};
+    playerStats.forEach(p => { if (tournament.byes[p.id] === undefined) tournament.byes[p.id] = 0; });
 
-        for (let i = 0; i < playerStats.length; i++) {
-            const player = playerStats[i];
-            if (!playersPaired.has(player.id)) {
-                let opponentId = null;
-                for (let j = i + 1; j < playerStats.length; j++) {
-                    const potentialOpponent = playerStats[j];
-                    if (!playersPaired.has(potentialOpponent.id) && unplayedMatches[player.id].includes(potentialOpponent.id)) {
-                        opponentId = potentialOpponent.id;
-                        break;
-                    }
-                }
+    // Helper to find the lowest ranked eligible player for a bye
+    function getByeCandidate(stats) {
+        // Only players who have not had a bye yet
+        const eligible = stats.filter(p => tournament.byes[p.id] < 1);
+        if (eligible.length === 0) return null;
+        // Sort by matchPoints, scorePoints, id (lowest ranked last)
+        eligible.sort((a, b) => a.matchPoints - b.matchPoints || a.scorePoints - b.scorePoints || b.id - a.id);
+        return eligible[0];
+    }
 
-                let opponent = playerStats.find(p => p.id === opponentId);
-                if (opponent) {
-                    // Create player objects for match
-                    const player1Obj = {
-                        id: player.id,
-                        name: player.name,
-                        scorePoints: 0,
-                        matchPoints: 0,
-                        details: []
-                    };
-                    
-                    const player2Obj = {
-                        id: opponent.id,
-                        name: opponent.name,
-                        scorePoints: 0,
-                        matchPoints: 0,
-                        details: []
-                    };
-
-                    // Use the Match class
+    // Recursive backtracking pairing
+    function tryPairing(stats, paired, matchesSoFar) {
+        if (stats.length === 0) return matchesSoFar;
+        // Odd number: assign bye to lowest ranked eligible player
+        if (stats.length % 2 === 1) {
+            const byePlayer = getByeCandidate(stats);
+            if (!byePlayer) return null; // No eligible bye
+            tournament.byes[byePlayer.id]++;
+            const matchId = generateUniqueId(generatedIds);
+            // Ensure per-match points are reset
+            matchesSoFar.push(new Match(matchId, matchesSoFar.length + 1, { ...byePlayer, scorePoints: 0, matchPoints: 0 }, { id: -1, name: 'Walkover', scorePoints: 0, matchPoints: 0 }, false));
+            const nextStats = stats.filter(p => p.id !== byePlayer.id);
+            const result = tryPairing(nextStats, new Set([...paired, byePlayer.id]), matchesSoFar);
+            if (result) return result;
+            // Backtrack
+            tournament.byes[byePlayer.id]--;
+            matchesSoFar.pop();
+            return null;
+        }
+        // Try to pair first unpaired player with a valid opponent
+        for (let i = 0; i < stats.length; i++) {
+            const p1 = stats[i];
+            for (let j = i + 1; j < stats.length; j++) {
+                const p2 = stats[j];
+                if (unplayedMatches[p1.id] && unplayedMatches[p1.id].includes(p2.id)) {
+                    // Try this pair, ensure per-match points are reset
                     const matchId = generateUniqueId(generatedIds);
-                    const court = matches.length + 1;
-                    const match = new Match(matchId, court, player1Obj, player2Obj, false);
-                    
-                    matches.push(match);
-                    playersPaired.add(player.id);
-                    playersPaired.add(opponent.id);
-                } else {
-                    console.error("Failed to find opponent for player with id ", player.id);
-                    return false; // Pairing failed
+                    const match = new Match(matchId, matchesSoFar.length + 1, { ...p1, scorePoints: 0, matchPoints: 0 }, { ...p2, scorePoints: 0, matchPoints: 0 }, false);
+                    matchesSoFar.push(match);
+                    const nextStats = stats.filter(p => p.id !== p1.id && p.id !== p2.id);
+                    const result = tryPairing(nextStats, new Set([...paired, p1.id, p2.id]), matchesSoFar);
+                    if (result) return result;
+                    // Backtrack
+                    matchesSoFar.pop();
                 }
             }
         }
-        return true; // Pairing succeeded
+        return null; // No valid pairing found
     }
 
-    // Sort by matchPoints and scorePoints in descending order (highest first)
-    const sortingOptions = [
-        (a, b) => b.matchPoints - a.matchPoints || b.scorePoints - a.scorePoints || a.id - b.id, // MatchPoints first, then scorePoints, then id (startnumber)
-        
-    ];
-
-    // TODO
-    // always make sure that the players with the highest score is placed first in the list (playing on the first courts)
-    // always make sure that the player with the lowest score gets a bye, but maximum one bye (walkover) in the tournament
-
-
-    let pairingSucceeded = false;
-    for (const sortOption of sortingOptions) {
-        playerStats.sort(sortOption);
-        if (attemptPairing(playerStats)) {
-            console.log("Pairing succeeded");
-            pairingSucceeded = true;
-            break; // Exit the loop if pairing succeeded
-        }
-    }
-
-    if (!pairingSucceeded) {
-        console.error("Failed to pair all players.");
-        console.error("Unpaired players: ", playerStats.filter(player => !playersPaired.has(player.id)));
+    // Sort by matchPoints, scorePoints, id (top ranked first)
+    playerStats.sort((a, b) => b.matchPoints - a.matchPoints || b.scorePoints - a.scorePoints || a.id - b.id);
+    const result = tryPairing(playerStats, new Set(), []);
+    if (!result) {
+        console.error("Failed to pair all players using backtracking.");
         alert("Paring er ikke mulig. Se loggen for mer informasjon.");
         return;
     }
-
-    tournament.addRound(roundNumber + 1, matches);
-
-    return matches;
+    tournament.addRound(roundNumber + 1, result);
+    return result;
 }
 
 export { calculateNextRound };
