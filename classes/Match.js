@@ -10,10 +10,10 @@ class Round {
 class Match {
     constructor(matchId, court, p1, p2, isCompleted) {
         this.matchId = matchId;
-        this.court = court;
+        this.court = court;        
         this.p1 = p1;
         this.p2 = p2;
-        this.isCompleted = false;
+        this.isCompleted = isCompleted || false;
     }
 
     static create(matchId, court, p1, p2, isCompleted) {
