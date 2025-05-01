@@ -37,8 +37,8 @@ function createPlayerRow(player, index, playerOverviewContainer) {
     startNumberCell.textContent = player.id;
     row.appendChild(startNumberCell);
 
-    // Name column with edit functionality
-    const nameCell = createEditableNameCell(player, row, playerOverviewContainer);
+    // Name column (no direct edit on click)
+    const nameCell = createNameCell(player);
     row.appendChild(nameCell);
 
     // Score points column
@@ -52,30 +52,82 @@ function createPlayerRow(player, index, playerOverviewContainer) {
     matchPointsCell.textContent = player.matchPoints;
     row.appendChild(matchPointsCell);
 
+    // Add context menu event (right click)
+    row.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        showPlayerContextMenu(e, player, row, playerOverviewContainer);
+    });
+    // (Left click context menu removed)
     return row;
 }
 
-/**
- * Creates an editable cell for the player name
- * @param {Player} player - The player object
- * @param {HTMLTableRowElement} row - The row containing the cell
- * @param {HTMLElement} container - The container element
- * @returns {HTMLTableCellElement} The created cell element
- */
-function createEditableNameCell(player, row, container) {
+// Name cell without edit-on-click (single definition)
+// (Already defined below, so this duplicate is removed)
+
+
+// Context menu logic for player rows
+function showPlayerContextMenu(e, player, row, container) {
+    // If called from left click, delay adding the outside click listener until after the menu is shown
+    // so the click that opened the menu doesn't immediately close it
+    const isLeftClick = arguments[4] === true;
+    removeExistingPlayerContextMenu();
+    const menu = document.createElement('div');
+    menu.className = 'player-context-menu';
+    menu.style.top = `${e.clientY}px`;
+    menu.style.left = `${e.clientX}px`;
+
+    // Edit option
+    const editBtn = document.createElement('button');
+    editBtn.className = 'player-context-menu__item';
+    editBtn.textContent = 'Rediger';
+    editBtn.onclick = function(ev) {
+        ev.stopPropagation();
+        removeExistingPlayerContextMenu();
+        // Find the name cell and start edit
+        const nameCell = row.querySelector('.player-name');
+        const currentRowIndex = Array.from(container.getElementsByTagName('tr')).indexOf(row);
+        startCellEdit(nameCell, player.id, currentRowIndex);
+    };
+    menu.appendChild(editBtn);
+
+    // Delete option
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'player-context-menu__item';
+    deleteBtn.textContent = 'Slett';
+    deleteBtn.onclick = function(ev) {
+        ev.stopPropagation();
+        removeExistingPlayerContextMenu();
+        if (confirm('Er du sikker på at du vil slette denne spilleren?')) {
+            Players.delete(player.id);
+            shuffleStartNumbers();
+        }
+    };
+    menu.appendChild(deleteBtn);
+
+    document.body.appendChild(menu);
+
+    // Remove menu on click elsewhere
+    if (isLeftClick) {
+        setTimeout(() => {
+            document.addEventListener('mousedown', removeExistingPlayerContextMenu, { once: true });
+        }, 0);
+    } else {
+        setTimeout(() => {
+            document.addEventListener('click', removeExistingPlayerContextMenu, { once: true });
+        }, 0);
+    }
+}
+
+function removeExistingPlayerContextMenu() {
+    const existing = document.querySelector('.player-context-menu');
+    if (existing) existing.remove();
+}
+
+// Name cell without edit-on-click
+function createNameCell(player) {
     const cell = document.createElement('td');
     cell.classList.add('player-name');
     cell.textContent = player.name;
-    
-    cell.addEventListener('click', () => {
-        if (window.matchSchedule?.length > 0) {
-            alert('Spillere kan ikke endres etter at turneringen har startet');
-            return;
-        }
-        const currentRowIndex = Array.from(container.getElementsByTagName('tr')).indexOf(row);
-        startCellEdit(cell, player.id, currentRowIndex);
-    });
-    
     return cell;
 }
 

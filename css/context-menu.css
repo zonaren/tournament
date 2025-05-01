@@ -1,0 +1,33 @@
+/* Context menu for player rows */
+.player-context-menu {
+  position: absolute;
+  z-index: 2000;
+  background: #fff;
+  border: 1px solid #3D679D;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(61,103,157,0.18);
+  min-width: 140px;
+  padding: 0.25rem 0;
+  font-size: 1rem;
+  color: #2c3e50;
+  overflow: hidden;
+}
+.player-context-menu__item {
+  padding: 0.5rem 1.2rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  border: none;
+  background: #f8fafc;
+  width: 100%;
+  text-align: left;
+  color: #2c3e50;
+  font-weight: 500;
+  outline: none;
+}
+.player-context-menu__item + .player-context-menu__item {
+  border-top: 1px solid #e2e8f0;
+}
+.player-context-menu__item:hover, .player-context-menu__item:focus {
+  background: #e2e8f0;
+  color: #3D679D;
+}
