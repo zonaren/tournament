@@ -1,4 +1,5 @@
 import Players from './classes/Player.js';
+import Tournaments from './classes/Tournament.js';
 import { onSaveTournament } from './events.js';
 import { createNameCell, startCellEdit } from './UI-player-utils.js';
 import { shuffleStartNumbers } from './shuffle-players.js';
@@ -105,14 +106,10 @@ function showPlayerContextMenu(e, player, row, container) {
     menu.style.top = `${e.clientY}px`;
     menu.style.left = `${e.clientX}px`;
 
-    // Check if tournament is started
+    // Check if tournament is started using imported Tournaments class
     let isStarted = false;
-    try {
-        const Tournaments = require('./classes/Tournament.js').default;
-        const currentTournament = Tournaments.getCurrentTournament && Tournaments.getCurrentTournament();
-        isStarted = currentTournament && currentTournament.isStarted;
-    } catch (e) {}
-
+    const currentTournament = Tournaments.getCurrentTournament && Tournaments.getCurrentTournament();
+    isStarted = currentTournament && currentTournament.isStarted;
     if (isStarted) {
         alert('Turneringen er startet. Det er ikke lenger mulig å redigere spillere.');
         return;

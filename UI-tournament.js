@@ -19,9 +19,11 @@ export function displayTournamentOverview(tournament) {
     const tournamentName = document.createElement('h3');
     tournamentName.textContent = tournament.name + ' - ' + tournament.type;
 
-    if(tournament.isStarted == false) {
+    if(tournament.isStarted === false) {
         const startTournamentText = document.createElement('p');
         startTournamentText.textContent = 'Turneringen er ikke startet enda';
+        startTournamentText.style.color = 'red';
+        startTournamentText.style.fontWeight = 'bold';
         const startTournamentBtn = startTournamentButton();
         tournamentInfoDiv.appendChild(startTournamentText);
         tournamentInfoDiv.appendChild(startTournamentBtn);
@@ -45,9 +47,11 @@ export function displayTournamentOverview(tournament) {
     displayPlayerOverview(tournamentOverview);
     
 
-
-    // Display matches
+    if(tournament.isStarted) {
+        // Display matches
     displayMatchOverview(tournament, matchOverviewContainer, tournamentInfoDiv);
+    }
+
 
     if(tournament.type === 'NHM') {
 

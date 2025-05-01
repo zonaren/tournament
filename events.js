@@ -57,7 +57,7 @@ function onPrepareTournament() {
 }
 
 export function onSaveTournament(name) {
-    const matchSetup = createMatchSetup(Players.count(), TournamentSettings.getRoundCount(), TournamentSettings.getGametype());
+    const matchSetup = [];
     const tournament = Tournaments.create(TournamentSettings.getRoundCount(), TournamentSettings.getPlayerCount() / 2, matchSetup, name, TournamentSettings.getGametype(), Players.getAll());
     displayTournamentOverview(tournament);
     Tournaments.setCurrentTournament(tournament.id);
@@ -67,10 +67,15 @@ export function onSaveTournament(name) {
 
 export function onStartTournament() {
     const tournament = Tournaments.getCurrentTournament();
+    const matchSetup = createMatchSetup(Players.count(), TournamentSettings.getRoundCount(), TournamentSettings.getGametype());
     if (tournament) {
         // Set the tournament to started
         tournament.startTournament();
         console.log('Tournament started:', tournament);
+
+        // add match setup to tournament
+        tournament.matchSchedule = matchSetup;
+
         displayTournamentOverview(tournament);
         alert('Turneringen er startet! Det er ikke mulig å endre spillere eller baner nå.');
     } else {
