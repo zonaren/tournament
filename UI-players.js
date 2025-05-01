@@ -105,6 +105,19 @@ function showPlayerContextMenu(e, player, row, container) {
     menu.style.top = `${e.clientY}px`;
     menu.style.left = `${e.clientX}px`;
 
+    // Check if tournament is started
+    let isStarted = false;
+    try {
+        const Tournaments = require('./classes/Tournament.js').default;
+        const currentTournament = Tournaments.getCurrentTournament && Tournaments.getCurrentTournament();
+        isStarted = currentTournament && currentTournament.isStarted;
+    } catch (e) {}
+
+    if (isStarted) {
+        alert('Turneringen er startet. Det er ikke lenger mulig å redigere spillere.');
+        return;
+    }
+
     // Add new player option
     const newPlayerBtn = document.createElement('button');
     newPlayerBtn.className = 'player-context-menu__item';
@@ -115,7 +128,6 @@ function showPlayerContextMenu(e, player, row, container) {
         createNewPlayerPrompt();
     };
     menu.appendChild(newPlayerBtn);
-    
 
     // Edit option
     const editBtn = document.createElement('button');
@@ -138,7 +150,7 @@ function showPlayerContextMenu(e, player, row, container) {
     deleteBtn.onclick = function(ev) {
         ev.stopPropagation();
         removeExistingPlayerContextMenu();
-        if (confirm('Er du sikker på at du vil slette denne spilleren?')) {
+        if (confirm(`Er du sikker på at du vil slette ${player.name} ?`)) {
             Players.delete(player.id);
             shuffleStartNumbers();
         }
