@@ -1,4 +1,5 @@
 import Players from './classes/Player.js';
+import { updatePlayerTable } from './UI-players.js';
 
 export function shuffleStartNumbers() {
     const players = Players.getAll();
