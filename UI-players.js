@@ -1,6 +1,7 @@
 import Players from './classes/Player.js';
 import { onSaveTournament } from './events.js';
 import { createNameCell, startCellEdit } from './UI-player-utils.js';
+import { shuffleStartNumbers } from './shuffle-players.js';
 
 /**
  * Creates and returns the table header row for the player overview
@@ -310,26 +311,6 @@ function createShuffleButton() {
     button.textContent = 'Tilfeldige startnummer';
     button.addEventListener('click', () => shuffleStartNumbers());
     return button;
-}
-
-function shuffleStartNumbers() {
-    const players = Players.getAll();
-    const shuffled = shuffle(players);
-    shuffled.forEach((player, index) => {
-        player.id = index + 1;
-    });
-    Players.saveToLocalStorage();
-    updatePlayerTable();
-}
-
-function shuffle(array) {
-
-    const shuffled = [...array]
-        .map(a => ({sort: Math.random(), value: a}))
-        .sort((a, b) => a.sort - b.sort)
-        .map(a => a.value);
-
-    return shuffled;
 }
 
 export { displayPlayerOverview, updatePlayerTable, createButtonsContainer };
