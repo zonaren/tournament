@@ -57,6 +57,32 @@ function createPlayerRow(player, index, playerOverviewContainer) {
         e.preventDefault();
         showPlayerContextMenu(e, player, row, playerOverviewContainer);
     });
+    // Add long-press event for touch devices
+    let touchTimer = null;
+    let touchMoved = false;
+    row.addEventListener('touchstart', function(e) {
+        if (e.touches.length > 1) return; // Ignore multi-touch
+        touchMoved = false;
+        touchTimer = setTimeout(() => {
+            // Simulate a context menu event at the touch position
+            const touch = e.touches[0];
+            showPlayerContextMenu({
+                clientX: touch.clientX,
+                clientY: touch.clientY,
+                preventDefault: () => {},
+            }, player, row, playerOverviewContainer);
+        }, 500); // 500ms long press
+    });
+    row.addEventListener('touchmove', function() {
+        touchMoved = true;
+        if (touchTimer) clearTimeout(touchTimer);
+    });
+    row.addEventListener('touchend', function() {
+        if (touchTimer) clearTimeout(touchTimer);
+    });
+    row.addEventListener('touchcancel', function() {
+        if (touchTimer) clearTimeout(touchTimer);
+    });
     // (Left click context menu removed)
     return row;
 }
