@@ -80,9 +80,9 @@ body {
 .rounds-table th, .rounds-table td {
   border: 1px solid #000;
   text-align: center;
-  height: 24px;
-  min-height: 24px;
-  max-height: 38px;
+  height: 36px;
+  min-height: 30px;
+  max-height: 44px;
   padding: 2px 4px;
   box-sizing: border-box;
   vertical-align: middle;
