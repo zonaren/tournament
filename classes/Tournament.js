@@ -9,8 +9,8 @@ class Tournaments {
         this.loadFromLocalStorage();
     }
 
-    create(totalRounds, totalCourts, matchSchedule, tournamentName, tournamentType, players) {
-        const tournament = new Tournament(totalRounds, totalCourts, matchSchedule, tournamentName, tournamentType, players);
+    create(totalRounds, totalCourts, matchSchedule, tournamentName, tournamentType, players, isStarted = false) {
+        const tournament = new Tournament(totalRounds, totalCourts, matchSchedule, tournamentName, tournamentType, players, isStarted);
         this.tournaments.push(tournament);
         this.saveToLocalStorage();
         return tournament;
@@ -65,7 +65,8 @@ class Tournaments {
                     tournamentData.matchSchedule,
                     tournamentData.name,
                     tournamentData.type,
-                    tournamentData.players
+                    tournamentData.players,
+                    tournamentData.isStarted || false
                 );
                 tournament.id = tournamentData.id;
                 tournament.dateCreated = tournamentData.dateCreated;
@@ -76,7 +77,8 @@ class Tournaments {
 }
 
 class Tournament {
-    constructor(totalRounds, totalCourts, matchSchedule, tournamentName, tournamentType, players) {
+    constructor(totalRounds, totalCourts, matchSchedule, tournamentName, tournamentType, players, isStarted = false) {
+        this.isStarted = isStarted;
         this.id = generateUniqueId(new Set());
         this.name = tournamentName;
         this.dateCreated = new Date().toLocaleString();
@@ -104,6 +106,11 @@ class Tournament {
         });
         
         this.players = players;
+    }
+
+    startTournament() {
+        this.isStarted = true;
+        this.saveToLocalStorage();
     }
 
     addRound(roundNumber, matches) {
