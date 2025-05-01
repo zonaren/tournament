@@ -76,6 +76,18 @@ function showPlayerContextMenu(e, player, row, container) {
     menu.style.top = `${e.clientY}px`;
     menu.style.left = `${e.clientX}px`;
 
+    // Add new player option
+    const newPlayerBtn = document.createElement('button');
+    newPlayerBtn.className = 'player-context-menu__item';
+    newPlayerBtn.textContent = 'Ny spiller';
+    newPlayerBtn.onclick = function(ev) {
+        ev.stopPropagation();
+        removeExistingPlayerContextMenu();
+        createNewPlayerPrompt();
+    };
+    menu.appendChild(newPlayerBtn);
+    
+
     // Edit option
     const editBtn = document.createElement('button');
     editBtn.className = 'player-context-menu__item';
@@ -280,13 +292,33 @@ function createButtonsContainer() {
  * Creates a new player
  * @param {string} [playerName] - Optional name for the new player
  */
-function createNewPlayerPrompt(playerName) {
-    const name = playerName || prompt('Navn på ny spiller:');
+function createNewPlayerPrompt() {
+    // Instantly add a new player with default name, update table, and select the name input for editing
     const mainContainer = document.getElementById('mainContainer');
-    if (name) {
-        Players.create(Players.count() + 1, name);
-        displayPlayerOverview(mainContainer);
-    }
+    const newPlayer = Players.create(Players.count() + 1); // Uses default name
+    displayPlayerOverview(mainContainer);
+    // Find the new player's row and start editing the name
+    setTimeout(() => {
+        const table = document.getElementById('playerTable');
+        if (!table) return;
+        const rows = table.getElementsByTagName('tr');
+        // Find the row with the highest player id (newest player)
+        let maxId = -1, targetRow = null, rowIndex = -1;
+        for (let i = 0; i < rows.length; i++) {
+            const id = parseInt(rows[i].getAttribute('data-player-id'));
+            if (!isNaN(id) && id > maxId) {
+                maxId = id;
+                targetRow = rows[i];
+                rowIndex = i;
+            }
+        }
+        if (targetRow) {
+            const nameCell = targetRow.querySelector('.player-name');
+            if (nameCell) {
+                startCellEdit(nameCell, maxId, rowIndex);
+            }
+        }
+    }, 0);
 }
 
 /**
