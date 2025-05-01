@@ -45,158 +45,131 @@
         </tr>
         <tr>
           <th>NR.</th>
+          <th colspan="4">NAVN</th>
           <th>SKÅR</th>
-          <th>SIGN.</th>
-          <th>NR.</th>
-          <th>SKÅR</th>
-          <th>SIGN.</th>
         </tr>
       </thead>
       <tbody id="rounds-body">
-        <!-- 12 rounds, filled by JS or server -->
-        <tr>
+        <!-- 12 rounds, all rows match the first row structure -->
+        <tr class="round-row" id="round-row-1">
           <td id="court-round-1"></td>
           <td id="round-1">1</td>
           <td id="match-points-round-1"></td>
           <td id="score-points-round-1"></td>
-          <td id="opponent-round-1"></td>
+          <td id="opponent-nr-round-1"></td>
+          <td colspan="4" id="opponent-name-round-1"></td>
           <td id="opp-score-round-1"></td>
-          <td id="opp-sign-1"></td>
-          <td id="opponent2-round-1"></td>
-          <td id="opp2-score-round-1"></td>
-          <td id="opp2-sign-1"></td>
         </tr>
-        <tr>
+        <tr class="round-row" id="round-row-2">
           <td id="court-round-2"></td>
           <td id="round-2">2</td>
           <td id="match-points-round-2"></td>
           <td id="score-points-round-2"></td>
-          <td id="opponent-round-2"></td>
+          <td id="opponent-nr-round-2"></td>
+          <td colspan="4" id="opponent-name-round-2"></td>
           <td id="opp-score-round-2"></td>
-          <td id="opp-sign-2"></td>
-          <td id="opponent2-round-2"></td>
-          <td id="opp2-score-round-2"></td>
-          <td id="opp2-sign-2"></td>
         </tr>
-        <tr>
+        <tr class="round-row" id="round-row-3">
           <td id="court-round-3"></td>
           <td id="round-3">3</td>
           <td id="match-points-round-3"></td>
           <td id="score-points-round-3"></td>
-          <td id="opponent-round-3"></td>
+          <td id="opponent-nr-round-3"></td>
+          <td colspan="4" id="opponent-name-round-3"></td>
           <td id="opp-score-round-3"></td>
-          <td id="opp-sign-3"></td>
-          <td id="opponent2-round-3"></td>
-          <td id="opp2-score-round-3"></td>
-          <td id="opp2-sign-3"></td>
         </tr>
-        <tr>
+        <tr class="round-row" id="round-row-4">
           <td id="court-round-4"></td>
           <td id="round-4">4</td>
           <td id="match-points-round-4"></td>
           <td id="score-points-round-4"></td>
-          <td id="opponent-round-4"></td>
+          <td id="opponent-nr-round-4"></td>
+          <td colspan="4" id="opponent-name-round-4"></td>
           <td id="opp-score-round-4"></td>
-          <td id="opp-sign-4"></td>
-          <td id="opponent2-round-4"></td>
-          <td id="opp2-score-round-4"></td>
-          <td id="opp2-sign-4"></td>
         </tr>
-        <tr>
+        <tr class="round-row" id="round-row-5">
           <td id="court-round-5"></td>
           <td id="round-5">5</td>
           <td id="match-points-round-5"></td>
           <td id="score-points-round-5"></td>
-          <td id="opponent-round-5"></td>
+          <td id="opponent-nr-round-5"></td>
+          <td colspan="4" id="opponent-name-round-5"></td>
           <td id="opp-score-round-5"></td>
-          <td id="opp-sign-5"></td>
-          <td id="opponent2-round-5"></td>
-          <td id="opp2-score-round-5"></td>
-          <td id="opp2-sign-5"></td>
         </tr>
-        <tr>
+        <tr class="round-row" id="round-row-6">
           <td id="court-round-6"></td>
           <td id="round-6">6</td>
           <td id="match-points-round-6"></td>
           <td id="score-points-round-6"></td>
-          <td id="opponent-round-6"></td>
+          <td id="opponent-nr-round-6"></td>
+          <td colspan="4" id="opponent-name-round-6"></td>
           <td id="opp-score-round-6"></td>
-          <td id="opp-sign-6"></td>
-          <td id="opponent2-round-6"></td>
-          <td id="opp2-score-round-6"></td>
-          <td id="opp2-sign-6"></td>
         </tr>
-        <tr>
+        <tr class="round-row" id="round-row-7">
           <td id="court-round-7"></td>
           <td id="round-7">7</td>
           <td id="match-points-round-7"></td>
           <td id="score-points-round-7"></td>
-          <td id="opponent-round-7"></td>
+          <td id="opponent-nr-round-7"></td>
+          <td colspan="4" id="opponent-name-round-7"></td>
           <td id="opp-score-round-7"></td>
-          <td id="opp-sign-7"></td>
-          <td id="opponent2-round-7"></td>
-          <td id="opp2-score-round-7"></td>
-          <td id="opp2-sign-7"></td>
         </tr>
-        <tr>
+        <tr class="round-row" id="round-row-8">
           <td id="court-round-8"></td>
           <td id="round-8">8</td>
           <td id="match-points-round-8"></td>
           <td id="score-points-round-8"></td>
-          <td id="opponent-round-8"></td>
+          <td id="opponent-nr-round-8"></td>
+          <td colspan="4" id="opponent-name-round-8"></td>
           <td id="opp-score-round-8"></td>
-          <td id="opp-sign-8"></td>
-          <td id="opponent2-round-8"></td>
-          <td id="opp2-score-round-8"></td>
-          <td id="opp2-sign-8"></td>
         </tr>
-        <tr>
+        <tr class="round-row" id="round-row-9">
           <td id="court-round-9"></td>
           <td id="round-9">9</td>
           <td id="match-points-round-9"></td>
           <td id="score-points-round-9"></td>
-          <td id="opponent-round-9"></td>
+          <td id="opponent-nr-round-9"></td>
+          <td colspan="4" id="opponent-name-round-9"></td>
           <td id="opp-score-round-9"></td>
-          <td id="opp-sign-9"></td>
-          <td id="opponent2-round-9"></td>
-          <td id="opp2-score-round-9"></td>
-          <td id="opp2-sign-9"></td>
         </tr>
-        <tr>
+        <tr class="round-row" id="round-row-10">
           <td id="court-round-10"></td>
           <td id="round-10">10</td>
           <td id="match-points-round-10"></td>
           <td id="score-points-round-10"></td>
-          <td id="opponent-round-10"></td>
+          <td id="opponent-nr-round-10"></td>
+          <td colspan="4" id="opponent-name-round-10"></td>
           <td id="opp-score-round-10"></td>
-          <td id="opp-sign-10"></td>
-          <td id="opponent2-round-10"></td>
-          <td id="opp2-score-round-10"></td>
-          <td id="opp2-sign-10"></td>
         </tr>
-        <tr>
+        <tr class="round-row" id="round-row-11">
           <td id="court-round-11"></td>
           <td id="round-11">11</td>
           <td id="match-points-round-11"></td>
           <td id="score-points-round-11"></td>
-          <td id="opponent-round-11"></td>
+          <td id="opponent-nr-round-11"></td>
+          <td colspan="4" id="opponent-name-round-11"></td>
           <td id="opp-score-round-11"></td>
-          <td id="opp-sign-11"></td>
-          <td id="opponent2-round-11"></td>
-          <td id="opp2-score-round-11"></td>
-          <td id="opp2-sign-11"></td>
         </tr>
-        <tr>
+        <tr class="round-row" id="round-row-12">
           <td id="court-round-12"></td>
           <td id="round-12">12</td>
           <td id="match-points-round-12"></td>
           <td id="score-points-round-12"></td>
-          <td id="opponent-round-12"></td>
+          <td id="opponent-nr-round-12"></td>
+          <td colspan="4" id="opponent-name-round-12"></td>
           <td id="opp-score-round-12"></td>
-          <td id="opp-sign-12"></td>
-          <td id="opponent2-round-12"></td>
-          <td id="opp2-score-round-12"></td>
-          <td id="opp2-sign-12"></td>
+        </tr>
+        <tr class="round-row" id="round-row-13">
+          <td id="court-round-13"></td>
+          <td id="round-13"></td>
+          <td id="match-points-round-13"></td>
+          <td id="score-points-round-13"></td>
+          <td id="opponent-round-13"></td>
+          <td id="opp-score-round-13"></td>
+          <td id="opp-sign-13"></td>
+          <td id="opponent2-round-13"></td>
+          <td id="opp2-score-round-13"></td>
+          <td id="opp2-sign-13"></td>
         </tr>
       </tbody>
       <tfoot>
