@@ -3,6 +3,7 @@ import { handleWalkover, updateTotalScores} from './score-logics.js';
 import { openScorePopup } from './UI-popup.js';
 import { displayPlayerOverview } from './UI-players.js';
 import { createPrintStartCardsButton } from './startkort/startCards.js';
+import { onStartTournament } from './events.js';
 
 
 
@@ -17,6 +18,14 @@ export function displayTournamentOverview(tournament) {
     tournamentInfoDiv.innerHTML = '';
     const tournamentName = document.createElement('h3');
     tournamentName.textContent = tournament.name + ' - ' + tournament.type;
+
+    if(tournament.isStarted == false) {
+        const startTournamentText = document.createElement('p');
+        startTournamentText.textContent = 'Turneringen er ikke startet enda';
+        const startTournamentBtn = startTournamentButton();
+        tournamentInfoDiv.appendChild(startTournamentText);
+        tournamentInfoDiv.appendChild(startTournamentBtn);
+    }
     tournamentInfoDiv.appendChild(tournamentName);
     tournamentInfoDiv.appendChild(createPrintStartCardsButton());
     
@@ -44,6 +53,14 @@ export function displayTournamentOverview(tournament) {
 
     }
     
+}
+
+function startTournamentButton() {
+    const startTournamentBtn = document.createElement('button');
+    startTournamentBtn.textContent = 'Start turnering';
+    startTournamentBtn.classList.add('start-tournament-btn');
+    startTournamentBtn.addEventListener('click', () => onStartTournament());
+    return startTournamentBtn;
 }
 
 function displayMatchOverview(tournament, matchOverviewContainer, tournamentInfoDiv) {

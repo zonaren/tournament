@@ -15,7 +15,7 @@ export function displayTournamentsList() {
     
     const thead = table.createTHead();
     const headerRow = thead.insertRow();
-    ['Navn', 'Type', 'Opprettet', 'Runder', 'Spillere', 'Handlinger'].forEach(text => {
+    ['Navn', 'Type', 'Opprettet', 'Runder', 'Spillere', 'Startet', 'Handlinger'].forEach(text => {
         const th = document.createElement('th');
         th.textContent = text;
         headerRow.appendChild(th);
@@ -32,6 +32,7 @@ export function displayTournamentsList() {
         row.insertCell().textContent = tournament.dateCreated;
         row.insertCell().textContent = tournament.totalRounds;
         row.insertCell().textContent = tournament.getPlayers().length;
+        row.insertCell().textContent = tournament.isStarted ? 'Ja' : 'Nei';
 
         const actionsCell = row.insertCell();
         

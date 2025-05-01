@@ -65,15 +65,14 @@ export function onSaveTournament(name) {
 
 }
 
-function onStartTournament() {
+export function onStartTournament() {
     const tournament = Tournaments.getCurrentTournament();
     if (tournament) {
         // Set the tournament to started
         tournament.startTournament();
         console.log('Tournament started:', tournament);
-
+        displayTournamentOverview(tournament);
         alert('Turneringen er startet! Det er ikke mulig å endre spillere eller baner nå.');
-        this.remove();
     } else {
         alert('Ingen turnering er valgt. Vennligst opprett eller velg en turnering først.');
     }
