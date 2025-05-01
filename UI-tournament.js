@@ -2,6 +2,9 @@ import { proceedToNextRoundBtn, toggleAllRoundsBtn, showAllRounds } from './UI-s
 import { handleWalkover, updateTotalScores} from './score-logics.js';
 import { openScorePopup } from './UI-popup.js';
 import { displayPlayerOverview } from './UI-players.js';
+import { createPrintStartCardsButton } from './startkort/startCards.js';
+
+
 
 export function displayTournamentOverview(tournament) {
     
@@ -15,6 +18,7 @@ export function displayTournamentOverview(tournament) {
     const tournamentName = document.createElement('h3');
     tournamentName.textContent = tournament.name + ' - ' + tournament.type;
     tournamentInfoDiv.appendChild(tournamentName);
+    tournamentInfoDiv.appendChild(createPrintStartCardsButton());
     
     const mainContainer = document.getElementById('mainContainer');
     mainContainer.replaceChildren(tournamentOverview);
