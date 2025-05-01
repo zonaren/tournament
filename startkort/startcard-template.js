@@ -80,9 +80,6 @@ function createRoundsTable(roundInfos) {
 
     roundsTable.appendChild(thead);
 
-console.log(roundInfos);
-
-
     // Create tbody
     const tbody = createRoundsBody(roundInfos);
     roundsTable.appendChild(tbody);
