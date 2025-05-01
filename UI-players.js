@@ -1,4 +1,5 @@
 import Players from './classes/Player.js';
+import { createNameCell, startCellEdit } from './UI-player-utils.js';
 
 /**
  * Creates and returns the table header row for the player overview

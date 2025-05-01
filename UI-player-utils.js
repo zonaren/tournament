@@ -33,7 +33,12 @@ function startCellEdit(cell, playerId, currentRowIndex) {
     cell.appendChild(confirmButton);
 
     const handleConfirm = (navigateNext) => {
+        // Save name and close input
         updatePlayerName(input.value, playerId);
+        // Replace input with updated name cell
+        cell.textContent = input.value;
+        cell.classList.add('player-name');
+        // Optionally, focus next if Enter
         if (navigateNext) {
             navigateToNextPlayer(currentRowIndex + 1);
         }
