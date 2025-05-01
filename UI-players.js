@@ -1,4 +1,5 @@
 import Players from './classes/Player.js';
+import { onSaveTournament } from './events.js';
 import { createNameCell, startCellEdit } from './UI-player-utils.js';
 
 /**
@@ -235,6 +236,7 @@ function createButtonsContainer() {
     container.classList.add('buttons-container');
     container.appendChild(createAddPlayerButton());
     container.appendChild(createShuffleButton());
+    container.appendChild(createSaveTournamentButton());
     return container;
 }
 
@@ -275,6 +277,25 @@ function createNewPlayerPrompt() {
  * Creates the "Add Player" button
  * @returns {HTMLButtonElement} The created button
  */
+
+function createSaveTournamentButton() {
+
+    const container = document.createElement('div');
+    container.classList.add('save-tournament-container');
+    container.id = 'save-tournament-container';
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.id = 'tournamentNameInput';
+    input.placeholder = 'Turneringens navn';
+
+    const button = document.createElement('button');
+button.id = 'save-btn';
+button.textContent = 'Lagre turnering';
+button.addEventListener('click', () => onSaveTournament(input.value));
+return container.appendChild(input), container.appendChild(button), container;
+}
+
 function createAddPlayerButton() {
     const button = document.createElement('button');
     button.id = 'addPlayerButton';

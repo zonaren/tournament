@@ -1,9 +1,7 @@
 import Players from './classes/Player.js';
 import { cascadeSystem, swissSystem, roundRobinSystem } from './tournamentSystems.js';
 
-export function createMatchSetup(totalPlayers, totalRounds) {
-    const gametypeElement = document.getElementById('gametypeSelect');
-    const gametype = gametypeElement.value;
+export function createMatchSetup(totalPlayers, totalRounds, gametype) {
     totalPlayers = addWalkover(totalPlayers);
     
     const totalCourts = totalPlayers / 2;

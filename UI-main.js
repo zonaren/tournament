@@ -29,12 +29,6 @@ prepareTournamentBtn.id = 'prepareTournamentBtn';
 prepareTournamentBtn.textContent = 'Opprett turnering';
 menuButtons.appendChild(prepareTournamentBtn);
 
-const startBtn = document.createElement('button');
-startBtn.id = 'start-btn';
-startBtn.className = 'hidden';
-startBtn.textContent = 'Start turnering';
-menuButtons.appendChild(startBtn);
-
 const showTournamentsBtn = document.createElement('button');
 showTournamentsBtn.id = 'showTournamentsBtn';
 showTournamentsBtn.textContent = 'Vis turneringer';
@@ -62,4 +56,4 @@ mainContainer.className = 'main-container';
 document.body.appendChild(header);
 document.body.appendChild(mainContainer);
 
-export { gametypeSelect, playerCountSelect, roundCountSelect, prepareTournamentBtn, startBtn, showMatchSetupBtn, printContentBtn, mainContainer, titleText };
+export { gametypeSelect, playerCountSelect, roundCountSelect, prepareTournamentBtn, showMatchSetupBtn, printContentBtn, mainContainer, titleText };

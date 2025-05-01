@@ -46,28 +46,39 @@ function onRoundCountChange() {
     console.log('Round count was set to ', TournamentSettings.getRoundCount());
 }
 
-
-
 function onPrepareTournament() {
     Players.resetPlayers(TournamentSettings.getPlayerCount());
     mainContainer.innerHTML = '';
     mainContainer.appendChild(createButtonsContainer());
     displayPlayerOverview(mainContainer);
     this.classList.add('hidden');
-    const startTournamentButton = document.getElementById('start-btn');
-    startTournamentButton.classList.remove('hidden');
-}
-
-function onStartTournament() {
-    const matchSetup = createMatchSetup(Players.count(), TournamentSettings.getRoundCount());
-
-    const tournament = Tournaments.create(TournamentSettings.getRoundCount(), TournamentSettings.getPlayerCount() / 2, matchSetup, 'Test turnering', TournamentSettings.getGametype(), Players.getAll());
-    displayTournamentOverview(tournament);
-    Tournaments.setCurrentTournament(tournament.id);
-    console.log('Tournament was created', tournament);
     const header = document.getElementById('header');
     header.remove();
 }
+
+export function onSaveTournament(name) {
+    const matchSetup = createMatchSetup(Players.count(), TournamentSettings.getRoundCount(), TournamentSettings.getGametype());
+    const tournament = Tournaments.create(TournamentSettings.getRoundCount(), TournamentSettings.getPlayerCount() / 2, matchSetup, name, TournamentSettings.getGametype(), Players.getAll());
+    displayTournamentOverview(tournament);
+    Tournaments.setCurrentTournament(tournament.id);
+    console.log('Tournament was created', tournament);
+
+}
+
+function onStartTournament() {
+    const tournament = Tournaments.getCurrentTournament();
+    if (tournament) {
+        // Set the tournament to started
+        tournament.startTournament();
+        console.log('Tournament started:', tournament);
+
+        alert('Turneringen er startet! Det er ikke mulig å endre spillere eller baner nå.');
+        this.remove();
+    } else {
+        alert('Ingen turnering er valgt. Vennligst opprett eller velg en turnering først.');
+    }
+}
+
 
 function onShowTournaments() {
     displayTournamentsList();
@@ -91,7 +102,7 @@ function loadEventListeners() {
     document.getElementById('showMatchSetup').addEventListener('click', onShowMatchSetup);
     document.getElementById('printContent').addEventListener('click', onPrintContent);
     document.getElementById('prepareTournamentBtn').addEventListener('click', onPrepareTournament);
-    document.getElementById('start-btn').addEventListener('click', onStartTournament);
+    //document.getElementById('start-btn').addEventListener('click', onStartTournament);
     document.getElementById('showTournamentsBtn').addEventListener('click', onShowTournaments);
 }
 
@@ -102,6 +113,6 @@ gametypeSelect.removeEventListener('change', onGametypeChange);
 document.getElementById('showMatchSetup').removeEventListener('click', onShowMatchSetup);
 document.getElementById('printContent').removeEventListener('click', onPrintContent);
 document.getElementById('prepareTournamentBtn').removeEventListener('click', onPrepareTournament);
-document.getElementById('start-btn').removeEventListener('click', onStartTournament);
+//document.getElementById('start-btn').removeEventListener('click', onStartTournament);
 document.getElementById('showTournamentsBtn').removeEventListener('click', onShowTournaments);
 loadEventListeners();
