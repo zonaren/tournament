@@ -28,8 +28,6 @@ export function displayTournamentOverview(tournament) {
         const startTournamentBtn = startTournamentButton();
         tournamentInfoDiv.appendChild(startTournamentText);
         tournamentInfoDiv.appendChild(startTournamentBtn);
-
-        tournamentOverview.appendChild(createButtonsContainer());
     }
     tournamentInfoDiv.appendChild(tournamentName);
     tournamentInfoDiv.appendChild(createPrintStartCardsButton());
@@ -42,6 +40,10 @@ export function displayTournamentOverview(tournament) {
 
     const matchOverviewContainer = document.createElement('div');
     matchOverviewContainer.id = 'matchOverview';
+
+    if(tournament.isStarted === false) {
+    matchOverviewContainer.appendChild(createButtonsContainer());
+    }
 
     const playerOverviewContainer = document.createElement('div');
     playerOverviewContainer.id = 'playerOverview';
