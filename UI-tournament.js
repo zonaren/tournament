@@ -5,6 +5,7 @@ import { displayPlayerOverview, createNewPlayerPrompt } from './UI-players.js';
 import { createPrintStartCardsButton } from './startkort/startCards.js';
 import { onEditTournament, onStartTournament } from './events.js';
 import { shuffleStartNumbers } from './shuffle-players.js';
+import Tournaments  from './classes/Tournament.js';
 
 
 
@@ -80,6 +81,15 @@ function createButtonsContainer() {
 
 function createEditTournamentButton() {
 
+    //get the current tournament from the Tournaments class
+    const currentTournament = Tournaments.getCurrentTournament();
+    console.log('Current tournament:', currentTournament);
+    if (!currentTournament) {
+        console.error('No current tournament found.');
+        return;
+    }
+    const tournamentName = currentTournament.name;
+
     const container = document.createElement('div');
     container.classList.add('save-tournament-container');
     container.id = 'save-tournament-container';
@@ -88,6 +98,8 @@ function createEditTournamentButton() {
     input.type = 'text';
     input.id = 'tournamentNameInput';
     input.placeholder = 'Turneringens navn';
+    input.textContent = tournamentName;
+    input.value = tournamentName;
 
     const button = document.createElement('button');
 button.id = 'save-btn';
@@ -96,7 +108,7 @@ button.addEventListener('click', () => {
     if (input.value && input.value.trim() !== '') {
         onEditTournament(input.value);
     } else {
-        onEditTournament(); // Call without argument if empty
+        onEditTournament(tournamentName);
     }
 });
 return container.appendChild(input), container.appendChild(button), container;
