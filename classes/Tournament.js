@@ -28,6 +28,7 @@ class Tournaments {
         const tournament = this.get(id);
         if (tournament) {
             Object.assign(tournament, data);
+            this.saveToLocalStorage();
         }
     }
 
