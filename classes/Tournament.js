@@ -42,10 +42,12 @@ class Tournaments {
 
     setCurrentTournament(id) {
         this.currentTournament = this.get(id);
+        console.log("current tournament set to: ", this.currentTournament);
         return this.currentTournament;
     }
 
     getCurrentTournament() {
+        console.log("current tournament: ", this.currentTournament);
         return this.currentTournament;
     }
 
@@ -53,6 +55,10 @@ class Tournaments {
         const tournamentsJson = JSON.stringify(this.tournaments);
         localStorage.setItem('tournaments', tournamentsJson);
         console.log("turneringer lagret");
+
+        const currentTournamentJson = JSON.stringify(this.currentTournament);
+        localStorage.setItem('currentTournament', currentTournamentJson);
+        console.log("current tournament lagret: ", this.currentTournament);
     }
 
     loadFromLocalStorage() {
