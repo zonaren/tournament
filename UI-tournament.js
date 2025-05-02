@@ -1,9 +1,10 @@
 import { proceedToNextRoundBtn, toggleAllRoundsBtn, showAllRounds } from './UI-swiss.js';
 import { handleWalkover, updateTotalScores} from './score-logics.js';
 import { openScorePopup } from './UI-popup.js';
-import { displayPlayerOverview } from './UI-players.js';
+import { displayPlayerOverview, createNewPlayerPrompt } from './UI-players.js';
 import { createPrintStartCardsButton } from './startkort/startCards.js';
-import { onStartTournament } from './events.js';
+import { onEditTournament, onStartTournament } from './events.js';
+import { shuffleStartNumbers } from './shuffle-players.js';
 
 
 
@@ -21,12 +22,14 @@ export function displayTournamentOverview(tournament) {
 
     if(tournament.isStarted === false) {
         const startTournamentText = document.createElement('p');
-        startTournamentText.textContent = 'Turneringen er ikke startet enda';
+        startTournamentText.textContent = 'Turneringen er ikke startet!';
         startTournamentText.style.color = 'red';
         startTournamentText.style.fontWeight = 'bold';
         const startTournamentBtn = startTournamentButton();
         tournamentInfoDiv.appendChild(startTournamentText);
         tournamentInfoDiv.appendChild(startTournamentBtn);
+
+        tournamentOverview.appendChild(createButtonsContainer());
     }
     tournamentInfoDiv.appendChild(tournamentName);
     tournamentInfoDiv.appendChild(createPrintStartCardsButton());
@@ -57,6 +60,60 @@ export function displayTournamentOverview(tournament) {
 
     }
     
+}
+
+function createButtonsContainer() {
+    const container = document.createElement('div');
+    container.classList.add('buttons-container');
+    container.appendChild(createAddPlayerButton());
+    container.appendChild(createShuffleButton());
+    container.appendChild(createEditTournamentButton());
+    return container;
+}
+
+/**
+ * Creates the "Add Player" button
+ * @returns {HTMLButtonElement} The created button
+ */
+
+function createEditTournamentButton() {
+
+    const container = document.createElement('div');
+    container.classList.add('save-tournament-container');
+    container.id = 'save-tournament-container';
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.id = 'tournamentNameInput';
+    input.placeholder = 'Turneringens navn';
+
+    const button = document.createElement('button');
+button.id = 'save-btn';
+button.textContent = 'Oppdater turnering';
+button.addEventListener('click', () => {
+    if (input.value && input.value.trim() !== '') {
+        onEditTournament(input.value);
+    } else {
+        onEditTournament(); // Call without argument if empty
+    }
+});
+return container.appendChild(input), container.appendChild(button), container;
+}
+
+function createAddPlayerButton() {
+    const button = document.createElement('button');
+    button.id = 'addPlayerButton';
+    button.textContent = 'Legg til spiller';
+    button.addEventListener('click', () => createNewPlayerPrompt());
+    return button;
+}
+
+function createShuffleButton() {
+    const button = document.createElement('button');
+    button.id = 'shuffleStartNumbers';
+    button.textContent = 'Tilfeldige startnummer';
+    button.addEventListener('click', () => shuffleStartNumbers());
+    return button;
 }
 
 function startTournamentButton() {

@@ -1,6 +1,6 @@
 import Players from './classes/Player.js';
 import Tournaments from './classes/Tournament.js';
-import { onSaveTournament } from './events.js';
+import { onEditTournament } from './events.js';
 import { createNameCell, startCellEdit } from './UI-player-utils.js';
 import { shuffleStartNumbers } from './shuffle-players.js';
 
@@ -241,15 +241,6 @@ function playerOverviewContent(playerOverview) {
     updatePlayerTable();
 }
 
-function createButtonsContainer() {
-    const container = document.createElement('div');
-    container.classList.add('buttons-container');
-    container.appendChild(createAddPlayerButton());
-    container.appendChild(createShuffleButton());
-    container.appendChild(createSaveTournamentButton());
-    return container;
-}
-
 /**
  * Creates a new player
  * @param {string} [playerName] - Optional name for the new player
@@ -283,43 +274,6 @@ function createNewPlayerPrompt() {
     }, 0);
 }
 
-/**
- * Creates the "Add Player" button
- * @returns {HTMLButtonElement} The created button
- */
 
-function createSaveTournamentButton() {
 
-    const container = document.createElement('div');
-    container.classList.add('save-tournament-container');
-    container.id = 'save-tournament-container';
-
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.id = 'tournamentNameInput';
-    input.placeholder = 'Turneringens navn';
-
-    const button = document.createElement('button');
-button.id = 'save-btn';
-button.textContent = 'Lagre turnering';
-button.addEventListener('click', () => onSaveTournament(input.value));
-return container.appendChild(input), container.appendChild(button), container;
-}
-
-function createAddPlayerButton() {
-    const button = document.createElement('button');
-    button.id = 'addPlayerButton';
-    button.textContent = 'Legg til spiller';
-    button.addEventListener('click', () => createNewPlayerPrompt());
-    return button;
-}
-
-function createShuffleButton() {
-    const button = document.createElement('button');
-    button.id = 'shuffleStartNumbers';
-    button.textContent = 'Tilfeldige startnummer';
-    button.addEventListener('click', () => shuffleStartNumbers());
-    return button;
-}
-
-export { displayPlayerOverview, updatePlayerTable, createButtonsContainer };
+export { displayPlayerOverview, updatePlayerTable, createNewPlayerPrompt };

@@ -1,7 +1,7 @@
 import TournamentSettings from './classes/TournamentSettings.js';
 import Tournaments from './classes/Tournament.js';
 import Players from './classes/Player.js';
-import { displayPlayerOverview, createButtonsContainer } from './UI-players.js';
+import { displayPlayerOverview } from './UI-players.js';
 import { createMatchSetup } from './generateMatches.js';
 import { playerCountSelect, roundCountSelect, gametypeSelect, titleText, showMatchSetupBtn } from './UI-main.js';
 import { createRoundCountSelectOptions } from './generateSelectList.js';
@@ -46,23 +46,32 @@ function onRoundCountChange() {
     console.log('Round count was set to ', TournamentSettings.getRoundCount());
 }
 
-function onPrepareTournament() {
+export function onCreateTournament() {
     Players.resetPlayers(TournamentSettings.getPlayerCount());
-    mainContainer.innerHTML = '';
-    mainContainer.appendChild(createButtonsContainer());
-    displayPlayerOverview(mainContainer);
-    this.classList.add('hidden');
-    const header = document.getElementById('header');
-    header.remove();
-}
-
-export function onSaveTournament(name) {
     const matchSetup = [];
-    const tournament = Tournaments.create(TournamentSettings.getRoundCount(), TournamentSettings.getPlayerCount() / 2, matchSetup, name, TournamentSettings.getGametype(), Players.getAll());
+    const tournament = Tournaments.create(TournamentSettings.getRoundCount(), TournamentSettings.getPlayerCount() / 2, matchSetup, 'Ny turnering', TournamentSettings.getGametype(), Players.getAll());
+    //mainContainer.appendChild(createButtonsContainer());
     displayTournamentOverview(tournament);
     Tournaments.setCurrentTournament(tournament.id);
     console.log('Tournament was created', tournament);
+    const header = document.getElementById('header');
+    header.remove();
 
+}
+
+export function onEditTournament(name) {
+    const tournament = Tournaments.getCurrentTournament();
+    if (tournament) {
+        //const matchSetup = createMatchSetup(Players.count(), TournamentSettings.getRoundCount(), TournamentSettings.getGametype());
+        Tournaments.update(tournament.id, {
+            name: name,
+            players: tournament.players,
+            //matchSchedule: tournament.matchSchedule,
+            //totalCourts: Players.count() / 2 // Make sure this works when odd number of players. Maybe move this to the createMatchSetup function.
+        });
+        console.log('Tournament updated:', tournament);
+        displayTournamentOverview(tournament);
+    }
 }
 
 export function onStartTournament() {
@@ -74,16 +83,18 @@ export function onStartTournament() {
         if (confirm('Vil du starte turnering? Det er ikke mulig å endre spillere etter turneringsstart!')) {
             // add matchsetup to tournament
             tournament.matchSchedule = matchSetup;
-        // Set the tournament to started
-        tournament.startTournament();
-        console.log('Tournament started:', tournament);
-        displayTournamentOverview(tournament);
-    } else {
+            tournament.players = Players.getAll();
+            tournament.totalCourts = Players.count() / 2;
+            // Set the tournament to started
+            tournament.startTournament();
+            console.log('Tournament started:', tournament);
+            displayTournamentOverview(tournament);
+        } else {
             console.log('Tournament not started');
             return;
         }
 
-    }
+    }   
 }
 
 
@@ -108,7 +119,7 @@ function loadEventListeners() {
 
     document.getElementById('showMatchSetup').addEventListener('click', onShowMatchSetup);
     document.getElementById('printContent').addEventListener('click', onPrintContent);
-    document.getElementById('prepareTournamentBtn').addEventListener('click', onPrepareTournament);
+    document.getElementById('createTournamentBtn').addEventListener('click', onCreateTournament);
     //document.getElementById('start-btn').addEventListener('click', onStartTournament);
     document.getElementById('showTournamentsBtn').addEventListener('click', onShowTournaments);
 }
@@ -119,7 +130,7 @@ roundCountSelect.removeEventListener('change', onRoundCountChange);
 gametypeSelect.removeEventListener('change', onGametypeChange);
 document.getElementById('showMatchSetup').removeEventListener('click', onShowMatchSetup);
 document.getElementById('printContent').removeEventListener('click', onPrintContent);
-document.getElementById('prepareTournamentBtn').removeEventListener('click', onPrepareTournament);
+document.getElementById('createTournamentBtn').removeEventListener('click', onCreateTournament);
 //document.getElementById('start-btn').removeEventListener('click', onStartTournament);
 document.getElementById('showTournamentsBtn').removeEventListener('click', onShowTournaments);
 loadEventListeners();
