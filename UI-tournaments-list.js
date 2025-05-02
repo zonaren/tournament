@@ -57,7 +57,7 @@ export function displayTournamentsList() {
         confirmDelete.textContent = 'Bekreft sletting';
         confirmDelete.onclick = () => deleteTournament(tournament.id, row);
 
-        actionsCell.append(loadBtn, editBtn, deleteBtn);
+        actionsCell.append(loadBtn, deleteBtn);
     });
 
     tableContainer.appendChild(table);
@@ -79,11 +79,127 @@ function loadTournament(id) {
     }
 }
 
-function editTournament(id) {
-    // TODO: Implement tournament editing
-    alert('Rediger turnering er ikke implementert ennå!');
-    console.log('Edit tournament:', id);
-    
+export function editTournament(id) {
+    // Inline editing popup for tournament name, type, and rounds
+    const tournament = Tournaments.get(id);
+    if (!tournament) return;
+
+    // Create popup overlay
+    const overlay = document.createElement('div');
+    overlay.style.position = 'fixed';
+    overlay.style.top = 0;
+    overlay.style.left = 0;
+    overlay.style.width = '100vw';
+    overlay.style.height = '100vh';
+    overlay.style.background = 'rgba(0,0,0,0.3)';
+    overlay.style.display = 'flex';
+    overlay.style.alignItems = 'center';
+    overlay.style.justifyContent = 'center';
+    overlay.style.zIndex = 1000;
+
+    // Create popup box
+    const popup = document.createElement('div');
+    popup.style.background = '#fff';
+    popup.style.padding = '2em';
+    popup.style.borderRadius = '10px';
+    popup.style.boxShadow = '0 2px 12px rgba(0,0,0,0.2)';
+    popup.style.minWidth = '320px';
+
+    // Title
+    const title = document.createElement('h2');
+    title.textContent = 'Rediger turnering';
+    popup.appendChild(title);
+
+    // Name input
+    const nameLabel = document.createElement('label');
+    nameLabel.textContent = 'Navn:';
+    nameLabel.style.display = 'block';
+    nameLabel.style.marginTop = '1em';
+    const nameInput = document.createElement('input');
+    nameInput.type = 'text';
+    nameInput.value = tournament.name;
+    nameInput.style.width = '100%';
+    nameInput.style.marginTop = '0.2em';
+    popup.appendChild(nameLabel);
+    popup.appendChild(nameInput);
+
+    // Type input
+    const typeLabel = document.createElement('label');
+    typeLabel.textContent = 'Type:';
+    typeLabel.style.display = 'block';
+    typeLabel.style.marginTop = '1em';
+    const typeSelect = document.createElement('select');
+    ['Gloppen', 'Alle mot alle', 'NHM'].forEach(opt => {
+        const option = document.createElement('option');
+        option.value = opt;
+        option.textContent = opt;
+        if (opt === tournament.type) option.selected = true;
+        typeSelect.appendChild(option);
+    });
+    typeSelect.style.width = '100%';
+    typeSelect.style.marginTop = '0.2em';
+    popup.appendChild(typeLabel);
+    popup.appendChild(typeSelect);
+
+    // Rounds input
+    const roundsLabel = document.createElement('label');
+    roundsLabel.textContent = 'Antall runder:';
+    roundsLabel.style.display = 'block';
+    roundsLabel.style.marginTop = '1em';
+    const roundsInput = document.createElement('input');
+    roundsInput.type = 'number';
+    roundsInput.value = tournament.totalRounds;
+    roundsInput.min = 1;
+    roundsInput.style.width = '100%';
+    roundsInput.style.marginTop = '0.2em';
+    popup.appendChild(roundsLabel);
+    popup.appendChild(roundsInput);
+
+    // Buttons
+    const btnRow = document.createElement('div');
+    btnRow.style.display = 'flex';
+    btnRow.style.justifyContent = 'flex-end';
+    btnRow.style.gap = '1em';
+    btnRow.style.marginTop = '2em';
+
+    const cancelBtn = document.createElement('button');
+    cancelBtn.textContent = 'Avbryt';
+    cancelBtn.onclick = () => document.body.removeChild(overlay);
+
+    const saveBtn = document.createElement('button');
+    saveBtn.textContent = 'Lagre';
+    saveBtn.style.background = '#3D679D';
+    saveBtn.style.color = '#fff';
+    saveBtn.style.border = 'none';
+    saveBtn.style.padding = '0.5em 1.5em';
+    saveBtn.style.borderRadius = '5px';
+    saveBtn.style.cursor = 'pointer';
+    saveBtn.onclick = () => {
+        const newName = nameInput.value.trim();
+        const newType = typeSelect.value;
+        const newRounds = parseInt(roundsInput.value, 10);
+        if (!newName) {
+            nameInput.focus();
+            nameInput.style.border = '1px solid red';
+            return;
+        }
+        // Update using the class method
+        Tournaments.update(id, {
+            name: newName,
+            type: newType,
+            totalRounds: isNaN(newRounds) ? tournament.totalRounds : newRounds
+        });
+
+        document.body.removeChild(overlay);
+        displayTournamentOverview(tournament);
+    };
+
+    btnRow.appendChild(cancelBtn);
+    btnRow.appendChild(saveBtn);
+    popup.appendChild(btnRow);
+
+    overlay.appendChild(popup);
+    document.body.appendChild(overlay);
 }
 
 function deleteTournament(id, row) {

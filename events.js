@@ -1,13 +1,12 @@
 import TournamentSettings from './classes/TournamentSettings.js';
 import Tournaments from './classes/Tournament.js';
 import Players from './classes/Player.js';
-import { displayPlayerOverview } from './UI-players.js';
 import { createMatchSetup } from './generateMatches.js';
 import { playerCountSelect, roundCountSelect, gametypeSelect, titleText, showMatchSetupBtn } from './UI-main.js';
 import { createRoundCountSelectOptions } from './generateSelectList.js';
 import { displayTournamentOverview } from './UI-tournament.js';
 import { displayMatchSetup } from './UI-matchSetup.js';
-import { displayTournamentsList } from './UI-tournaments-list.js';
+import { displayTournamentsList, editTournament } from './UI-tournaments-list.js';
 
 const mainContainer = document.getElementById('mainContainer');
     mainContainer.innerHTML = '';
@@ -55,27 +54,28 @@ export function onCreateTournament() {
     console.log('Tournament was created', tournament);
     const header = document.getElementById('header');
     header.remove();
+    editTournament(tournament.id);
 
 }
 
-export function onEditTournament(name) {
+export function onEditPlayers() {
     const tournament = Tournaments.getCurrentTournament();
     if (tournament) {
         //const matchSetup = createMatchSetup(Players.count(), TournamentSettings.getRoundCount(), TournamentSettings.getGametype());
         Tournaments.update(tournament.id, {
-            name: name,
+            //name: name,
             players: tournament.players,
             //matchSchedule: tournament.matchSchedule,
-            //totalCourts: Players.count() / 2 // Make sure this works when odd number of players. Maybe move this to the createMatchSetup function.
         });
         console.log('Tournament updated:', tournament);
-        displayTournamentOverview(tournament);
+        //displayTournamentOverview(tournament);
     }
 }
 
 export function onStartTournament() {
     const tournament = Tournaments.getCurrentTournament();
-    const matchSetup = createMatchSetup(Players.count(), TournamentSettings.getRoundCount(), TournamentSettings.getGametype());
+    const matchSetup = createMatchSetup(Players.count(), tournament.totalRounds, tournament.type);
+    console.log('Match setup:', matchSetup);
     if (tournament) {
 
         // if cancel, do not start tournament

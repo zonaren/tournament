@@ -1,5 +1,6 @@
 // Utility functions for editing players (moved from UI-players.js)
 import Players from './classes/Player.js';
+import { onEditPlayers } from './events.js';
 
 /**
  * Name cell without edit-on-click
@@ -73,6 +74,7 @@ function updatePlayerName(newName, playerId) {
         if (typeof window.displayPlayerOverview === 'function') {
             window.displayPlayerOverview(mainContainer);
         }
+        onEditPlayers();
     }
 }
 

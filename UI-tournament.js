@@ -3,9 +3,10 @@ import { handleWalkover, updateTotalScores} from './score-logics.js';
 import { openScorePopup } from './UI-popup.js';
 import { displayPlayerOverview, createNewPlayerPrompt } from './UI-players.js';
 import { createPrintStartCardsButton } from './startkort/startCards.js';
-import { onEditTournament, onStartTournament } from './events.js';
+import { onStartTournament } from './events.js';
 import { shuffleStartNumbers } from './shuffle-players.js';
 import Tournaments  from './classes/Tournament.js';
+import { editTournament } from './UI-tournaments-list.js';
 
 
 
@@ -68,6 +69,15 @@ export function displayTournamentOverview(tournament) {
 function createButtonsContainer() {
     const container = document.createElement('div');
     container.classList.add('buttons-container');
+
+    const roundsText = document.createElement('h3');
+    roundsText.textContent = 'Antall runder: ' + Tournaments.getCurrentTournament().totalRounds;
+
+    const courtsText = document.createElement('h3');
+    courtsText.textContent = 'Antall baner: ' + Tournaments.getCurrentTournament().totalCourts;
+
+    container.appendChild(roundsText);
+    container.appendChild(courtsText);
     container.appendChild(createAddPlayerButton());
     container.appendChild(createShuffleButton());
     container.appendChild(createEditTournamentButton());
@@ -80,38 +90,12 @@ function createButtonsContainer() {
  */
 
 function createEditTournamentButton() {
-
-    //get the current tournament from the Tournaments class
-    const currentTournament = Tournaments.getCurrentTournament();
-    console.log('Current tournament:', currentTournament);
-    if (!currentTournament) {
-        console.error('No current tournament found.');
-        return;
-    }
-    const tournamentName = currentTournament.name;
-
-    const container = document.createElement('div');
-    container.classList.add('save-tournament-container');
-    container.id = 'save-tournament-container';
-
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.id = 'tournamentNameInput';
-    input.placeholder = 'Turneringens navn';
-    input.textContent = tournamentName;
-    input.value = tournamentName;
-
     const button = document.createElement('button');
-button.id = 'save-btn';
-button.textContent = 'Oppdater turnering';
-button.addEventListener('click', () => {
-    if (input.value && input.value.trim() !== '') {
-        onEditTournament(input.value);
-    } else {
-        onEditTournament(tournamentName);
-    }
-});
-return container.appendChild(input), container.appendChild(button), container;
+    button.id = 'editTournamentButton';
+    button.textContent = 'Rediger turnering';
+    const currentTournament = Tournaments.getCurrentTournament();
+    button.addEventListener('click', () => editTournament(currentTournament.id));
+    return button;
 }
 
 function createAddPlayerButton() {

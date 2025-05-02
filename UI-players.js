@@ -1,6 +1,6 @@
 import Players from './classes/Player.js';
 import Tournaments from './classes/Tournament.js';
-import { onEditTournament } from './events.js';
+import { onEditPlayers } from './events.js';
 import { createNameCell, startCellEdit } from './UI-player-utils.js';
 import { shuffleStartNumbers } from './shuffle-players.js';
 
@@ -150,6 +150,7 @@ function showPlayerContextMenu(e, player, row, container) {
         if (confirm(`Er du sikker på at du vil slette ${player.name} ?`)) {
             Players.delete(player.id);
             shuffleStartNumbers();
+            onEditPlayers();
         }
     };
     menu.appendChild(deleteBtn);
