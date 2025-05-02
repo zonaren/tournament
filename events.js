@@ -69,17 +69,20 @@ export function onStartTournament() {
     const tournament = Tournaments.getCurrentTournament();
     const matchSetup = createMatchSetup(Players.count(), TournamentSettings.getRoundCount(), TournamentSettings.getGametype());
     if (tournament) {
+
+        // if cancel, do not start tournament
+        if (confirm('Vil du starte turnering? Det er ikke mulig å endre spillere etter turneringsstart!')) {
+            // add matchsetup to tournament
+            tournament.matchSchedule = matchSetup;
         // Set the tournament to started
         tournament.startTournament();
         console.log('Tournament started:', tournament);
-
-        // add match setup to tournament
-        tournament.matchSchedule = matchSetup;
-
         displayTournamentOverview(tournament);
-        alert('Turneringen er startet! Det er ikke mulig å endre spillere eller baner nå.');
     } else {
-        alert('Ingen turnering er valgt. Vennligst opprett eller velg en turnering først.');
+            console.log('Tournament not started');
+            return;
+        }
+
     }
 }
 
