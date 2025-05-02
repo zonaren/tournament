@@ -149,7 +149,6 @@ function showPlayerContextMenu(e, player, row, container) {
         removeExistingPlayerContextMenu();
         if (confirm(`Er du sikker på at du vil slette ${player.name} ?`)) {
             Players.delete(player.id);
-            shuffleStartNumbers();
             onEditPlayers();
         }
     };
