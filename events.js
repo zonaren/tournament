@@ -50,9 +50,8 @@ export function onCreateTournament() {
     Players.resetPlayers(TournamentSettings.getPlayerCount());
     const matchSetup = [];
     const tournament = Tournaments.create(TournamentSettings.getRoundCount(), TournamentSettings.getPlayerCount() / 2, matchSetup, 'Ny turnering', TournamentSettings.getGametype(), Players.getAll());
-    //mainContainer.appendChild(createButtonsContainer());
-    displayTournamentOverview(tournament);
     Tournaments.setCurrentTournament(tournament.id);
+    displayTournamentOverview(tournament);
     console.log('Tournament was created', tournament);
     const header = document.getElementById('header');
     header.remove();
@@ -81,13 +80,11 @@ export function onStartTournament() {
 
         // if cancel, do not start tournament
         if (confirm('Vil du starte turnering? Det er ikke mulig å endre spillere etter turneringsstart!')) {
-            // add matchsetup to tournament
-            tournament.matchSchedule = matchSetup;
             tournament.players = Players.getAll();
+            tournament.matchSchedule = matchSetup;
             tournament.totalCourts = Players.count() / 2;
             // Set the tournament to started
             tournament.startTournament();
-            console.log('Tournament started:', tournament);
             displayTournamentOverview(tournament);
         } else {
             console.log('Tournament not started');

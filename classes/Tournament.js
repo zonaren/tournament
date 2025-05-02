@@ -43,6 +43,7 @@ class Tournaments {
     setCurrentTournament(id) {
         this.currentTournament = this.get(id);
         console.log("current tournament set to: ", this.currentTournament);
+        this.saveToLocalStorage();
         return this.currentTournament;
     }
 
@@ -118,6 +119,7 @@ class Tournament {
     startTournament() {
         this.isStarted = true;
         this.saveToLocalStorage();
+        console.log('Tournament started:', this.name);
     }
 
     addRound(roundNumber, matches) {
