@@ -73,9 +73,6 @@ function createButtonsContainer() {
     const roundsText = document.createElement('h3');
     roundsText.textContent = 'Antall runder: ' + Tournaments.getCurrentTournament().totalRounds;
 
-    const courtsText = document.createElement('h3');
-    courtsText.textContent = 'Antall baner: ' + Tournaments.getCurrentTournament().totalCourts;
-
     container.appendChild(roundsText);
     container.appendChild(courtsText);
     container.appendChild(createAddPlayerButton());
