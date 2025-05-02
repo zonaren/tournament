@@ -15,7 +15,7 @@ export function displayTournamentsList() {
     
     const thead = table.createTHead();
     const headerRow = thead.insertRow();
-    ['Navn', 'Type', 'Opprettet', 'Runder', 'Spillere', 'Startet', 'Handlinger'].forEach(text => {
+    ['Navn', 'Type', 'Opprettet', 'Runder', "Baner", 'Spillere', 'Startet', 'Eier', 'Handlinger'].forEach(text => {
         const th = document.createElement('th');
         th.textContent = text;
         headerRow.appendChild(th);
@@ -31,8 +31,10 @@ export function displayTournamentsList() {
         row.insertCell().textContent = tournament.type;
         row.insertCell().textContent = tournament.dateCreated;
         row.insertCell().textContent = tournament.totalRounds;
+        row.insertCell().textContent = tournament.totalCourts;
         row.insertCell().textContent = tournament.getPlayers().length;
         row.insertCell().textContent = tournament.isStarted ? 'Ja' : 'Nei';
+        row.insertCell().textContent = 'Sondre Torgersen'; // Hardcdoded for now
 
         const actionsCell = row.insertCell();
         
@@ -42,6 +44,7 @@ export function displayTournamentsList() {
         
         const editBtn = document.createElement('button');
         editBtn.textContent = 'Rediger';
+        tournament.isStarted ? editBtn.disabled = true : editBtn.disabled = false;
         editBtn.onclick = () => editTournament(tournament.id);
         
         const deleteBtn = document.createElement('button');
@@ -54,7 +57,7 @@ export function displayTournamentsList() {
         confirmDelete.textContent = 'Bekreft sletting';
         confirmDelete.onclick = () => deleteTournament(tournament.id, row);
 
-        actionsCell.append(loadBtn, deleteBtn);
+        actionsCell.append(loadBtn, editBtn, deleteBtn);
     });
 
     tableContainer.appendChild(table);
@@ -77,6 +80,7 @@ function loadTournament(id) {
 
 function editTournament(id) {
     // TODO: Implement tournament editing
+    alert('Rediger turnering er ikke implementert ennå!');
     console.log('Edit tournament:', id);
     
 }
