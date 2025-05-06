@@ -7,6 +7,8 @@ export function createMatchSetup(totalPlayers, totalRounds, gametype) {
     const totalCourts = totalPlayers / 2;
     let matchSetup = [];
 
+    console.log('gametype: ', gametype);
+
 
     if(gametype === 'Gloppen'){
         cascadeSystem(totalRounds,totalCourts, matchSetup);
@@ -17,9 +19,13 @@ export function createMatchSetup(totalPlayers, totalRounds, gametype) {
         roundRobinSystem(totalRounds, totalCourts,matchSetup);
         console.log(`Round robin system is selected`);
     }
-    else {
+    else if(gametype === 'NHM'){
         swissSystem(totalCourts, matchSetup);
-        console.log(`Swiss system is selected`);
+        console.log(`Swiss system (NHM) is selected`);
+    }
+    else {
+        console.log(`No valid gametype selected`);
+        return;
     }
 
 

@@ -101,7 +101,7 @@ function onShowTournaments() {
 
 function onShowMatchSetup() {
     Players.resetPlayers(TournamentSettings.getPlayerCount());
-    const matchSetup = createMatchSetup(Players.count(), TournamentSettings.getRoundCount());
+    const matchSetup = createMatchSetup(Players.count(), TournamentSettings.getRoundCount(), "Gloppen");
     displayMatchSetup(matchSetup, TournamentSettings.getPlayerCount());
 }
 
