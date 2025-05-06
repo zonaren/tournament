@@ -33,7 +33,7 @@ function createPlayerCountSelectOptions() {
 
 function createRoundCountSelectOptions() {
   const maximumRounds = TournamentSettings.getMaximumRounds();
-  console.log(maximumRounds);
+
   // Clear existing options
   roundCountSelect.innerHTML = '';
   for (let i = 2; i <= maximumRounds; i += 1) {

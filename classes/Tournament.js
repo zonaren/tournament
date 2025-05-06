@@ -48,18 +48,16 @@ class Tournaments {
     }
 
     getCurrentTournament() {
-        console.log("current tournament: ", this.currentTournament);
+        //console.log("current tournament: ", this.currentTournament);
         return this.currentTournament;
     }
 
     saveToLocalStorage() {
         const tournamentsJson = JSON.stringify(this.tournaments);
         localStorage.setItem('tournaments', tournamentsJson);
-        console.log("turneringer lagret");
 
         const currentTournamentJson = JSON.stringify(this.currentTournament);
         localStorage.setItem('currentTournament', currentTournamentJson);
-        console.log("current tournament lagret: ", this.currentTournament);
     }
 
     loadFromLocalStorage() {
