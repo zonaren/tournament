@@ -3,22 +3,26 @@ class TournamentSettings {
         this.gametype = 'Gloppen'; // Default gametype
         this.playerCount = 8; // Default player count
         this.roundCount = 4; // Default round count
-        this.maximumRounds = this.playerCount < 14 ? this.playerCount -1 : 12; // Default maximum rounds
+        this.maximumRounds = this.calculateMaximumRounds();
+    }
+
+    calculateMaximumRounds() {
+        // For Gloppen and NHM, max 12 if playerCount > 14
+        if ((this.gametype === 'Gloppen' || this.gametype === 'NHM') && this.playerCount > 14) {
+            return 12;
+        }
+        // All gametypes can support playerCount - 1 rounds by default
+        return this.playerCount - 1;
     }
 
     setGametype(gametype) {
         this.gametype = gametype;
-        if(this.gametype === 'Gloppen') {
-            this.maximumRounds = this.playerCount - 1;
-        }
-        else if (this.gametype === 'Alle mot alle' || this.gametype === 'NHM') {
-            this.maximumRounds = this.playerCount - 1; // or any other default value you prefer
+        this.maximumRounds = this.calculateMaximumRounds();
+        // Only 'Alle mot alle' should auto-set roundCount to maximumRounds
+        if (this.gametype === 'Alle mot alle') {
             this.roundCount = this.maximumRounds;
         }
-        else {
-            this.maximumRounds = 12; // or any other default value you prefer
     }
-}
 
     getGametype() {
         return this.gametype;
@@ -26,14 +30,10 @@ class TournamentSettings {
 
     setPlayerCount(count) {
         this.playerCount = count;
-        if (this.playerCount < 14 && this.gametype === 'Gloppen') {
-            this.maximumRounds = this.playerCount - 1;
-        } else if (this.gametype === 'Alle mot alle' || this.gametype === 'NHM') {
-            this.maximumRounds = this.playerCount - 1;
+        this.maximumRounds = this.calculateMaximumRounds();
+        // Only 'Alle mot alle' should auto-set roundCount to maximumRounds
+        if (this.gametype === 'Alle mot alle') {
             this.roundCount = this.maximumRounds;
-        }
-        else {
-            this.maximumRounds = 12; // or any other default value you prefer
         }
     }
 
