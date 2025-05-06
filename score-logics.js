@@ -11,42 +11,60 @@ function updateTotalScores(matchId, p1id, p2id, p1Score, p2Score) {
 
     const player1Score = parseInt(p1Score);
     const player2Score = parseInt(p2Score);
-    player1.scorePoints += p1Score;
-    player2.scorePoints += p2Score;
+    player1.scorePoints = p1Score;
+    player2.scorePoints = p2Score;
 
         //Update match points
     if (player1Score >= 21 && player2Score < 11) {
-        player1.matchPoints += 2;
-        player2.matchPoints += 0;
+        player1.matchPoints = 2;
+        player2.matchPoints = 0;
     } else if (player1Score >= 21 && player2Score >= 11 && player1Score > player2Score) {
-        player1.matchPoints += 2;
-        player2.matchPoints += 1;
+        player1.matchPoints = 2;
+        player2.matchPoints = 1;
     } else if (player2Score >= 21 && player1Score < 11) {
-        player1.matchPoints += 0;
-        player2.matchPoints += 2;
+        player1.matchPoints = 0;
+        player2.matchPoints = 2;
     } else if (player2Score >= 21 && player1Score >= 11 && player2Score > player1Score) {
-        player1.matchPoints += 1;
-        player2.matchPoints += 2;
+        player1.matchPoints = 1;
+        player2.matchPoints = 2;
     } else if (player1Score >= 21 && player2Score >= 21 && player1Score === player2Score) {
-        player1.matchPoints += 1.5;
-        player2.matchPoints += 1.5;
+        player1.matchPoints = 1.5;
+        player2.matchPoints = 1.5;
     }
 
-    player1.matches.push({
-        matchId: matchId,
-        opponentId: player2.id,
-        scorePoints: player1Score,
-        matchPoints: player1.matchPoints,
-        isCompleted: true
-    });
+    // Update or add match for player1
+    let p1Match = player1.matches.find(m => m.matchId === matchId);
+    if (p1Match) {
+        p1Match.opponentId = player2.id;
+        p1Match.scorePoints = player1Score;
+        p1Match.matchPoints = player1.matchPoints;
+        p1Match.isCompleted = true;
+    } else {
+        player1.matches.push({
+            matchId: matchId,
+            opponentId: player2.id,
+            scorePoints: player1Score,
+            matchPoints: player1.matchPoints,
+            isCompleted: true
+        });
+    }
 
-    player2.matches.push({
-        matchId: matchId,
-        opponentId: player1.id,
-        scorePoints: player2Score,
-        matchPoints: player2.matchPoints,
-        isCompleted: true
-    });
+    // Update or add match for player2
+    let p2Match = player2.matches.find(m => m.matchId === matchId);
+    if (p2Match) {
+        p2Match.opponentId = player1.id;
+        p2Match.scorePoints = player2Score;
+        p2Match.matchPoints = player2.matchPoints;
+        p2Match.isCompleted = true;
+    } else {
+        player2.matches.push({
+            matchId: matchId,
+            opponentId: player1.id,
+            scorePoints: player2Score,
+            matchPoints: player2.matchPoints,
+            isCompleted: true
+        });
+    }
 
     Players.update(player1.id, player1);
     Players.update(player2.id, player2);
