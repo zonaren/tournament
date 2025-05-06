@@ -68,12 +68,19 @@ class Player {
     constructor(id) {
         this.id = id; // this is also the start number of the player
         this.name = "Spiller " + id;
-        this.scorePoints = 0;
-        this.matchPoints = 0;
-        this.details = [
-            { inning: 0, points: 0, ringers: 0 }
-        ];
+        this.scorePoints = 0; // sum of all score points from all matches
+        this.matchPoints = 0; // sum of all match points from all matches
+        this.matches = [];
+    }
+
+    // Recalculate totals from all matches
+    recalculateTotals() {
+        this.scorePoints = this.matches.reduce((sum, m) => sum + (m.scorePoints || 0), 0);
+        this.matchPoints = this.matches.reduce((sum, m) => sum + (m.matchPoints || 0), 0);
     }
 }
+
+// player.matches:
+// [{matchId: 1, scorePoints: 0, matchPoints: 0, details: {points: 0, ringers: 0}}]
 
 export default new Players();

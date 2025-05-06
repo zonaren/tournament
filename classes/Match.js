@@ -10,9 +10,21 @@ class Round {
 class Match {
     constructor(matchId, court, p1, p2, isCompleted) {
         this.matchId = matchId;
-        this.court = court;        
-        this.p1 = p1;
-        this.p2 = p2;
+        this.court = court;
+        this.p1 = {
+            id: p1.id,
+            name: p1.name,
+            scorePoints: p1.scorePoints || 0,
+            matchPoints: p1.matchPoints || 0,
+            details: Array.isArray(p1.details) ? p1.details : [{ points: 0, ringers: 0 }]
+        };
+        this.p2 = {
+            id: p2.id,
+            name: p2.name,
+            scorePoints: p2.scorePoints || 0,
+            matchPoints: p2.matchPoints || 0,
+            details: Array.isArray(p2.details) ? p2.details : [{ points: 0, ringers: 0 }]
+        };
         this.isCompleted = isCompleted || false;
     }
 
