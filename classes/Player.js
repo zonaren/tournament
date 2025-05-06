@@ -57,7 +57,12 @@ class Players {
     }
 
     loadPlayersFromTournament(players) {
-        this.players = players;
+        // Ensure all loaded players are Player instances
+        this.players = players.map(p => {
+            const player = new Player(p.id);
+            Object.assign(player, p);
+            return player;
+        });
         this.saveToLocalStorage();
     }
 
