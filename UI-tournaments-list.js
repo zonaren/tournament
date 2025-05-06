@@ -149,7 +149,8 @@ export function editTournament(id) {
     const roundsInput = document.createElement('input');
     roundsInput.type = 'number';
     roundsInput.value = tournament.totalRounds;
-    roundsInput.min = 1;
+    roundsInput.min = 2;
+    roundsInput.max = 12; // Set a reasonable max value
     roundsInput.style.width = '100%';
     roundsInput.style.marginTop = '0.2em';
     popup.appendChild(roundsLabel);
