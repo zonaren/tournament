@@ -36,16 +36,16 @@ function updateTotalScores(matchId, p1id, p2id, p1Score, p2Score) {
     let p1Match = player1.matches.find(m => m.matchId === matchId);
     if (p1Match) {
         p1Match.opponentId = player2.id;
+        p1Match.opponentScore = player2Score;
         p1Match.scorePoints = player1Score;
         p1Match.matchPoints = player1.matchPoints;
-        p1Match.isCompleted = true;
     } else {
         player1.matches.push({
             matchId: matchId,
             opponentId: player2.id,
+            opponentScore: player2Score,
             scorePoints: player1Score,
-            matchPoints: player1.matchPoints,
-            isCompleted: true
+            matchPoints: player1.matchPoints
         });
     }
 
@@ -53,16 +53,16 @@ function updateTotalScores(matchId, p1id, p2id, p1Score, p2Score) {
     let p2Match = player2.matches.find(m => m.matchId === matchId);
     if (p2Match) {
         p2Match.opponentId = player1.id;
+        p2Match.opponentScore = player1Score;
         p2Match.scorePoints = player2Score;
         p2Match.matchPoints = player2.matchPoints;
-        p2Match.isCompleted = true;
     } else {
         player2.matches.push({
             matchId: matchId,
             opponentId: player1.id,
+            opponentScore: player1Score,
             scorePoints: player2Score,
-            matchPoints: player2.matchPoints,
-            isCompleted: true
+            matchPoints: player2.matchPoints
         });
     }
 

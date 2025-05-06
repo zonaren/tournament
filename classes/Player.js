@@ -73,6 +73,7 @@ class Player {
         this.name = "Spiller " + id;
         this.scorePoints = 0; // sum of all score points from all matches
         this.matchPoints = 0; // sum of all match points from all matches
+        this.scorePointsDiff = 0; // difference between score points for and against
         this.matches = [];
     }
 
@@ -80,10 +81,15 @@ class Player {
     recalculateTotals() {
         this.scorePoints = this.matches.reduce((sum, m) => sum + (m.scorePoints || 0), 0);
         this.matchPoints = this.matches.reduce((sum, m) => sum + (m.matchPoints || 0), 0);
+        this.scorePointsDiff = this.matches.reduce((sum, m) => sum + (m.scorePoints || 0) - (m.opponentScore || 0), 0);
     }
 }
 
-// player.matches:
-// [{matchId: 1, scorePoints: 0, matchPoints: 0, details: {points: 0, ringers: 0}}]
+// player1.matches:
+// matchId: matchId,
+// opponentId: player2.id,
+// opponentScore: player2Score,
+// scorePoints: player1Score,
+// matchPoints: player1.matchPoints
 
 export default new Players();
