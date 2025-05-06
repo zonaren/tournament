@@ -74,7 +74,6 @@ function createButtonsContainer() {
     roundsText.textContent = 'Antall runder: ' + Tournaments.getCurrentTournament().totalRounds;
 
     container.appendChild(roundsText);
-    container.appendChild(courtsText);
     container.appendChild(createAddPlayerButton());
     container.appendChild(createShuffleButton());
     container.appendChild(createEditTournamentButton());
