@@ -68,7 +68,7 @@ export function onEditPlayers() {
             //matchSchedule: tournament.matchSchedule,
         });
         console.log('Tournament updated:', tournament);
-        //displayTournamentOverview(tournament);
+        displayTournamentOverview(tournament);
     }
 }
 
