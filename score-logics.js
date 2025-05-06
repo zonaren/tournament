@@ -2,7 +2,7 @@ import Players from './classes/Player.js';
 import Tournaments from './classes/Tournament.js';
 import { updatePlayerTable } from './UI-players.js';
 
-function updateTotalScores(p1id, p2id, p1Score, p2Score) {
+function updateTotalScores(matchId, p1id, p2id, p1Score, p2Score) {
     const currentTournament = Tournaments.getCurrentTournament();
     const players = currentTournament.getPlayers();
     // Calculate total scores
@@ -14,7 +14,7 @@ function updateTotalScores(p1id, p2id, p1Score, p2Score) {
     player1.scorePoints += p1Score;
     player2.scorePoints += p2Score;
 
-    //Update match points
+        //Update match points
     if (player1Score >= 21 && player2Score < 11) {
         player1.matchPoints += 2;
         player2.matchPoints += 0;
@@ -31,6 +31,23 @@ function updateTotalScores(p1id, p2id, p1Score, p2Score) {
         player1.matchPoints += 1.5;
         player2.matchPoints += 1.5;
     }
+
+    player1.matches.push({
+        matchId: matchId,
+        opponentId: player2.id,
+        scorePoints: player1Score,
+        matchPoints: player1.matchPoints,
+        isCompleted: true
+    });
+
+    player2.matches.push({
+        matchId: matchId,
+        opponentId: player1.id,
+        scorePoints: player2Score,
+        matchPoints: player2.matchPoints,
+        isCompleted: true
+    });
+
     Players.update(player1.id, player1);
     Players.update(player2.id, player2);
     currentTournament.addPlayers(Players.getAll());

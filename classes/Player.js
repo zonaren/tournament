@@ -28,6 +28,10 @@ class Players {
         const player = this.get(id);
         if (player) {
             Object.assign(player, data);
+            // Only recalculate if player is a Player instance
+            if (typeof player.recalculateTotals === 'function') {
+                player.recalculateTotals();
+            }
         }
         this.saveToLocalStorage();
     }
@@ -60,7 +64,6 @@ class Players {
     saveToLocalStorage() {
         const playersJson = JSON.stringify(this.players);
         localStorage.setItem('players', playersJson);
-        console.log("spillere lagret");
     }
 }
 
