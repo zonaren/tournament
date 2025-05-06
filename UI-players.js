@@ -203,10 +203,40 @@ function updatePlayerTable() {
     const tbody = table.getElementsByTagName('tbody')[0];
     tbody.innerHTML = '';
     
-    const sortedPlayers = Players.getAll()
-        .sort((a, b) => b.matchPoints !== a.matchPoints
-            ? b.matchPoints - a.matchPoints
-            : b.scorePoints - a.scorePoints);
+    const players = Players.getAll();
+
+    // Helper: get mutual result between two players (returns 1 if a beat b, -1 if b beat a, 0 if draw or not found)
+    function getMutualResult(a, b) {
+        // Find the match between a and b
+        const aMatch = a.matches.find(m => m.opponentId === b.id);
+        const bMatch = b.matches.find(m => m.opponentId === a.id);
+        if (aMatch && bMatch) {
+            if (aMatch.scorePoints > bMatch.scorePoints) return 1;
+            if (aMatch.scorePoints < bMatch.scorePoints) return -1;
+            return 0;
+        }
+        return 0;
+    }
+
+    // Helper: get highest single match scorePoints for a player
+    function getHighestSingleScore(player) {
+        if (!player.matches.length) return 0;
+        return Math.max(...player.matches.map(m => m.scorePoints || 0));
+    }
+
+    const sortedPlayers = players.slice().sort((a, b) => {
+        // 1. Highest matchPoints
+        if (b.matchPoints !== a.matchPoints) return b.matchPoints - a.matchPoints;
+        // 2. Highest scorePoints
+        if (b.scorePoints !== a.scorePoints) return b.scorePoints - a.scorePoints;
+        // 3. Mutual result (if only two players have same points)
+        if (a.matches && b.matches && players.filter(p => p.matchPoints === a.matchPoints && p.scorePoints === a.scorePoints).length === 2) {
+            const mutual = getMutualResult(a, b);
+            if (mutual !== 0) return -mutual; // winner comes first
+        }
+        // 4. Highest single match scorePoints
+        return getHighestSingleScore(b) - getHighestSingleScore(a);
+    });
 
     sortedPlayers
         .filter(player => player.name !== 'Walkover')
