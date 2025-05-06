@@ -64,6 +64,7 @@ function createPlayerRow(player, index, playerOverviewContainer) {
     // Add long-press event for touch devices
     let touchTimer = null;
     let touchMoved = false;
+// ...existing code...
     row.addEventListener('touchstart', function(e) {
         if (e.touches.length > 1) return; // Ignore multi-touch
         touchMoved = false;
@@ -76,17 +77,17 @@ function createPlayerRow(player, index, playerOverviewContainer) {
                 preventDefault: () => {},
             }, player, row, playerOverviewContainer);
         }, 500); // 500ms long press
-    });
+    }, { passive: true }); // <-- Mark as passive
     row.addEventListener('touchmove', function() {
         touchMoved = true;
         if (touchTimer) clearTimeout(touchTimer);
-    });
+    }, { passive: true });
     row.addEventListener('touchend', function() {
         if (touchTimer) clearTimeout(touchTimer);
-    });
+    }, { passive: true });
     row.addEventListener('touchcancel', function() {
         if (touchTimer) clearTimeout(touchTimer);
-    });
+    }, { passive: true });
     // (Left click context menu removed)
     return row;
 }
