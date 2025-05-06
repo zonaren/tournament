@@ -80,15 +80,15 @@ function checkPlayerCount(playerCount, totalRounds, type) {
         alert('Det må være minst 4 spillere for å starte turneringen!');
         return false;
     }
-    if (type === "Gloppen" && totalRounds > playerCount / 2) {
-        TournamentSettings.setRoundCount(playerCount / 2);
+    if (type === "Gloppen" && totalRounds >= playerCount) {
+        TournamentSettings.setRoundCount(playerCount - 1);
         // Update the current tournament's totalRounds as well
         const tournament = Tournaments.getCurrentTournament();
         if (tournament) {
-            tournament.totalRounds = playerCount / 2;
-            Tournaments.update(tournament.id, { totalRounds: playerCount / 2 });
+            tournament.totalRounds = playerCount - 1;
+            Tournaments.update(tournament.id, { totalRounds: playerCount - 1 });
         }
-        alert('Antall runder er satt til ' + playerCount / 2 + ' fordi det var for mange runder.');
+        alert('Antall runder er satt til ' + playerCount - 1 + ' fordi det var for mange runder.');
         return true;
     }
 }
