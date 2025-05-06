@@ -13,6 +13,7 @@ class Tournaments {
         const tournament = new Tournament(totalRounds, totalCourts, matchSchedule, tournamentName, tournamentType, players, isStarted);
         this.tournaments.push(tournament);
         this.saveToLocalStorage();
+        console.log("Tournament created: ", tournament);
         return tournament;
     }
 

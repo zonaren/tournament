@@ -51,7 +51,7 @@ export function onCreateTournament() {
     const tournament = Tournaments.create(TournamentSettings.getRoundCount(), TournamentSettings.getPlayerCount() / 2, matchSetup, 'Ny turnering', TournamentSettings.getGametype(), Players.getAll());
     Tournaments.setCurrentTournament(tournament.id);
     displayTournamentOverview(tournament);
-    console.log('Tournament was created', tournament);
+    
     const header = document.getElementById('header');
     header.remove();
     editTournament(tournament.id);
