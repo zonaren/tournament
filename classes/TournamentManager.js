@@ -24,58 +24,20 @@ class TournamentManager {
     }
 
     generateCascadeSystem(totalRounds, totalCourts) {
-    const players = Players.getAll();
-    const playedPairs = new Set();
-    const recommendedRounds = players.length / 2;
-
-    // Main rounds (recommended: players / 2)
-    for (let round = 1; round <= Math.min(totalRounds, recommendedRounds); round++) {
-        let matches = [];
-        for (let court = 1; court <= totalCourts; court++) {
-            const p1Id = ((court - 1 + round - 1) % totalCourts) + 1;
-            const p2Id = ((court - 1 + 2 * (round - 1)) % totalCourts) + 1 + totalCourts;
-            const p1 = players.find(p => p.id === p1Id);
-            const p2 = players.find(p => p.id === p2Id);
-            if (p1 && p2) {
-                // Track the pair
-                const pairKey = [p1.id, p2.id].sort().join('-');
-                playedPairs.add(pairKey);
-                matches.push(this.createMatch(p1, p2, court));
-            }
-        }
-        this.addRound(round, matches);
-    }
-
-    // Extra rounds (if totalRounds > players / 2)
-    let roundNum = Math.floor(recommendedRounds) + 1;
-    while (roundNum <= totalRounds) {
-        let matches = [];
-        let usedPlayers = new Set();
-        for (let court = 1; court <= totalCourts; court++) {
-            // Find two players who have not played each other and are not used in this round
-            let found = false;
-            for (let i = 0; i < players.length; i++) {
-                if (usedPlayers.has(players[i].id)) continue;
-                for (let j = i + 1; j < players.length; j++) {
-                    if (usedPlayers.has(players[j].id)) continue;
-                    const pairKey = [players[i].id, players[j].id].sort().join('-');
-                    if (!playedPairs.has(pairKey)) {
-                        matches.push(this.createMatch(players[i], players[j], court));
-                        playedPairs.add(pairKey);
-                        usedPlayers.add(players[i].id);
-                        usedPlayers.add(players[j].id);
-                        found = true;
-                        break;
-                    }
+        const players = Players.getAll();
+        for (let round = 1; round <= totalRounds; round++) {
+            let matches = [];
+            for (let court = 1; court <= totalCourts; court++) {
+                const p1Id = ((court - 1 + round - 1) % totalCourts) + 1;
+                const p2Id = ((court - 1 + 2 * (round - 1)) % totalCourts) + 1 + totalCourts;
+                const p1 = players.find(p => p.id === p1Id);
+                const p2 = players.find(p => p.id === p2Id);
+                if (p1 && p2) {
+                    matches.push(this.createMatch(p1, p2, court));
                 }
-                if (found) break;
             }
+            this.addRound(round, matches);
         }
-        if (matches.length === 0) break; // No more unique pairs available
-        this.addRound(roundNum, matches);
-        roundNum++;
-    }
-
     }
 
     generateSwissSystem(totalCourts) {

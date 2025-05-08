@@ -7,11 +7,15 @@ class TournamentSettings {
     }
 
     calculateMaximumRounds() {
-        // For Gloppen and NHM, max 12 if playerCount > 14
-        if ((this.gametype === 'Gloppen' || this.gametype === 'NHM') && this.playerCount > 14) {
+        // For Gloppen, use playerCount / 2 (rounded down)
+        if (this.gametype === 'Gloppen') {
+            return Math.floor(this.playerCount / 2);
+        }
+        // For NHM, max 12 if playerCount > 14
+        if (this.gametype === 'NHM' && this.playerCount > 14) {
             return 12;
         }
-        // All gametypes can support playerCount - 1 rounds by default
+        // All other gametypes can support playerCount - 1 rounds by default
         return this.playerCount - 1;
     }
 
