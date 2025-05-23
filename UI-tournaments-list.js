@@ -141,6 +141,24 @@ export function editTournament(id) {
     popup.appendChild(typeLabel);
     popup.appendChild(typeSelect);
 
+    // Finals input
+    const finalsLabel = document.createElement('label');
+    finalsLabel.textContent = 'Sluttspill:';
+    finalsLabel.style.display = 'block';
+    finalsLabel.style.marginTop = '1em';
+    const finalsSelect = document.createElement('select');
+    ['Ingen', 'Cup', 'Single elimination', 'Double elimination'].forEach(opt => {
+        const option = document.createElement('option');
+        option.value = opt;
+        option.textContent = opt;
+        if (opt === tournament.finals) option.selected = true;
+        finalsSelect.appendChild(option);
+    });
+    finalsSelect.style.width = '100%';
+    finalsSelect.style.marginTop = '0.2em';
+    popup.appendChild(finalsLabel);
+    popup.appendChild(finalsSelect);
+
     // Rounds input
     const roundsLabel = document.createElement('label');
     roundsLabel.textContent = 'Antall runder:';
@@ -188,6 +206,7 @@ export function editTournament(id) {
         Tournaments.update(id, {
             name: newName,
             type: newType,
+            finalsFormat: finalsSelect.value,
             totalRounds: isNaN(newRounds) ? tournament.totalRounds : newRounds
         });
 

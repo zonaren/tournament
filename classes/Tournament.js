@@ -9,8 +9,8 @@ class Tournaments {
         this.loadFromLocalStorage();
     }
 
-    create(totalRounds, totalCourts, matchSchedule, tournamentName, tournamentType, players, isStarted = false) {
-        const tournament = new Tournament(totalRounds, totalCourts, matchSchedule, tournamentName, tournamentType, players, isStarted);
+    create(totalRounds, totalCourts, matchSchedule, tournamentName, tournamentType, players, isStarted = false, finalsFormat = null, finalsMatchSchedule = null) {
+        const tournament = new Tournament(totalRounds, totalCourts, matchSchedule, tournamentName, tournamentType, finalsFormat, finalsMatchSchedule, players, isStarted);
         this.tournaments.push(tournament);
         this.saveToLocalStorage();
         console.log("Tournament created: ", tournament);
@@ -72,6 +72,8 @@ class Tournaments {
                     tournamentData.matchSchedule,
                     tournamentData.name,
                     tournamentData.type,
+                    tournamentData.finalsFormat || null,
+                    tournamentData.finalsMatchSchedule || null,
                     tournamentData.players,
                     tournamentData.isStarted || false
                 );
@@ -84,23 +86,22 @@ class Tournaments {
 }
 
 class Tournament {
-    constructor(totalRounds, totalCourts, matchSchedule, tournamentName, tournamentType, players, isStarted = false) {
+    constructor(totalRounds, totalCourts, matchSchedule, tournamentName, tournamentType, finalsFormat = null, finalsMatchSchedule = null, players, isStarted = false) {
         this.isStarted = isStarted;
         this.id = generateUniqueId(new Set());
         this.name = tournamentName;
         this.dateCreated = new Date().toLocaleString();
         this.type = tournamentType;
+        this.finalsFormat = finalsFormat;
+        this.finalsMatchSchedule = finalsMatchSchedule;
         this.totalRounds = totalRounds;
         this.totalCourts = totalCourts;
-        
         // Convert plain match objects to Match instances in each round
         this.matchSchedule = matchSchedule.map(round => {
             const matches = round.matches.map(matchData => {
-                // If the match is already a Match instance, use it as is
                 if (matchData instanceof Match) {
                     return matchData;
                 }
-                // Otherwise, create a new Match instance
                 return new Match(
                     matchData.matchId, 
                     matchData.court, 
@@ -111,7 +112,6 @@ class Tournament {
             });
             return new Round(round.roundNumber, matches);
         });
-        
         this.players = players;
     }
 
