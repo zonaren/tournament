@@ -1,0 +1,500 @@
+[
+
+            {
+                "totalPlayers": 8,
+                "recommended": [
+                    {
+                        "A": 8,
+                        "B": 0
+                    },
+                    {
+                        "A": 6,
+                        "B": 2
+                    },
+                    {
+                        "A": 4,
+                        "B": 4
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 9,
+                "recommended": [
+                    {
+                        "A": 9,
+                        "B": 0
+                    },
+                    {
+                        "A": 6,
+                        "B": 3
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 10,
+                "recommended": [
+                    {
+                        "A": 10,
+                        "B": 0
+                    },
+                    {
+                        "A": 6,
+                        "B": 4
+                    },
+                    {
+                        "A": 8,
+                        "B": 2
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 11,
+                "recommended": [
+                    {
+                        "A": 11,
+                        "B": 0
+                    },
+                    {
+                        "A": 8,
+                        "B": 3
+                    },
+                    {
+                        "A": 9,
+                        "B": 2
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 12,
+                "recommended": [
+                    {
+                        "A": 12,
+                        "B": 0
+                    },
+                    {
+                        "A": 9,
+                        "B": 3
+                    },
+                    {
+                        "A": 8,
+                        "B": 4
+                    },
+                    {
+                        "A": 6,
+                        "B": 6
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 13,
+                "recommended": [
+                    {
+                        "A": 13,
+                        "B": 0
+                    },
+                    {
+                        "A": 9,
+                        "B": 4
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 14,
+                "recommended": [
+                    {
+                        "A": 14,
+                        "B": 0
+                    },
+                    {
+                        "A": 11,
+                        "B": 3
+                    },
+                    {
+                        "A": 8,
+                        "B": 6
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 15,
+                "recommended": [
+                    {
+                        "A": 12,
+                        "B": 3
+                    },
+                    {
+                        "A": 11,
+                        "B": 4
+                    },
+                    {
+                        "A": 9,
+                        "B": 6
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 16,
+                "recommended": [
+                    {
+                        "A": 12,
+                        "B": 4
+                    },
+                    {
+                        "A": 8,
+                        "B": 8
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 17,
+                "recommended": [
+                    {
+                        "A": 11,
+                        "B": 6
+                    },
+                    {
+                        "A": 13,
+                        "B": 4
+                    },
+                    {
+                        "A": 9,
+                        "B": 8
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 18,
+                "recommended": [
+                    {
+                        "A": 12,
+                        "B": 6
+                    },
+                    {
+                        "A": 9,
+                        "B": 9
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 19,
+                "recommended": [
+                    {
+                        "A": 13,
+                        "B": 6
+                    },
+                    {
+                        "A": 11,
+                        "B": 8
+                    },
+                    {
+                        "A": 16,
+                        "B": 3
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 20,
+                "recommended": [
+                    {
+                        "A": 12,
+                        "B": 8
+                    },
+                    {
+                        "A": 11,
+                        "B": 9
+                    },
+                    {
+                        "A": 16,
+                        "B": 4
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 21,
+                "recommended": [
+                    {
+                        "A": 13,
+                        "B": 8
+                    },
+                    {
+                        "A": 12,
+                        "B": 9
+                    },
+                    {
+                        "A": 17,
+                        "B": 4
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 22,
+                "recommended": [
+                    {
+                        "A": 13,
+                        "B": 9
+                    },
+                    {
+                        "A": 18,
+                        "B": 4
+                    },
+                    {
+                        "A": 16,
+                        "B": 6
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 23,
+                "recommended": [
+                    {
+                        "A": 17,
+                        "B": 6
+                    },
+                    {
+                        "A": 12,
+                        "B": 11
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 24,
+                "recommended": [
+                    {
+                        "A": 18,
+                        "B": 6
+                    },
+                    {
+                        "A": 13,
+                        "B": 11
+                    },
+                    {
+                        "A": 12,
+                        "B": 12
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 25,
+                "recommended": [
+                    {
+                        "A": 17,
+                        "B": 8
+                    },
+                    {
+                        "A": 13,
+                        "B": 12
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 26,
+                "recommended": [
+                    {
+                        "A": 18,
+                        "B": 8
+                    },
+                    {
+                        "A": 17,
+                        "B": 9
+                    },
+                    {
+                        "A": 13,
+                        "B": 13
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 27,
+                "recommended": [
+                    {
+                        "A": 18,
+                        "B": 9
+                    },
+                    {
+                        "A": 16,
+                        "B": 11
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 28,
+                "recommended": [
+                    {
+                        "A": 17,
+                        "B": 11
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 29,
+                "recommended": [
+                    {
+                        "A": 18,
+                        "B": 11
+                    },
+                    {
+                        "A": 17,
+                        "B": 12
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 30,
+                "recommended": [
+                    {
+                        "A": 18,
+                        "B": 12
+                    },
+                    {
+                        "A": 17,
+                        "B": 13
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 31,
+                "recommended": [
+                    {
+                        "A": 23,
+                        "B": 8
+                    },
+                    {
+                        "A": 18,
+                        "B": 13
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 32,
+                "recommended": [
+                    {
+                        "A": 24,
+                        "B": 8
+                    },
+                    {
+                        "A": 23,
+                        "B": 9
+                    },
+                    {
+                        "A": 16,
+                        "B": 16
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 33,
+                "recommended": [
+                    {
+                        "A": 24,
+                        "B": 9
+                    },
+                    {
+                        "A": 17,
+                        "B": 16
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 34,
+                "recommended": [
+                    {
+                        "A": 23,
+                        "B": 11
+                    },
+                    {
+                        "A": 18,
+                        "B": 16
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 35,
+                "recommended": [
+                    {
+                        "A": 26,
+                        "B": 9
+                    },
+                    {
+                        "A": 24,
+                        "B": 11
+                    },
+                    {
+                        "A": 23,
+                        "B": 12
+                    },
+                    {
+                        "A": 18,
+                        "B": 17
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 36,
+                "recommended": [
+                    {
+                        "A": 27,
+                        "B": 9
+                    },
+                    {
+                        "A": 24,
+                        "B": 12
+                    },
+                    {
+                        "A": 23,
+                        "B": 13
+                    },
+                    {
+                        "A": 18,
+                        "B": 18
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 37,
+                "recommended": [
+                    {
+                        "A": 24,
+                        "B": 13
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 38,
+                "recommended": [
+                    {
+                        "A": 18,
+                        "B": 20
+                    },
+                    {
+                        "A": 19,
+                        "B": 19
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 39,
+                "recommended": [
+                    {
+                        "A": 18,
+                        "B": 21
+                    },
+                    {
+                        "A": 19,
+                        "B": 20
+                    }
+                ]
+            },
+            {
+                "totalPlayers": 40,
+                "recommended": [
+                    {
+                        "A": 18,
+                        "B": 22
+                    },
+                    {
+                        "A": 19,
+                        "B": 21
+                    }
+                ]
+            }
+]
