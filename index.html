@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Turnering</title>
+  <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#000000">
   <link rel="stylesheet" href="css/general.css">
   <link rel="stylesheet" href="css/header.css">
   <link rel="stylesheet" href="css/match-setup.css">
@@ -20,5 +22,13 @@
   <script type="module" src="UI-popup.js"></script>
   <script type="module" src="events.js"></script>
   
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+      .then(() => console.log('Service Worker registrert!'))
+      .catch(err => console.error('Service Worker-feil:', err));
+    }
+  </script>
+
 </body>
 </html>
