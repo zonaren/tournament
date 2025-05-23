@@ -7,6 +7,7 @@ import { onStartTournament } from './events.js';
 import { shuffleStartNumbers } from './shuffle-players.js';
 import Tournaments  from './classes/Tournament.js';
 import { editTournament } from './UI-tournaments-list.js';
+import { startFinals } from './UI-finals.js';
 
 
 
@@ -33,6 +34,11 @@ export function displayTournamentOverview(tournament) {
     }
     tournamentInfoDiv.appendChild(tournamentName);
     tournamentInfoDiv.appendChild(createPrintStartCardsButton());
+
+    if(tournament.finalsFormat !== null) {
+        tournamentInfoDiv.appendChild(createStartFinalsButton());
+    }
+    
     
     const mainContainer = document.getElementById('mainContainer');
     mainContainer.replaceChildren(tournamentOverview);
@@ -116,6 +122,14 @@ function startTournamentButton() {
     startTournamentBtn.classList.add('start-tournament-btn');
     startTournamentBtn.addEventListener('click', () => onStartTournament());
     return startTournamentBtn;
+}
+
+function createStartFinalsButton() {
+    const startFinalsBtn = document.createElement('button');
+    startFinalsBtn.textContent = 'Sluttspill: ' + Tournaments.getCurrentTournament().finalsFormat;
+    startFinalsBtn.classList.add('start-finals-btn');
+    startFinalsBtn.addEventListener('click', () => startFinals());
+    return startFinalsBtn;
 }
 
 function displayMatchOverview(tournament, matchOverviewContainer, tournamentInfoDiv) {

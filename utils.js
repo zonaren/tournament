@@ -16,4 +16,15 @@ function generateUniqueId(existingIds, length = 10) {
     return id;
 }
 
+// Utility to get all recommended group sizes for a given totalPlayers
+
+
+export async function getRecommendedFinalsGroupSizes(totalPlayers) {
+    const response = await fetch('recommended_group_sizes.json');
+    const data = await response.json();
+    const entry = data.find(e => e.totalPlayers === totalPlayers);
+    console.log("Recommended group sizes for " + totalPlayers + " players: ", entry);
+    return entry ? entry.recommended : [];
+}
+
 export { generateUniqueId };
