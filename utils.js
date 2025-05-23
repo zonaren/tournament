@@ -1,3 +1,36 @@
+// General player sorting function for ranking, finals, tables, etc.
+export function sortPlayers(players) {
+    // Helper: get mutual result between two players (returns 1 if a beat b, -1 if b beat a, 0 if draw or not found)
+    function getMutualResult(a, b) {
+        const aMatch = a.matches && a.matches.find(m => m.opponentId === b.id);
+        const bMatch = b.matches && b.matches.find(m => m.opponentId === a.id);
+        if (aMatch && bMatch) {
+            if (aMatch.scorePoints > bMatch.scorePoints) return 1;
+            if (aMatch.scorePoints < bMatch.scorePoints) return -1;
+            return 0;
+        }
+        return 0;
+    }
+    // Helper: get highest single match scorePoints for a player
+    function getHighestSingleScore(player) {
+        if (!player.matches || !player.matches.length) return 0;
+        return Math.max(...player.matches.map(m => m.scorePoints || 0));
+    }
+    return players.slice().sort((a, b) => {
+        if (b.matchPoints !== a.matchPoints) return b.matchPoints - a.matchPoints;
+        if (b.scorePoints !== a.scorePoints) return b.scorePoints - a.scorePoints;
+        // 3. Mutual result (if only two players have same points)
+        if (a.matches && b.matches && players.filter(p => p.matchPoints === a.matchPoints && p.scorePoints === a.scorePoints).length === 2) {
+            const mutual = getMutualResult(a, b);
+            if (mutual !== 0) return -mutual;
+        }
+        // 4. Highest single match scorePoints
+        return getHighestSingleScore(b) - getHighestSingleScore(a);
+    });
+}
+
+// Backward compatibility alias
+export const sortPlayersForFinals = sortPlayers;
 function generateRandomString(length) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-';
     let result = '';

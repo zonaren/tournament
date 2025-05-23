@@ -16,7 +16,7 @@ export function startFinals() {
 }
 
 
-import { getRecommendedFinalsGroupSizes } from './utils.js';
+import { getRecommendedFinalsGroupSizes, sortPlayersForFinals } from './utils.js';
 
 // Display a popup to select recommended finals group sizes
 export async function displayFinalsGroupSizeSelectionPopup(tournament) {
@@ -52,6 +52,7 @@ export async function displayFinalsGroupSizeSelectionPopup(tournament) {
     // Title
     const title = document.createElement('h2');
     title.textContent = 'Velg gruppestørrelser for sluttspill';
+    title.style.color = '#333';
     popup.appendChild(title);
 
     // List recommended options as radio buttons
@@ -65,9 +66,49 @@ export async function displayFinalsGroupSizeSelectionPopup(tournament) {
         radio.value = idx;
         if (idx === 0) radio.checked = true;
         label.appendChild(radio);
-        label.appendChild(document.createTextNode(`Gruppe A: ${option.A} - Gruppe B: ${option.B}`));
+        // Improved label formatting for readability
+        label.style.fontSize = '1.1em';
+        label.style.fontWeight = 'bold';
+        label.style.padding = '0.4em 0.6em';
+        label.style.background = '#f3f6fa';
+        label.style.borderRadius = '6px';
+        label.style.marginBottom = '0.7em';
+        label.appendChild(document.createTextNode(`Gruppe A: ${option.A} spillere  |  Gruppe B: ${option.B} spillere`));
         popup.appendChild(label);
     });
+
+    // Player preview area
+    const previewDiv = document.createElement('div');
+    previewDiv.style.margin = '1em 0';
+    popup.appendChild(previewDiv);
+
+    function updatePreview() {
+        const selectedIdx = Array.from(popup.querySelectorAll('input[name="finals-group-size"]')).findIndex(r => r.checked);
+        if (selectedIdx === -1) return;
+        const selected = recommended[selectedIdx];
+        const players = sortPlayersForFinals(tournament.getPlayers());
+        let html = '';
+        html += '<table style="width:100%;margin-bottom:1em;text-align:left">';
+        html += `<tr><th>Gruppe A (${selected.A})</th><th>Gruppe B (${selected.B})</th></tr>`;
+        const groupA = players.slice(0, selected.A);
+        const groupB = players.slice(selected.A, selected.A + selected.B);
+        const maxRows = Math.max(groupA.length, groupB.length);
+        for (let i = 0; i < maxRows; i++) {
+            html += '<tr>';
+            html += `<td>${groupA[i] ? groupA[i].name : ''}</td>`;
+            html += `<td>${groupB[i] ? groupB[i].name : ''}</td>`;
+            html += '</tr>';
+        }
+        html += '</table>';
+        previewDiv.innerHTML = html;
+    }
+
+    // Update preview on radio change
+    popup.querySelectorAll('input[name="finals-group-size"]').forEach(radio => {
+        radio.addEventListener('change', updatePreview);
+    });
+    // Initial preview
+    updatePreview();
 
     // Confirm button
     const confirmBtn = document.createElement('button');
@@ -80,8 +121,8 @@ export async function displayFinalsGroupSizeSelectionPopup(tournament) {
             return;
         }
         const selected = recommended[selectedIdx];
-        // Tag players with A or B
-        const players = tournament.getPlayers();
+        // Tag players with A or B using correct sorting
+        const players = sortPlayersForFinals(tournament.getPlayers());
         players.forEach((p, i) => {
             if (i < selected.A) {
                 p.finalsGroup = 'A';
@@ -91,13 +132,9 @@ export async function displayFinalsGroupSizeSelectionPopup(tournament) {
                 p.finalsGroup = undefined;
             }
         });
-        // Optionally, save or update tournament here
-        //tournament.finalsFormat = `A:${selected.A},B:${selected.B}`;
         tournament.finalsMatchSchedule = null;
         tournament.saveToLocalStorage();
         document.body.removeChild(overlay);
-        // Optionally, refresh UI
-        // displayTournamentOverview(tournament);
         alert('Spillere er nå tagget med gruppe A/B.');
     };
     popup.appendChild(confirmBtn);
