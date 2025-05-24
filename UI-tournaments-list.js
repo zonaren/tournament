@@ -15,7 +15,7 @@ export function displayTournamentsList() {
     
     const thead = table.createTHead();
     const headerRow = thead.insertRow();
-    ['Navn', 'Type', 'Opprettet', 'Runder', "Baner", 'Spillere', 'Startet', 'Eier', 'Handlinger'].forEach(text => {
+    ['Navn', 'Type', 'Finaler', 'Opprettet', 'Runder', "Baner", 'Spillere', 'Fase', 'Eier', 'Handlinger'].forEach(text => {
         const th = document.createElement('th');
         th.textContent = text;
         headerRow.appendChild(th);
@@ -29,12 +29,13 @@ export function displayTournamentsList() {
         
         row.insertCell().textContent = tournament.name;
         row.insertCell().textContent = tournament.type;
+        row.insertCell().textContent = tournament.finalsFormat || '';
         row.insertCell().textContent = tournament.dateCreated;
         row.insertCell().textContent = tournament.totalRounds;
         row.insertCell().textContent = tournament.totalCourts;
         row.insertCell().textContent = tournament.getPlayers().length;
-        row.insertCell().textContent = tournament.isStarted ? 'Ja' : 'Nei';
-        row.insertCell().textContent = 'Sondre Torgersen'; // Hardcdoded for now
+        row.insertCell().textContent = tournament.getCurrentStageDisplayName();
+        row.insertCell().textContent = 'Sondre'; // Hardcdoded for now
 
         const actionsCell = row.insertCell();
         

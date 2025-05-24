@@ -73,7 +73,7 @@ export async function displayFinalsGroupSizeSelectionPopup(tournament) {
         label.style.background = '#f3f6fa';
         label.style.borderRadius = '6px';
         label.style.marginBottom = '0.7em';
-        label.appendChild(document.createTextNode(`Gruppe A: ${option.A} spillere  |  Gruppe B: ${option.B} spillere`));
+        label.appendChild(document.createTextNode(`A:${option.A}  -  B:${option.B}`));
         popup.appendChild(label);
     });
 
