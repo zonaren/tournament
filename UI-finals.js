@@ -1,6 +1,7 @@
 // This file handles the UI for the finals stage of the tournament
 import Tournaments from './classes/Tournament.js';
 import { displayTournamentOverview } from './UI-tournament.js';
+import { checkForIncompleteMatches, checkForWalkoverPlayers, deleteWalkoverPlayers } from './utils.js';
 
 // When clicking on startFinals, it will start the finals stage of the tournament
 // 1. The user selects group sizes for the finals (group A and group B)
@@ -10,7 +11,18 @@ export function startFinals() {
         console.error('Tournament not found');
         return;
     }
+    if (checkForIncompleteMatches(tournament)) {
+        if (!confirm('Noen kamper er ikke fullført. Vil du likevel fortsette til sluttspill?')) {
+            return;
+        }
+    }
 
+    if( checkForWalkoverPlayers(tournament)) {
+        if (!confirm('Det finnes spillere med walkover. Vil du fjerne dem?')) {
+            return;
+        }
+        deleteWalkoverPlayers(tournament);
+    }
     // Get recommended group sizes and show selection popup
     displayFinalsGroupSizeSelectionPopup(tournament);
 }

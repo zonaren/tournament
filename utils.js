@@ -60,4 +60,27 @@ export async function getRecommendedFinalsGroupSizes(totalPlayers) {
     return entry ? entry.recommended : [];
 }
 
-export { generateUniqueId };
+function checkForIncompleteMatches(tournament) {
+    const incompleteMatches = tournament.matchSchedule.flatMap(round => 
+        round.matches.filter(match => !match.isCompleted)
+    );
+    return incompleteMatches.length > 0;
+}
+
+function checkForWalkoverPlayers(tournament) {
+    const walkoverPlayers = tournament.getPlayers().filter(player => player.name === "Walkover");
+    return walkoverPlayers.length > 0;
+}
+
+function deleteWalkoverPlayers(tournament) {
+    const players = tournament.getPlayers();
+    const walkoverPlayers = players.filter(player => player.name === "Walkover");
+    walkoverPlayers.forEach(walkoverPlayer => {
+        const index = players.indexOf(walkoverPlayer);
+        if (index > -1) {
+            players.splice(index, 1);
+        }
+    });
+}
+
+export { generateUniqueId, checkForIncompleteMatches, checkForWalkoverPlayers, deleteWalkoverPlayers };
