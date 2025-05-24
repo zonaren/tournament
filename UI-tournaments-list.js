@@ -148,11 +148,11 @@ export function editTournament(id) {
     finalsLabel.style.display = 'block';
     finalsLabel.style.marginTop = '1em';
     const finalsSelect = document.createElement('select');
-    ['Ingen', 'Cup', 'Single elimination', 'Double elimination'].forEach(opt => {
+    [null, 'Cup', 'Single elimination', 'Double elimination'].forEach(opt => {
         const option = document.createElement('option');
         option.value = opt;
         option.textContent = opt;
-        if (opt === tournament.finals) option.selected = true;
+        if (opt === tournament.finalsFormat) option.selected = true;
         finalsSelect.appendChild(option);
     });
     finalsSelect.style.width = '100%';
