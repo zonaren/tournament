@@ -1,6 +1,6 @@
 // This file handles the UI for the finals stage of the tournament
 import Tournaments from './classes/Tournament.js';
-// import { displayTournamentOverview } from './UI-tournament.js';
+import { displayTournamentOverview } from './UI-tournament.js';
 
 // When clicking on startFinals, it will start the finals stage of the tournament
 // 1. The user selects group sizes for the finals (group A and group B)
@@ -135,8 +135,12 @@ export async function displayFinalsGroupSizeSelectionPopup(tournament) {
         tournament.finalsMatchSchedule = null;
         tournament.saveToLocalStorage();
         document.body.removeChild(overlay);
-        alert('Spillere er nå tagget med gruppe A/B.');
+        // Proceed to finals 
+
+        tournament.setStage('finals');
+        displayTournamentOverview(tournament);
     };
+
     popup.appendChild(confirmBtn);
 
     // Cancel button
