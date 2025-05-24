@@ -105,11 +105,16 @@ class Tournaments {
     }
 }
 
-class Tournament {
-    constructor(totalRounds, totalCourts, matchSchedule, tournamentName, tournamentType, finalsFormat = null, finalsMatchSchedule = null, players, isStarted = false, stage = TOURNAMENT_STAGES.NOT_STARTED) {
-        this.isStarted = isStarted;
-        // Set stage based on isStarted for backward compatibility
-        this.stage = isStarted ? TOURNAMENT_STAGES.PRELIMINARY : (stage || TOURNAMENT_STAGES.NOT_STARTED);
+class Tournament {    constructor(totalRounds, totalCourts, matchSchedule, tournamentName, tournamentType, finalsFormat = null, finalsMatchSchedule = null, players, isStarted = false, stage = null) {
+        // Set stage - prioritize explicit stage parameter, otherwise use isStarted for backward compatibility
+        if (stage !== null) {
+            this.stage = stage;
+        } else {
+            this.stage = isStarted ? TOURNAMENT_STAGES.PRELIMINARY : TOURNAMENT_STAGES.NOT_STARTED;
+        }
+        
+        // Update isStarted for backward compatibility
+        this.isStarted = this.stage !== TOURNAMENT_STAGES.NOT_STARTED;
         this.id = generateUniqueId(new Set());
         this.name = tournamentName;
         this.dateCreated = new Date().toLocaleString();
