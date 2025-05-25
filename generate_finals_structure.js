@@ -147,16 +147,39 @@ function generateBracket(totalPlayers) {
     
     return { rounds: testRounds, finalPlayers: testPlayers, walkovers: totalWalkovers };
   }
-
-  // Try different walkover counts (0, 1, 2) to find a valid structure
+  // Try different walkover counts, preferring configurations with 3-player courts
+  let bestResult = null;
+  let bestScore = -1;
+  
   for (let wo = 0; wo <= 2; wo++) {
     let result = tryGenerateRounds(players, wo);
     if (result) {
-      rounds = result.rounds;
-      players = result.finalPlayers;
-      walkovers = result.walkovers;
-      break;
+      // Calculate score: prefer fewer courts and 3-player courts over 2-player courts
+      let score = 0;
+      if (result.rounds.length > 0) {
+        let firstRound = result.rounds[0];
+        let playingCourts = firstRound.courts.filter(c => typeof c.court === 'number');
+        if (playingCourts.length > 0) {
+          let playersPerCourt = playingCourts[0].players;
+          if (playersPerCourt === 3) {
+            score = 1000 - playingCourts.length; // High score for 3-player courts, fewer courts is better
+          } else {
+            score = 500 - playingCourts.length; // Lower score for 2-player courts
+          }
+        }
+      }
+      
+      if (score > bestScore) {
+        bestScore = score;
+        bestResult = result;
+      }
     }
+  }
+  
+  if (bestResult) {
+    rounds = bestResult.rounds;
+    players = bestResult.finalPlayers;
+    walkovers = bestResult.walkovers;
   }
   
   if (rounds.length === 0) {
