@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PWA Cache Debugger</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        button { margin: 10px; padding: 10px 15px; background: #007cba; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #005a87; }
+        .log { background: #f5f5f5; padding: 10px; margin: 10px 0; border-radius: 4px; font-family: monospace; }
+        .error { background: #ffe6e6; border-left: 4px solid #ff0000; }
+        .success { background: #e6ffe6; border-left: 4px solid #00aa00; }
+    </style>
+</head>
+<body>
+    <h1>PWA Cache Debugger</h1>
+    
+    <button onclick="clearAllCaches()">Clear All Caches</button>
+    <button onclick="inspectCaches()">Inspect Caches</button>
+    <button onclick="testManifest()">Test Manifest</button>
+    <button onclick="updateServiceWorker()">Update Service Worker</button>
+    <button onclick="testIcons()">Test Icons</button>
+    
+    <div id="output"></div>
+
+    <script>
+        function log(message, type = 'info') {
+            const output = document.getElementById('output');
+            const div = document.createElement('div');
+            div.className = `log ${type}`;
+            div.innerHTML = `[${new Date().toLocaleTimeString()}] ${message}`;
+            output.appendChild(div);
+            console.log(message);
+        }
+
+        async function clearAllCaches() {
+            try {
+                log('Clearing all caches...');
+                
+                // Unregister service workers
+                if ('serviceWorker' in navigator) {
+                    const registrations = await navigator.serviceWorker.getRegistrations();
+                    for (let registration of registrations) {
+                        await registration.unregister();
+                        log(`Unregistered service worker: ${registration.scope}`);
+                    }
+                }
+                
+                // Clear caches
+                if ('caches' in window) {
+                    const cacheNames = await caches.keys();
+                    await Promise.all(cacheNames.map(name => caches.delete(name)));
+                    log(`Deleted ${cacheNames.length} caches: ${cacheNames.join(', ')}`, 'success');
+                }
+                
+                log('All caches cleared! You can now reload the main app.', 'success');
+            } catch (error) {
+                log(`Error clearing caches: ${error.message}`, 'error');
+            }
+        }
+
+        async function inspectCaches() {
+            try {
+                if (!('caches' in window)) {
+                    log('Cache API not supported', 'error');
+                    return;
+                }
+                
+                const cacheNames = await caches.keys();
+                log(`Found ${cacheNames.length} caches`);
+                
+                for (const cacheName of cacheNames) {
+                    const cache = await caches.open(cacheName);
+                    const requests = await cache.keys();
+                    log(`Cache "${cacheName}" contains ${requests.length} items:`);
+                    requests.forEach(req => log(`  - ${req.url}`));
+                }
+                
+                if (cacheNames.length === 0) {
+                    log('No caches found', 'success');
+                }
+            } catch (error) {
+                log(`Error inspecting caches: ${error.message}`, 'error');
+            }
+        }
+
+        async function testManifest() {
+            try {
+                log('Testing manifest...');
+                const response = await fetch('/manifest.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                const manifest = await response.json();
+                log(`Manifest loaded successfully`);
+                log(`App name: ${manifest.name}`);
+                log(`Start URL: ${manifest.start_url}`);
+                log(`Icons: ${manifest.icons?.length || 0}`);
+                
+                // Test each icon
+                for (const icon of manifest.icons || []) {
+                    try {
+                        const iconResponse = await fetch(icon.src);
+                        if (iconResponse.ok) {
+                            log(`✓ Icon ${icon.src} (${icon.sizes}) - OK`, 'success');
+                        } else {
+                            log(`✗ Icon ${icon.src} - HTTP ${iconResponse.status}`, 'error');
+                        }
+                    } catch (iconError) {
+                        log(`✗ Icon ${icon.src} - ${iconError.message}`, 'error');
+                    }
+                }
+            } catch (error) {
+                log(`Error testing manifest: ${error.message}`, 'error');
+            }
+        }
+
+        async function updateServiceWorker() {
+            try {
+                if (!('serviceWorker' in navigator)) {
+                    log('Service Worker not supported', 'error');
+                    return;
+                }
+                
+                log('Registering service worker...');
+                const registration = await navigator.serviceWorker.register('/service-worker.js');
+                log('Service worker registered successfully', 'success');
+                
+                await registration.update();
+                log('Service worker updated', 'success');
+                
+                if (registration.waiting) {
+                    log('New service worker waiting, activating...');
+                    registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+                }
+            } catch (error) {
+                log(`Error with service worker: ${error.message}`, 'error');
+            }
+        }
+
+        async function testIcons() {
+            const iconPaths = ['/logo_192.png', '/logo_512.png'];
+            
+            for (const path of iconPaths) {
+                try {
+                    const response = await fetch(path);
+                    if (response.ok) {
+                        const blob = await response.blob();
+                        log(`✓ ${path} - OK (${blob.type}, ${blob.size} bytes)`, 'success');
+                    } else {
+                        log(`✗ ${path} - HTTP ${response.status}`, 'error');
+                    }
+                } catch (error) {
+                    log(`✗ ${path} - ${error.message}`, 'error');
+                }
+            }
+        }
+
+        // Auto-run some basic checks on load
+        window.onload = () => {
+            log('PWA Debugger loaded');
+            testManifest();
+            testIcons();
+        };
+    </script>
+</body>
+</html>
