@@ -30,4 +30,16 @@ Generelt
 - Skal det være mulig å laste inn tidligere konkurranser / turnering?
 
 
-- 
+- The next phase is to actually draw the rounds of the finals. Since finals are separated in A and B groups, there has to be possible to draw the groups separately.
+
+Workflow:
+1. User press the "draw" button for the selected group
+- Use finals_structure_detailed.json to find out what structure / bracket to be used
+- For example, if there are 6 players, then use the structure for 6 players (totalPlayers) in the json file
+2. The UI changes, either by opening somekind of popup or in the same window
+- The structure / bracket is visible for the user, all the way to the final and bronzefinal.
+3. In the UI, The user can select to draw using "seeding".
+- When seeding is selected, the players will be separated into 2 or 3 pools, depending on how many players are playing. Players in the same pool cannot meet eachother this round.
+- The user can then press "Confirm" or "Cancel.
+- COnfirm will create matches and the matches will be visible
+- Cancel button will close or hide the draw UI
