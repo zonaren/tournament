@@ -22,6 +22,7 @@
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
     min-width: 320px;
     max-width: 90vw;
+    overflow: auto;
 }
 
 .finals-popup-large {
@@ -413,4 +414,24 @@
     font-size: 0.8em;
     color: #666;
     margin-top: 5px;
+}
+
+/* Toggle button styles */
+.finals-toggle-structure-btn {
+    background: #007cba;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.finals-toggle-structure-btn:hover {
+    background: #005a87;
+}
+
+.finals-toggle-structure-btn:active {
+    background: #004666;
 }

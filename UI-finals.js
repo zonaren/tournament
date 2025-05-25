@@ -47,11 +47,9 @@ export async function displayFinalsGroupSizeSelectionPopup(tournament) {
         return;
     }    // Create overlay
     const overlay = document.createElement('div');
-    overlay.className = 'finals-overlay';
-
-    // Create popup box
+    overlay.className = 'finals-overlay';    // Create popup box
     const popup = document.createElement('div');
-    popup.className = 'finals-popup';
+    popup.className = 'finals-popup finals-popup-large';
 
     // Title
     const title = document.createElement('h2');
@@ -263,14 +261,28 @@ function showBracketPreview(tournament, groupName, players, structure) {
 
 // Function to display bracket structure
 function displayBracketStructure(container, structure) {
+    // Create toggle button
+    const toggleButton = document.createElement('button');
+    toggleButton.textContent = 'Vis bracket struktur';
+    toggleButton.className = 'finals-toggle-structure-btn';
+    toggleButton.style.marginBottom = '10px';
+    container.appendChild(toggleButton);
+
+    // Create title and structure container
     const title = document.createElement('h3');
     title.textContent = 'Bracket struktur:';
-    container.appendChild(title);
+    title.style.display = 'none'; // Hidden by default
 
     const structureDiv = document.createElement('div');
     structureDiv.className = 'finals-bracket-structure';
+    structureDiv.style.display = 'none'; // Hidden by default
 
-    structure.rounds.forEach((round, roundIndex) => {
+    // Filter out the final rounds (Semifinals, Finals, Bronze Final)
+    const filteredRounds = structure.rounds.filter(round => 
+        !['Semifinale', 'Finale', 'Bronsefinale'].includes(round.name)
+    );
+
+    filteredRounds.forEach((round, roundIndex) => {
         const roundDiv = document.createElement('div');
         roundDiv.className = 'finals-bracket-round';
         
@@ -297,12 +309,20 @@ function displayBracketStructure(container, structure) {
             });
             
             roundDiv.appendChild(courtsDiv);
-        }
-
-        structureDiv.appendChild(roundDiv);
+        }        structureDiv.appendChild(roundDiv);
     });
 
+    container.appendChild(title);
     container.appendChild(structureDiv);
+
+    // Add toggle functionality
+    let isVisible = false;
+    toggleButton.addEventListener('click', () => {
+        isVisible = !isVisible;
+        title.style.display = isVisible ? 'block' : 'none';
+        structureDiv.style.display = isVisible ? 'block' : 'none';
+        toggleButton.textContent = isVisible ? 'Skjul bracket struktur' : 'Vis bracket struktur';
+    });
 }
 
 // Function to update player preview based on seeding option
