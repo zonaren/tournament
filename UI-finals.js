@@ -199,13 +199,14 @@ function showBracketPreview(tournament, groupName, players, structure) {
     seedingCheckbox.type = 'checkbox';
     seedingCheckbox.id = 'seedingOption';
     seedingCheckbox.className = 'finals-seeding-checkbox';
+    seedingCheckbox.checked = true; // Default to checked
     
     seedingLabel.appendChild(seedingCheckbox);
-    seedingLabel.appendChild(document.createTextNode('Bruk seeding (spillere i samme pool møtes ikke i første runde)'));
+    seedingLabel.appendChild(document.createTextNode('Bruk seeding'));
     
     const seedingExplanation = document.createElement('div');
     seedingExplanation.className = 'finals-seeding-explanation';
-    seedingExplanation.textContent = 'Med seeding deles spillerne i 2-3 pools basert på rangering, og spillere fra samme pool møtes ikke i første runde.';
+    seedingExplanation.textContent = 'Med seeding deles spillerne basert på rangering.';
     
     seedingContainer.appendChild(seedingLabel);
     seedingContainer.appendChild(seedingExplanation);
@@ -333,8 +334,46 @@ function updatePlayerPreview(container, players, useSeeding, structure) {
     title.textContent = 'Spillere:';
     container.appendChild(title);
 
+    // Get first round courts to determine walkover positions
+    const firstRound = structure.rounds[0];
+    const walkoverCourts = firstRound.courts.filter(court => 
+        court.court === 'WO1' || court.court.toString().startsWith('WO')
+    );
+    const totalWalkovers = walkoverCourts.length;
+    
+    // Sort players (top-ranked first)
+    const sortedPlayers = [...players].sort((a, b) => {
+        if (b.scorePoints !== a.scorePoints) return b.scorePoints - a.scorePoints;
+        if (b.matchPoints !== a.matchPoints) return b.matchPoints - a.matchPoints;
+        return a.name.localeCompare(b.name);
+    });
+    
+    // Get walkover players (top-ranked)
+    const walkoverPlayers = sortedPlayers.slice(0, totalWalkovers);
+    const remainingPlayers = sortedPlayers.slice(totalWalkovers);
+
+    // Show walkover players first if any
+    if (totalWalkovers > 0) {
+        const walkoverDiv = document.createElement('div');
+        walkoverDiv.className = 'finals-walkover-section';
+        
+        const walkoverTitle = document.createElement('h4');
+        walkoverTitle.textContent = 'Walkover:';
+        walkoverTitle.className = 'finals-walkover-title';
+        walkoverDiv.appendChild(walkoverTitle);
+        
+        walkoverPlayers.forEach(player => {
+            const playerDiv = document.createElement('div');
+            playerDiv.textContent = `${player.name} (${player.matchPoints,player.scorePoints}p)`;
+            playerDiv.className = 'finals-walkover-player';
+            walkoverDiv.appendChild(playerDiv);
+        });
+        
+        container.appendChild(walkoverDiv);
+    }
+
     if (useSeeding) {
-        const pools = createSeedingPools(players, structure);
+        const pools = createSeedingPools(remainingPlayers, structure);
         
         const poolsContainer = document.createElement('div');
         poolsContainer.className = 'finals-pools-container';
@@ -360,16 +399,10 @@ function updatePlayerPreview(container, players, useSeeding, structure) {
 
         container.appendChild(poolsContainer);
     } else {
-        const sortedPlayers = [...players].sort((a, b) => {
-            if (b.scorePoints !== a.scorePoints) return b.scorePoints - a.scorePoints;
-            if (b.matchPoints !== a.matchPoints) return b.matchPoints - a.matchPoints;
-            return a.name.localeCompare(b.name);
-        });
-
         const playersList = document.createElement('div');
         playersList.className = 'finals-players-list';
 
-        sortedPlayers.forEach((player, index) => {
+        remainingPlayers.forEach((player, index) => {
             const playerDiv = document.createElement('div');
             playerDiv.textContent = `${index + 1}. ${player.name} (${player.scorePoints}p, ${player.matchPoints}kp)`;
             playerDiv.className = 'finals-player-item';

@@ -65,38 +65,56 @@ export function createSeedingPools(players, structure) {
  * @returns {Array} - Array of assigned players
  */
 export function assignPlayersWithSeeding(players, structure) {
-    const pools = createSeedingPools(players, structure);
     const assigned = [];
     
-    // Get first round courts that need players
+    // Get first round courts
     const firstRound = structure.rounds[0];
-    const regularCourts = firstRound.courts.filter(court => 
-        court.court !== 'WO1' && !court.court.toString().startsWith('WO')
-    );
     
-    // Try to assign players from different pools to each court
+    // Count how many walkover positions we have
+    const walkoverCourts = firstRound.courts.filter(court => 
+        court.court === 'WO1' || court.court.toString().startsWith('WO')
+    );
+    const totalWalkovers = walkoverCourts.length;
+    
+    // Get the sorted players (top-ranked first)
+    const sortedPlayers = [...players].sort((a, b) => {
+        if (b.scorePoints !== a.scorePoints) return b.scorePoints - a.scorePoints;
+        if (b.matchPoints !== a.matchPoints) return b.matchPoints - a.matchPoints;
+        return a.name.localeCompare(b.name);
+    });
+    
+    // Assign top-ranked players to walkover positions first
+    const walkoverPlayers = [];
+    for (let i = 0; i < totalWalkovers && i < sortedPlayers.length; i++) {
+        walkoverPlayers.push(sortedPlayers[i]);
+    }
+    
+    // Remove walkover players from the remaining players for pool creation
+    const remainingPlayers = sortedPlayers.slice(totalWalkovers);
+    const pools = createSeedingPools(remainingPlayers, structure);
+    
+    // Now assign players to courts in the correct order
+    let walkoverIndex = 0;
     let poolIndex = 0;
-    let playerIndex = 0;
     
     for (const court of firstRound.courts) {
         if (court.court === 'WO1' || court.court.toString().startsWith('WO')) {
-            // Handle walkover - assign next available player
-            for (let i = 0; i < pools.length; i++) {
-                if (pools[i].length > playerIndex) {
-                    assigned.push(pools[i][playerIndex]);
-                    break;
-                }
+            // Assign top-ranked player to walkover position
+            if (walkoverIndex < walkoverPlayers.length) {
+                assigned.push(walkoverPlayers[walkoverIndex]);
+                walkoverIndex++;
             }
-        } else {
-            // Regular court - assign players from different pools if possible
+        } else {            // Regular court - assign players from different pools if possible
             for (let i = 0; i < court.players; i++) {
                 let assignedPlayer = null;
                 
                 // Try to assign from different pools in round-robin fashion
                 for (let attempt = 0; attempt < pools.length; attempt++) {
                     const currentPoolIndex = (poolIndex + attempt) % pools.length;
-                    if (pools[currentPoolIndex].length > Math.floor(assigned.length / pools.length)) {
-                        assignedPlayer = pools[currentPoolIndex][Math.floor(assigned.length / pools.length)];
+                    const poolPlayerIndex = Math.floor(assigned.filter(p => !walkoverPlayers.includes(p)).length / pools.length);
+                    
+                    if (pools[currentPoolIndex].length > poolPlayerIndex) {
+                        assignedPlayer = pools[currentPoolIndex][poolPlayerIndex];
                         break;
                     }
                 }
@@ -119,6 +137,55 @@ export function assignPlayersWithSeeding(players, structure) {
                 }
                 
                 poolIndex = (poolIndex + 1) % pools.length;
+            }
+        }
+    }
+    
+    return assigned;
+}
+
+/**
+ * Assign players without seeding but with proper walkover handling
+ * @param {Array} players - Array of player objects
+ * @param {Object} structure - Finals structure object
+ * @returns {Array} - Array of assigned players
+ */
+export function assignPlayersWithoutSeeding(players, structure) {
+    // Get first round courts
+    const firstRound = structure.rounds[0];
+    
+    // Count how many walkover positions we have
+    const walkoverCourts = firstRound.courts.filter(court => 
+        court.court === 'WO1' || court.court.toString().startsWith('WO')
+    );
+    const totalWalkovers = walkoverCourts.length;
+    
+    // Sort players (top-ranked first)
+    const sortedPlayers = [...players].sort((a, b) => {
+        if (b.scorePoints !== a.scorePoints) return b.scorePoints - a.scorePoints;
+        if (b.matchPoints !== a.matchPoints) return b.matchPoints - a.matchPoints;
+        return a.name.localeCompare(b.name);
+    });
+    
+    // Assign top-ranked players to walkover positions first, then remaining players sequentially
+    const assigned = [];
+    let walkoverIndex = 0;
+    let remainingPlayerIndex = totalWalkovers;
+    
+    for (const court of firstRound.courts) {
+        if (court.court === 'WO1' || court.court.toString().startsWith('WO')) {
+            // Assign top-ranked player to walkover position
+            if (walkoverIndex < totalWalkovers && walkoverIndex < sortedPlayers.length) {
+                assigned.push(sortedPlayers[walkoverIndex]);
+                walkoverIndex++;
+            }
+        } else {
+            // Regular court - assign remaining players sequentially
+            for (let i = 0; i < court.players; i++) {
+                if (remainingPlayerIndex < sortedPlayers.length) {
+                    assigned.push(sortedPlayers[remainingPlayerIndex]);
+                    remainingPlayerIndex++;
+                }
             }
         }
     }
@@ -185,15 +252,14 @@ export async function createTwoPlayerMatches(tournament, groupName, players, str
         const sortedPlayers = [...players].sort((a, b) => {
             if (b.scorePoints !== a.scorePoints) return b.scorePoints - a.scorePoints;
             if (b.matchPoints !== a.matchPoints) return b.matchPoints - a.matchPoints;
-            return a.name.localeCompare(b.name);
-        });
+            return a.name.localeCompare(b.name);        });
         
         let assignedPlayers;
         
         if (useSeeding) {
             assignedPlayers = assignPlayersWithSeeding(sortedPlayers, structure);
         } else {
-            assignedPlayers = sortedPlayers;
+            assignedPlayers = assignPlayersWithoutSeeding(sortedPlayers, structure);
         }
         
         // Initialize finals match schedule if it doesn't exist
@@ -312,15 +378,14 @@ export async function createThreePlayerCourtAssignments(tournament, groupName, p
         const sortedPlayers = [...players].sort((a, b) => {
             if (b.scorePoints !== a.scorePoints) return b.scorePoints - a.scorePoints;
             if (b.matchPoints !== a.matchPoints) return b.matchPoints - a.matchPoints;
-            return a.name.localeCompare(b.name);
-        });
+            return a.name.localeCompare(b.name);        });
         
         let assignedPlayers;
         
         if (useSeeding) {
             assignedPlayers = assignPlayersWithSeeding(sortedPlayers, structure);
         } else {
-            assignedPlayers = sortedPlayers;
+            assignedPlayers = assignPlayersWithoutSeeding(sortedPlayers, structure);
         }
         
         // Initialize finals court assignments if it doesn't exist
