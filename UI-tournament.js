@@ -7,6 +7,8 @@ import { onStartTournament } from './events.js';
 import { shuffleStartNumbers } from './shuffle-players.js';
 import Tournaments  from './classes/Tournament.js';
 import { editTournament } from './UI-tournaments-list.js';
+import { startFinals } from './UI-finals.js';
+import { sortPlayers } from './utils.js';
 
 
 
@@ -33,6 +35,11 @@ export function displayTournamentOverview(tournament) {
     }
     tournamentInfoDiv.appendChild(tournamentName);
     tournamentInfoDiv.appendChild(createPrintStartCardsButton());
+
+    if(tournament.finalsFormat !== null && tournament.isStarted === true) {
+        tournamentInfoDiv.appendChild(createStartFinalsButton());
+    }
+    
     
     const mainContainer = document.getElementById('mainContainer');
     mainContainer.replaceChildren(tournamentOverview);
@@ -118,9 +125,33 @@ function startTournamentButton() {
     return startTournamentBtn;
 }
 
+function createStartFinalsButton() {
+    const startFinalsBtn = document.createElement('button');
+    startFinalsBtn.textContent = 'Sluttspill: ' + Tournaments.getCurrentTournament().finalsFormat;
+    startFinalsBtn.classList.add('start-finals-btn');
+    startFinalsBtn.addEventListener('click', () => startFinals());
+    return startFinalsBtn;
+}
+
 function displayMatchOverview(tournament, matchOverviewContainer, tournamentInfoDiv) {
     // if the tournament is NHM, sort the rounds in descending order
     matchOverviewContainer.innerHTML = '';
+
+    const currentStage = tournament.getCurrentStage();
+    console.log('Current stage:', currentStage);
+
+
+    // show finals if stage is set to finals
+    if(currentStage === 'finals') {
+    displayFinals(tournament, matchOverviewContainer);
+    }
+        // show preliminary rounds
+    displayPreliminaryRounds(tournament, tournamentInfoDiv, matchOverviewContainer);
+
+
+}
+
+function displayPreliminaryRounds(tournament, tournamentInfoDiv, matchOverviewContainer) {
     switch (tournament.type) {
         case 'NHM':
             const nextRoundButton = proceedToNextRoundBtn(tournament);
@@ -246,4 +277,102 @@ function displayRound(round, matchOverviewContainer) {
         }, 100 * (round.matches.indexOf(match) * 2 + 1)); // Adjust the delay as needed
     }
     document.getElementById('matchOverview').appendChild(table);
-}
+}    // show finals if stage is set to finals
+    function displayFinals(tournament, matchOverviewContainer) {
+            const finalsContainer = document.createElement('div');
+            finalsContainer.id = 'finalsOverview';
+            tournamentOverview.appendChild(finalsContainer);
+            const finalsText = document.createElement('h2');
+            finalsText.textContent = 'Sluttspill ' + tournament.finalsFormat;
+            finalsContainer.appendChild(finalsText);
+
+            // show players in finals
+            const players = tournament.getPlayers();
+            const finalsPlayers = players.filter(player => player.finalsGroup !== undefined);
+            if (finalsPlayers.length === 0) {
+                const noPlayersText = document.createElement('p');
+                noPlayersText.textContent = 'Ingen spillere i sluttspillet.';
+                finalsContainer.appendChild(noPlayersText);
+                return;
+            }            // Group players by finalsGroup
+            const groupedPlayers = {};
+            finalsPlayers.forEach(player => {
+                if (!groupedPlayers[player.finalsGroup]) {
+                    groupedPlayers[player.finalsGroup] = [];
+                }
+                groupedPlayers[player.finalsGroup].push(player);
+            });            // Sort players within each group using sortPlayers function
+            Object.keys(groupedPlayers).forEach(groupName => {
+                groupedPlayers[groupName] = sortPlayers(groupedPlayers[groupName]);
+            });
+
+            // Create container for all groups to display side by side
+            const groupsContainer = document.createElement('div');
+            groupsContainer.classList.add('finals-groups-container');            // Create tables for each group
+            Object.keys(groupedPlayers).sort().forEach(groupName => {                const groupContainer = document.createElement('div');
+                groupContainer.classList.add('finals-group-container');
+
+                // Add button to draw next round for this group (above table)
+                const drawFinalsButton = document.createElement('button');
+                drawFinalsButton.textContent = `Trekk neste runde - Gruppe ${groupName}`;
+                drawFinalsButton.classList.add('draw-finals-btn');
+                drawFinalsButton.dataset.group = groupName;
+                drawFinalsButton.addEventListener('click', () => {
+                    // You can add logic for drawing the next round here later
+                    console.log(`Drawing next round for group ${groupName}`);
+                    // drawFinalsGroup(tournament, groupName);
+                });
+                
+                groupContainer.appendChild(drawFinalsButton);
+
+                // Create table for this group
+                const finalsTable = document.createElement('table');
+                finalsTable.id = `finalsPlayersTable-${groupName}`;
+                finalsTable.classList.add('finals-group-table');
+                const finalsTbody = finalsTable.appendChild(document.createElement('tbody'));
+                const finalsHeader = finalsTable.createTHead();
+                
+                // Add group name as table header
+                const groupHeaderRow = finalsHeader.insertRow();
+                const groupHeaderCell = document.createElement('th');
+                groupHeaderCell.textContent = `Gruppe ${groupName}`;
+                groupHeaderCell.colSpan = 4;
+                groupHeaderCell.style.backgroundColor = '#3D679D';
+                groupHeaderCell.style.color = 'white';
+                groupHeaderCell.style.fontWeight = 'bold';
+                groupHeaderCell.style.textAlign = 'center';
+                groupHeaderCell.style.padding = '12px';
+                groupHeaderRow.appendChild(groupHeaderCell);
+                
+                // Add column headers
+                const finalsHeaderRow = finalsHeader.insertRow();
+                const headerS = document.createElement('th');
+                headerS.textContent = 'S';
+                finalsHeaderRow.appendChild(headerS);
+                const headerName = document.createElement('th');
+                headerName.textContent = 'Navn';
+                finalsHeaderRow.appendChild(headerName);
+                const headerSP = document.createElement('th');
+                headerSP.textContent = 'SP';
+                finalsHeaderRow.appendChild(headerSP);
+                const headerKP = document.createElement('th');
+                headerKP.textContent = 'KP';
+                finalsHeaderRow.appendChild(headerKP);
+
+                groupedPlayers[groupName].forEach(player => {
+                    const row = finalsTbody.insertRow();
+                    row.insertCell().textContent = player.id;
+                    row.insertCell().textContent = player.name;
+                    row.insertCell().textContent = player.scorePoints;
+                    row.insertCell().textContent = player.matchPoints;
+                });
+                
+                groupContainer.appendChild(finalsTable);
+                groupsContainer.appendChild(groupContainer);
+            });
+
+            finalsContainer.appendChild(groupsContainer);
+
+        matchOverviewContainer.appendChild(finalsContainer);
+        
+    }

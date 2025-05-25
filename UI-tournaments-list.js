@@ -15,7 +15,7 @@ export function displayTournamentsList() {
     
     const thead = table.createTHead();
     const headerRow = thead.insertRow();
-    ['Navn', 'Type', 'Opprettet', 'Runder', "Baner", 'Spillere', 'Startet', 'Eier', 'Handlinger'].forEach(text => {
+    ['Navn', 'Type', 'Finaler', 'Opprettet', 'Runder', "Baner", 'Spillere', 'Fase', 'Eier', 'Handlinger'].forEach(text => {
         const th = document.createElement('th');
         th.textContent = text;
         headerRow.appendChild(th);
@@ -29,12 +29,13 @@ export function displayTournamentsList() {
         
         row.insertCell().textContent = tournament.name;
         row.insertCell().textContent = tournament.type;
+        row.insertCell().textContent = tournament.finalsFormat || '';
         row.insertCell().textContent = tournament.dateCreated;
         row.insertCell().textContent = tournament.totalRounds;
         row.insertCell().textContent = tournament.totalCourts;
         row.insertCell().textContent = tournament.getPlayers().length;
-        row.insertCell().textContent = tournament.isStarted ? 'Ja' : 'Nei';
-        row.insertCell().textContent = 'Sondre Torgersen'; // Hardcdoded for now
+        row.insertCell().textContent = tournament.getCurrentStageDisplayName();
+        row.insertCell().textContent = 'Sondre'; // Hardcdoded for now
 
         const actionsCell = row.insertCell();
         
@@ -141,6 +142,24 @@ export function editTournament(id) {
     popup.appendChild(typeLabel);
     popup.appendChild(typeSelect);
 
+    // Finals input
+    const finalsLabel = document.createElement('label');
+    finalsLabel.textContent = 'Sluttspill:';
+    finalsLabel.style.display = 'block';
+    finalsLabel.style.marginTop = '1em';
+    const finalsSelect = document.createElement('select');
+    [null, 'Cup', 'Single elimination', 'Double elimination'].forEach(opt => {
+        const option = document.createElement('option');
+        option.value = opt;
+        option.textContent = opt;
+        if (opt === tournament.finalsFormat) option.selected = true;
+        finalsSelect.appendChild(option);
+    });
+    finalsSelect.style.width = '100%';
+    finalsSelect.style.marginTop = '0.2em';
+    popup.appendChild(finalsLabel);
+    popup.appendChild(finalsSelect);
+
     // Rounds input
     const roundsLabel = document.createElement('label');
     roundsLabel.textContent = 'Antall runder:';
@@ -188,6 +207,7 @@ export function editTournament(id) {
         Tournaments.update(id, {
             name: newName,
             type: newType,
+            finalsFormat: finalsSelect.value,
             totalRounds: isNaN(newRounds) ? tournament.totalRounds : newRounds
         });
 
