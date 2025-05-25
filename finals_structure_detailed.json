@@ -3,7 +3,7 @@
     "totalPlayers": 4,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 4,
         "courts": [
           {
@@ -30,7 +30,7 @@
     "totalPlayers": 5,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 5,
         "courts": [
           {
@@ -57,7 +57,7 @@
         "note": "Walkover(s) for 2 player(s)"
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -75,14 +75,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -90,11 +90,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -108,7 +108,7 @@
     "totalPlayers": 6,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 6,
         "courts": [
           {
@@ -128,7 +128,7 @@
         "totalEliminated": 2
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -146,14 +146,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -161,11 +161,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -179,7 +179,7 @@
     "totalPlayers": 8,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 8,
         "courts": [
           {
@@ -212,7 +212,7 @@
         "note": "Walkover(s) for 2 player(s)"
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 6,
         "courts": [
           {
@@ -232,7 +232,7 @@
         "totalEliminated": 2
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -250,14 +250,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -265,11 +265,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -283,7 +283,7 @@
     "totalPlayers": 9,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 9,
         "courts": [
           {
@@ -309,7 +309,7 @@
         "totalEliminated": 3
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 6,
         "courts": [
           {
@@ -329,7 +329,7 @@
         "totalEliminated": 2
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -347,14 +347,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -362,11 +362,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -380,7 +380,7 @@
     "totalPlayers": 10,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 10,
         "courts": [
           {
@@ -425,7 +425,7 @@
         "note": "Walkover(s) for 2 player(s)"
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 6,
         "courts": [
           {
@@ -445,7 +445,7 @@
         "totalEliminated": 2
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -463,14 +463,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -478,11 +478,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -496,7 +496,7 @@
     "totalPlayers": 11,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 11,
         "courts": [
           {
@@ -535,7 +535,7 @@
         "note": "Walkover(s) for 2 player(s)"
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 8,
         "courts": [
           {
@@ -567,7 +567,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -585,14 +585,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -600,11 +600,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -618,7 +618,7 @@
     "totalPlayers": 12,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 12,
         "courts": [
           {
@@ -650,7 +650,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 8,
         "courts": [
           {
@@ -682,7 +682,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -700,14 +700,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -715,11 +715,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -733,7 +733,7 @@
     "totalPlayers": 13,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 13,
         "courts": [
           {
@@ -772,7 +772,7 @@
         "note": "Walkover(s) for 1 player(s)"
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 9,
         "courts": [
           {
@@ -798,7 +798,7 @@
         "totalEliminated": 3
       },
       {
-        "name": "Round 3",
+        "name": "Runde 3",
         "players": 6,
         "courts": [
           {
@@ -818,7 +818,7 @@
         "totalEliminated": 2
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -836,14 +836,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -851,11 +851,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -869,7 +869,7 @@
     "totalPlayers": 15,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 15,
         "courts": [
           {
@@ -926,7 +926,7 @@
         "note": "Walkover(s) for 1 player(s)"
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 8,
         "courts": [
           {
@@ -958,7 +958,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -976,14 +976,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -991,11 +991,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -1009,7 +1009,7 @@
     "totalPlayers": 16,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 16,
         "courts": [
           {
@@ -1072,7 +1072,7 @@
         "note": "Walkover(s) for 2 player(s)"
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 9,
         "courts": [
           {
@@ -1098,7 +1098,7 @@
         "totalEliminated": 3
       },
       {
-        "name": "Round 3",
+        "name": "Runde 3",
         "players": 6,
         "courts": [
           {
@@ -1118,7 +1118,7 @@
         "totalEliminated": 2
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -1136,14 +1136,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -1151,11 +1151,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -1169,7 +1169,7 @@
     "totalPlayers": 17,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 17,
         "courts": [
           {
@@ -1220,7 +1220,7 @@
         "note": "Walkover(s) for 2 player(s)"
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 12,
         "courts": [
           {
@@ -1252,7 +1252,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Round 3",
+        "name": "Runde 3",
         "players": 8,
         "courts": [
           {
@@ -1284,7 +1284,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -1302,14 +1302,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -1317,11 +1317,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -1335,7 +1335,7 @@
     "totalPlayers": 18,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 18,
         "courts": [
           {
@@ -1379,7 +1379,7 @@
         "totalEliminated": 6
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 12,
         "courts": [
           {
@@ -1411,7 +1411,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Round 3",
+        "name": "Runde 3",
         "players": 8,
         "courts": [
           {
@@ -1443,7 +1443,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -1461,14 +1461,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -1476,11 +1476,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -1494,7 +1494,7 @@
     "totalPlayers": 22,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 22,
         "courts": [
           {
@@ -1575,7 +1575,7 @@
         "note": "Walkover(s) for 2 player(s)"
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 12,
         "courts": [
           {
@@ -1607,7 +1607,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Round 3",
+        "name": "Runde 3",
         "players": 8,
         "courts": [
           {
@@ -1639,7 +1639,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -1657,14 +1657,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -1672,11 +1672,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -1690,7 +1690,7 @@
     "totalPlayers": 23,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 23,
         "courts": [
           {
@@ -1753,7 +1753,7 @@
         "note": "Walkover(s) for 2 player(s)"
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 16,
         "courts": [
           {
@@ -1809,7 +1809,7 @@
         "totalEliminated": 8
       },
       {
-        "name": "Round 3",
+        "name": "Runde 3",
         "players": 8,
         "courts": [
           {
@@ -1841,7 +1841,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -1859,14 +1859,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -1874,11 +1874,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -1892,7 +1892,7 @@
     "totalPlayers": 24,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 24,
         "courts": [
           {
@@ -1948,7 +1948,7 @@
         "totalEliminated": 8
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 16,
         "courts": [
           {
@@ -2004,7 +2004,7 @@
         "totalEliminated": 8
       },
       {
-        "name": "Round 3",
+        "name": "Runde 3",
         "players": 8,
         "courts": [
           {
@@ -2036,7 +2036,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -2054,14 +2054,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -2069,11 +2069,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -2087,7 +2087,7 @@
     "totalPlayers": 26,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 26,
         "courts": [
           {
@@ -2156,7 +2156,7 @@
         "note": "Walkover(s) for 2 player(s)"
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 18,
         "courts": [
           {
@@ -2200,7 +2200,7 @@
         "totalEliminated": 6
       },
       {
-        "name": "Round 3",
+        "name": "Runde 3",
         "players": 12,
         "courts": [
           {
@@ -2232,7 +2232,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Round 4",
+        "name": "Runde 4",
         "players": 8,
         "courts": [
           {
@@ -2264,7 +2264,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -2282,14 +2282,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -2297,11 +2297,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -2315,7 +2315,7 @@
     "totalPlayers": 27,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 27,
         "courts": [
           {
@@ -2377,7 +2377,7 @@
         "totalEliminated": 9
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 18,
         "courts": [
           {
@@ -2421,7 +2421,7 @@
         "totalEliminated": 6
       },
       {
-        "name": "Round 3",
+        "name": "Runde 3",
         "players": 12,
         "courts": [
           {
@@ -2453,7 +2453,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Round 4",
+        "name": "Runde 4",
         "players": 8,
         "courts": [
           {
@@ -2485,7 +2485,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -2503,14 +2503,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -2518,11 +2518,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -2536,7 +2536,7 @@
     "totalPlayers": 30,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 30,
         "courts": [
           {
@@ -2641,7 +2641,7 @@
         "note": "Walkover(s) for 2 player(s)"
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 16,
         "courts": [
           {
@@ -2697,7 +2697,7 @@
         "totalEliminated": 8
       },
       {
-        "name": "Round 3",
+        "name": "Runde 3",
         "players": 8,
         "courts": [
           {
@@ -2729,7 +2729,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -2747,14 +2747,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -2762,11 +2762,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -2780,7 +2780,7 @@
     "totalPlayers": 32,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 32,
         "courts": [
           {
@@ -2884,7 +2884,7 @@
         "totalEliminated": 16
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 16,
         "courts": [
           {
@@ -2940,7 +2940,7 @@
         "totalEliminated": 8
       },
       {
-        "name": "Round 3",
+        "name": "Runde 3",
         "players": 8,
         "courts": [
           {
@@ -2972,7 +2972,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -2990,14 +2990,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -3005,11 +3005,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -3023,7 +3023,7 @@
     "totalPlayers": 34,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 34,
         "courts": [
           {
@@ -3140,7 +3140,7 @@
         "note": "Walkover(s) for 2 player(s)"
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 18,
         "courts": [
           {
@@ -3184,7 +3184,7 @@
         "totalEliminated": 6
       },
       {
-        "name": "Round 3",
+        "name": "Runde 3",
         "players": 12,
         "courts": [
           {
@@ -3216,7 +3216,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Round 4",
+        "name": "Runde 4",
         "players": 8,
         "courts": [
           {
@@ -3248,7 +3248,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -3266,14 +3266,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -3281,11 +3281,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -3299,7 +3299,7 @@
     "totalPlayers": 35,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 35,
         "courts": [
           {
@@ -3386,7 +3386,7 @@
         "note": "Walkover(s) for 2 player(s)"
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 24,
         "courts": [
           {
@@ -3442,7 +3442,7 @@
         "totalEliminated": 8
       },
       {
-        "name": "Round 3",
+        "name": "Runde 3",
         "players": 16,
         "courts": [
           {
@@ -3498,7 +3498,7 @@
         "totalEliminated": 8
       },
       {
-        "name": "Round 4",
+        "name": "Runde 4",
         "players": 8,
         "courts": [
           {
@@ -3530,7 +3530,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -3548,14 +3548,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -3563,11 +3563,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -3581,7 +3581,7 @@
     "totalPlayers": 36,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 36,
         "courts": [
           {
@@ -3661,7 +3661,7 @@
         "totalEliminated": 12
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 24,
         "courts": [
           {
@@ -3717,7 +3717,7 @@
         "totalEliminated": 8
       },
       {
-        "name": "Round 3",
+        "name": "Runde 3",
         "players": 16,
         "courts": [
           {
@@ -3773,7 +3773,7 @@
         "totalEliminated": 8
       },
       {
-        "name": "Round 4",
+        "name": "Runde 4",
         "players": 8,
         "courts": [
           {
@@ -3805,7 +3805,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -3823,14 +3823,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -3838,11 +3838,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -3856,7 +3856,7 @@
     "totalPlayers": 40,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 40,
         "courts": [
           {
@@ -3949,7 +3949,7 @@
         "note": "Walkover(s) for 1 player(s)"
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 27,
         "courts": [
           {
@@ -4011,7 +4011,7 @@
         "totalEliminated": 9
       },
       {
-        "name": "Round 3",
+        "name": "Runde 3",
         "players": 18,
         "courts": [
           {
@@ -4055,7 +4055,7 @@
         "totalEliminated": 6
       },
       {
-        "name": "Round 4",
+        "name": "Runde 4",
         "players": 12,
         "courts": [
           {
@@ -4087,7 +4087,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Round 5",
+        "name": "Runde 5",
         "players": 8,
         "courts": [
           {
@@ -4119,7 +4119,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -4137,14 +4137,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -4152,11 +4152,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -4170,7 +4170,7 @@
     "totalPlayers": 46,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 46,
         "courts": [
           {
@@ -4323,7 +4323,7 @@
         "note": "Walkover(s) for 2 player(s)"
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 24,
         "courts": [
           {
@@ -4379,7 +4379,7 @@
         "totalEliminated": 8
       },
       {
-        "name": "Round 3",
+        "name": "Runde 3",
         "players": 16,
         "courts": [
           {
@@ -4435,7 +4435,7 @@
         "totalEliminated": 8
       },
       {
-        "name": "Round 4",
+        "name": "Runde 4",
         "players": 8,
         "courts": [
           {
@@ -4467,7 +4467,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -4485,14 +4485,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -4500,11 +4500,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -4518,7 +4518,7 @@
     "totalPlayers": 47,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 47,
         "courts": [
           {
@@ -4629,7 +4629,7 @@
         "note": "Walkover(s) for 2 player(s)"
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 32,
         "courts": [
           {
@@ -4733,7 +4733,7 @@
         "totalEliminated": 16
       },
       {
-        "name": "Round 3",
+        "name": "Runde 3",
         "players": 16,
         "courts": [
           {
@@ -4789,7 +4789,7 @@
         "totalEliminated": 8
       },
       {
-        "name": "Round 4",
+        "name": "Runde 4",
         "players": 8,
         "courts": [
           {
@@ -4821,7 +4821,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -4839,14 +4839,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -4854,11 +4854,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -4872,7 +4872,7 @@
     "totalPlayers": 48,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 48,
         "courts": [
           {
@@ -4976,7 +4976,7 @@
         "totalEliminated": 16
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 32,
         "courts": [
           {
@@ -5080,7 +5080,7 @@
         "totalEliminated": 16
       },
       {
-        "name": "Round 3",
+        "name": "Runde 3",
         "players": 16,
         "courts": [
           {
@@ -5136,7 +5136,7 @@
         "totalEliminated": 8
       },
       {
-        "name": "Round 4",
+        "name": "Runde 4",
         "players": 8,
         "courts": [
           {
@@ -5168,7 +5168,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -5186,14 +5186,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -5201,11 +5201,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -5219,7 +5219,7 @@
     "totalPlayers": 52,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 52,
         "courts": [
           {
@@ -5390,7 +5390,7 @@
         "note": "Walkover(s) for 2 player(s)"
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 27,
         "courts": [
           {
@@ -5452,7 +5452,7 @@
         "totalEliminated": 9
       },
       {
-        "name": "Round 3",
+        "name": "Runde 3",
         "players": 18,
         "courts": [
           {
@@ -5496,7 +5496,7 @@
         "totalEliminated": 6
       },
       {
-        "name": "Round 4",
+        "name": "Runde 4",
         "players": 12,
         "courts": [
           {
@@ -5528,7 +5528,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Round 5",
+        "name": "Runde 5",
         "players": 8,
         "courts": [
           {
@@ -5560,7 +5560,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -5578,14 +5578,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -5593,11 +5593,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -5611,7 +5611,7 @@
     "totalPlayers": 53,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 53,
         "courts": [
           {
@@ -5734,7 +5734,7 @@
         "note": "Walkover(s) for 2 player(s)"
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 36,
         "courts": [
           {
@@ -5814,7 +5814,7 @@
         "totalEliminated": 12
       },
       {
-        "name": "Round 3",
+        "name": "Runde 3",
         "players": 24,
         "courts": [
           {
@@ -5870,7 +5870,7 @@
         "totalEliminated": 8
       },
       {
-        "name": "Round 4",
+        "name": "Runde 4",
         "players": 16,
         "courts": [
           {
@@ -5926,7 +5926,7 @@
         "totalEliminated": 8
       },
       {
-        "name": "Round 5",
+        "name": "Runde 5",
         "players": 8,
         "courts": [
           {
@@ -5958,7 +5958,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -5976,14 +5976,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -5991,11 +5991,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -6009,7 +6009,7 @@
     "totalPlayers": 54,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 54,
         "courts": [
           {
@@ -6125,7 +6125,7 @@
         "totalEliminated": 18
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 36,
         "courts": [
           {
@@ -6205,7 +6205,7 @@
         "totalEliminated": 12
       },
       {
-        "name": "Round 3",
+        "name": "Runde 3",
         "players": 24,
         "courts": [
           {
@@ -6261,7 +6261,7 @@
         "totalEliminated": 8
       },
       {
-        "name": "Round 4",
+        "name": "Runde 4",
         "players": 16,
         "courts": [
           {
@@ -6317,7 +6317,7 @@
         "totalEliminated": 8
       },
       {
-        "name": "Round 5",
+        "name": "Runde 5",
         "players": 8,
         "courts": [
           {
@@ -6349,7 +6349,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -6367,14 +6367,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -6382,11 +6382,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -6400,7 +6400,7 @@
     "totalPlayers": 63,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 63,
         "courts": [
           {
@@ -6601,7 +6601,7 @@
         "note": "Walkover(s) for 1 player(s)"
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 32,
         "courts": [
           {
@@ -6705,7 +6705,7 @@
         "totalEliminated": 16
       },
       {
-        "name": "Round 3",
+        "name": "Runde 3",
         "players": 16,
         "courts": [
           {
@@ -6761,7 +6761,7 @@
         "totalEliminated": 8
       },
       {
-        "name": "Round 4",
+        "name": "Runde 4",
         "players": 8,
         "courts": [
           {
@@ -6793,7 +6793,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -6811,14 +6811,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -6826,11 +6826,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -6844,7 +6844,7 @@
     "totalPlayers": 64,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 64,
         "courts": [
           {
@@ -7044,7 +7044,7 @@
         "totalEliminated": 32
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 32,
         "courts": [
           {
@@ -7148,7 +7148,7 @@
         "totalEliminated": 16
       },
       {
-        "name": "Round 3",
+        "name": "Runde 3",
         "players": 16,
         "courts": [
           {
@@ -7204,7 +7204,7 @@
         "totalEliminated": 8
       },
       {
-        "name": "Round 4",
+        "name": "Runde 4",
         "players": 8,
         "courts": [
           {
@@ -7236,7 +7236,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -7254,14 +7254,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -7269,11 +7269,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -7287,7 +7287,7 @@
     "totalPlayers": 70,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 70,
         "courts": [
           {
@@ -7512,7 +7512,7 @@
         "note": "Walkover(s) for 2 player(s)"
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 36,
         "courts": [
           {
@@ -7592,7 +7592,7 @@
         "totalEliminated": 12
       },
       {
-        "name": "Round 3",
+        "name": "Runde 3",
         "players": 24,
         "courts": [
           {
@@ -7648,7 +7648,7 @@
         "totalEliminated": 8
       },
       {
-        "name": "Round 4",
+        "name": "Runde 4",
         "players": 16,
         "courts": [
           {
@@ -7704,7 +7704,7 @@
         "totalEliminated": 8
       },
       {
-        "name": "Round 5",
+        "name": "Runde 5",
         "players": 8,
         "courts": [
           {
@@ -7736,7 +7736,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -7754,14 +7754,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -7769,11 +7769,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -7787,7 +7787,7 @@
     "totalPlayers": 71,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 71,
         "courts": [
           {
@@ -7946,7 +7946,7 @@
         "note": "Walkover(s) for 2 player(s)"
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 48,
         "courts": [
           {
@@ -8050,7 +8050,7 @@
         "totalEliminated": 16
       },
       {
-        "name": "Round 3",
+        "name": "Runde 3",
         "players": 32,
         "courts": [
           {
@@ -8154,7 +8154,7 @@
         "totalEliminated": 16
       },
       {
-        "name": "Round 4",
+        "name": "Runde 4",
         "players": 16,
         "courts": [
           {
@@ -8210,7 +8210,7 @@
         "totalEliminated": 8
       },
       {
-        "name": "Round 5",
+        "name": "Runde 5",
         "players": 8,
         "courts": [
           {
@@ -8242,7 +8242,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -8260,14 +8260,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -8275,11 +8275,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -8293,7 +8293,7 @@
     "totalPlayers": 72,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 72,
         "courts": [
           {
@@ -8445,7 +8445,7 @@
         "totalEliminated": 24
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 48,
         "courts": [
           {
@@ -8549,7 +8549,7 @@
         "totalEliminated": 16
       },
       {
-        "name": "Round 3",
+        "name": "Runde 3",
         "players": 32,
         "courts": [
           {
@@ -8653,7 +8653,7 @@
         "totalEliminated": 16
       },
       {
-        "name": "Round 4",
+        "name": "Runde 4",
         "players": 16,
         "courts": [
           {
@@ -8709,7 +8709,7 @@
         "totalEliminated": 8
       },
       {
-        "name": "Round 5",
+        "name": "Runde 5",
         "players": 8,
         "courts": [
           {
@@ -8741,7 +8741,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -8759,14 +8759,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -8774,11 +8774,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -8792,7 +8792,7 @@
     "totalPlayers": 80,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 80,
         "courts": [
           {
@@ -8969,7 +8969,7 @@
         "note": "Walkover(s) for 2 player(s)"
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 54,
         "courts": [
           {
@@ -9085,7 +9085,7 @@
         "totalEliminated": 18
       },
       {
-        "name": "Round 3",
+        "name": "Runde 3",
         "players": 36,
         "courts": [
           {
@@ -9165,7 +9165,7 @@
         "totalEliminated": 12
       },
       {
-        "name": "Round 4",
+        "name": "Runde 4",
         "players": 24,
         "courts": [
           {
@@ -9221,7 +9221,7 @@
         "totalEliminated": 8
       },
       {
-        "name": "Round 5",
+        "name": "Runde 5",
         "players": 16,
         "courts": [
           {
@@ -9277,7 +9277,7 @@
         "totalEliminated": 8
       },
       {
-        "name": "Round 6",
+        "name": "Runde 6",
         "players": 8,
         "courts": [
           {
@@ -9309,7 +9309,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -9327,14 +9327,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -9342,11 +9342,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -9360,7 +9360,7 @@
     "totalPlayers": 81,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 81,
         "courts": [
           {
@@ -9530,7 +9530,7 @@
         "totalEliminated": 27
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 54,
         "courts": [
           {
@@ -9646,7 +9646,7 @@
         "totalEliminated": 18
       },
       {
-        "name": "Round 3",
+        "name": "Runde 3",
         "players": 36,
         "courts": [
           {
@@ -9726,7 +9726,7 @@
         "totalEliminated": 12
       },
       {
-        "name": "Round 4",
+        "name": "Runde 4",
         "players": 24,
         "courts": [
           {
@@ -9782,7 +9782,7 @@
         "totalEliminated": 8
       },
       {
-        "name": "Round 5",
+        "name": "Runde 5",
         "players": 16,
         "courts": [
           {
@@ -9838,7 +9838,7 @@
         "totalEliminated": 8
       },
       {
-        "name": "Round 6",
+        "name": "Runde 6",
         "players": 8,
         "courts": [
           {
@@ -9870,7 +9870,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -9888,14 +9888,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -9903,11 +9903,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -9921,7 +9921,7 @@
     "totalPlayers": 94,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 94,
         "courts": [
           {
@@ -10218,7 +10218,7 @@
         "note": "Walkover(s) for 2 player(s)"
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 48,
         "courts": [
           {
@@ -10322,7 +10322,7 @@
         "totalEliminated": 16
       },
       {
-        "name": "Round 3",
+        "name": "Runde 3",
         "players": 32,
         "courts": [
           {
@@ -10426,7 +10426,7 @@
         "totalEliminated": 16
       },
       {
-        "name": "Round 4",
+        "name": "Runde 4",
         "players": 16,
         "courts": [
           {
@@ -10482,7 +10482,7 @@
         "totalEliminated": 8
       },
       {
-        "name": "Round 5",
+        "name": "Runde 5",
         "players": 8,
         "courts": [
           {
@@ -10514,7 +10514,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -10532,14 +10532,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -10547,11 +10547,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -10565,7 +10565,7 @@
     "totalPlayers": 95,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 95,
         "courts": [
           {
@@ -10772,7 +10772,7 @@
         "note": "Walkover(s) for 2 player(s)"
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 64,
         "courts": [
           {
@@ -10972,7 +10972,7 @@
         "totalEliminated": 32
       },
       {
-        "name": "Round 3",
+        "name": "Runde 3",
         "players": 32,
         "courts": [
           {
@@ -11076,7 +11076,7 @@
         "totalEliminated": 16
       },
       {
-        "name": "Round 4",
+        "name": "Runde 4",
         "players": 16,
         "courts": [
           {
@@ -11132,7 +11132,7 @@
         "totalEliminated": 8
       },
       {
-        "name": "Round 5",
+        "name": "Runde 5",
         "players": 8,
         "courts": [
           {
@@ -11164,7 +11164,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -11182,14 +11182,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -11197,11 +11197,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -11215,7 +11215,7 @@
     "totalPlayers": 96,
     "rounds": [
       {
-        "name": "Round 1",
+        "name": "Runde 1",
         "players": 96,
         "courts": [
           {
@@ -11415,7 +11415,7 @@
         "totalEliminated": 32
       },
       {
-        "name": "Round 2",
+        "name": "Runde 2",
         "players": 64,
         "courts": [
           {
@@ -11615,7 +11615,7 @@
         "totalEliminated": 32
       },
       {
-        "name": "Round 3",
+        "name": "Runde 3",
         "players": 32,
         "courts": [
           {
@@ -11719,7 +11719,7 @@
         "totalEliminated": 16
       },
       {
-        "name": "Round 4",
+        "name": "Runde 4",
         "players": 16,
         "courts": [
           {
@@ -11775,7 +11775,7 @@
         "totalEliminated": 8
       },
       {
-        "name": "Round 5",
+        "name": "Runde 5",
         "players": 8,
         "courts": [
           {
@@ -11807,7 +11807,7 @@
         "totalEliminated": 4
       },
       {
-        "name": "Semifinals",
+        "name": "Semifinale",
         "players": 4,
         "courts": [
           {
@@ -11825,14 +11825,14 @@
         ],
         "totalAdvance": 2,
         "totalEliminated": 2,
-        "note": "Winners to Final, Losers to Bronze Final"
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       },
       {
-        "name": "Finals",
+        "name": "Finale",
         "players": 2,
         "courts": [
           {
-            "court": "Final",
+            "court": "Finale",
             "players": 2,
             "advance": 1,
             "eliminated": 1
@@ -11840,11 +11840,11 @@
         ]
       },
       {
-        "name": "Bronze Final",
+        "name": "Bronsefinale",
         "players": 2,
         "courts": [
           {
-            "court": "Bronze Final",
+            "court": "Bronsefinale",
             "players": 2,
             "advance": 1,
             "eliminated": 1

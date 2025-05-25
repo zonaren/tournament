@@ -16,7 +16,7 @@ function generateBracket(totalPlayers) {
   function addFinalsStructure(playersLeft) {
     if (playersLeft === 4) {
       rounds.push({
-        name: "Semifinals",
+        name: "Semifinale",
         players: 4,
         courts: [
           { court: 1, players: 2, advance: 1, eliminated: 1 },
@@ -24,20 +24,20 @@ function generateBracket(totalPlayers) {
         ],
         totalAdvance: 2,
         totalEliminated: 2,
-        note: "Winners to Final, Losers to Bronze Final"
+        note: "Vinnere av semifinaler går til finale, tapere til bronsefinale"
       });
       rounds.push({
-        name: "Finals",
+        name: "Finale",
         players: 2,
         courts: [
-          { court: "Final", players: 2, advance: 1, eliminated: 1 }
+          { court: "Finale", players: 2, advance: 1, eliminated: 1 }
         ]
       });
       rounds.push({
-        name: "Bronze Final",
+        name: "Bronsefinale",
         players: 2,
         courts: [
-          { court: "Bronze Final", players: 2, advance: 1, eliminated: 1 }
+          { court: "Bronsefinale", players: 2, advance: 1, eliminated: 1 }
         ]
       });
       return true;
@@ -69,7 +69,7 @@ function generateBracket(totalPlayers) {
       }
       
       let round = {
-        name: `Round ${testRoundNum}`,
+        name: `Runde ${testRoundNum}`,
         players: testPlayers,
         courts: [],
         totalAdvance: 0,
@@ -121,7 +121,7 @@ function generateBracket(totalPlayers) {
       }
       
       let round = {
-        name: `Round ${testRoundNum}`,
+        name: `Runde ${testRoundNum}`,
         players: testPlayers,
         courts: [],
         totalAdvance: 0,
