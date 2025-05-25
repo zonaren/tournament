@@ -72,12 +72,11 @@
 
 .finals-preview-table th,
 .finals-preview-table td {
-    padding: 0.5em;
+    padding: 0.1em;
     border: 1px solid #dee2e6;
 }
 
 .finals-preview-table th {
-    background-color: #f8f9fa;
     font-weight: bold;
 }
 
