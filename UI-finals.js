@@ -383,7 +383,7 @@ function updatePlayerPreview(container, players, useSeeding, structure) {
             poolDiv.className = 'finals-pool';
 
             const poolTitle = document.createElement('h4');
-            poolTitle.textContent = `Pool ${index + 1}`;
+            poolTitle.textContent = `Seeding ${index + 1}`;
             poolTitle.className = 'finals-pool-title';
             poolDiv.appendChild(poolTitle);
 
