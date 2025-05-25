@@ -21,33 +21,37 @@
 <body>
   <script type="module" src="UI-popup.js"></script>
   <script type="module" src="events.js"></script>
-    <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-      .then(registration => {
-        console.log('Service Worker registrert!', registration);
-        
-        // Handle service worker updates
-        registration.addEventListener('updatefound', () => {
-          const newWorker = registration.installing;
-          newWorker.addEventListener('statechange', () => {
-            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-              console.log('New service worker available! Please refresh the page.');
-              // Optionally show a toast or notification to the user
-              if (confirm('En ny versjon av appen er tilgjengelig. Vil du laste den nå?')) {
-                newWorker.postMessage({ type: 'SKIP_WAITING' });
-                window.location.reload();
+    <script>    if ('serviceWorker' in navigator) {
+      // Skip service worker registration during development
+      if (location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.hostname === '') {
+        console.log('Development mode - skipping service worker registration');
+      } else {
+        navigator.serviceWorker.register('service-worker.js')
+        .then(registration => {
+          console.log('Service Worker registrert!', registration);
+          
+          // Handle service worker updates
+          registration.addEventListener('updatefound', () => {
+            const newWorker = registration.installing;
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                console.log('New service worker available! Please refresh the page.');
+                // Optionally show a toast or notification to the user
+                if (confirm('En ny versjon av appen er tilgjengelig. Vil du laste den nå?')) {
+                  newWorker.postMessage({ type: 'SKIP_WAITING' });
+                  window.location.reload();
+                }
               }
-            }
+            });
           });
-        });
-        
-        // Listen for messages from service worker
-        navigator.serviceWorker.addEventListener('message', event => {
-          console.log('Message from service worker:', event.data);
-        });
-      })
-      .catch(err => console.error('Service Worker-feil:', err));
+          
+          // Listen for messages from service worker
+          navigator.serviceWorker.addEventListener('message', event => {
+            console.log('Message from service worker:', event.data);
+          });
+        })
+        .catch(err => console.error('Service Worker-feil:', err));
+      }
     }
   </script>
 
