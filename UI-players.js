@@ -3,6 +3,7 @@ import Tournaments from './classes/Tournament.js';
 import { onEditPlayers } from './events.js';
 import { createNameCell, startCellEdit } from './UI-player-utils.js';
 import { shuffleStartNumbers } from './shuffle-players.js';
+import { sortPlayers } from './utils.js';
 
 /**
  * Creates and returns the table header row for the player overview
@@ -204,46 +205,46 @@ function updatePlayerTable() {
     tbody.innerHTML = '';
     
     const players = Players.getAll();
+    const currentTournament = Tournaments.getCurrentTournament && Tournaments.getCurrentTournament();
+    const isFinalsStage = currentTournament && currentTournament.stage === 'finals';
 
-    // Helper: get mutual result between two players (returns 1 if a beat b, -1 if b beat a, 0 if draw or not found)
-    function getMutualResult(a, b) {
-        // Find the match between a and b
-        const aMatch = a.matches.find(m => m.opponentId === b.id);
-        const bMatch = b.matches.find(m => m.opponentId === a.id);
-        if (aMatch && bMatch) {
-            if (aMatch.scorePoints > bMatch.scorePoints) return 1;
-            if (aMatch.scorePoints < bMatch.scorePoints) return -1;
-            return 0;
-        }
-        return 0;
-    }
-
-    // Helper: get highest single match scorePoints for a player
-    function getHighestSingleScore(player) {
-        if (!player.matches.length) return 0;
-        return Math.max(...player.matches.map(m => m.scorePoints || 0));
-    }
-
-    const sortedPlayers = players.slice().sort((a, b) => {
-        // 1. Highest matchPoints
-        if (b.matchPoints !== a.matchPoints) return b.matchPoints - a.matchPoints;
-        // 2. Highest scorePoints
-        if (b.scorePoints !== a.scorePoints) return b.scorePoints - a.scorePoints;
-        // 3. Mutual result (if only two players have same points)
-        if (a.matches && b.matches && players.filter(p => p.matchPoints === a.matchPoints && p.scorePoints === a.scorePoints).length === 2) {
-            const mutual = getMutualResult(a, b);
-            if (mutual !== 0) return -mutual; // winner comes first
-        }
-        // 4. Highest single match scorePoints
-        return getHighestSingleScore(b) - getHighestSingleScore(a);
-    });
-
-    sortedPlayers
-        .filter(player => player.name !== 'Walkover')
-        .forEach((player, index) => {
-            tbody.appendChild(createPlayerRow(player, index, table.parentElement));
+    if (isFinalsStage) {
+        // Group players by finalsGroup
+        const grouped = {};
+        players.forEach(player => {
+            if (!player.finalsGroup) return;
+            if (!grouped[player.finalsGroup]) grouped[player.finalsGroup] = [];
+            grouped[player.finalsGroup].push(player);
         });
-    
+        // Sort group keys (A, B, ...)
+        const groupKeys = Object.keys(grouped).sort();
+        let rowIndex = 0;
+        groupKeys.forEach(group => {
+            // Add a group header row
+            const groupRow = document.createElement('tr');
+            const groupCell = document.createElement('td');
+            groupCell.colSpan = 5;
+            groupCell.textContent = `Gruppe ${group}`;
+            groupCell.style.fontWeight = 'bold';
+            groupCell.style.background = '#f0f0f0';
+            groupRow.appendChild(groupCell);
+            tbody.appendChild(groupRow);
+            // Sort players in group
+            const sortedGroup = sortPlayers(grouped[group]).filter(player => player.name !== 'Walkover');
+            sortedGroup.forEach((player) => {
+                tbody.appendChild(createPlayerRow(player, rowIndex, table.parentElement));
+                rowIndex++;
+            });
+        });
+    } else {
+        const sortedPlayers = sortPlayers(players);
+        sortedPlayers
+            .filter(player => player.name !== 'Walkover')
+            .forEach((player, index) => {
+                tbody.appendChild(createPlayerRow(player, index, table.parentElement));
+            });
+    }
+
     // Update player count
     const playerCount = document.querySelector('#playerOverview h3');
     if (playerCount) {
