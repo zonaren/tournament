@@ -1,7 +1,106 @@
 [
     {
+        "totalPlayers": 2,
+        "recommended": [
+            {
+                "A": 2,
+                "B": 0
+            }
+        ]
+    },
+    {
+        "totalPlayers": 3,
+        "recommended": [
+            {
+                "A": 3,
+                "B": 0
+            },
+            {
+                "A": 2,
+                "B": 1
+            }
+        ]
+    },
+    {
+        "totalPlayers": 4,
+        "recommended": [
+            {
+                "A": 4,
+                "B": 0
+            },
+            {
+                "A": 3,
+                "B": 1
+            },
+            {
+                "A": 2,
+                "B": 2
+            }
+        ]
+    },
+    {
+        "totalPlayers": 5,
+        "recommended": [
+            {
+                "A": 5,
+                "B": 0
+            },
+            {
+                "A": 4,
+                "B": 1
+            },
+            {
+                "A": 3,
+                "B": 2
+            }
+        ]
+    },
+    {
+        "totalPlayers": 6,
+        "recommended": [
+            {
+                "A": 6,
+                "B": 0
+            },
+            {
+                "A": 5,
+                "B": 1
+            },
+            {
+                "A": 4,
+                "B": 2
+            },
+            {
+                "A": 3,
+                "B": 3
+            }
+
+        ]
+    },
+    {
+        "totalPlayers": 7,
+        "recommended": [
+            {
+                "A": 6,
+                "B": 1
+            },
+            {
+                "A": 5,
+                "B": 2
+            },
+            {
+                "A": 4,
+                "B": 3
+            }
+        ]
+    },
+    {
         "totalPlayers": 8,
         "recommended": [
+            {
+                "A": 8,
+                "B": 0
+            },
             {
                 "A": 5,
                 "B": 3
@@ -15,6 +114,10 @@
     {
         "totalPlayers": 9,
         "recommended": [
+            {
+                "A": 9,
+                "B": 0
+            },
             {
                 "A": 6,
                 "B": 3
@@ -42,6 +145,14 @@
         "totalPlayers": 11,
         "recommended": [
             {
+                "A": 11,
+                "B": 0
+            },
+            {
+                "A": 9,
+                "B": 2
+            },
+            {
                 "A": 8,
                 "B": 3
             },
@@ -54,6 +165,10 @@
     {
         "totalPlayers": 12,
         "recommended": [
+            {
+                "A": 12,
+                "B": 0
+            },
             {
                 "A": 9,
                 "B": 3
@@ -71,6 +186,10 @@
     {
         "totalPlayers": 13,
         "recommended": [
+            {
+                "A": 13,
+                "B": 0
+            },
             {
                 "A": 9,
                 "B": 4
