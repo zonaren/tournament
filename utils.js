@@ -11,20 +11,41 @@ export function sortPlayers(players) {
         }
         return 0;
     }
+    
     // Helper: get highest single match scorePoints for a player
     function getHighestSingleScore(player) {
         if (!player.matches || !player.matches.length) return 0;
         return Math.max(...player.matches.map(m => m.scorePoints || 0));
     }
+
     return players.slice().sort((a, b) => {
+        // 1. Group by finalsGroup alphabetically (players without finalsGroup go last)
+        const aGroup = a.finalsGroup || 'ZZZ'; // Players without group go to end
+        const bGroup = b.finalsGroup || 'ZZZ';
+        if (aGroup !== bGroup) {
+            return aGroup.localeCompare(bGroup);
+        }
+
+        // 2. Within same group, sort by eliminated status (descending - non-eliminated first)
+        const aEliminated = a.eliminated === null || a.eliminated === undefined ? -1 : a.eliminated;
+        const bEliminated = b.eliminated === null || b.eliminated === undefined ? -1 : b.eliminated;
+        if (aEliminated !== bEliminated) {
+            return aEliminated - bEliminated; // -1 (not eliminated) comes before positive numbers (eliminated rounds)
+        }
+
+        // 3. Match points (descending)
         if (b.matchPoints !== a.matchPoints) return b.matchPoints - a.matchPoints;
+        
+        // 4. Score points (descending)
         if (b.scorePoints !== a.scorePoints) return b.scorePoints - a.scorePoints;
-        // 3. Mutual result (if only two players have same points)
+        
+        // 5. Mutual result (if only two players have same points)
         if (a.matches && b.matches && players.filter(p => p.matchPoints === a.matchPoints && p.scorePoints === a.scorePoints).length === 2) {
             const mutual = getMutualResult(a, b);
             if (mutual !== 0) return -mutual;
         }
-        // 4. Highest single match scorePoints
+        
+        // 6. Highest single match scorePoints
         return getHighestSingleScore(b) - getHighestSingleScore(a);
     });
 }
