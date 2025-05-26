@@ -18,6 +18,19 @@ export async function loadFinalsStructure(playerCount) {
 }
 
 /**
+ * Shuffle array in place using Fisher-Yates algorithm
+ * @param {Array} array
+ * @returns {Array}
+ */
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+/**
  * Create seeding pools based on structure and player rankings
  * @param {Array} players - Array of player objects
  * @param {Object} structure - Finals structure object
@@ -84,6 +97,11 @@ export function assignPlayersWithSeeding(players, structure) {
     // Remove walkover players from the remaining players for pool creation
     const remainingPlayers = sortedPlayers.slice(totalWalkovers);
     const pools = createSeedingPools(remainingPlayers, structure);
+
+    // Shuffle each pool after pools are created, before assignment
+    for (let i = 0; i < pools.length; i++) {
+        shuffleArray(pools[i]);
+    }
     
     // Now assign players to courts in the correct order
     let walkoverIndex = 0;
@@ -154,6 +172,7 @@ export function assignPlayersWithoutSeeding(players, structure) {
     
     // Sort players (top-ranked first)
     const sortedPlayers = sortPlayers(players);
+    const randomizedPlayers = sortedPlayers.slice().sort(() => Math.random() - 0.5); // Shuffle players
     
     // Assign top-ranked players to walkover positions first, then remaining players sequentially
     const assigned = [];
@@ -168,10 +187,10 @@ export function assignPlayersWithoutSeeding(players, structure) {
                 walkoverIndex++;
             }
         } else {
-            // Regular court - assign remaining players sequentially
+            // Regular court - assign remaining players randomly
             for (let i = 0; i < court.players; i++) {
                 if (remainingPlayerIndex < sortedPlayers.length) {
-                    assigned.push(sortedPlayers[remainingPlayerIndex]);
+                    assigned.push(randomizedPlayers[remainingPlayerIndex]);
                     remainingPlayerIndex++;
                 }
             }

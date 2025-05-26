@@ -819,7 +819,7 @@ export function displayThreePlayerCourtAssignments(tournament, container) {
 
                 // Players
                 const playersCell = row.insertCell();
-                playersCell.textContent = assignment.players.map(p => p.name).join(', ');
+                playersCell.textContent = assignment.players.slice().sort((a,b) => a.id - b.id).map(p => p.name).join(', ');
                 playersCell.className = 'finals-table-cell';
 
                 // Advance count
