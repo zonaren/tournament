@@ -3,6 +3,11 @@ const header = document.createElement('div');
 header.id = 'header';
 header.className = 'header';
 
+const versionText = document.createElement('p');
+versionText.id = 'versionText';
+versionText.textContent = '0.0.1a (26. mai 2025)';
+header.appendChild(versionText);
+
 const titleText = document.createElement('h2');
 titleText.id = 'titleText';
 titleText.textContent = '8 spillere';

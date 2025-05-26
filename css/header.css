@@ -9,5 +9,16 @@
     padding: 10px;
     margin-bottom: 10px;
     text-align: center;
+    position: relative; /* Add this to allow absolute positioning inside */
+}
 
+#versionText {
+    font-size: 0.9em;
+    padding: 0% 5px;
+    color: #F6F7FB;
+    margin-top: 5px;
+    position: absolute;      /* Position absolutely within .header */
+    top: 10px;               /* Align with header padding */
+    right: 10px;             /* Align with header padding */
+    margin-top: 0;           /* Remove margin-top for better alignment */
 }
