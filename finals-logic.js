@@ -478,14 +478,11 @@ export async function createThreePlayerCourtAssignments(tournament, groupName, p
  * @param {boolean} useSeeding - Whether to use seeding
  * @returns {Object} - Result object
  */
-export async function createFinalsMatchesOrAssignments(tournament, groupName, players, structure, useSeeding) {
+export async function createFinalsMatches(tournament, groupName, players, structure, useSeeding) {
     console.log(`Creating finals for group ${groupName}`, { players: players.length, structure, useSeeding });
     
-    if (hasThreePlayerCourts(structure)) {
         return await createThreePlayerCourtAssignments(tournament, groupName, players, structure, useSeeding);
-    } else {
-        return await createTwoPlayerMatches(tournament, groupName, players, structure, useSeeding);
-    }
+
 }
 
 /**

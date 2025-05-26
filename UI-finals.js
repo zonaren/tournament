@@ -4,7 +4,7 @@ import { displayTournamentOverview } from './UI-tournament.js';
 import { checkForIncompleteMatches, checkForWalkoverPlayers, deleteWalkoverPlayers, getRecommendedFinalsGroupSizes, sortPlayers } from './utils.js';
 import { 
     loadFinalsStructure, 
-    createFinalsMatchesOrAssignments, 
+    createFinalsMatches, 
     hasThreePlayerCourts,
     updatePlayerAdvancement,
     createSeedingPools
@@ -233,7 +233,7 @@ function showBracketPreview(tournament, groupName, players, structure) {
     confirmBtn.textContent = 'Bekreft og opprett kamper';
     confirmBtn.className = 'finals-button finals-button-primary';
     confirmBtn.onclick = async () => {
-        const result = await createFinalsMatchesOrAssignments(tournament, groupName, players, structure, seedingCheckbox.checked);
+        const result = await createFinalsMatches(tournament, groupName, players, structure, seedingCheckbox.checked);
         if (result.success) {
             //alert(`${result.matches || result.assignments} ${result.matches ? 'kamper' : 'baner'} opprettet for gruppe ${groupName}! (${seedingCheckbox.checked ? 'Med' : 'Uten'} seeding)`);
             document.body.removeChild(overlay);
