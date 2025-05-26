@@ -5,7 +5,7 @@ header.className = 'header';
 
 const versionText = document.createElement('p');
 versionText.id = 'versionText';
-versionText.textContent = '0.0.1a (26. mai 2025)';
+versionText.textContent = '0.0.1b (26. mai 2025)';
 header.appendChild(versionText);
 
 const titleText = document.createElement('h2');

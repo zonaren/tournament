@@ -161,42 +161,42 @@ export function assignPlayersWithSeeding(players, structure) {
  * @returns {Array} - Array of assigned players
  */
 export function assignPlayersWithoutSeeding(players, structure) {
-    // Get first round courts
     const firstRound = structure.rounds[0];
-    
-    // Count how many walkover positions we have
-    const walkoverCourts = firstRound.courts.filter(court => 
+    const walkoverCourts = firstRound.courts.filter(court =>
         court.court === 'WO1' || court.court.toString().startsWith('WO')
     );
     const totalWalkovers = walkoverCourts.length;
-    
-    // Sort players (top-ranked first)
     const sortedPlayers = sortPlayers(players);
-    const randomizedPlayers = sortedPlayers.slice().sort(() => Math.random() - 0.5); // Shuffle players
-    
-    // Assign top-ranked players to walkover positions first, then remaining players sequentially
+
+    let walkoverPlayers = [];
+    let randomizedPlayers = [];
+    if (totalWalkovers > 0) {
+        walkoverPlayers = sortedPlayers.slice(0, totalWalkovers);
+        randomizedPlayers = sortedPlayers.slice(totalWalkovers).slice().sort(() => Math.random() - 0.5);
+    } else {
+        randomizedPlayers = sortedPlayers.slice().sort(() => Math.random() - 0.5);
+    }
+
     const assigned = [];
     let walkoverIndex = 0;
-    let remainingPlayerIndex = totalWalkovers;
-    
+    let randomizedIndex = 0;
+
     for (const court of firstRound.courts) {
         if (court.court === 'WO1' || court.court.toString().startsWith('WO')) {
-            // Assign top-ranked player to walkover position
-            if (walkoverIndex < totalWalkovers && walkoverIndex < sortedPlayers.length) {
-                assigned.push(sortedPlayers[walkoverIndex]);
+            if (walkoverIndex < walkoverPlayers.length) {
+                assigned.push(walkoverPlayers[walkoverIndex]);
                 walkoverIndex++;
             }
         } else {
-            // Regular court - assign remaining players randomly
             for (let i = 0; i < court.players; i++) {
-                if (remainingPlayerIndex < sortedPlayers.length) {
-                    assigned.push(randomizedPlayers[remainingPlayerIndex]);
-                    remainingPlayerIndex++;
+                if (randomizedIndex < randomizedPlayers.length) {
+                    assigned.push(randomizedPlayers[randomizedIndex]);
+                    randomizedIndex++;
                 }
             }
         }
     }
-    
+
     return assigned;
 }
 
@@ -403,7 +403,7 @@ export async function createThreePlayerCourtAssignments(tournament, groupName, p
         let courtNumber = 1;
         
         for (const court of firstRound.courts) {
-            if (court.court === 'WO1' || court.court.toString().startsWith('WO')) {
+            if (court.court.toString().startsWith('WO')) {
                 // Handle walkover
                 if (playerIndex < assignedPlayers.length) {
                     const walkoverPlayer = assignedPlayers[playerIndex];
