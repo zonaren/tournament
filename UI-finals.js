@@ -299,18 +299,23 @@ function displayBracketStructure(container, structure) {
             const courtsDiv = document.createElement('div');
             courtsDiv.className = 'finals-bracket-courts';
             
-            round.courts.forEach(court => {
+            // count the number of courts where walkover is present
+            const walkoverCount = round.courts.filter(court => court.court === 'WO1' || court.court.toString().startsWith('WO')).length;
+
+            round.courts.filter(court => court.court !== 'WO1' && !court.court.toString().startsWith('WO')).forEach(court => {
                 const courtDiv = document.createElement('div');
-                if (court.court === 'WO1') {
-                    courtDiv.textContent = `Walkover: ${court.players} spiller(e)`;
-                } else {
+                {
                     courtDiv.textContent = `Bane ${court.court}: ${court.players} spillere (${court.advance} går videre)`;
                 }
                 courtsDiv.appendChild(courtDiv);
             });
-            
+
+            const walkoverDiv = document.createElement('div');
+            walkoverCount > 0 ? walkoverDiv.textContent = `Walkover: ${walkoverCount} spiller(e)` : walkoverDiv.textContent = 'Ingen walkover';
+            courtsDiv.appendChild(walkoverDiv);
             roundDiv.appendChild(courtsDiv);
-        }        structureDiv.appendChild(roundDiv);
+        }
+        structureDiv.appendChild(roundDiv);
     });
 
     container.appendChild(title);
