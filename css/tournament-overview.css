@@ -192,28 +192,6 @@
     background-color: #218838;
 }
 
-.finals-matches-table {
-    margin: 10px 0;
-    font-size: 0.9em;
-}
-
-.finals-matches-table th,
-.finals-matches-table td {
-    border: 1px solid #dee2e6;
-    padding: 8px;
-    text-align: left;
-}
-
-.finals-matches-table th {
-    background-color: #f8f9fa;
-    font-weight: bold;
-    text-align: center;
-}
-
-.finals-matches-table tbody tr:hover {
-    background-color: #f7fafc;
-}
-
 /* Responsive design for finals */
 @media screen and (max-width: 715px) {
     .finals-groups-container {

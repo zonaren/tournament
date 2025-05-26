@@ -7,8 +7,7 @@ import { onStartTournament } from './events.js';
 import { shuffleStartNumbers } from './shuffle-players.js';
 import Tournaments  from './classes/Tournament.js';
 import { editTournament } from './UI-tournaments-list.js';
-import { startFinals, showPlayerSelectionPopup, displayFinals } from './UI-finals.js';
-import { sortPlayers } from './utils.js';
+import { startFinals, displayFinals } from './UI-finals.js';
 
 
 

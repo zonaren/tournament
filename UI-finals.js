@@ -237,7 +237,7 @@ function showBracketPreview(tournament, groupName, players, structure) {
     confirmBtn.onclick = async () => {
         const result = await createFinalsMatchesOrAssignments(tournament, groupName, players, structure, seedingCheckbox.checked);
         if (result.success) {
-            alert(`${result.matches || result.assignments} ${result.matches ? 'kamper' : 'baner'} opprettet for gruppe ${groupName}! (${seedingCheckbox.checked ? 'Med' : 'Uten'} seeding)`);
+            //alert(`${result.matches || result.assignments} ${result.matches ? 'kamper' : 'baner'} opprettet for gruppe ${groupName}! (${seedingCheckbox.checked ? 'Med' : 'Uten'} seeding)`);
             document.body.removeChild(overlay);
             displayTournamentOverview(tournament);
         } else {
@@ -507,7 +507,7 @@ export function showPlayerSelectionPopup(assignment, tournament) {
                 document.body.removeChild(overlay);
                 // Refresh the tournament overview
                 displayTournamentOverview(tournament);
-                alert(`${selectedPlayers.length} spillere valgt for å gå videre!`);
+                //alert(`${selectedPlayers.length} spillere valgt for å gå videre!`);
             } else {
                 alert('Feil ved oppdatering av spillervalg');
             }
@@ -535,7 +535,7 @@ export function displayFinals(tournament, matchOverviewContainer) {
     const finalsContainer = document.createElement('div');
     finalsContainer.id = 'finalsOverview';
     matchOverviewContainer.appendChild(finalsContainer);
-    const finalsText = document.createElement('h2');
+    const finalsText = document.createElement('h3');
     finalsText.textContent = 'Sluttspill ' + tournament.finalsFormat;
     finalsContainer.appendChild(finalsText);
 
@@ -647,11 +647,6 @@ export function displayFinalsMatches(tournament, container) {
     matchesContainer.id = 'finalsMatches';
     matchesContainer.className = 'finals-matches-container';
 
-    const matchesTitle = document.createElement('h3');
-    matchesTitle.textContent = 'Sluttspillkamper';
-    matchesTitle.className = 'finals-matches-title';
-    matchesContainer.appendChild(matchesTitle);
-
     // Handle regular 2-player matches
     if (tournament.finalsMatchSchedule && tournament.finalsMatchSchedule.length > 0) {
         displayRegularFinalsMatches(tournament, matchesContainer);
@@ -681,7 +676,7 @@ export function displayRegularFinalsMatches(tournament, container) {
         groupMatchesDiv.className = 'finals-group-matches';
 
         const groupTitle = document.createElement('h4');
-        groupTitle.textContent = `Gruppe ${groupName} - 2-spillere kamper`;
+        groupTitle.textContent = `Gruppe ${groupName} - Runde ${matchesByGroup[groupName][0].roundNumber}`;
         groupTitle.className = 'finals-group-title';
         groupMatchesDiv.appendChild(groupTitle);
 
@@ -786,7 +781,7 @@ export function displayThreePlayerCourtAssignments(tournament, container) {
         groupAssignmentsDiv.className = 'finals-group-assignments';
 
         const groupTitle = document.createElement('h4');
-        groupTitle.textContent = `Gruppe ${groupName} - 3-spillere baner`;
+        groupTitle.textContent = `Gruppe ${groupName} - Runde ${assignmentsByGroup[groupName][0].roundNumber}`;
         groupTitle.className = 'finals-group-title';
         groupAssignmentsDiv.appendChild(groupTitle);
 
@@ -794,18 +789,13 @@ export function displayThreePlayerCourtAssignments(tournament, container) {
             const roundDiv = document.createElement('div');
             roundDiv.className = 'finals-round';
 
-            const roundTitle = document.createElement('h5');
-            roundTitle.textContent = round.roundName || `Runde ${round.roundNumber}`;
-            roundTitle.className = 'finals-round-title';
-            roundDiv.appendChild(roundTitle);
-
             // Create table for court assignments
             const table = document.createElement('table');
             table.classList.add('finals-matches-table');
 
             const thead = table.createTHead();
             const headerRow = thead.insertRow();
-            ['Bane', 'Spillere', 'Går videre', 'Status'].forEach(text => {
+            ['Bane', 'Spillere', 'Status'].forEach(text => {
                 const th = document.createElement('th');
                 th.textContent = text;
                 th.className = 'finals-table-header';
@@ -819,18 +809,13 @@ export function displayThreePlayerCourtAssignments(tournament, container) {
 
                 // Court
                 const courtCell = row.insertCell();
-                courtCell.textContent = assignment.isWalkover ? 'WO' : `Bane ${assignment.courtNumber}`;
+                courtCell.textContent = assignment.isWalkover ? 'WO' : `${assignment.courtNumber}`;
                 courtCell.className = 'finals-table-cell finals-court-cell';
 
                 // Players
                 const playersCell = row.insertCell();
                 playersCell.textContent = assignment.players.slice().sort((a,b) => a.id - b.id).map(p => p.name).join(', ');
                 playersCell.className = 'finals-table-cell';
-
-                // Advance count
-                const advanceCell = row.insertCell();
-                advanceCell.textContent = `${assignment.playersToAdvance} av ${assignment.players.length}`;
-                advanceCell.className = 'finals-table-cell finals-court-cell';
 
                 // Status
                 const statusCell = row.insertCell();

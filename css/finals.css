@@ -350,9 +350,25 @@
     margin-bottom: 0.5em;
 }
 
+
+.finals-matches-table th,
+.finals-matches-table td {
+    border: 1px solid #dee2e6;
+    padding: 4px;
+    text-align: left;
+}
+
+.finals-matches-table th {
+    font-weight: bold;
+    text-align: center;
+}
+
+.finals-matches-table tbody tr:hover {
+    background-color: #f7fafc;
+}
+
 .finals-table-header {
     padding: 8px;
-    background-color: #f8f9fa;
     border: 1px solid #dee2e6;
     text-align: center;
     font-weight: bold;
