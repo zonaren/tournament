@@ -1,4 +1,5 @@
-const CACHE_NAME = 'tournament-app-cache-v3';
+const VERSION = '0.0.1a'; // Update this version when you change the cache content
+const CACHE_NAME = 'tournament-app-cache-' + VERSION;
 const URLS_TO_CACHE = [
   '/',
   '/index.html',
