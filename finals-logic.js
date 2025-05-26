@@ -1,5 +1,5 @@
 // Finals logic - Pure business logic functions for finals management
-import { generateUniqueId } from './utils.js';
+import { generateUniqueId, sortPlayers } from './utils.js';
 
 /**
  * Load finals structure from JSON based on player count
@@ -24,12 +24,8 @@ export async function loadFinalsStructure(playerCount) {
  * @returns {Array} - Array of player pools
  */
 export function createSeedingPools(players, structure) {
-    // Sort players by score points, then match points, then name
-    const sortedPlayers = [...players].sort((a, b) => {
-        if (b.scorePoints !== a.scorePoints) return b.scorePoints - a.scorePoints;
-        if (b.matchPoints !== a.matchPoints) return b.matchPoints - a.matchPoints;
-        return a.name.localeCompare(b.name);
-    });
+    // Sort players
+    const sortedPlayers = sortPlayers(players);
 
     const playerCount = sortedPlayers.length;
     let poolCount;
@@ -77,11 +73,7 @@ export function assignPlayersWithSeeding(players, structure) {
     const totalWalkovers = walkoverCourts.length;
     
     // Get the sorted players (top-ranked first)
-    const sortedPlayers = [...players].sort((a, b) => {
-        if (b.scorePoints !== a.scorePoints) return b.scorePoints - a.scorePoints;
-        if (b.matchPoints !== a.matchPoints) return b.matchPoints - a.matchPoints;
-        return a.name.localeCompare(b.name);
-    });
+    const sortedPlayers = sortPlayers(players);
     
     // Assign top-ranked players to walkover positions first
     const walkoverPlayers = [];
@@ -161,11 +153,7 @@ export function assignPlayersWithoutSeeding(players, structure) {
     const totalWalkovers = walkoverCourts.length;
     
     // Sort players (top-ranked first)
-    const sortedPlayers = [...players].sort((a, b) => {
-        if (b.scorePoints !== a.scorePoints) return b.scorePoints - a.scorePoints;
-        if (b.matchPoints !== a.matchPoints) return b.matchPoints - a.matchPoints;
-        return a.name.localeCompare(b.name);
-    });
+    const sortedPlayers = sortPlayers(players);
     
     // Assign top-ranked players to walkover positions first, then remaining players sequentially
     const assigned = [];
@@ -249,10 +237,7 @@ export async function createTwoPlayerMatches(tournament, groupName, players, str
         const { Match } = matchModule;
         
         // Sort players for consistent ordering
-        const sortedPlayers = [...players].sort((a, b) => {
-            if (b.scorePoints !== a.scorePoints) return b.scorePoints - a.scorePoints;
-            if (b.matchPoints !== a.matchPoints) return b.matchPoints - a.matchPoints;
-            return a.name.localeCompare(b.name);        });
+        const sortedPlayers = sortPlayers(players);
         
         let assignedPlayers;
         
@@ -375,10 +360,7 @@ export async function createTwoPlayerMatches(tournament, groupName, players, str
 export async function createThreePlayerCourtAssignments(tournament, groupName, players, structure, useSeeding) {
     try {
         // Sort players for consistent ordering
-        const sortedPlayers = [...players].sort((a, b) => {
-            if (b.scorePoints !== a.scorePoints) return b.scorePoints - a.scorePoints;
-            if (b.matchPoints !== a.matchPoints) return b.matchPoints - a.matchPoints;
-            return a.name.localeCompare(b.name);        });
+        const sortedPlayers = sortPlayers(players);
         
         let assignedPlayers;
         

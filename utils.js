@@ -29,8 +29,7 @@ export function sortPlayers(players) {
     });
 }
 
-// Backward compatibility alias
-export const sortPlayersForFinals = sortPlayers;
+
 function generateRandomString(length) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-';
     let result = '';

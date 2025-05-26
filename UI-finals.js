@@ -1,7 +1,7 @@
 // This file handles the UI for the finals stage of the tournament
 import Tournaments from './classes/Tournament.js';
 import { displayTournamentOverview } from './UI-tournament.js';
-import { checkForIncompleteMatches, checkForWalkoverPlayers, deleteWalkoverPlayers, getRecommendedFinalsGroupSizes, sortPlayersForFinals, sortPlayers } from './utils.js';
+import { checkForIncompleteMatches, checkForWalkoverPlayers, deleteWalkoverPlayers, getRecommendedFinalsGroupSizes, sortPlayers } from './utils.js';
 import { 
     loadFinalsStructure, 
     createFinalsMatchesOrAssignments, 
@@ -78,7 +78,7 @@ export async function displayFinalsGroupSizeSelectionPopup(tournament) {
         const selectedIdx = Array.from(popup.querySelectorAll('input[name="finals-group-size"]')).findIndex(r => r.checked);
         if (selectedIdx === -1) return;
         const selected = recommended[selectedIdx];
-        const players = sortPlayersForFinals(tournament.getPlayers());
+        const players = sortPlayers(tournament.getPlayers());
         let html = '';
         html += '<table class="finals-preview-table">';
         html += `<tr><th>Gruppe A (${selected.A})</th><th>Gruppe B (${selected.B})</th></tr>`;
@@ -112,7 +112,7 @@ export async function displayFinalsGroupSizeSelectionPopup(tournament) {
         }
         const selected = recommended[selectedIdx];
         // Tag players with A or B using correct sorting
-        const players = sortPlayersForFinals(tournament.getPlayers());
+        const players = sortPlayers(tournament.getPlayers());
         players.forEach((p, i) => {
             if (i < selected.A) {
                 p.finalsGroup = 'A';
@@ -342,11 +342,7 @@ function updatePlayerPreview(container, players, useSeeding, structure) {
     const totalWalkovers = walkoverCourts.length;
     
     // Sort players (top-ranked first)
-    const sortedPlayers = [...players].sort((a, b) => {
-        if (b.scorePoints !== a.scorePoints) return b.scorePoints - a.scorePoints;
-        if (b.matchPoints !== a.matchPoints) return b.matchPoints - a.matchPoints;
-        return a.name.localeCompare(b.name);
-    });
+    const sortedPlayers = sortPlayers(players);
     
     // Get walkover players (top-ranked)
     const walkoverPlayers = sortedPlayers.slice(0, totalWalkovers);
