@@ -39,7 +39,7 @@ export function startFinals() {
 
 // Display a popup to select recommended finals group sizes
 export async function displayFinalsGroupSizeSelectionPopup(tournament) {
-    const totalPlayers = tournament.getPlayers().length;
+    const totalPlayers = tournament.getPlayers().filter(player => player.eliminated == null).length;
     const recommended = await getRecommendedFinalsGroupSizes(totalPlayers);
     console.log("Recommended group sizes: ", recommended.length);
     if (!recommended.length) {
@@ -72,13 +72,11 @@ export async function displayFinalsGroupSizeSelectionPopup(tournament) {
 
     // Player preview area
     const previewDiv = document.createElement('div');
-    popup.appendChild(previewDiv);
-
-    function updatePreview() {
+    popup.appendChild(previewDiv);    function updatePreview() {
         const selectedIdx = Array.from(popup.querySelectorAll('input[name="finals-group-size"]')).findIndex(r => r.checked);
         if (selectedIdx === -1) return;
         const selected = recommended[selectedIdx];
-        const players = sortPlayers(tournament.getPlayers());
+        const players = sortPlayers(tournament.getPlayers().filter(player => player.eliminated == null));
         let html = '';
         html += '<table class="finals-preview-table">';
         html += `<tr><th>Gruppe A (${selected.A})</th><th>Gruppe B (${selected.B})</th></tr>`;
@@ -110,9 +108,8 @@ export async function displayFinalsGroupSizeSelectionPopup(tournament) {
             alert('Velg en gruppestørrelse.');
             return;
         }
-        const selected = recommended[selectedIdx];
-        // Tag players with A or B using correct sorting
-        const players = sortPlayers(tournament.getPlayers());
+        const selected = recommended[selectedIdx];        // Tag players with A or B using correct sorting
+        const players = sortPlayers(tournament.getPlayers().filter(player => player.eliminated == null));
         players.forEach((p, i) => {
             if (i < selected.A) {
                 p.finalsGroup = 'A';
@@ -149,9 +146,10 @@ export async function displayFinalsGroupSizeSelectionPopup(tournament) {
 // Function to handle drawing the finals bracket for a specific group
 export function drawFinalsGroup(tournament, groupName) {
     console.log(`Drawing finals for group ${groupName}`);
-    
-    // Get players in the specified group
-    const players = tournament.getPlayers().filter(player => player.finalsGroup === groupName);
+      // Get players in the specified group
+    const players = tournament.getPlayers().filter(player => 
+        player.finalsGroup === groupName && player.eliminated == null
+    );
     const playerCount = players.length;
     
     if (playerCount === 0) {
@@ -498,10 +496,30 @@ export function showPlayerSelectionPopup(assignment, tournament) {
     const confirmBtn = document.createElement('button');
     confirmBtn.textContent = 'Bekreft valg';
     confirmBtn.className = 'finals-button finals-button-confirm';
-    confirmBtn.disabled = true;
-
-    confirmBtn.addEventListener('click', () => {
+    confirmBtn.disabled = true;    confirmBtn.addEventListener('click', () => {
         if (selectedPlayers.length === assignment.playersToAdvance) {
+            // Find the current round number for this assignment
+            let currentRoundNumber = 1; // Default fallback
+            if (tournament.finalsCourtAssignments) {
+                const round = tournament.finalsCourtAssignments.find(round => 
+                    round.courtAssignments && round.courtAssignments.includes(assignment)
+                );
+                if (round) {
+                    currentRoundNumber = round.roundNumber;
+                }
+            }
+            
+            // Update elimination status for all players in this court assignment
+            assignment.players.forEach(player => {
+                if (selectedPlayers.includes(player)) {
+                    // Selected players advance - clear elimination status
+                    player.eliminated = null;
+                } else {
+                    // Non-selected players are eliminated at this round
+                    player.eliminated = currentRoundNumber;
+                }
+            });
+            
             const success = updatePlayerAdvancement(tournament, assignment, selectedPlayers);
             if (success) {
                 document.body.removeChild(overlay);
@@ -537,11 +555,11 @@ export function displayFinals(tournament, matchOverviewContainer) {
     matchOverviewContainer.appendChild(finalsContainer);
     const finalsText = document.createElement('h3');
     finalsText.textContent = 'Sluttspill ' + tournament.finalsFormat;
-    finalsContainer.appendChild(finalsText);
-
-    // show players in finals
+    finalsContainer.appendChild(finalsText);    // show players in finals
     const players = tournament.getPlayers();
-    const finalsPlayers = players.filter(player => player.finalsGroup !== undefined);
+    const finalsPlayers = players.filter(player => 
+        player.finalsGroup !== undefined && player.eliminated == null
+    );
     if (finalsPlayers.length === 0) {
         const noPlayersText = document.createElement('p');
         noPlayersText.textContent = 'Ingen spillere i sluttspillet.';
@@ -568,10 +586,14 @@ export function displayFinals(tournament, matchOverviewContainer) {
         const groupContainer = document.createElement('div');
         groupContainer.classList.add('finals-group-container'); 
 
+        const groupNameText = document.createElement('h3');
+        groupNameText.textContent = `Gruppe ${groupName} (${groupedPlayers[groupName].length} spillere)`;
+        groupContainer.appendChild(groupNameText);
+
         // Add button to draw next round for this group (above table)
         const drawFinalsButton = document.createElement('button');
         
-        drawFinalsButton.textContent = `Trekk neste runde - Gruppe ${groupName}`;
+        drawFinalsButton.textContent = `Trekk neste runde`;
         drawFinalsButton.classList.add('draw-finals-btn');
         
         drawFinalsButton.dataset.group = groupName;
