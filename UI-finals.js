@@ -549,12 +549,6 @@ export function displayFinals(tournament, matchOverviewContainer) {
         return;
     }
 
-    // Show finals matches if they exist            // Display existing matches and court assignments
-    if ((tournament.finalsMatchSchedule && tournament.finalsMatchSchedule.length > 0) ||
-        (tournament.finalsCourtAssignments && tournament.finalsCourtAssignments.length > 0)) {
-        displayFinalsMatches(tournament, finalsContainer);
-    }
-
     // Group players by finalsGroup
     const groupedPlayers = {};
     finalsPlayers.forEach(player => {
@@ -569,23 +563,17 @@ export function displayFinals(tournament, matchOverviewContainer) {
 
     // Create container for all groups to display side by side
     const groupsContainer = document.createElement('div');
-    groupsContainer.classList.add('finals-groups-container');            // Create tables for each group
-    Object.keys(groupedPlayers).sort().forEach(groupName => {                const groupContainer = document.createElement('div');
-        groupContainer.classList.add('finals-group-container');                // Check if group already has matches or court assignments drawn
-        const groupHasMatches = (tournament.finalsMatchSchedule && 
-            tournament.finalsMatchSchedule.some(round => round.groupName === groupName)) ||
-            (tournament.finalsCourtAssignments && 
-            tournament.finalsCourtAssignments.some(round => round.groupName === groupName));
+    groupsContainer.classList.add('finals-groups-container'); 
+    Object.keys(groupedPlayers).sort().forEach(groupName => {
+        const groupContainer = document.createElement('div');
+        groupContainer.classList.add('finals-group-container'); 
 
         // Add button to draw next round for this group (above table)
         const drawFinalsButton = document.createElement('button');
-        if (groupHasMatches) {
-            drawFinalsButton.textContent = `Vis bracket - Gruppe ${groupName}`;
-            drawFinalsButton.classList.add('view-bracket-btn');
-        } else {
-            drawFinalsButton.textContent = `Trekk neste runde - Gruppe ${groupName}`;
-            drawFinalsButton.classList.add('draw-finals-btn');
-        }
+        
+        drawFinalsButton.textContent = `Trekk neste runde - Gruppe ${groupName}`;
+        drawFinalsButton.classList.add('draw-finals-btn');
+        
         drawFinalsButton.dataset.group = groupName;
         drawFinalsButton.addEventListener('click', () => {
             import('./UI-finals.js').then(module => {
@@ -593,74 +581,40 @@ export function displayFinals(tournament, matchOverviewContainer) {
             });
         });
         
-        groupContainer.appendChild(drawFinalsButton);
+        groupContainer.appendChild(drawFinalsButton);        // Show finals matches if they exist
+        if ((tournament.finalsMatchSchedule && tournament.finalsMatchSchedule.length > 0) ||
+            (tournament.finalsCourtAssignments && tournament.finalsCourtAssignments.length > 0)) {
+            displayFinalsMatches(tournament, groupContainer, groupName);
+        }
 
-        // Create table for this group
-        const finalsTable = document.createElement('table');
-        finalsTable.id = `finalsPlayersTable-${groupName}`;
-        finalsTable.classList.add('finals-group-table');
-        const finalsTbody = finalsTable.appendChild(document.createElement('tbody'));
-        const finalsHeader = finalsTable.createTHead();
-        
-        // Add group name as table header
-        const groupHeaderRow = finalsHeader.insertRow();
-        const groupHeaderCell = document.createElement('th');
-        groupHeaderCell.textContent = `Gruppe ${groupName}`;
-        groupHeaderCell.colSpan = 4;
-        groupHeaderCell.className = 'finals-group-header';
-        groupHeaderRow.appendChild(groupHeaderCell);
-        
-        // Add column headers
-        const finalsHeaderRow = finalsHeader.insertRow();
-        const headerS = document.createElement('th');
-        headerS.textContent = 'S';
-        finalsHeaderRow.appendChild(headerS);
-        const headerName = document.createElement('th');
-        headerName.textContent = 'Navn';
-        finalsHeaderRow.appendChild(headerName);
-        const headerSP = document.createElement('th');
-        headerSP.textContent = 'SP';
-        finalsHeaderRow.appendChild(headerSP);
-        const headerKP = document.createElement('th');
-        headerKP.textContent = 'KP';
-        finalsHeaderRow.appendChild(headerKP);
-
-        groupedPlayers[groupName].forEach(player => {
-            const row = finalsTbody.insertRow();
-            row.insertCell().textContent = player.id;
-            row.insertCell().textContent = player.name;
-            row.insertCell().textContent = player.scorePoints;
-            row.insertCell().textContent = player.matchPoints;
-        });
-        
-        groupContainer.appendChild(finalsTable);
         groupsContainer.appendChild(groupContainer);
     });
 
-    finalsContainer.appendChild(groupsContainer);        matchOverviewContainer.appendChild(finalsContainer);
+    finalsContainer.appendChild(groupsContainer);        
+    matchOverviewContainer.appendChild(finalsContainer);
 
 }
 
 // Function to display finals matches
-export function displayFinalsMatches(tournament, container) {
+export function displayFinalsMatches(tournament, groupContainer, groupName) {
     const matchesContainer = document.createElement('div');
     matchesContainer.id = 'finalsMatches';
     matchesContainer.className = 'finals-matches-container';
 
     // Handle regular 2-player matches
     if (tournament.finalsMatchSchedule && tournament.finalsMatchSchedule.length > 0) {
-        displayRegularFinalsMatches(tournament, matchesContainer);
+        displayRegularFinalsMatches(tournament, matchesContainer, groupName);
     }
 
     // Handle 3-player court assignments
     if (tournament.finalsCourtAssignments && tournament.finalsCourtAssignments.length > 0) {
-        displayThreePlayerCourtAssignments(tournament, matchesContainer);
+        displayThreePlayerCourtAssignments(tournament, matchesContainer, groupName);
     }
 
-    container.appendChild(matchesContainer);
+    groupContainer.appendChild(matchesContainer);
 }
 
-export function displayRegularFinalsMatches(tournament, container) {
+export function displayRegularFinalsMatches(tournament, container, groupName) {
     // Group matches by group name
     const matchesByGroup = {};
     tournament.finalsMatchSchedule.forEach(round => {
@@ -670,8 +624,8 @@ export function displayRegularFinalsMatches(tournament, container) {
         matchesByGroup[round.groupName].push(round);
     });
 
-    // Display matches for each group
-    Object.keys(matchesByGroup).sort().forEach(groupName => {
+    // Display matches only for the specified group
+    if (matchesByGroup[groupName]) {
         const groupMatchesDiv = document.createElement('div');
         groupMatchesDiv.className = 'finals-group-matches';
 
@@ -755,17 +709,15 @@ export function displayRegularFinalsMatches(tournament, container) {
                     });
                     statusCell.appendChild(editBtn);
                 }
-            });
-
-            roundDiv.appendChild(table);
+            });            roundDiv.appendChild(table);
             groupMatchesDiv.appendChild(roundDiv);
         });
 
         container.appendChild(groupMatchesDiv);
-    });
+    }
 }
 
-export function displayThreePlayerCourtAssignments(tournament, container) {
+export function displayThreePlayerCourtAssignments(tournament, container, groupName) {
     // Group court assignments by group name
     const assignmentsByGroup = {};
     tournament.finalsCourtAssignments.forEach(round => {
@@ -775,8 +727,8 @@ export function displayThreePlayerCourtAssignments(tournament, container) {
         assignmentsByGroup[round.groupName].push(round);
     });
 
-    // Display assignments for each group
-    Object.keys(assignmentsByGroup).sort().forEach(groupName => {
+    // Display assignments only for the specified group
+    if (assignmentsByGroup[groupName]) {
         const groupAssignmentsDiv = document.createElement('div');
         groupAssignmentsDiv.className = 'finals-group-assignments';
 
@@ -847,14 +799,12 @@ export function displayThreePlayerCourtAssignments(tournament, container) {
                     });
                     statusCell.appendChild(selectBtn);
                 }
-            });
-
-            roundDiv.appendChild(table);
+            });            roundDiv.appendChild(table);
             groupAssignmentsDiv.appendChild(roundDiv);
         });
 
         container.appendChild(groupAssignmentsDiv);
-    });
+    }
 }
 
 
