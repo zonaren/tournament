@@ -90,7 +90,7 @@
 }
 
 .finals-button-primary {
-    background: #28a745;
+    background: #4f7db8;
     color: white;
     margin-right: 1em;
 }
@@ -103,7 +103,7 @@
 .finals-button-confirm {
     padding: 10px 20px;
     margin-right: 10px;
-    background-color: #3D679D;
+    background-color: #435c7e;
     color: white;
 }
 
@@ -286,32 +286,27 @@
 /* View/Draw Bracket Buttons */
 .view-bracket-btn,
 .draw-finals-btn {
-    padding: 8px 16px;
-    margin-bottom: 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
     font-size: 14px;
     font-weight: bold;
     transition: background-color 0.3s;
 }
 
 .view-bracket-btn {
-    background-color: #28a745;
-    color: white;
+    background-color: white;
+    color: #4f7db8;
 }
 
 .view-bracket-btn:hover {
-    background-color: #218838;
+    background-color: lightgray;
 }
 
 .draw-finals-btn {
-    background-color: #007bff;
+    background-color: #4f7db8;
     color: white;
 }
 
 .draw-finals-btn:hover {
-    background-color: #0056b3;
+    background-color: #3e72b6;
 }
 
 /* Finals Matches Container */
@@ -411,10 +406,9 @@
 }
 
 .finals-edit-button {
-    padding: 4px 8px;
+    padding: 8px 8px;
     font-size: 0.8em;
-    border: 1px solid #007bff;
-    background-color: #007bff;
+    background-color: #4f7db8;
     color: white;
     border-radius: 3px;
     cursor: pointer;

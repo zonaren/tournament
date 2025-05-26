@@ -1,5 +1,5 @@
 /* main app colors */
-/*#3D679D Blå*/
+/* #3D679D Blå buttons: #4f7db8; */
 /*#F6F7FB Kvit*/
 /*#443F45 Svart*/
 
@@ -23,7 +23,7 @@ h1, h2, h3 {
 }
 
 button, select {
-    background-color: #3D679D;
+    background-color: #4f7db8;
     color: white;
     padding: 12px 20px;
     margin: 4px;
