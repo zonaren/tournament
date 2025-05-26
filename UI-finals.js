@@ -675,23 +675,23 @@ export function displayRegularFinalsMatches(tournament, container) {
         const groupMatchesDiv = document.createElement('div');
         groupMatchesDiv.className = 'finals-group-matches';
 
-        const groupTitle = document.createElement('h4');
-        groupTitle.textContent = `Gruppe ${groupName} - Runde ${matchesByGroup[groupName][0].roundNumber}`;
-        groupTitle.className = 'finals-group-title';
-        groupMatchesDiv.appendChild(groupTitle);
-
         matchesByGroup[groupName].forEach(round => {
             const roundDiv = document.createElement('div');
             roundDiv.className = 'finals-round';
 
-            const roundTitle = document.createElement('h5');
-            roundTitle.textContent = round.roundName || `Runde ${round.roundNumber}`;
-            roundTitle.className = 'finals-round-title';
-            roundDiv.appendChild(roundTitle);
-
             // Create table for matches
             const table = document.createElement('table');
             table.classList.add('finals-matches-table');
+
+            // Create table header to show group name and round number
+            const thead1 = table.createTHead();
+            const headerRow1 = thead1.insertRow();
+            const groupHeaderCell = document.createElement('th');
+            groupHeaderCell.textContent = `Gruppe ${groupName} - Runde ${round.roundNumber}`;
+            groupHeaderCell.colSpan = 3;
+            groupHeaderCell.className = 'finals-group-header';
+            headerRow1.appendChild(groupHeaderCell);
+            // Create main header row
 
             const thead = table.createTHead();
             const headerRow = thead.insertRow();
@@ -780,11 +780,6 @@ export function displayThreePlayerCourtAssignments(tournament, container) {
         const groupAssignmentsDiv = document.createElement('div');
         groupAssignmentsDiv.className = 'finals-group-assignments';
 
-        const groupTitle = document.createElement('h4');
-        groupTitle.textContent = `Gruppe ${groupName} - Runde ${assignmentsByGroup[groupName][0].roundNumber}`;
-        groupTitle.className = 'finals-group-title';
-        groupAssignmentsDiv.appendChild(groupTitle);
-
         assignmentsByGroup[groupName].forEach(round => {
             const roundDiv = document.createElement('div');
             roundDiv.className = 'finals-round';
@@ -793,6 +788,15 @@ export function displayThreePlayerCourtAssignments(tournament, container) {
             const table = document.createElement('table');
             table.classList.add('finals-matches-table');
 
+            // Create table header to show group name and round number
+            const thead1 = table.createTHead();
+            const headerRow1 = thead1.insertRow();
+            const groupHeaderCell = document.createElement('th');
+            groupHeaderCell.textContent = `Gruppe ${groupName} - Runde ${round.roundNumber}`;
+            groupHeaderCell.colSpan = 3;
+            groupHeaderCell.className = 'finals-group-header';
+            headerRow1.appendChild(groupHeaderCell);
+            // Create main header row
             const thead = table.createTHead();
             const headerRow = thead.insertRow();
             ['Bane', 'Spillere', 'Status'].forEach(text => {
