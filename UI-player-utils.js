@@ -94,4 +94,22 @@ function navigateToNextPlayer(nextRowIndex) {
     }
 }
 
-export { createNameCell, startCellEdit, updatePlayerName, navigateToNextPlayer };
+// Make players that are eliminated less visible (transparency effect)
+function makeEliminatedPlayersLessVisible() {
+    const playerTable = document.getElementById('playerTable');
+    const rows = playerTable.getElementsByTagName('tr');
+    
+    for (let i = 0; i < rows.length; i++) {
+        const row = rows[i];
+        const playerId = parseInt(row.getAttribute('data-player-id'));
+        const player = Players.get(playerId);
+        
+        if (player && player.eliminated) {
+            row.style.opacity = '0.5'; // Make eliminated players less visible
+        } else {
+            row.style.opacity = '1'; // Reset for non-eliminated players
+        }
+    }
+}
+
+export { createNameCell, startCellEdit, updatePlayerName, navigateToNextPlayer, makeEliminatedPlayersLessVisible };

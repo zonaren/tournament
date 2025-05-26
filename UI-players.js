@@ -1,7 +1,7 @@
 import Players from './classes/Player.js';
 import Tournaments from './classes/Tournament.js';
 import { onEditPlayers } from './events.js';
-import { createNameCell, startCellEdit } from './UI-player-utils.js';
+import { createNameCell, makeEliminatedPlayersLessVisible, startCellEdit } from './UI-player-utils.js';
 import { shuffleStartNumbers } from './shuffle-players.js';
 import { sortPlayers } from './utils.js';
 
@@ -250,6 +250,8 @@ function updatePlayerTable() {
     if (playerCount) {
         playerCount.textContent = `${Players.count()} spillere`;
     }
+    // Make eliminated players less visible
+    makeEliminatedPlayersLessVisible();
 }
 
 function playerOverviewContent(playerOverview) {
