@@ -785,76 +785,80 @@ export function displayThreePlayerCourtAssignments(tournament, container, groupN
         const groupAssignmentsDiv = document.createElement('div');
         groupAssignmentsDiv.className = 'finals-group-assignments';
 
-        assignmentsByGroup[groupName].forEach(round => {
-            const roundDiv = document.createElement('div');
-            roundDiv.className = 'finals-round';
+        // Sort rounds by roundNumber in descending order (newest first)
+        assignmentsByGroup[groupName]
+            .sort((a, b) => b.roundNumber - a.roundNumber)
+            .forEach(round => {
+                const roundDiv = document.createElement('div');
+                roundDiv.className = 'finals-round';
 
-            // Create table for court assignments
-            const table = document.createElement('table');
-            table.classList.add('finals-matches-table');
+                // Create table for court assignments
+                const table = document.createElement('table');
+                table.classList.add('finals-matches-table');
 
-            // Create table header to show group name and round number
-            const thead1 = table.createTHead();
-            const headerRow1 = thead1.insertRow();
-            const groupHeaderCell = document.createElement('th');
-            groupHeaderCell.textContent = `Gruppe ${groupName} - ${round.roundName}`;
-            groupHeaderCell.colSpan = 3;
-            groupHeaderCell.className = 'finals-group-header';
-            headerRow1.appendChild(groupHeaderCell);
-            // Create main header row
-            const thead = table.createTHead();
-            const headerRow = thead.insertRow();
-            ['Bane', 'Spillere', 'Status'].forEach(text => {
-                const th = document.createElement('th');
-                th.textContent = text;
-                th.className = 'finals-table-header';
-                headerRow.appendChild(th);
+                // Create table header to show group name and round number
+                const thead1 = table.createTHead();
+                const headerRow1 = thead1.insertRow();
+                const groupHeaderCell = document.createElement('th');
+                groupHeaderCell.textContent = `Gruppe ${groupName} - ${round.roundName}`;
+                groupHeaderCell.colSpan = 3;
+                groupHeaderCell.className = 'finals-group-header';
+                headerRow1.appendChild(groupHeaderCell);
+                // Create main header row
+                const thead = table.createTHead();
+                const headerRow = thead.insertRow();
+                ['Bane', 'Spillere', 'Status'].forEach(text => {
+                    const th = document.createElement('th');
+                    th.textContent = text;
+                    th.className = 'finals-table-header';
+                    headerRow.appendChild(th);
+                });
+
+                const tbody = table.createTBody();
+                round.courtAssignments.forEach(assignment => {
+                    const row = tbody.insertRow();
+                    row.className = 'finals-table-row';
+
+                    // Court
+                    const courtCell = row.insertCell();
+                    courtCell.textContent = assignment.isWalkover ? 'WO' : `${assignment.courtNumber}`;
+                    courtCell.className = 'finals-table-cell finals-court-cell';
+
+                    // Players
+                    const playersCell = row.insertCell();
+                    playersCell.textContent = assignment.players.slice().sort((a,b) => a.id - b.id).map(p => p.name).join(', ');
+                    playersCell.className = 'finals-table-cell';
+
+                    // Status
+                    const statusCell = row.insertCell();
+                    statusCell.className = 'finals-table-cell finals-status-cell';
+
+                    if (assignment.isWalkover) {
+                        statusCell.textContent = 'Walkover';
+                        statusCell.classList.add('finals-walkover');
+                    } else if (assignment.isCompleted) {
+                        statusCell.textContent = 'Fullført';
+                        statusCell.classList.add('finals-completed');
+                        
+                        // Show advanced players
+                        const advancedDiv = document.createElement('div');
+                        advancedDiv.className = 'finals-advanced-players';
+                        advancedDiv.textContent = `Videre: ${assignment.advancedPlayers.map(p => p.name).join(', ')}`;
+                        statusCell.appendChild(document.createElement('br'));
+                        statusCell.appendChild(advancedDiv);
+                    } else {
+                        const selectBtn = document.createElement('button');
+                        selectBtn.textContent = 'Velg videre';
+                        selectBtn.className = 'finals-edit-button';
+                        selectBtn.addEventListener('click', () => {
+                            showPlayerSelectionPopup(assignment, tournament);
+                        });
+                        statusCell.appendChild(selectBtn);
+                    }
+                });            
+                roundDiv.appendChild(table);
+                groupAssignmentsDiv.appendChild(roundDiv);
             });
-
-            const tbody = table.createTBody();
-            round.courtAssignments.forEach(assignment => {
-                const row = tbody.insertRow();
-                row.className = 'finals-table-row';
-
-                // Court
-                const courtCell = row.insertCell();
-                courtCell.textContent = assignment.isWalkover ? 'WO' : `${assignment.courtNumber}`;
-                courtCell.className = 'finals-table-cell finals-court-cell';
-
-                // Players
-                const playersCell = row.insertCell();
-                playersCell.textContent = assignment.players.slice().sort((a,b) => a.id - b.id).map(p => p.name).join(', ');
-                playersCell.className = 'finals-table-cell';
-
-                // Status
-                const statusCell = row.insertCell();
-                statusCell.className = 'finals-table-cell finals-status-cell';
-
-                if (assignment.isWalkover) {
-                    statusCell.textContent = 'Walkover';
-                    statusCell.classList.add('finals-walkover');
-                } else if (assignment.isCompleted) {
-                    statusCell.textContent = 'Fullført';
-                    statusCell.classList.add('finals-completed');
-                    
-                    // Show advanced players
-                    const advancedDiv = document.createElement('div');
-                    advancedDiv.className = 'finals-advanced-players';
-                    advancedDiv.textContent = `Videre: ${assignment.advancedPlayers.map(p => p.name).join(', ')}`;
-                    statusCell.appendChild(document.createElement('br'));
-                    statusCell.appendChild(advancedDiv);
-                } else {
-                    const selectBtn = document.createElement('button');
-                    selectBtn.textContent = 'Velg videre';
-                    selectBtn.className = 'finals-edit-button';
-                    selectBtn.addEventListener('click', () => {
-                        showPlayerSelectionPopup(assignment, tournament);
-                    });
-                    statusCell.appendChild(selectBtn);
-                }
-            });            roundDiv.appendChild(table);
-            groupAssignmentsDiv.appendChild(roundDiv);
-        });
 
         container.appendChild(groupAssignmentsDiv);
     }
