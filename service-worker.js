@@ -1,4 +1,4 @@
-const VERSION = '0.0.1a'; // Update this version when you change the cache content
+const VERSION = '0.0.1c'; // Update this version when you change the cache content
 const CACHE_NAME = 'tournament-app-cache-' + VERSION;
 const URLS_TO_CACHE = [
   '/',
@@ -69,10 +69,7 @@ self.addEventListener('install', event => {
     caches.open(CACHE_NAME)
       .then(cache => {
         console.log('Caching app shell - total files:', URLS_TO_CACHE.length);
-        return cache.addAll(URLS_TO_CACHE.map(url => {
-          console.log('Caching:', url);
-          return url;
-        }));
+        return cache.addAll(URLS_TO_CACHE);
       })
       .then(() => {
         console.log('All files cached successfully');
@@ -105,12 +102,13 @@ self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
       .then(response => {
-        // Return cached version or fetch from network
+        // Return cached version if available
         if (response) {
           console.log('Serving from cache:', event.request.url);
           return response;
         }
         
+        // Try to fetch from network
         console.log('Fetching from network:', event.request.url);
         return fetch(event.request).then(response => {
           // Don't cache non-successful responses
@@ -118,22 +116,26 @@ self.addEventListener('fetch', event => {
             return response;
           }
           
-          // Clone the response
+          // Clone and cache the response
           const responseToCache = response.clone();
-          
-          // Cache the fetched resource for future use
           caches.open(CACHE_NAME)
             .then(cache => {
               cache.put(event.request, responseToCache);
             });
           
           return response;
-        }).catch(() => {
-          // Return a fallback for failed requests
-          if (event.request.destination === 'document') {
-            return caches.match('/index.html');
-          }
         });
+      })
+      .catch(error => {
+        console.log('Network failed, serving from cache:', event.request.url);
+        
+        // Return fallbacks for different types of requests
+        if (event.request.destination === 'document') {
+          return caches.match('/index.html');
+        }
+        
+        // For other requests, try to find any cached version
+        return caches.match(event.request.url);
       })
   );
 });

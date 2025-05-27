@@ -66,7 +66,55 @@ async function inspectCache() {
   }
 }
 
+// Test offline functionality
+async function testOffline() {
+  try {
+    console.log('Testing offline functionality...');
+    
+    // Check service worker status
+    if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+      console.log('✓ Service worker is active');
+    } else {
+      console.log('✗ No active service worker');
+      return;
+    }
+    
+    // Check if critical files are cached
+    const criticalFiles = ['/', '/index.html', '/manifest.json'];
+    const cacheNames = await caches.keys();
+    const currentCache = cacheNames.find(name => name.includes('tournament-app-cache'));
+    
+    if (!currentCache) {
+      console.log('✗ No tournament cache found');
+      return;
+    }
+    
+    const cache = await caches.open(currentCache);
+    let allCached = true;
+    
+    for (const file of criticalFiles) {
+      const response = await cache.match(file);
+      if (response) {
+        console.log(`✓ ${file} is cached`);
+      } else {
+        console.log(`✗ ${file} is NOT cached`);
+        allCached = false;
+      }
+    }
+    
+    if (allCached) {
+      console.log('🎉 App should work offline!');
+    } else {
+      console.log('⚠️ App may not work properly offline');
+    }
+    
+  } catch (error) {
+    console.error('Error testing offline:', error);
+  }
+}
+
 console.log('Cache utilities loaded! Available functions:');
 console.log('- clearCacheAndReload() - Clears everything and reloads');
 console.log('- forceUpdateServiceWorker() - Forces service worker update');
 console.log('- inspectCache() - Shows what is currently cached');
+console.log('- testOffline() - Tests if app will work offline');

@@ -19,6 +19,7 @@
     <button onclick="testManifest()">Test Manifest</button>
     <button onclick="updateServiceWorker()">Update Service Worker</button>
     <button onclick="testIcons()">Test Icons</button>
+    <button onclick="testOfflineMode()">Test Offline Mode</button>
     
     <div id="output"></div>
 
@@ -153,6 +154,53 @@
                     log(`✗ ${path} - ${error.message}`, 'error');
                 }
             }
+        }
+
+        async function testOfflineMode() {
+            try {
+                log('Testing offline mode...');
+                
+                // Check if service worker is active
+                if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+                    log('✓ Service worker is active', 'success');
+                } else {
+                    log('✗ No active service worker found', 'error');
+                    return;
+                }
+                
+                // Test if main resources are cached
+                const testUrls = ['/', '/index.html', '/manifest.json'];
+                let cachedCount = 0;
+                
+                for (const url of testUrls) {
+                    try {
+                        const cache = await caches.open(await getCurrentCacheName());
+                        const response = await cache.match(url);
+                        if (response) {
+                            log(`✓ ${url} is cached`, 'success');
+                            cachedCount++;
+                        } else {
+                            log(`✗ ${url} is not cached`, 'error');
+                        }
+                    } catch (error) {
+                        log(`✗ Error checking cache for ${url}: ${error.message}`, 'error');
+                    }
+                }
+                
+                if (cachedCount === testUrls.length) {
+                    log('🎉 App should work offline!', 'success');
+                } else {
+                    log('⚠️ Some resources are missing from cache', 'error');
+                }
+                
+            } catch (error) {
+                log(`Error testing offline mode: ${error.message}`, 'error');
+            }
+        }
+        
+        async function getCurrentCacheName() {
+            const cacheNames = await caches.keys();
+            return cacheNames.find(name => name.includes('tournament-app-cache')) || '';
         }
 
         // Auto-run some basic checks on load
