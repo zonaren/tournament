@@ -26,11 +26,14 @@ export function sortPlayers(players) {
             return aGroup.localeCompare(bGroup);
         }
 
-        // 2. Within same group, sort by eliminated status (descending - non-eliminated first)
-        const aEliminated = a.eliminated === null || a.eliminated === undefined ? -1 : a.eliminated;
-        const bEliminated = b.eliminated === null || b.eliminated === undefined ? -1 : b.eliminated;
-        if (aEliminated !== bEliminated) {
-            return aEliminated - bEliminated; // -1 (not eliminated) comes before positive numbers (eliminated rounds)
+        // 2. Within same group, sort by eliminated status (non-eliminated first, then by elimination round descending)
+        if (a.eliminated !== b.eliminated) {
+            // Non-eliminated (null) should come first
+            if (a.eliminated === null || a.eliminated === undefined) return -1;
+            if (b.eliminated === null || b.eliminated === undefined) return 1;
+            
+            // Both are eliminated, sort by elimination round descending (higher rounds first)
+            return b.eliminated - a.eliminated;
         }
 
         // 3. Match points (descending)
