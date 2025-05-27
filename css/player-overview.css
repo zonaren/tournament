@@ -1,26 +1,21 @@
 .total-points {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #3D679D;
+    font-size: 0.9rem;
+    font-weight: 600;
     text-align: center;
-    padding: 5px;
-    background-color: #f8fafc;
-    border-radius: 6px;
-    margin: 8px 0;
+    padding: 6px 8px;
+    border-radius: 4px;
+    margin: 0;
 }
 
 .player-name {
-    font-size: 1.325rem;
-    font-weight: 700;
-    color: #2c3e50;
+    font-size: 0.9rem;
+    font-weight: 600;
     transition: all 0.2s ease;
 }
 
 /* Add a hover effect to the player names */
 .player-name:hover {
-    color: #3D679D;
-    cursor: pointer;
-    transform: translateX(2px);
+    transform: translateX(1px);
 }
 
 #addPlayerButton {
@@ -38,4 +33,96 @@
     background-color: #f8fafc;
     border-color: #3D679D;
     color: #3D679D;
+}
+
+#playerTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+#playerTable th,
+#playerTable td {
+    padding: 6px 8px;
+    text-align: center;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+#playerTable th {
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    padding: 8px 8px;
+    border-bottom: 2px solid #cbd5e0;
+}
+
+#playerTable td {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+#playerTable tr:nth-child(even) {
+    background-color: #f8fafc;
+}
+
+#playerTable tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+#playerTable tr:hover {
+    background-color: #edf2f7;
+    transition: background-color 0.15s ease;
+}
+
+/* Additional styling for better visual hierarchy */
+#playerTable tbody tr:first-child td {
+    border-top: 1px solid #cbd5e0;
+}
+
+/* Make position and start number columns narrower */
+#playerTable td:nth-child(1),
+#playerTable td:nth-child(2),
+#playerTable th:nth-child(1),
+#playerTable th:nth-child(2) {
+    width: 40px;
+    min-width: 35px;
+    max-width: 45px;
+    padding: 6px 4px;
+}
+
+/* Make name column wider and left-aligned */
+#playerTable td:nth-child(3),
+#playerTable th:nth-child(3) {
+    text-align: left;
+    padding-left: 12px;
+    min-width: 120px;
+}
+
+/* Score columns - compact but readable */
+#playerTable td:nth-child(4),
+#playerTable td:nth-child(5),
+#playerTable th:nth-child(4),
+#playerTable th:nth-child(5) {
+    width: 50px;
+    min-width: 45px;
+    max-width: 60px;
+    font-weight: 600;
+}
+
+/* Group header styling for finals */
+#playerTable tr td[colspan="5"] {
+    background-color: #e2e8f0 !important;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 8px 12px;
+    border-bottom: 2px solid #cbd5e0;
+    border-top: 2px solid #cbd5e0;
 }
