@@ -797,7 +797,7 @@ export function displayThreePlayerCourtAssignments(tournament, container, groupN
             const thead1 = table.createTHead();
             const headerRow1 = thead1.insertRow();
             const groupHeaderCell = document.createElement('th');
-            groupHeaderCell.textContent = `Gruppe ${groupName} - Runde ${round.roundNumber}`;
+            groupHeaderCell.textContent = `Gruppe ${groupName} - ${round.roundName}`;
             groupHeaderCell.colSpan = 3;
             groupHeaderCell.className = 'finals-group-header';
             headerRow1.appendChild(groupHeaderCell);
