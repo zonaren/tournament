@@ -34,18 +34,21 @@ function shuffleArray(array) {
  * Create seeding pools based on structure and player rankings
  * @param {Array} players - Array of player objects
  * @param {Object} structure - Finals structure object
+ * @param {Object} roundStructure - Specific round structure to use
  * @returns {Array} - Array of player pools
  */
-export function createSeedingPools(players, structure) {
+export function createSeedingPools(players, structure, roundStructure = null) {
     // Sort players
     const sortedPlayers = sortPlayers(players);
 
     const playerCount = sortedPlayers.length;
     let poolCount;
     
-    // Determine number of pools based on structure (check if 3 players per court in first round)
-    const firstRound = structure.rounds[0];
-    const hasThreePlayerCourts = firstRound.courts && firstRound.courts.some(court => court.players === 3);
+    // Use provided round structure or default to first round
+    const targetRound = roundStructure || structure.rounds[0];
+    
+    // Determine number of pools based on structure (check if 3 players per court in target round)
+    const hasThreePlayerCourts = targetRound.courts && targetRound.courts.some(court => court.players === 3);
     
     if (hasThreePlayerCourts) {
         poolCount = 3; // Use 3 pools when there are 3-player courts
@@ -71,16 +74,17 @@ export function createSeedingPools(players, structure) {
  * Assign players with seeding to avoid same-pool matchups in first round
  * @param {Array} players - Array of player objects
  * @param {Object} structure - Finals structure object
+ * @param {Object} roundStructure - Specific round structure to use
  * @returns {Array} - Array of assigned players
  */
-export function assignPlayersWithSeeding(players, structure) {
+export function assignPlayersWithSeeding(players, structure, roundStructure = null) {
     const assigned = [];
     
-    // Get first round courts
-    const firstRound = structure.rounds[0];
+    // Use provided round structure or default to first round
+    const targetRound = roundStructure || structure.rounds[0];
     
     // Count how many walkover positions we have
-    const walkoverCourts = firstRound.courts.filter(court => 
+    const walkoverCourts = targetRound.courts.filter(court => 
         court.court === 'WO1' || court.court.toString().startsWith('WO')
     );
     const totalWalkovers = walkoverCourts.length;
@@ -92,11 +96,9 @@ export function assignPlayersWithSeeding(players, structure) {
     const walkoverPlayers = [];
     for (let i = 0; i < totalWalkovers && i < sortedPlayers.length; i++) {
         walkoverPlayers.push(sortedPlayers[i]);
-    }
-    
-    // Remove walkover players from the remaining players for pool creation
+    }    // Remove walkover players from the remaining players for pool creation
     const remainingPlayers = sortedPlayers.slice(totalWalkovers);
-    const pools = createSeedingPools(remainingPlayers, structure);
+    const pools = createSeedingPools(remainingPlayers, structure, targetRound);
 
     // Shuffle each pool after pools are created, before assignment
     for (let i = 0; i < pools.length; i++) {
@@ -107,7 +109,7 @@ export function assignPlayersWithSeeding(players, structure) {
     let walkoverIndex = 0;
     let poolIndex = 0;
     
-    for (const court of firstRound.courts) {
+    for (const court of targetRound.courts) {
         if (court.court === 'WO1' || court.court.toString().startsWith('WO')) {
             // Assign top-ranked player to walkover position
             if (walkoverIndex < walkoverPlayers.length) {
@@ -158,11 +160,13 @@ export function assignPlayersWithSeeding(players, structure) {
  * Assign players without seeding but with proper walkover handling
  * @param {Array} players - Array of player objects
  * @param {Object} structure - Finals structure object
+ * @param {Object} roundStructure - Specific round structure to use
  * @returns {Array} - Array of assigned players
  */
-export function assignPlayersWithoutSeeding(players, structure) {
-    const firstRound = structure.rounds[0];
-    const walkoverCourts = firstRound.courts.filter(court =>
+export function assignPlayersWithoutSeeding(players, structure, roundStructure = null) {
+    // Use provided round structure or default to first round
+    const targetRound = roundStructure || structure.rounds[0];
+    const walkoverCourts = targetRound.courts.filter(court =>
         court.court === 'WO1' || court.court.toString().startsWith('WO')
     );
     const totalWalkovers = walkoverCourts.length;
@@ -181,7 +185,7 @@ export function assignPlayersWithoutSeeding(players, structure) {
     let walkoverIndex = 0;
     let randomizedIndex = 0;
 
-    for (const court of firstRound.courts) {
+    for (const court of targetRound.courts) {
         if (court.court === 'WO1' || court.court.toString().startsWith('WO')) {
             if (walkoverIndex < walkoverPlayers.length) {
                 assigned.push(walkoverPlayers[walkoverIndex]);
@@ -247,32 +251,37 @@ export function hasThreePlayerCourts(structure) {
  * @param {Array} players - Array of players
  * @param {Object} structure - Finals structure
  * @param {boolean} useSeeding - Whether to use seeding
+ * @param {number} originalPlayerCount - Original number of players in group (for structure consistency)
  * @returns {Object} - Result object with success status and data
  */
-export async function createTwoPlayerMatches(tournament, groupName, players, structure, useSeeding) {
+export async function createTwoPlayerMatches(tournament, groupName, players, structure, useSeeding, originalPlayerCount) {
     try {
         // Import needed classes
         const matchModule = await import('./classes/Match.js');
         const { Match } = matchModule;
-        
-        // Sort players for consistent ordering
+          // Sort players for consistent ordering
         const sortedPlayers = sortPlayers(players);
-        
-        let assignedPlayers;
-        
-        if (useSeeding) {
-            assignedPlayers = assignPlayersWithSeeding(sortedPlayers, structure);
-        } else {
-            assignedPlayers = assignPlayersWithoutSeeding(sortedPlayers, structure);
-        }
         
         // Initialize finals match schedule if it doesn't exist
         if (!tournament.finalsMatchSchedule) {
             tournament.finalsMatchSchedule = [];
         }
         
-        // Get the first round from structure
-        const firstRound = structure.rounds[0];
+        // Determine which round structure to use based on current round number
+        const currentRoundNumber = getNextFinalsRoundNumber(tournament, groupName);
+        const roundIndex = currentRoundNumber - 1; // Convert to 0-based index
+        
+        // Get the appropriate round from structure, or fallback to first round
+        const roundStructure = structure.rounds[roundIndex] || structure.rounds[0];
+        
+        let assignedPlayers;
+        
+        if (useSeeding) {
+            assignedPlayers = assignPlayersWithSeeding(sortedPlayers, structure, roundStructure);
+        } else {
+            assignedPlayers = assignPlayersWithoutSeeding(sortedPlayers, structure, roundStructure);
+        }
+        
         const matches = [];
         const usedIds = new Set();
         
@@ -287,12 +296,11 @@ export async function createTwoPlayerMatches(tournament, groupName, players, str
                 round.matches.forEach(match => usedIds.add(match.matchId));
             });
         }
-        
-        // Create matches for first round
+          // Create matches for first round
         let playerIndex = 0;
         let courtNumber = 1;
         
-        for (const court of firstRound.courts) {
+        for (const court of roundStructure.courts) {
             if (court.court === 'WO1' || court.court.toString().startsWith('WO')) {
                 // Handle walkover
                 if (playerIndex < assignedPlayers.length) {
@@ -339,14 +347,13 @@ export async function createTwoPlayerMatches(tournament, groupName, players, str
                 }
             }
         }
-        
-        // Create Round object and add to tournament
+          // Create Round object and add to tournament
         const roundNumber = getNextFinalsRoundNumber(tournament, groupName);
         const finalsRound = {
             roundNumber: roundNumber,
             matches: matches,
             groupName: groupName,
-            roundName: firstRound.name || `Round 1 - Group ${groupName}`
+            roundName: roundStructure.name || `Round ${roundNumber} - Group ${groupName}`
         };
         
         tournament.finalsMatchSchedule.push(finalsRound);
@@ -374,35 +381,39 @@ export async function createTwoPlayerMatches(tournament, groupName, players, str
  * @param {Array} players - Array of players
  * @param {Object} structure - Finals structure
  * @param {boolean} useSeeding - Whether to use seeding
+ * @param {number} originalPlayerCount - Original number of players in group (for structure consistency)
  * @returns {Object} - Result object with success status and data
  */
-export async function createThreePlayerCourtAssignments(tournament, groupName, players, structure, useSeeding) {
-    try {
-        // Sort players for consistent ordering
+export async function createThreePlayerCourtAssignments(tournament, groupName, players, structure, useSeeding, originalPlayerCount) {
+    try {        // Sort players for consistent ordering
         const sortedPlayers = sortPlayers(players);
-        
-        let assignedPlayers;
-        
-        if (useSeeding) {
-            assignedPlayers = assignPlayersWithSeeding(sortedPlayers, structure);
-        } else {
-            assignedPlayers = assignPlayersWithoutSeeding(sortedPlayers, structure);
-        }
         
         // Initialize finals court assignments if it doesn't exist
         if (!tournament.finalsCourtAssignments) {
             tournament.finalsCourtAssignments = [];
         }
         
-        // Get the first round from structure
-        const firstRound = structure.rounds[0];
-        const courtAssignments = [];
+        // Determine which round structure to use based on current round number
+        const currentRoundNumber = getNextFinalsRoundNumber(tournament, groupName);
+        const roundIndex = currentRoundNumber - 1; // Convert to 0-based index
         
-        // Create court assignments for first round
+        // Get the appropriate round from structure, or fallback to first round
+        const roundStructure = structure.rounds[roundIndex] || structure.rounds[0];
+        
+        let assignedPlayers;
+        
+        if (useSeeding) {
+            assignedPlayers = assignPlayersWithSeeding(sortedPlayers, structure, roundStructure);
+        } else {
+            assignedPlayers = assignPlayersWithoutSeeding(sortedPlayers, structure, roundStructure);
+        }
+        
+        const courtAssignments = [];
+          // Create court assignments for first round
         let playerIndex = 0;
         let courtNumber = 1;
         
-        for (const court of firstRound.courts) {
+        for (const court of roundStructure.courts) {
             if (court.court.toString().startsWith('WO')) {
                 // Handle walkover
                 if (playerIndex < assignedPlayers.length) {
@@ -440,14 +451,13 @@ export async function createThreePlayerCourtAssignments(tournament, groupName, p
                 }
             }
         }
-        
-        // Create Round object and add to tournament
+          // Create Round object and add to tournament
         const roundNumber = getNextFinalsRoundNumber(tournament, groupName);
         const finalsRound = {
             roundNumber: roundNumber,
             courtAssignments: courtAssignments,
             groupName: groupName,
-            roundName: firstRound.name || `Round 1 - Group ${groupName}`,
+            roundName: roundStructure.name || `Round ${roundNumber} - Group ${groupName}`,
             isThreePlayerRound: true
         };
         
@@ -476,13 +486,23 @@ export async function createThreePlayerCourtAssignments(tournament, groupName, p
  * @param {Array} players - Array of players
  * @param {Object} structure - Finals structure
  * @param {boolean} useSeeding - Whether to use seeding
+ * @param {number} originalPlayerCount - Original number of players in group (for structure consistency)
  * @returns {Object} - Result object
  */
-export async function createFinalsMatches(tournament, groupName, players, structure, useSeeding) {
-    console.log(`Creating finals for group ${groupName}`, { players: players.length, structure, useSeeding });
+export async function createFinalsMatches(tournament, groupName, players, structure, useSeeding, originalPlayerCount) {
+    console.log(`Creating finals for group ${groupName}`, { 
+        players: players.length, 
+        originalPlayerCount, 
+        structure, 
+        useSeeding 
+    });
     
-        return await createThreePlayerCourtAssignments(tournament, groupName, players, structure, useSeeding);
-
+    // Check if structure uses 3-player courts
+    if (hasThreePlayerCourts(structure)) {
+        return await createThreePlayerCourtAssignments(tournament, groupName, players, structure, useSeeding, originalPlayerCount);
+    } else {
+        return await createTwoPlayerMatches(tournament, groupName, players, structure, useSeeding, originalPlayerCount);
+    }
 }
 
 /**

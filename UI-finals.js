@@ -7,7 +7,8 @@ import {
     createFinalsMatches, 
     hasThreePlayerCourts,
     updatePlayerAdvancement,
-    createSeedingPools
+    createSeedingPools,
+    getNextFinalsRoundNumber
 } from './finals-logic.js';
 import { openScorePopup } from './UI-popup.js';
 
@@ -107,8 +108,7 @@ export async function displayFinalsGroupSizeSelectionPopup(tournament) {
         if (selectedIdx === -1) {
             alert('Velg en gruppestørrelse.');
             return;
-        }
-        const selected = recommended[selectedIdx];        // Tag players with A or B using correct sorting
+        }        const selected = recommended[selectedIdx];        // Tag players with A or B using correct sorting
         const players = sortPlayers(tournament.getPlayers().filter(player => player.eliminated == null));
         players.forEach((p, i) => {
             if (i < selected.A) {
@@ -119,6 +119,13 @@ export async function displayFinalsGroupSizeSelectionPopup(tournament) {
                 p.finalsGroup = undefined;
             }
         });
+        
+        // Store original group sizes for structure consistency
+        tournament.finalsGroupSizes = {
+            A: selected.A,
+            B: selected.B
+        };
+        
         tournament.finalsMatchSchedule = null;
         tournament.saveToLocalStorage();
         document.body.removeChild(overlay);
@@ -146,33 +153,50 @@ export async function displayFinalsGroupSizeSelectionPopup(tournament) {
 // Function to handle drawing the finals bracket for a specific group
 export function drawFinalsGroup(tournament, groupName) {
     console.log(`Drawing finals for group ${groupName}`);
-      // Get players in the specified group
-    const players = tournament.getPlayers().filter(player => 
-        player.finalsGroup === groupName && player.eliminated == null
-    );
-    const playerCount = players.length;
     
-    if (playerCount === 0) {
-        alert(`Ingen spillere i gruppe ${groupName}`);
+    // Get ALL players in the specified group (including eliminated ones for structure calculation)
+    const allPlayersInGroup = tournament.getPlayers().filter(player => 
+        player.finalsGroup === groupName
+    );
+    
+    // Get only active (non-eliminated) players for the actual draw
+    const activePlayers = allPlayersInGroup.filter(player => 
+        player.eliminated == null
+    );
+    
+    // Use the ORIGINAL group size for structure determination
+    let originalPlayerCount;
+    if (tournament.finalsGroupSizes && tournament.finalsGroupSizes[groupName]) {
+        originalPlayerCount = tournament.finalsGroupSizes[groupName];
+    } else {
+        // Fallback to all players in group if no stored size
+        originalPlayerCount = allPlayersInGroup.length;
+    }
+    
+    const activePlayerCount = activePlayers.length;
+    
+    if (activePlayerCount === 0) {
+        alert(`Ingen spillere igjen i gruppe ${groupName}`);
         return;
     }
     
-    // Load finals structure data
-    loadFinalsStructure(playerCount).then(structure => {
+    // Load finals structure based on ORIGINAL player count, not remaining players
+    loadFinalsStructure(originalPlayerCount).then(structure => {
         if (!structure) {
-            alert(`Ingen bracket struktur funnet for ${playerCount} spillere`);
+            alert(`Ingen bracket struktur funnet for ${originalPlayerCount} spillere`);
             return;
         }
         
-        // Show bracket preview with seeding option
-        showBracketPreview(tournament, groupName, players, structure);
-    }).catch(error => {        console.error('Error loading finals structure:', error);
+        // Show bracket preview with seeding option, passing both counts
+        showBracketPreview(tournament, groupName, activePlayers, structure, originalPlayerCount);
+    }).catch(error => {
+        console.error('Error loading finals structure:', error);
         alert('Feil ved lasting av bracket struktur');
     });
 }
 
 // Function to show bracket preview with seeding option
-function showBracketPreview(tournament, groupName, players, structure) {
+function showBracketPreview(tournament, groupName, players, structure, originalPlayerCount) {
     // Create overlay
     const overlay = document.createElement('div');
     overlay.className = 'finals-overlay';
@@ -181,9 +205,13 @@ function showBracketPreview(tournament, groupName, players, structure) {
     const popup = document.createElement('div');
     popup.className = 'finals-popup finals-popup-large';
 
-    // Title
+    // Title - show both counts if different
     const title = document.createElement('h2');
-    title.textContent = `Sluttspill Gruppe ${groupName} - ${players.length} spillere`;
+    if (originalPlayerCount && originalPlayerCount !== players.length) {
+        title.textContent = `Sluttspill Gruppe ${groupName} - ${players.length}/${originalPlayerCount} spillere (struktur basert på ${originalPlayerCount})`;
+    } else {
+        title.textContent = `Sluttspill Gruppe ${groupName} - ${players.length} spillere`;
+    }
     popup.appendChild(title);
 
     // Seeding option
@@ -217,12 +245,12 @@ function showBracketPreview(tournament, groupName, players, structure) {
     popup.appendChild(bracketContainer);    // Player preview
     const previewContainer = document.createElement('div');
     previewContainer.className = 'finals-preview-container';
-    updatePlayerPreview(previewContainer, players, seedingCheckbox.checked, structure);
+    updatePlayerPreview(previewContainer, players, seedingCheckbox.checked, structure, tournament, groupName);
     popup.appendChild(previewContainer);
 
     // Update preview when seeding option changes
     seedingCheckbox.addEventListener('change', () => {
-        updatePlayerPreview(previewContainer, players, seedingCheckbox.checked, structure);
+        updatePlayerPreview(previewContainer, players, seedingCheckbox.checked, structure, tournament, groupName);
     });
 
     // Buttons
@@ -231,9 +259,8 @@ function showBracketPreview(tournament, groupName, players, structure) {
 
     const confirmBtn = document.createElement('button');
     confirmBtn.textContent = 'Bekreft og opprett kamper';
-    confirmBtn.className = 'finals-button finals-button-primary';
-    confirmBtn.onclick = async () => {
-        const result = await createFinalsMatches(tournament, groupName, players, structure, seedingCheckbox.checked);
+    confirmBtn.className = 'finals-button finals-button-primary';    confirmBtn.onclick = async () => {
+        const result = await createFinalsMatches(tournament, groupName, players, structure, seedingCheckbox.checked, originalPlayerCount);
         if (result.success) {
             //alert(`${result.matches || result.assignments} ${result.matches ? 'kamper' : 'baner'} opprettet for gruppe ${groupName}! (${seedingCheckbox.checked ? 'Med' : 'Uten'} seeding)`);
             document.body.removeChild(overlay);
@@ -330,16 +357,22 @@ function displayBracketStructure(container, structure) {
 }
 
 // Function to update player preview based on seeding option
-function updatePlayerPreview(container, players, useSeeding, structure) {
+function updatePlayerPreview(container, players, useSeeding, structure, tournament, groupName) {
     container.innerHTML = '';
     
     const title = document.createElement('h3');
     title.textContent = 'Spillere:';
     container.appendChild(title);
 
-    // Get first round courts to determine walkover positions
-    const firstRound = structure.rounds[0];
-    const walkoverCourts = firstRound.courts.filter(court => 
+    // Determine which round structure to use based on current round number
+    const currentRoundNumber = getNextFinalsRoundNumber(tournament, groupName);
+    const roundIndex = currentRoundNumber - 1; // Convert to 0-based index
+    
+    // Get the appropriate round from structure, or fallback to first round
+    const targetRound = structure.rounds[roundIndex] || structure.rounds[0];
+    
+    // Get walkover courts from the target round to determine walkover positions
+    const walkoverCourts = targetRound.courts.filter(court => 
         court.court === 'WO1' || court.court.toString().startsWith('WO')
     );
     const totalWalkovers = walkoverCourts.length;
@@ -369,10 +402,8 @@ function updatePlayerPreview(container, players, useSeeding, structure) {
         });
         
         container.appendChild(walkoverDiv);
-    }
-
-    if (useSeeding) {
-        const pools = createSeedingPools(remainingPlayers, structure);
+    }    if (useSeeding) {
+        const pools = createSeedingPools(remainingPlayers, structure, targetRound);
         
         const poolsContainer = document.createElement('div');
         poolsContainer.className = 'finals-pools-container';
