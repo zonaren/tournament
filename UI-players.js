@@ -11,7 +11,7 @@ import { sortPlayers } from './utils.js';
  */
 function createTableHeader() {
     const headerRow = document.createElement('tr');
-    const headers = ['Pl.', 'S', 'Navn', 'SP', 'KP'];
+    const headers = ['Pl.', 'S', 'Navn', 'Ant.', 'Skår', 'Poeng'];
     
     headers.forEach(text => {
         const th = document.createElement('th');
@@ -45,6 +45,10 @@ function createPlayerRow(player, index, playerOverviewContainer) {
     // Name column (no direct edit on click)
     const nameCell = createNameCell(player);
     row.appendChild(nameCell);
+
+    const numberOfMatchesCell = document.createElement('td');
+    numberOfMatchesCell.textContent = player.matches.length ? player.matches.length : 0;
+    row.appendChild(numberOfMatchesCell);
 
     // Score points column
     const scoreCell = document.createElement('td');
@@ -223,7 +227,7 @@ function updatePlayerTable() {
             // Add a group header row
             const groupRow = document.createElement('tr');
             const groupCell = document.createElement('td');
-            groupCell.colSpan = 5;
+            groupCell.colSpan = 6;
             groupCell.textContent = `Gruppe ${group}`;
             groupCell.style.fontWeight = 'bold';
             groupCell.style.background = '#f0f0f0';
