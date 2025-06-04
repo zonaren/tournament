@@ -216,7 +216,7 @@ function displayRound(round, matchOverviewContainer) {
 
         const p1NameCell = document.createElement('td');
         p1NameCell.classList.add('fade-in');
-        p1NameCell.textContent = match.p1.name;
+        p1NameCell.textContent = match.p1.name + ' (' + match.p1.id + ')';
         row.appendChild(p1NameCell);
 
         const p1ScoreCell = document.createElement('td');
@@ -237,7 +237,7 @@ function displayRound(round, matchOverviewContainer) {
 
         const p2NameCell = document.createElement('td');
         p2NameCell.classList.add('fade-in');
-        p2NameCell.textContent = match.p2.name;
+        p2NameCell.textContent = match.p2.name + ' (' + match.p2.id + ')';
         row.appendChild(p2NameCell);
 
         // Create a cell to hold the buttons
