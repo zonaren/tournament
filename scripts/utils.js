@@ -60,7 +60,7 @@ function setPlayerRanks(tournament) {
 
     // Assign ranks based on sorted order
     sortedPlayers.forEach((player, index) => {
-        player.rank = index + 1; // Ranks start from 1
+        player.finalRank = index + 1; // Ranks start from 1
     });
 
     // Save the updated tournament to local storage
