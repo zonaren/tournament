@@ -1,4 +1,4 @@
-import { updateMatchScores } from "./score-logics.js";
+import { updateMatchScores } from "../score-logics.js";
 
 export function openScorePopup(match, player1, player2) {
     let player1Score = 0;

@@ -1,11 +1,11 @@
 import { proceedToNextRoundBtn, toggleAllRoundsBtn, showAllRounds } from './UI-swiss.js';
-import { handleWalkover, updateTotalScores} from './score-logics.js';
+import { handleWalkover, updateTotalScores} from '../score-logics.js';
 import { openScorePopup } from './UI-popup.js';
 import { displayPlayerOverview, createNewPlayerPrompt } from './UI-players.js';
-import { createPrintStartCardsButton } from './startkort/startCards.js';
-import { onStartTournament } from './events.js';
-import { shuffleStartNumbers } from './shuffle-players.js';
-import Tournaments  from './classes/Tournament.js';
+import { createPrintStartCardsButton } from '../startkort/startCards.js';
+import { onStartTournament } from '../scripts/events.js';
+import { shuffleStartNumbers } from '../shuffle-players.js';
+import Tournaments  from '../classes/Tournament.js';
 import { editTournament } from './UI-tournaments-list.js';
 import { startFinals, displayFinalsOverview } from './UI-finals.js';
 

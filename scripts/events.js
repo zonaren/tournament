@@ -2,11 +2,11 @@ import TournamentSettings from '../classes/TournamentSettings.js';
 import Tournaments from '../classes/Tournament.js';
 import Players from '../classes/Player.js';
 import { createMatchSetup } from '../generateMatches.js';
-import { playerCountSelect, roundCountSelect, gametypeSelect, titleText, showMatchSetupBtn } from './UI-main.js';
+import { playerCountSelect, roundCountSelect, gametypeSelect, titleText, showMatchSetupBtn } from '../UI/UI-main.js';
 import { createRoundCountSelectOptions } from '../generateSelectList.js';
-import { displayTournamentOverview } from './UI-tournament.js';
-import { displayMatchSetup } from './UI-matchSetup.js';
-import { displayTournamentsList, editTournament } from './UI-tournaments-list.js';
+import { displayTournamentOverview } from '../UI/UI-tournament.js';
+import { displayMatchSetup } from '../UI/UI-matchSetup.js';
+import { displayTournamentsList, editTournament } from '../UI/UI-tournaments-list.js';
 
 const mainContainer = document.getElementById('mainContainer');
     mainContainer.innerHTML = '';

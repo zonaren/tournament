@@ -1,8 +1,8 @@
 // This file handles the UI for the finals stage of the tournament
-import Tournaments from './classes/Tournament.js';
+import Tournaments from '../classes/Tournament.js';
 import { displayTournamentOverview } from './UI-tournament.js';
-import { checkForIncompleteMatches, checkForWalkoverPlayers, deleteWalkoverPlayers, getRecommendedFinalsGroupSizes, sortPlayers } from './utils.js';
-import { createFinalsMatches, updatePlayerAdvancement,createSeedingPools,getNextFinalsRoundNumber, drawFinalsForGroup} from './finals-logic.js';
+import { checkForIncompleteMatches, checkForWalkoverPlayers, deleteWalkoverPlayers, sortPlayers } from '../scripts/utils.js';
+import { createFinalsMatches, updatePlayerAdvancement,createSeedingPools,getNextFinalsRoundNumber, drawFinalsForGroup, getRecommendedFinalsGroupSizes} from '../finals-logic.js';
 import { openScorePopup } from './UI-popup.js';
 
 // When clicking on finals button, start the finals process. User will first select group sizes, then proceed to create matches.
@@ -75,7 +75,7 @@ export async function displayFinalsGroupSizeSelectionPopup(tournament) {
     function displayPlayersInGroupPreview() {
         const selectedIdx = Array.from(popup.querySelectorAll('input[name="finals-group-size"]')).findIndex(r => r.checked);
         if (selectedIdx === -1) return;
-        const selected = recommended[selectedIdx];
+        const selected = recommendedGroupSizes[selectedIdx];
         const players = sortPlayers(tournament.getPlayers().filter(player => player.eliminated == null));
         let html = '';
         html += '<table class="finals-preview-table">';
@@ -127,7 +127,7 @@ export async function displayFinalsGroupSizeSelectionPopup(tournament) {
                 alert('Velg en gruppestørrelse.');
                 return;
             }
-            const selected = recommended[selectedIdx]; // Tag players with A or B using correct sorting
+            const selected = recommendedGroupSizes[selectedIdx]; // Tag players with A or B using correct sorting
             const players = sortPlayers(tournament.getPlayers().filter(player => player.eliminated == null));
             players.forEach((p, i) => {
                 if (i < selected.A) {

@@ -1,5 +1,5 @@
-import { calculateNextRound } from './swiss.js';
-import { displayTournamentOverview } from './UI-tournament.js';
+import { calculateNextRound } from '../swiss.js';
+import { displayTournamentOverview } from '../UI/UI-tournament.js';
 
 // create proceed to next round button
 export function proceedToNextRoundBtn(tournament) {

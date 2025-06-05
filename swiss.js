@@ -1,7 +1,7 @@
 // create a function that will calculate the next round based on the current round and the players scores
 
 import Player from "./classes/Player.js";
-import { generateUniqueId } from "./utils.js";
+import { generateUniqueId } from "../scripts/utils.js";
 import { Match } from './classes/Match.js';
 
 // rules for swiss tournament:

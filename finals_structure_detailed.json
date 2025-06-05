@@ -8,23 +8,47 @@
         "courts": [
           {
             "court": 1,
-            "players": 3,
-            "advance": 2,
+            "players": 2,
+            "advance": 1,
             "eliminated": 1
           },
           {
-            "court": "WO1",
-            "players": 1,
+            "court": 2,
+            "players": 2,
             "advance": 1,
-            "eliminated": 0
+            "eliminated": 1
           }
         ],
-        "totalAdvance": 3,
-        "totalEliminated": 1,
-        "note": "Walkover(s) for 1 player(s)"
+        "totalAdvance": 2,
+        "totalEliminated": 2,
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
+      },
+      {
+        "name": "Finale",
+        "players": 2,
+        "courts": [
+          {
+            "court": "Finale",
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          }
+        ]
+      },
+      {
+        "name": "Bronsefinale",
+        "players": 2,
+        "courts": [
+          {
+            "court": "Bronsefinale",
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          }
+        ]
       }
     ],
-    "totalWalkovers": 1
+    "totalWalkovers": 0
   },
   {
     "totalPlayers": 5,

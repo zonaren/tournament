@@ -1,9 +1,9 @@
-import Players from './classes/Player.js';
-import Tournaments from './classes/Tournament.js';
-import { onEditPlayers } from './events.js';
+import Players from '../classes/Player.js';
+import Tournaments from '../classes/Tournament.js';
+import { onEditPlayers } from '../scripts/events.js';
 import { createNameCell, makeEliminatedPlayersLessVisible, startCellEdit } from './UI-player-utils.js';
-import { shuffleStartNumbers } from './shuffle-players.js';
-import { sortPlayers } from './utils.js';
+import { shuffleStartNumbers } from '../shuffle-players.js';
+import { sortPlayers } from '../scripts/utils.js';
 
 /**
  * Creates and returns the table header row for the player overview

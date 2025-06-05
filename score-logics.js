@@ -1,6 +1,6 @@
 import Players from './classes/Player.js';
 import Tournaments from './classes/Tournament.js';
-import { updatePlayerTable } from './UI-players.js';
+import { updatePlayerTable } from './UI/UI-players.js';
 
 function updateTotalScores(matchId, p1id, p2id, p1Score, p2Score) {
     const currentTournament = Tournaments.getCurrentTournament();

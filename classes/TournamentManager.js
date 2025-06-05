@@ -1,7 +1,7 @@
 import Players from './Player.js';
 import Round from './Round.js';
 import { Match } from './Match.js';
-import { generateUniqueId } from '../utils.js';
+import { generateUniqueId } from '../scripts/utils.js';
 
 class TournamentManager {
     constructor() {

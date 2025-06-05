@@ -1,5 +1,5 @@
 import TournamentSettings from "./classes/TournamentSettings.js";
-import { gametypeSelect, playerCountSelect, roundCountSelect,  } from "./UI-main.js";
+import { gametypeSelect, playerCountSelect, roundCountSelect,  } from "./UI/UI-main.js";
 
 
 function createGametypeSelectOptions() {
