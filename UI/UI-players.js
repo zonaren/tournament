@@ -216,8 +216,10 @@ function updatePlayerTable() {
     const players = Players.getAll();
     const currentTournament = Tournaments.getCurrentTournament && Tournaments.getCurrentTournament();
     const isFinalsStage = currentTournament && currentTournament.stage === 'finals';
+    const isCompletedStage = currentTournament && currentTournament.stage === 'completed';
+    const hasFinalsFormat = currentTournament && currentTournament.finalsFormat !== null;
 
-    if (isFinalsStage) {
+    if (hasFinalsFormat && (isFinalsStage || isCompletedStage)) {
         // Group players by finalsGroup
         const grouped = {};
         players.forEach(player => {
