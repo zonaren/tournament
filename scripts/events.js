@@ -7,9 +7,17 @@ import { createRoundCountSelectOptions } from '../generateSelectList.js';
 import { displayTournamentOverview } from '../UI/UI-tournament.js';
 import { displayMatchSetup } from '../UI/UI-matchSetup.js';
 import { displayTournamentsList, createEditTournamentPopup } from '../UI/UI-tournaments-list.js';
+import { importPlayerListFromDb } from './utils.js';
 
 const mainContainer = document.getElementById('mainContainer');
     mainContainer.innerHTML = '';
+
+function onImportDbPlayers() {
+            const url = 'http://127.0.0.1:5500/kastere.json';
+        if (url) {
+            importPlayerListFromDb(url);
+        }
+}
 
 function onGametypeChange() {
     const gametype = this.value;
@@ -140,6 +148,7 @@ function loadEventListeners() {
     document.getElementById('createTournamentBtn').addEventListener('click', onCreateTournament);
     //document.getElementById('start-btn').addEventListener('click', onStartTournament);
     document.getElementById('showTournamentsBtn').addEventListener('click', onShowTournaments);
+    document.getElementById('importDbPlayersBtn').addEventListener('click', onImportDbPlayers);
 }
 
 // Remove existing event listeners and call loadEventListeners
@@ -151,4 +160,5 @@ document.getElementById('printContent').removeEventListener('click', onPrintCont
 document.getElementById('createTournamentBtn').removeEventListener('click', onCreateTournament);
 //document.getElementById('start-btn').removeEventListener('click', onStartTournament);
 document.getElementById('showTournamentsBtn').removeEventListener('click', onShowTournaments);
+document.getElementById('importDbPlayersBtn').removeEventListener('click', onImportDbPlayers);
 loadEventListeners();

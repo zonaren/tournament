@@ -44,6 +44,11 @@ showMatchSetupBtn.id = 'showMatchSetup';
 showMatchSetupBtn.textContent = 'Banefordelingsnøkkel';
 menuButtons.appendChild(showMatchSetupBtn);
 
+const importDbPlayersBtn = document.createElement('button');
+importDbPlayersBtn.id = 'importDbPlayersBtn';
+importDbPlayersBtn.textContent = 'Oppdater spillere';
+menuButtons.appendChild(importDbPlayersBtn);
+
 const printContentBtn = document.createElement('button');
 printContentBtn.id = 'printContent';
 printContentBtn.className = 'print-btn hidden';

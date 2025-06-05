@@ -121,4 +121,27 @@ function shuffleArray(array) {
     return array;
 }
 
-export { generateUniqueId, checkForIncompleteMatches, checkForWalkoverPlayers, deleteWalkoverPlayers, shuffleArray, sortPlayers, generateRandomString, setPlayerRanks };
+// import playerlist from external url in json format
+async function importPlayerListFromDb(url) {
+
+    // example URL: 'https://resultater.hesteskokasting.no/filer/eksport/kastere.json'
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        if (Array.isArray(data)) {
+            saveDatabasePlayersToLocalStorage(data);
+            console.log('Player list imported successfully:', data);
+        } else {
+            console.error('Invalid player list format:', data);
+        }
+    } catch (error) {
+        return console.error('Error importing player list:', error);
+    }
+}
+
+function saveDatabasePlayersToLocalStorage(players) {
+    // Save players to local storage
+    localStorage.setItem('databasePlayers', JSON.stringify(players));
+}
+
+export { generateUniqueId, checkForIncompleteMatches, checkForWalkoverPlayers, deleteWalkoverPlayers, shuffleArray, sortPlayers, generateRandomString, setPlayerRanks, importPlayerListFromDb, saveDatabasePlayersToLocalStorage };
