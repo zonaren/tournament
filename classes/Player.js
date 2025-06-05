@@ -75,6 +75,7 @@ class Players {
 class Player {
     constructor(id) {
         this.id = id; // this is also the start number of the player for now
+        this.dbId = null; // database id, if player is imported from database
         this.name = "Spiller " + id;
         this.clubName = ""; // club name
         this.clubId = null; // club id
