@@ -1,33 +1,26 @@
 // Finals logic - Pure business logic functions for finals management
-import { generateUniqueId, sortPlayers } from './utils.js';
+import { generateUniqueId, sortPlayers, shuffleArray } from './utils.js';
+import { displayFinalsBracketSetupPopup } from './UI/UI-finals.js';
 
-/**
- * Load finals structure from JSON based on player count
- * @param {number} playerCount - Number of players
- * @returns {Object|null} - Finals structure or null if not found
- */
-export async function loadFinalsStructure(playerCount) {
+// Utility to get all recommended group sizes for a given totalPlayers
+export async function getRecommendedFinalsGroupSizes(totalPlayers) {
+    const response = await fetch('recommended_group_sizes.json');
+    const data = await response.json();
+    const entry = data.find(e => e.totalPlayers === totalPlayers);
+    console.log("Recommended group sizes for " + totalPlayers + " players: ", entry);
+    return entry ? entry.recommended : [];
+}
+
+ // Load finals structure from JSON based on player count
+export async function getFinalsStructure(totalPlayers) {
     try {
         const response = await fetch('./finals_structure_detailed.json');
-        const structures = await response.json();
-        return structures.find(s => s.totalPlayers === playerCount);
+        const data = await response.json();
+        return data.find(s => s.totalPlayers === totalPlayers);
     } catch (error) {
         console.error('Error loading finals structure:', error);
         return null;
     }
-}
-
-/**
- * Shuffle array in place using Fisher-Yates algorithm
- * @param {Array} array
- * @returns {Array}
- */
-function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
 }
 
 /**
@@ -68,6 +61,46 @@ export function createSeedingPools(players, structure, roundStructure = null) {
     });
 
     return pools;
+}
+
+// Function to handle drawing the finals bracket for a specific group
+export function drawFinalsForGroup(tournament, groupName) {
+    console.log(`Drawing finals for group ${groupName}`);
+    
+    // Get ALL players in the specified group (including eliminated ones for structure calculation)
+    const allPlayersInGroup = tournament.getPlayers().filter(player => 
+        player.finalsGroup === groupName
+    );
+    
+    // Get only active (non-eliminated) players for the actual draw
+    const activePlayers = allPlayersInGroup.filter(player => 
+        player.eliminated == null
+    );
+    
+    // Use the ORIGINAL group size for structure determination
+    let originalPlayerCount;
+    if (tournament.finalsGroupSizes && tournament.finalsGroupSizes[groupName]) {
+        originalPlayerCount = tournament.finalsGroupSizes[groupName];
+    } else {
+        // Fallback to all players in group if no stored size
+        originalPlayerCount = allPlayersInGroup.length;
+    }
+    
+    const activePlayerCount = activePlayers.length;
+    
+    if (activePlayerCount === 0) {
+        alert(`Ingen spillere igjen i gruppe ${groupName}`);
+        return;
+    }
+    
+    // Load finals structure based on ORIGINAL player count, not remaining players
+    getFinalsStructure(originalPlayerCount).then(structure => {
+        // Show bracket preview with seeding option, passing both counts
+        displayFinalsBracketSetupPopup(tournament, groupName, activePlayers, structure, originalPlayerCount);
+    }).catch(error => {
+        console.error('Error loading finals structure:', error);
+        alert('Feil ved lasting av bracket struktur');
+    });
 }
 
 /**
@@ -528,3 +561,5 @@ export function updatePlayerAdvancement(tournament, assignment, selectedPlayers)
         return false;
     }
 }
+
+

@@ -7,7 +7,7 @@ import { onStartTournament } from './events.js';
 import { shuffleStartNumbers } from './shuffle-players.js';
 import Tournaments  from './classes/Tournament.js';
 import { editTournament } from './UI-tournaments-list.js';
-import { startFinals, displayFinals } from './UI-finals.js';
+import { startFinals, displayFinalsOverview } from './UI-finals.js';
 
 
 
@@ -142,7 +142,7 @@ function displayMatchOverview(tournament, matchOverviewContainer, tournamentInfo
 
     // show finals if stage is set to finals
     if(currentStage === 'finals') {
-    displayFinals(tournament, matchOverviewContainer);
+    displayFinalsOverview(tournament, matchOverviewContainer);
     }
         // show preliminary rounds
     displayPreliminaryRounds(tournament, tournamentInfoDiv, matchOverviewContainer);

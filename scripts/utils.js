@@ -1,5 +1,5 @@
 // General player sorting function for ranking, finals, tables, etc.
-export function sortPlayers(players) {
+function sortPlayers(players) {
     // Helper: get mutual result between two players (returns 1 if a beat b, -1 if b beat a, 0 if draw or not found)
     function getMutualResult(a, b) {
         const aMatch = a.matches && a.matches.find(m => m.opponentId === b.id);
@@ -53,7 +53,6 @@ export function sortPlayers(players) {
     });
 }
 
-
 function generateRandomString(length) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-';
     let result = '';
@@ -70,17 +69,6 @@ function generateUniqueId(existingIds, length = 10) {
     } while (existingIds.has(id));
     existingIds.add(id);
     return id;
-}
-
-// Utility to get all recommended group sizes for a given totalPlayers
-
-
-export async function getRecommendedFinalsGroupSizes(totalPlayers) {
-    const response = await fetch('recommended_group_sizes.json');
-    const data = await response.json();
-    const entry = data.find(e => e.totalPlayers === totalPlayers);
-    console.log("Recommended group sizes for " + totalPlayers + " players: ", entry);
-    return entry ? entry.recommended : [];
 }
 
 function checkForIncompleteMatches(tournament) {
@@ -106,4 +94,17 @@ function deleteWalkoverPlayers(tournament) {
     });
 }
 
-export { generateUniqueId, checkForIncompleteMatches, checkForWalkoverPlayers, deleteWalkoverPlayers };
+/**
+ * Shuffle array in place using Fisher-Yates algorithm
+ * @param {Array} array
+ * @returns {Array}
+ */
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+export { generateUniqueId, checkForIncompleteMatches, checkForWalkoverPlayers, deleteWalkoverPlayers, shuffleArray, sortPlayers, generateRandomString };

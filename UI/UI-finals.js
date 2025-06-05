@@ -2,18 +2,10 @@
 import Tournaments from './classes/Tournament.js';
 import { displayTournamentOverview } from './UI-tournament.js';
 import { checkForIncompleteMatches, checkForWalkoverPlayers, deleteWalkoverPlayers, getRecommendedFinalsGroupSizes, sortPlayers } from './utils.js';
-import { 
-    loadFinalsStructure, 
-    createFinalsMatches, 
-    hasThreePlayerCourts,
-    updatePlayerAdvancement,
-    createSeedingPools,
-    getNextFinalsRoundNumber
-} from './finals-logic.js';
+import { createFinalsMatches, updatePlayerAdvancement,createSeedingPools,getNextFinalsRoundNumber, drawFinalsForGroup} from './finals-logic.js';
 import { openScorePopup } from './UI-popup.js';
 
-// When clicking on startFinals, it will start the finals stage of the tournament
-// 1. The user selects group sizes for the finals (group A and group B)
+// When clicking on finals button, start the finals process. User will first select group sizes, then proceed to create matches.
 export function startFinals() {
     const tournament = Tournaments.getCurrentTournament();
     if (!tournament) {
@@ -36,19 +28,20 @@ export function startFinals() {
     displayFinalsGroupSizeSelectionPopup(tournament);
 }
 
-
-
 // Display a popup to select recommended finals group sizes
 export async function displayFinalsGroupSizeSelectionPopup(tournament) {
     const totalPlayers = tournament.getPlayers().filter(player => player.eliminated == null).length;
-    const recommended = await getRecommendedFinalsGroupSizes(totalPlayers);
-    console.log("Recommended group sizes: ", recommended.length);
-    if (!recommended.length) {
+    const recommendedGroupSizes = await getRecommendedFinalsGroupSizes(totalPlayers);
+    console.log("Recommended group sizes: ", recommendedGroupSizes);
+    if (!recommendedGroupSizes.length) {
         alert('Ingen anbefalte gruppestørrelser for dette antallet spillere.');
         return;
-    }    // Create overlay
+    }    
+    
+    // Create overlay
     const overlay = document.createElement('div');
-    overlay.className = 'finals-overlay';    // Create popup box
+    overlay.className = 'finals-overlay';
+    // Create popup box
     const popup = document.createElement('div');
     popup.className = 'finals-popup finals-popup-large';
 
@@ -57,23 +50,29 @@ export async function displayFinalsGroupSizeSelectionPopup(tournament) {
     title.textContent = 'Velg gruppestørrelser for sluttspill';
     popup.appendChild(title);
 
-    // List recommended options as radio buttons
-    recommended.forEach((option, idx) => {
-        const label = document.createElement('label');
-        label.className = 'finals-group-option';
-        const radio = document.createElement('input');
-        radio.type = 'radio';
-        radio.name = 'finals-group-size';
-        radio.value = idx;
-        if (idx === 0) radio.checked = true;
-        label.appendChild(radio);
-        label.appendChild(document.createTextNode(`A:${option.A}  -  B:${option.B}`));
-        popup.appendChild(label);
-    });
+    function renderGroupSizeOptions() {
+        recommendedGroupSizes.forEach((option, idx) => {
+            const label = document.createElement('label');
+            label.className = 'finals-group-option';
+            const radio = document.createElement('input');
+            radio.type = 'radio';
+            radio.name = 'finals-group-size';
+            radio.value = idx;
+            if (idx === 0) radio.checked = true;
+            label.appendChild(radio);
+            label.appendChild(document.createTextNode(`A:${option.A}  -  B:${option.B}`));
+            popup.appendChild(label);
+        });
+    }
+
+    // List recommended group size options as radio buttons
+    renderGroupSizeOptions();
 
     // Player preview area
     const previewDiv = document.createElement('div');
-    popup.appendChild(previewDiv);    function updatePreview() {
+
+    popup.appendChild(previewDiv);    
+    function displayPlayersInGroupPreview() {
         const selectedIdx = Array.from(popup.querySelectorAll('input[name="finals-group-size"]')).findIndex(r => r.checked);
         if (selectedIdx === -1) return;
         const selected = recommended[selectedIdx];
@@ -96,44 +95,16 @@ export async function displayFinalsGroupSizeSelectionPopup(tournament) {
 
     // Update preview on radio change
     popup.querySelectorAll('input[name="finals-group-size"]').forEach(radio => {
-        radio.addEventListener('change', updatePreview);
+        radio.addEventListener('change', displayPlayersInGroupPreview);
     });
     // Initial preview
-    updatePreview();    // Confirm button
+    displayPlayersInGroupPreview();
+
+    // Confirm button
     const confirmBtn = document.createElement('button');
     confirmBtn.textContent = 'Bekreft valg';
     confirmBtn.className = 'finals-button finals-button-primary finals-margin-top';
-    confirmBtn.onclick = () => {
-        const selectedIdx = Array.from(popup.querySelectorAll('input[name="finals-group-size"]')).findIndex(r => r.checked);
-        if (selectedIdx === -1) {
-            alert('Velg en gruppestørrelse.');
-            return;
-        }        const selected = recommended[selectedIdx];        // Tag players with A or B using correct sorting
-        const players = sortPlayers(tournament.getPlayers().filter(player => player.eliminated == null));
-        players.forEach((p, i) => {
-            if (i < selected.A) {
-                p.finalsGroup = 'A';
-            } else if (i < selected.A + selected.B) {
-                p.finalsGroup = 'B';
-            } else {
-                p.finalsGroup = undefined;
-            }
-        });
-        
-        // Store original group sizes for structure consistency
-        tournament.finalsGroupSizes = {
-            A: selected.A,
-            B: selected.B
-        };
-        
-        tournament.finalsMatchSchedule = null;
-        tournament.saveToLocalStorage();
-        document.body.removeChild(overlay);
-        // Proceed to finals 
-
-        tournament.setStage('finals');
-        displayTournamentOverview(tournament);
-    };
+    setGroupSizes();
 
     popup.appendChild(confirmBtn);
 
@@ -148,55 +119,44 @@ export async function displayFinalsGroupSizeSelectionPopup(tournament) {
 
     overlay.appendChild(popup);
     document.body.appendChild(overlay);
-}
 
-// Function to handle drawing the finals bracket for a specific group
-export function drawFinalsGroup(tournament, groupName) {
-    console.log(`Drawing finals for group ${groupName}`);
-    
-    // Get ALL players in the specified group (including eliminated ones for structure calculation)
-    const allPlayersInGroup = tournament.getPlayers().filter(player => 
-        player.finalsGroup === groupName
-    );
-    
-    // Get only active (non-eliminated) players for the actual draw
-    const activePlayers = allPlayersInGroup.filter(player => 
-        player.eliminated == null
-    );
-    
-    // Use the ORIGINAL group size for structure determination
-    let originalPlayerCount;
-    if (tournament.finalsGroupSizes && tournament.finalsGroupSizes[groupName]) {
-        originalPlayerCount = tournament.finalsGroupSizes[groupName];
-    } else {
-        // Fallback to all players in group if no stored size
-        originalPlayerCount = allPlayersInGroup.length;
+    function setGroupSizes() {
+        confirmBtn.onclick = () => {
+            const selectedIdx = Array.from(popup.querySelectorAll('input[name="finals-group-size"]')).findIndex(r => r.checked);
+            if (selectedIdx === -1) {
+                alert('Velg en gruppestørrelse.');
+                return;
+            }
+            const selected = recommended[selectedIdx]; // Tag players with A or B using correct sorting
+            const players = sortPlayers(tournament.getPlayers().filter(player => player.eliminated == null));
+            players.forEach((p, i) => {
+                if (i < selected.A) {
+                    p.finalsGroup = 'A';
+                } else if (i < selected.A + selected.B) {
+                    p.finalsGroup = 'B';
+                } else {
+                    p.finalsGroup = undefined;
+                }
+            });
+
+            // Store original group sizes for structure consistency
+            tournament.finalsGroupSizes = {
+                A: selected.A,
+                B: selected.B
+            };
+
+            tournament.finalsMatchSchedule = null;
+            tournament.saveToLocalStorage();
+            document.body.removeChild(overlay);
+            // Proceed to finals 
+            tournament.setStage('finals');
+            displayTournamentOverview(tournament);
+        };
     }
-    
-    const activePlayerCount = activePlayers.length;
-    
-    if (activePlayerCount === 0) {
-        alert(`Ingen spillere igjen i gruppe ${groupName}`);
-        return;
-    }
-    
-    // Load finals structure based on ORIGINAL player count, not remaining players
-    loadFinalsStructure(originalPlayerCount).then(structure => {
-        if (!structure) {
-            alert(`Ingen bracket struktur funnet for ${originalPlayerCount} spillere`);
-            return;
-        }
-        
-        // Show bracket preview with seeding option, passing both counts
-        showBracketPreview(tournament, groupName, activePlayers, structure, originalPlayerCount);
-    }).catch(error => {
-        console.error('Error loading finals structure:', error);
-        alert('Feil ved lasting av bracket struktur');
-    });
 }
 
 // Function to show bracket preview with seeding option
-function showBracketPreview(tournament, groupName, players, structure, originalPlayerCount) {
+export function displayFinalsBracketSetupPopup(tournament, groupName, players, structure, originalPlayerCount) {
     // Create overlay
     const overlay = document.createElement('div');
     overlay.className = 'finals-overlay';
@@ -245,12 +205,12 @@ function showBracketPreview(tournament, groupName, players, structure, originalP
     popup.appendChild(bracketContainer);    // Player preview
     const previewContainer = document.createElement('div');
     previewContainer.className = 'finals-preview-container';
-    updatePlayerPreview(previewContainer, players, seedingCheckbox.checked, structure, tournament, groupName);
+    displayNextRoundPlayersPreview(previewContainer, players, seedingCheckbox.checked, structure, tournament, groupName);
     popup.appendChild(previewContainer);
 
     // Update preview when seeding option changes
     seedingCheckbox.addEventListener('change', () => {
-        updatePlayerPreview(previewContainer, players, seedingCheckbox.checked, structure, tournament, groupName);
+        displayNextRoundPlayersPreview(previewContainer, players, seedingCheckbox.checked, structure, tournament, groupName);
     });
 
     // Buttons
@@ -259,7 +219,9 @@ function showBracketPreview(tournament, groupName, players, structure, originalP
 
     const confirmBtn = document.createElement('button');
     confirmBtn.textContent = 'Bekreft og opprett kamper';
-    confirmBtn.className = 'finals-button finals-button-primary';    confirmBtn.onclick = async () => {
+    confirmBtn.className = 'finals-button finals-button-primary';    
+    
+    confirmBtn.onclick = async () => {
         const result = await createFinalsMatches(tournament, groupName, players, structure, seedingCheckbox.checked, originalPlayerCount);
         if (result.success) {
             //alert(`${result.matches || result.assignments} ${result.matches ? 'kamper' : 'baner'} opprettet for gruppe ${groupName}! (${seedingCheckbox.checked ? 'Med' : 'Uten'} seeding)`);
@@ -283,7 +245,6 @@ function showBracketPreview(tournament, groupName, players, structure, originalP
 
     overlay.appendChild(popup);
     document.body.appendChild(overlay);
-}
 
 // Function to display bracket structure
 function displayBracketStructure(container, structure) {
@@ -355,9 +316,8 @@ function displayBracketStructure(container, structure) {
         toggleButton.textContent = isVisible ? 'Skjul bracket struktur' : 'Vis bracket struktur';
     });
 }
-
 // Function to update player preview based on seeding option
-function updatePlayerPreview(container, players, useSeeding, structure, tournament, groupName) {
+function displayNextRoundPlayersPreview(container, players, useSeeding, structure, tournament, groupName) {
     container.innerHTML = '';
     
     const title = document.createElement('h3');
@@ -442,9 +402,10 @@ function updatePlayerPreview(container, players, useSeeding, structure, tourname
         container.appendChild(playersList);
     }
 }
+}
 
 // Function to show player selection popup for 3-player court advancement
-export function showPlayerSelectionPopup(assignment, tournament) {
+function showPlayerSelectionPopup(assignment, tournament) {
     // Create overlay
     const overlay = document.createElement('div');
     overlay.className = 'finals-overlay';
@@ -580,7 +541,7 @@ export function showPlayerSelectionPopup(assignment, tournament) {
 }
 
 // Function to display finals overview
-export function displayFinals(tournament, matchOverviewContainer) {
+export function displayFinalsOverview(tournament, matchOverviewContainer) {
     const finalsContainer = document.createElement('div');
     finalsContainer.id = 'finalsOverview';
     matchOverviewContainer.appendChild(finalsContainer);
@@ -629,9 +590,7 @@ export function displayFinals(tournament, matchOverviewContainer) {
         
         drawFinalsButton.dataset.group = groupName;
         drawFinalsButton.addEventListener('click', () => {
-            import('./UI-finals.js').then(module => {
-                module.drawFinalsGroup(tournament, groupName);
-            });
+            drawFinalsForGroup(tournament, groupName);
         });
         
         groupContainer.appendChild(drawFinalsButton);        // Show finals matches if they exist
