@@ -53,6 +53,20 @@ function sortPlayers(players) {
     });
 }
 
+// Function to set player ranks based on their scores
+function setPlayerRanks(tournament) {
+    // Sort players using the sortPlayers function
+    const sortedPlayers = sortPlayers(tournament.getPlayers());
+
+    // Assign ranks based on sorted order
+    sortedPlayers.forEach((player, index) => {
+        player.rank = index + 1; // Ranks start from 1
+    });
+
+    // Save the updated tournament to local storage
+    tournament.saveToLocalStorage();
+}
+
 function generateRandomString(length) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-';
     let result = '';
@@ -107,4 +121,4 @@ function shuffleArray(array) {
     return array;
 }
 
-export { generateUniqueId, checkForIncompleteMatches, checkForWalkoverPlayers, deleteWalkoverPlayers, shuffleArray, sortPlayers, generateRandomString };
+export { generateUniqueId, checkForIncompleteMatches, checkForWalkoverPlayers, deleteWalkoverPlayers, shuffleArray, sortPlayers, generateRandomString, setPlayerRanks };

@@ -74,13 +74,15 @@ class Players {
 
 class Player {
     constructor(id) {
-        this.id = id; // this is also the start number of the player
+        this.id = id; // this is also the start number of the player for now
         this.name = "Spiller " + id;
         this.clubName = ""; // club name
         this.clubId = null; // club id
         this.scorePoints = 0; // sum of all score points from all matches
         this.matchPoints = 0; // sum of all match points from all matches
         this.scorePointsDiff = 0; // difference between score points for and against
+        this.finalRank = 0; // final rank in the tournament
+        this.startNumber = null; // start number for the player. Will be set when the tournament is started to avoid manipulation
         this.matches = [];
     }
 

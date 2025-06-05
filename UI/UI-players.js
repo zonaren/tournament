@@ -11,7 +11,7 @@ import { sortPlayers } from '../scripts/utils.js';
  */
 function createTableHeader() {
     const headerRow = document.createElement('tr');
-    const headers = ['Pl.', 'S', 'Navn', 'Ant.', 'Skår', 'Poeng'];
+    const headers = ['#', 'S', 'Navn', 'Ant.', 'Skår', 'Poeng'];
     
     headers.forEach(text => {
         const th = document.createElement('th');
@@ -27,15 +27,21 @@ function createTableHeader() {
  * @param {Player} player - The player object
  * @param {number} index - The player's position in the ranking
  * @param {HTMLElement} playerOverviewContainer - The container element
+ * @param {Tournament} currentTournament - The current tournament object
  * @returns {HTMLTableRowElement} The created row element
  */
-function createPlayerRow(player, index, playerOverviewContainer) {
+function createPlayerRow(player, index, playerOverviewContainer, currentTournament) {
     const row = document.createElement('tr');
     row.setAttribute('data-player-id', player.id);
 
     // Position column
     const positionCell = document.createElement('td');
-    positionCell.textContent = index + 1;
+    // Show finalRank if tournament is completed, else show index+1
+    if (currentTournament && currentTournament.stage === 'completed' && player.finalRank) {
+        positionCell.textContent = player.finalRank;
+    } else {
+        positionCell.textContent = index + 1;
+    }
     row.appendChild(positionCell);
 
     const startNumberCell = document.createElement('td');
@@ -69,7 +75,6 @@ function createPlayerRow(player, index, playerOverviewContainer) {
     // Add long-press event for touch devices
     let touchTimer = null;
     let touchMoved = false;
-// ...existing code...
     row.addEventListener('touchstart', function(e) {
         if (e.touches.length > 1) return; // Ignore multi-touch
         touchMoved = false;
@@ -236,7 +241,7 @@ function updatePlayerTable() {
             // Sort players in group
             const sortedGroup = sortPlayers(grouped[group]).filter(player => player.name !== 'Walkover');
             sortedGroup.forEach((player) => {
-                tbody.appendChild(createPlayerRow(player, rowIndex, table.parentElement));
+                tbody.appendChild(createPlayerRow(player, rowIndex, table.parentElement, currentTournament));
                 rowIndex++;
             });
         });
@@ -245,7 +250,7 @@ function updatePlayerTable() {
         sortedPlayers
             .filter(player => player.name !== 'Walkover')
             .forEach((player, index) => {
-                tbody.appendChild(createPlayerRow(player, index, table.parentElement));
+                tbody.appendChild(createPlayerRow(player, index, table.parentElement, currentTournament));
             });
     }
 
