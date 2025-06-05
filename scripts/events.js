@@ -1,9 +1,9 @@
-import TournamentSettings from './classes/TournamentSettings.js';
-import Tournaments from './classes/Tournament.js';
-import Players from './classes/Player.js';
-import { createMatchSetup } from './generateMatches.js';
+import TournamentSettings from '../classes/TournamentSettings.js';
+import Tournaments from '../classes/Tournament.js';
+import Players from '../classes/Player.js';
+import { createMatchSetup } from '../generateMatches.js';
 import { playerCountSelect, roundCountSelect, gametypeSelect, titleText, showMatchSetupBtn } from './UI-main.js';
-import { createRoundCountSelectOptions } from './generateSelectList.js';
+import { createRoundCountSelectOptions } from '../generateSelectList.js';
 import { displayTournamentOverview } from './UI-tournament.js';
 import { displayMatchSetup } from './UI-matchSetup.js';
 import { displayTournamentsList, editTournament } from './UI-tournaments-list.js';

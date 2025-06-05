@@ -1,6 +1,6 @@
 import Round from "./Match.js";
 import { Match } from "./Match.js";
-import { generateUniqueId } from "../utils.js";
+import { generateUniqueId } from "../scripts/utils.js";
 
 // Tournament Stage Constants
 export const TOURNAMENT_STAGES = {

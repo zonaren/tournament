@@ -80,7 +80,7 @@ async function testOffline() {
     }
     
     // Check if critical files are cached
-    const criticalFiles = ['/', '/index.html', '/manifest.json'];
+    const criticalFiles = ['/', '../index.html', 'manifest.json'];
     const cacheNames = await caches.keys();
     const currentCache = cacheNames.find(name => name.includes('tournament-app-cache'));
     
