@@ -25,7 +25,7 @@ export function displayTournamentOverview(tournament) {
     tournamentName.textContent = tournament.name + ' - ' + tournament.type;
     tournamentInfoDiv.appendChild(tournamentName);
 
-    if(tournament.getCurrentStage() === 'preliminary') {
+    if(tournament.getCurrentStage() === 'preliminary' && tournament.finalsFormat !== null) {
         const startFinalsBtn = createStartFinalsButton();
         tournamentInfoDiv.appendChild(startFinalsBtn);
     }
