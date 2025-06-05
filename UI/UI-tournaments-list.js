@@ -1,5 +1,5 @@
-import Players from '../classes/Player.js';
 import Tournaments from '../classes/Tournament.js';
+import { deleteTournamentAndRow, loadTournament } from '../tournament-logics.js';
 import { displayTournamentOverview } from './UI-tournament.js';
 
 export function displayTournamentsList() {
@@ -15,7 +15,7 @@ export function displayTournamentsList() {
     
     const thead = table.createTHead();
     const headerRow = thead.insertRow();
-    ['Navn', 'Type', 'Finaler', 'Opprettet', 'Runder', "Baner", 'Spillere', 'Fase', 'Eier', 'Handlinger'].forEach(text => {
+    ['Navn', 'Type', 'Finaler', 'Opprettet', 'Runder', "Baner", 'Spillere', 'Fase', 'Eier', ''].forEach(text => {
         const th = document.createElement('th');
         th.textContent = text;
         headerRow.appendChild(th);
@@ -46,7 +46,7 @@ export function displayTournamentsList() {
         const editBtn = document.createElement('button');
         editBtn.textContent = 'Rediger';
         tournament.isStarted ? editBtn.disabled = true : editBtn.disabled = false;
-        editBtn.onclick = () => editTournament(tournament.id);
+        editBtn.onclick = () => createEditTournamentPopup(tournament.id);
         
         const deleteBtn = document.createElement('button');
         deleteBtn.textContent = 'Slett';
@@ -56,7 +56,7 @@ export function displayTournamentsList() {
 
         const confirmDelete = document.createElement('button');
         confirmDelete.textContent = 'Bekreft sletting';
-        confirmDelete.onclick = () => deleteTournament(tournament.id, row);
+        confirmDelete.onclick = () => deleteTournamentAndRow(tournament.id, row);
 
         actionsCell.append(loadBtn, deleteBtn);
     });
@@ -65,22 +65,7 @@ export function displayTournamentsList() {
     mainContainer.appendChild(tableContainer);
 }
 
-function loadTournament(id) {
-    const tournament = Tournaments.get(id);
-    if (tournament) {
-        Tournaments.setCurrentTournament(tournament.id);
-        console.log('Load tournament:', tournament, 'id: ', tournament.id);
-        Players.loadPlayersFromTournament(tournament.getPlayers());
-        const tournamentsList = document.getElementById('tournamentsList');
-        tournamentsList.remove();
-        displayTournamentOverview(tournament);
-        const header = document.getElementById('header');
-        header.remove();
-        
-    }
-}
-
-export function editTournament(id) {
+export function createEditTournamentPopup(id) {
     // Inline editing popup for tournament name, type, and rounds
     const tournament = Tournaments.get(id);
     if (!tournament) return;
@@ -148,7 +133,7 @@ export function editTournament(id) {
     finalsLabel.style.display = 'block';
     finalsLabel.style.marginTop = '1em';
     const finalsSelect = document.createElement('select');
-    [null, 'Cup', 'Single elimination', 'Double elimination'].forEach(opt => {
+    ['Ikke valgt', 'Cup', 'Single elimination', 'Double elimination'].forEach(opt => {
         const option = document.createElement('option');
         option.value = opt;
         option.textContent = opt;
@@ -194,26 +179,7 @@ export function editTournament(id) {
     saveBtn.style.padding = '0.5em 1.5em';
     saveBtn.style.borderRadius = '5px';
     saveBtn.style.cursor = 'pointer';
-    saveBtn.onclick = () => {
-        const newName = nameInput.value.trim();
-        const newType = typeSelect.value;
-        const newRounds = parseInt(roundsInput.value, 10);
-        if (!newName) {
-            nameInput.focus();
-            nameInput.style.border = '1px solid red';
-            return;
-        }
-        // Update using the class method
-        Tournaments.update(id, {
-            name: newName,
-            type: newType,
-            finalsFormat: finalsSelect.value,
-            totalRounds: isNaN(newRounds) ? tournament.totalRounds : newRounds
-        });
-
-        document.body.removeChild(overlay);
-        displayTournamentOverview(tournament);
-    };
+    editTournament();
 
     btnRow.appendChild(cancelBtn);
     btnRow.appendChild(saveBtn);
@@ -221,9 +187,28 @@ export function editTournament(id) {
 
     overlay.appendChild(popup);
     document.body.appendChild(overlay);
-}
 
-function deleteTournament(id, row) {
-        Tournaments.delete(id);
-        row.remove();
+    function editTournament() {
+        saveBtn.onclick = () => {
+            const newName = nameInput.value.trim();
+            const newType = typeSelect.value;
+            const newFinalsFormat = finalsSelect.value === 'Ikke valgt' ? null : finalsSelect.value;
+            const newRounds = parseInt(roundsInput.value, 10);
+            if (!newName) {
+                nameInput.focus();
+                nameInput.style.border = '1px solid red';
+                return;
+            }
+            // Update using the class method
+            Tournaments.update(id, {
+                name: newName,
+                type: newType,
+                finalsFormat: newFinalsFormat,
+                totalRounds: isNaN(newRounds) ? tournament.totalRounds : newRounds
+            });
+
+            document.body.removeChild(overlay);
+            displayTournamentOverview(tournament);
+        };
+    }
 }

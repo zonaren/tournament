@@ -6,7 +6,7 @@ import { playerCountSelect, roundCountSelect, gametypeSelect, titleText, showMat
 import { createRoundCountSelectOptions } from '../generateSelectList.js';
 import { displayTournamentOverview } from '../UI/UI-tournament.js';
 import { displayMatchSetup } from '../UI/UI-matchSetup.js';
-import { displayTournamentsList, editTournament } from '../UI/UI-tournaments-list.js';
+import { displayTournamentsList, createEditTournamentPopup } from '../UI/UI-tournaments-list.js';
 
 const mainContainer = document.getElementById('mainContainer');
     mainContainer.innerHTML = '';
@@ -54,7 +54,7 @@ export function onCreateTournament() {
 
     const header = document.getElementById('header');
     header.remove();
-    editTournament(tournament.id);
+    createEditTournamentPopup(tournament.id);
 
 }
 

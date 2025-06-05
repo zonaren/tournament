@@ -6,7 +6,7 @@ import { createPrintStartCardsButton } from '../startkort/startCards.js';
 import { onStartTournament } from '../scripts/events.js';
 import { shuffleStartNumbers } from '../shuffle-players.js';
 import Tournaments  from '../classes/Tournament.js';
-import { editTournament } from './UI-tournaments-list.js';
+import { createEditTournamentPopup } from './UI-tournaments-list.js';
 import { startFinals, displayFinalsOverview } from './UI-finals.js';
 import { setPlayerRanks } from '../scripts/utils.js';
 
@@ -100,7 +100,7 @@ function createEditTournamentButton() {
     button.id = 'editTournamentButton';
     button.textContent = 'Rediger turnering';
     const currentTournament = Tournaments.getCurrentTournament();
-    button.addEventListener('click', () => editTournament(currentTournament.id));
+    button.addEventListener('click', () => createEditTournamentPopup(currentTournament.id));
     return button;
 }
 
