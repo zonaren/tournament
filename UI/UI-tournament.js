@@ -8,6 +8,7 @@ import { shuffleStartNumbers } from '../shuffle-players.js';
 import Tournaments  from '../classes/Tournament.js';
 import { editTournament } from './UI-tournaments-list.js';
 import { startFinals, displayFinalsOverview } from './UI-finals.js';
+import { setPlayerRanks } from '../scripts/utils.js';
 
 
 
@@ -22,29 +23,32 @@ export function displayTournamentOverview(tournament) {
     tournamentInfoDiv.innerHTML = '';
     const tournamentName = document.createElement('h3');
     tournamentName.textContent = tournament.name + ' - ' + tournament.type;
+    tournamentInfoDiv.appendChild(tournamentName);
 
-    if(tournament.isStarted === false) {
-        const startTournamentText = document.createElement('p');
-        startTournamentText.textContent = 'Turneringen er ikke startet!';
-        startTournamentText.style.color = 'red';
-        startTournamentText.style.fontWeight = 'bold';
+    if(tournament.getCurrentStage() === 'preliminary') {
+        const startFinalsBtn = createStartFinalsButton();
+        tournamentInfoDiv.appendChild(startFinalsBtn);
+    }
+
+    if(tournament.isStarted === true && tournament.getCurrentStage() !== 'completed') {
+        tournamentInfoDiv.appendChild(createPrintStartCardsButton());
+        const completeTournamentBtn = createCompleteTournamentButton();
+        tournamentInfoDiv.appendChild(completeTournamentBtn);
+    }
+    else if(tournament.isStarted === false && tournament.getCurrentStage() === 'not_started') {
         const startTournamentBtn = startTournamentButton();
-        tournamentInfoDiv.appendChild(startTournamentText);
         tournamentInfoDiv.appendChild(startTournamentBtn);
     }
-    tournamentInfoDiv.appendChild(tournamentName);
-    tournamentInfoDiv.appendChild(createPrintStartCardsButton());
-
-    if(tournament.finalsFormat !== null && tournament.isStarted === true) {
-        tournamentInfoDiv.appendChild(createStartFinalsButton());
+    else{
+        const tournamentStatusText = document.createElement('p');
+        tournamentStatusText.textContent = 'Status: ' + (tournament.getCurrentStageDisplayName());
+        tournamentStatusText.style.fontWeight = 'bold';
+        tournamentInfoDiv.appendChild(tournamentStatusText);
     }
-    
     
     const mainContainer = document.getElementById('mainContainer');
     mainContainer.replaceChildren(tournamentOverview);
     tournamentOverview.appendChild(tournamentInfoDiv);
-
-    
 
     const matchOverviewContainer = document.createElement('div');
     matchOverviewContainer.id = 'matchOverview';
@@ -130,6 +134,21 @@ function createStartFinalsButton() {
     startFinalsBtn.classList.add('start-finals-btn');
     startFinalsBtn.addEventListener('click', () => startFinals());
     return startFinalsBtn;
+}
+
+function createCompleteTournamentButton() {
+    const completeTournamentBtn = document.createElement('button');
+    completeTournamentBtn.textContent = 'Fullfør turnering';
+    completeTournamentBtn.classList.add('complete-tournament-btn');
+    completeTournamentBtn.addEventListener('click', () => {
+        const tournament = Tournaments.getCurrentTournament();
+        tournament.setStage('completed');
+        setPlayerRanks(tournament);
+        tournament.saveToLocalStorage();
+        displayTournamentOverview(tournament);
+        alert('Turneringen er fullført!');
+    });
+    return completeTournamentBtn;
 }
 
 function displayMatchOverview(tournament, matchOverviewContainer, tournamentInfoDiv) {
