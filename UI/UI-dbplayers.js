@@ -135,23 +135,21 @@ function createDatabasePlayersPopupUI({ onAddPlayers, onRemovePlayers, filteredP
     // Assemble columns
     mainContent.appendChild(leftColumnData.column);
     mainContent.appendChild(rightColumnData.column);
-    
-    // Create state management functions
+      // Create state management functions
     const updateUI = () => {
         updateSelectedPlayersList(selectedList, selectedPlayerIds, selectedCounter, (player) => {
             selectedPlayerIds.delete(player.Id);
             updateUI();
             renderAvailableList();
-        });
+        }, getFilteredPlayers, searchInput);
     };
-    
-    const renderAvailableList = () => {
+      const renderAvailableList = () => {
         if (getFilteredPlayers) {
-            renderList(getFilteredPlayers(searchInput.value), list, selectedPlayerIds, getCurrentTournamentPlayers, (selectedPlayer) => {
+            renderList(getFilteredPlayers(searchInput.value), list, selectedPlayerIds, getCurrentTournamentPlayers, selectedList, selectedCounter, (selectedPlayer) => {
                 selectedPlayerIds.add(selectedPlayer.Id);
                 updateUI();
                 renderAvailableList();
-            });
+            }, getFilteredPlayers, searchInput);
         }
     };
 
@@ -281,14 +279,12 @@ function updateSelectedPlayersList(selectedList, selectedPlayerIds, selectedCoun
         const navnB = (b.Navn || '').toString();
         return navnA.localeCompare(navnB);
     });
-    
-    sortedSelected.forEach(player => {
+      sortedSelected.forEach(player => {
         const row = createSelectedPlayerRow(player, (playerToRemove) => {
             selectedPlayerIds.delete(playerToRemove.Id);
             updateSelectedPlayersList(selectedList, selectedPlayerIds, selectedCounter, onRemove, getFilteredPlayers, searchInput);
-            renderList(getFilteredPlayers(searchInput.value), selectedList, selectedPlayerIds, selectedCounter, onRemove, getFilteredPlayers, searchInput);
         });
-        selectedList.appendChild(row);    });
+        selectedList.appendChild(row);});
 }
 
 function renderList(players, list, selectedPlayerIds, getCurrentTournamentPlayers, selectedList, selectedCounter, onRemove, getFilteredPlayers, searchInput) {
@@ -317,11 +313,9 @@ function renderList(players, list, selectedPlayerIds, getCurrentTournamentPlayer
             if (p.Id) addedDbIds.add(p.Id);
         });
         const isAlreadyInTournament = addedDbIds.has(player.Id);
-        
-        const row = createAvailablePlayerRow(player, isAlreadyInTournament, (selectedPlayer) => {
+          const row = createAvailablePlayerRow(player, isAlreadyInTournament, (selectedPlayer) => {
             selectedPlayerIds.add(selectedPlayer.Id);
             updateSelectedPlayersList(selectedList, selectedPlayerIds, selectedCounter, onRemove, getFilteredPlayers, searchInput);
-            renderList(getFilteredPlayers(searchInput.value), list, selectedPlayerIds, getCurrentTournamentPlayers, selectedList, selectedCounter, onRemove, getFilteredPlayers, searchInput);
         });
           list.appendChild(row);
     });
@@ -331,14 +325,14 @@ function renderList(players, list, selectedPlayerIds, getCurrentTournamentPlayer
     renderList(getFilteredPlayers ? getFilteredPlayers('') : [], list, selectedPlayerIds, getCurrentTournamentPlayers, selectedList, selectedCounter, (player) => {
         selectedPlayerIds.delete(player.Id);
         updateSelectedPlayersList(selectedList, selectedPlayerIds, selectedCounter, (player) => {}, getFilteredPlayers, searchInput);
-        renderList(getFilteredPlayers(searchInput.value), list, selectedPlayerIds, getCurrentTournamentPlayers, selectedList, selectedCounter, (player) => {}, getFilteredPlayers, searchInput);
     }, getFilteredPlayers, searchInput);
     
     updateSelectedPlayersList(selectedList, selectedPlayerIds, selectedCounter, (player) => {
         selectedPlayerIds.delete(player.Id);
         updateSelectedPlayersList(selectedList, selectedPlayerIds, selectedCounter, (player) => {}, getFilteredPlayers, searchInput);
-        renderList(getFilteredPlayers(searchInput.value), list, selectedPlayerIds, getCurrentTournamentPlayers, selectedList, selectedCounter, (player) => {}, getFilteredPlayers, searchInput);
-    }, getFilteredPlayers, searchInput);    // Add resize listener to recalculate columns when window size changes
+    }, getFilteredPlayers, searchInput);
+
+    // Add resize listener to recalculate columns when window size changes
     let resizeObserver2;
     if (window.ResizeObserver) {
         resizeObserver2 = new ResizeObserver(() => {
