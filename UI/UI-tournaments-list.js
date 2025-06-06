@@ -5,8 +5,16 @@ import { displayTournamentOverview } from './UI-tournament.js';
 export function displayTournamentsList() {
     const mainContainer = document.getElementById('mainContainer');
     mainContainer.innerHTML = '';
-
+    
     const tableContainer = document.createElement('div');
+
+        const loadTournamentFromDbBtn = document.createElement('button');
+    loadTournamentFromDbBtn.textContent = 'Last inn turnering fra database';
+    loadTournamentFromDbBtn.id = 'loadTournamentFromDbBtn';
+    tableContainer.appendChild(loadTournamentFromDbBtn);
+    loadTournamentFromDbBtn.onclick = () => {
+        loadTournamentsFromDbPopup();
+    };
     tableContainer.id = 'tournamentsList';
     tableContainer.className = 'tournaments-list';
 
@@ -212,3 +220,84 @@ export function createEditTournamentPopup(id) {
         };
     }
 }
+
+    function loadTournamentsFromDbPopup() {
+        const overlay = document.createElement('div');
+
+        // Populate select with tournaments from the database
+        const select = document.createElement('select');
+        select.id = 'tournamentSelect';
+        select.style.width = '100%';
+        select.style.marginTop = '0.5em';
+        select.style.padding = '0.5em';
+        select.style.borderRadius = '5px';
+        select.style.border = '1px solid #ccc';
+        select.style.fontSize = '1em';
+        select.style.backgroundColor = '#fff';
+        select.style.color = '#333';
+
+        const dbTournaments = JSON.parse(localStorage.getItem('databaseTournaments')) || [];
+        dbTournaments.forEach(tournament => {
+            const option = document.createElement('option');
+            option.value = tournament.id;
+            option.textContent = tournament.navn;
+            select.appendChild(option);
+        });
+
+        // Save button
+        const saveBtn = document.createElement('button');
+        saveBtn.textContent = 'Last inn turnering';
+
+        overlay.appendChild(select);
+        overlay.appendChild(saveBtn);
+
+        saveBtn.onclick = () => {
+            const selectedId = select.value;
+            const selectedName = select.options[select.selectedIndex].textContent;
+            if (selectedId) {
+                Tournaments.create(4, 4, [], selectedName, "Gloppen", []);
+                document.body.removeChild(overlay); // Remove popup first
+                displayTournamentsList();
+            } else {
+                alert('Vennligst velg en turnering fra listen.');
+            }
+        }
+
+        // Add overlay to DOM so popup appears
+        overlay.style.position = 'fixed';
+        overlay.style.top = 0;
+        overlay.style.left = 0;
+        overlay.style.width = '100vw';
+        overlay.style.height = '100vh';
+        overlay.style.background = 'rgba(0,0,0,0.3)';
+        overlay.style.display = 'flex';
+        overlay.style.alignItems = 'center';
+        overlay.style.justifyContent = 'center';
+        overlay.style.zIndex = 1000;
+
+        // Create popup box for content
+        const popupBox = document.createElement('div');
+        popupBox.style.background = '#fff';
+        popupBox.style.padding = '1.5em';
+        popupBox.style.borderRadius = '10px';
+        popupBox.style.boxShadow = '0 2px 12px rgba(0,0,0,0.2)';
+        popupBox.style.minWidth = '260px';
+        popupBox.style.maxWidth = '340px';
+        popupBox.style.width = '100%';
+        popupBox.style.display = 'flex';
+        popupBox.style.flexDirection = 'column';
+        popupBox.style.gap = '1em';
+
+        // Add close/cancel button
+        const cancelBtn = document.createElement('button');
+        cancelBtn.textContent = 'Avbryt';
+        cancelBtn.style.alignSelf = 'flex-end';
+        cancelBtn.onclick = () => document.body.removeChild(overlay);
+
+        // Move select and saveBtn into popupBox
+        popupBox.appendChild(cancelBtn);
+        popupBox.appendChild(select);
+        popupBox.appendChild(saveBtn);
+        overlay.appendChild(popupBox);
+        document.body.appendChild(overlay);
+    }
