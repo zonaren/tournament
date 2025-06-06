@@ -5,7 +5,7 @@ header.className = 'header';
 
 const versionText = document.createElement('p');
 versionText.id = 'versionText';
-versionText.textContent = '0.0.1h (06. jun 2025)';
+versionText.textContent = '0.0.1j (06. jun 2025)';
 header.appendChild(versionText);
 
 const titleText = document.createElement('h2');
@@ -29,7 +29,7 @@ menuButtons.appendChild(showTournamentsBtn);
 
 const importDbPlayersBtn = document.createElement('button');
 importDbPlayersBtn.id = 'importDbPlayersBtn';
-importDbPlayersBtn.textContent = 'Oppdater spillere';
+importDbPlayersBtn.textContent = 'Oppdater spillere fra database';
 menuButtons.appendChild(importDbPlayersBtn);
 
 const printContentBtn = document.createElement('button');

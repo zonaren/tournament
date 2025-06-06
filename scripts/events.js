@@ -10,7 +10,7 @@ import { importPlayerListFromDb } from './utils.js';
 mainContainer.innerHTML = '';
 
 function onImportDbPlayers() {
-            const url = 'http://127.0.0.1:5500/kastere.json';
+            const url = 'https://resultater.hesteskokasting.no/filer/eksport/kastere.json';
         if (url) {
             importPlayerListFromDb(url);
         }
