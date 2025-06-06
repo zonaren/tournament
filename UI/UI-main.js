@@ -5,29 +5,17 @@ header.className = 'header';
 
 const versionText = document.createElement('p');
 versionText.id = 'versionText';
-versionText.textContent = '0.0.1g (05. jun 2025)';
+versionText.textContent = '0.0.1h (06. jun 2025)';
 header.appendChild(versionText);
 
 const titleText = document.createElement('h2');
 titleText.id = 'titleText';
-titleText.textContent = '8 spillere';
+titleText.textContent = 'Turneringsoppsett';
 header.appendChild(titleText);
 
 const menuButtons = document.createElement('div');
 menuButtons.id = 'menu-buttons';
 menuButtons.className = 'no-print';
-
-const gametypeSelect = document.createElement('select');
-gametypeSelect.id = 'gametypeSelect';
-menuButtons.appendChild(gametypeSelect);
-
-const playerCountSelect = document.createElement('select');
-playerCountSelect.id = 'playerCountSelect';
-menuButtons.appendChild(playerCountSelect);
-
-const roundCountSelect = document.createElement('select');
-roundCountSelect.id = 'roundCountSelect';
-menuButtons.appendChild(roundCountSelect);
 
 const createTournamentBtn = document.createElement('button');
 createTournamentBtn.id = 'createTournamentBtn';
@@ -38,11 +26,6 @@ const showTournamentsBtn = document.createElement('button');
 showTournamentsBtn.id = 'showTournamentsBtn';
 showTournamentsBtn.textContent = 'Vis turneringer';
 menuButtons.appendChild(showTournamentsBtn);
-
-const showMatchSetupBtn = document.createElement('button');
-showMatchSetupBtn.id = 'showMatchSetup';
-showMatchSetupBtn.textContent = 'Banefordelingsnøkkel';
-menuButtons.appendChild(showMatchSetupBtn);
 
 const importDbPlayersBtn = document.createElement('button');
 importDbPlayersBtn.id = 'importDbPlayersBtn';
@@ -66,4 +49,4 @@ mainContainer.className = 'main-container';
 document.body.appendChild(header);
 document.body.appendChild(mainContainer);
 
-export { gametypeSelect, playerCountSelect, roundCountSelect, createTournamentBtn, showMatchSetupBtn, printContentBtn, mainContainer, titleText };
+export { createTournamentBtn, printContentBtn, mainContainer, titleText };

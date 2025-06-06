@@ -1,7 +1,7 @@
 class TournamentSettings {
     constructor() {
         this.gametype = 'Gloppen'; // Default gametype
-        this.playerCount = 8; // Default player count
+        this.playerCount = 0; // Default player count
         this.roundCount = 4; // Default round count
         this.maximumRounds = this.calculateMaximumRounds();
     }

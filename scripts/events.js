@@ -2,10 +2,7 @@ import TournamentSettings from '../classes/TournamentSettings.js';
 import Tournaments from '../classes/Tournament.js';
 import Players from '../classes/Player.js';
 import { createMatchSetup } from '../generateMatches.js';
-import { playerCountSelect, roundCountSelect, gametypeSelect, titleText, showMatchSetupBtn } from '../UI/UI-main.js';
-import { createRoundCountSelectOptions } from '../generateSelectList.js';
 import { displayTournamentOverview } from '../UI/UI-tournament.js';
-import { displayMatchSetup } from '../UI/UI-matchSetup.js';
 import { displayTournamentsList, createEditTournamentPopup } from '../UI/UI-tournaments-list.js';
 import { importPlayerListFromDb } from './utils.js';
 
@@ -19,44 +16,10 @@ function onImportDbPlayers() {
         }
 }
 
-function onGametypeChange() {
-    const gametype = this.value;
-    TournamentSettings.setGametype(gametype);
-
-    if (gametype === 'Alle mot alle') {
-        roundCountSelect.disabled = true;
-        TournamentSettings.setRoundCount(TournamentSettings.getPlayerCount() - 1);
-        showMatchSetupBtn.disabled = true;
-    } else if (gametype === 'NHM') {
-        showMatchSetupBtn.disabled = true;
-    }
-    else {
-        roundCountSelect.disabled = false;
-        showMatchSetupBtn.disabled = false;
-    }
-    createRoundCountSelectOptions();
-
-}
-
-function onPlayerCountChange() {
-    const playerCount = parseInt(this.value, 10);
-    TournamentSettings.setPlayerCount(playerCount);
-    createRoundCountSelectOptions();
-
-    console.log('Player count was set to ', TournamentSettings.getPlayerCount());
-    titleText.textContent = `${playerCount} spillere`;
-}
-
-function onRoundCountChange() {
-    const roundCount = parseInt(this.value, 10);
-    TournamentSettings.setRoundCount(roundCount);
-    console.log('Round count was set to ', TournamentSettings.getRoundCount());
-}
-
 export function onCreateTournament() {
     Players.resetPlayers(TournamentSettings.getPlayerCount());
     const matchSetup = [];
-    const tournament = Tournaments.create(TournamentSettings.getRoundCount(), TournamentSettings.getPlayerCount() / 2, matchSetup, 'Ny turnering', TournamentSettings.getGametype(), Players.getAll());
+    const tournament = Tournaments.create(4, 4, matchSetup, 'Ny turnering', "Gloppen", Players.getAll());
     Tournaments.setCurrentTournament(tournament.id);
     displayTournamentOverview(tournament);
 
@@ -128,37 +91,21 @@ function onShowTournaments() {
     displayTournamentsList();
 }
 
-function onShowMatchSetup() {
-    Players.resetPlayers(TournamentSettings.getPlayerCount());
-    const matchSetup = createMatchSetup(Players.count(), TournamentSettings.getRoundCount(), "Gloppen");
-    displayMatchSetup(matchSetup, TournamentSettings.getPlayerCount());
-}
-
 function onPrintContent() {
     window.print();
 }
 
 function loadEventListeners() {
-    playerCountSelect.addEventListener('change', onPlayerCountChange);
-    roundCountSelect.addEventListener('change', onRoundCountChange);
-    gametypeSelect.addEventListener('change', onGametypeChange);
-
-    document.getElementById('showMatchSetup').addEventListener('click', onShowMatchSetup);
+    // Add event listeners for buttons
     document.getElementById('printContent').addEventListener('click', onPrintContent);
     document.getElementById('createTournamentBtn').addEventListener('click', onCreateTournament);
-    //document.getElementById('start-btn').addEventListener('click', onStartTournament);
     document.getElementById('showTournamentsBtn').addEventListener('click', onShowTournaments);
     document.getElementById('importDbPlayersBtn').addEventListener('click', onImportDbPlayers);
 }
 
 // Remove existing event listeners and call loadEventListeners
-playerCountSelect.removeEventListener('change', onPlayerCountChange);
-roundCountSelect.removeEventListener('change', onRoundCountChange);
-gametypeSelect.removeEventListener('change', onGametypeChange);
-document.getElementById('showMatchSetup').removeEventListener('click', onShowMatchSetup);
 document.getElementById('printContent').removeEventListener('click', onPrintContent);
 document.getElementById('createTournamentBtn').removeEventListener('click', onCreateTournament);
-//document.getElementById('start-btn').removeEventListener('click', onStartTournament);
 document.getElementById('showTournamentsBtn').removeEventListener('click', onShowTournaments);
 document.getElementById('importDbPlayersBtn').removeEventListener('click', onImportDbPlayers);
 loadEventListeners();
