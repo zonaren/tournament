@@ -3,9 +3,12 @@ class Players {
         this.players = [];
     }
 
-    create(id, name = "Spiller" + id) {
+    create(id, name = "Spiller" + id, clubName = "", clubId = null, dbId = null) {
         const player = new Player(id);
         player.name = name;
+        player.clubName = clubName;
+        player.clubId = clubId;
+        player.dbId = dbId;
         this.players.push(player);
         this.saveToLocalStorage();
         return player;

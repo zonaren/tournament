@@ -9,6 +9,7 @@ import Tournaments  from '../classes/Tournament.js';
 import { createEditTournamentPopup } from './UI-tournaments-list.js';
 import { startFinals, displayFinalsOverview } from './UI-finals.js';
 import { setPlayerRanks } from '../scripts/utils.js';
+import { showDatabasePlayersPopup, onAddPlayers, onRemovePlayers } from './UI-dbplayers.js';
 
 
 
@@ -84,7 +85,7 @@ function createButtonsContainer() {
     roundsText.textContent = 'Antall runder: ' + Tournaments.getCurrentTournament().totalRounds;
 
     container.appendChild(roundsText);
-    container.appendChild(createAddPlayerButton());
+    container.appendChild(createAddPlayersFromDbButton());
     container.appendChild(createShuffleButton());
     container.appendChild(createEditTournamentButton());
     return container;
@@ -104,11 +105,13 @@ function createEditTournamentButton() {
     return button;
 }
 
-function createAddPlayerButton() {
+function createAddPlayersFromDbButton() {
     const button = document.createElement('button');
     button.id = 'addPlayerButton';
-    button.textContent = 'Legg til spiller';
-    button.addEventListener('click', () => createNewPlayerPrompt());
+    button.textContent = 'Administrer database spillere';
+        const currentTournament = Tournaments.getCurrentTournament();
+        const currentTournamentPlayers = currentTournament.getPlayers();
+    button.addEventListener('click', () => showDatabasePlayersPopup(currentTournamentPlayers, onAddPlayers, onRemovePlayers));
     return button;
 }
 
