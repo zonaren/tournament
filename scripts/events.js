@@ -1,13 +1,13 @@
 import TournamentSettings from '../classes/TournamentSettings.js';
 import Tournaments from '../classes/Tournament.js';
 import Players from '../classes/Player.js';
+import { mainContainer } from '../UI/UI-main.js';
 import { createMatchSetup } from '../generateMatches.js';
 import { displayTournamentOverview } from '../UI/UI-tournament.js';
 import { displayTournamentsList, createEditTournamentPopup } from '../UI/UI-tournaments-list.js';
 import { importPlayerListFromDb } from './utils.js';
 
-const mainContainer = document.getElementById('mainContainer');
-    mainContainer.innerHTML = '';
+mainContainer.innerHTML = '';
 
 function onImportDbPlayers() {
             const url = 'http://127.0.0.1:5500/kastere.json';
