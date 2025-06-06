@@ -123,19 +123,27 @@ function shuffleArray(array) {
 
 // import playerlist from external url in json format
 async function importPlayerListFromDb(url) {
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        saveDatabasePlayersToLocalStorage(data);
+        displayImportSuccessMessage();
+        
+      })
+      .catch(error => console.error('Error:', error));
 
-    // example URL: 'https://resultater.hesteskokasting.no/filer/eksport/kastere.json'
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-        if (Array.isArray(data)) {
-            saveDatabasePlayersToLocalStorage(data);
-            console.log('Player list imported successfully:', data);
-        } else {
-            console.error('Invalid player list format:', data);
-        }
-    } catch (error) {
-        return console.error('Error importing player list:', error);
+      function displayImportSuccessMessage() {
+        const message = document.createElement('h3');
+        message.className = 'import-success';
+        message.textContent = 'Spillerlisten ble importert fra databasen!';
+        message.style.color = 'green';
+        message.style.textAlign = 'center';
+        document.body.appendChild(message);
+        setTimeout(() => {
+            message.remove();
+        }, 3000);
+    
     }
 }
 
