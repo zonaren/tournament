@@ -147,9 +147,39 @@ async function importPlayerListFromDb(url) {
     }
 }
 
-function saveDatabasePlayersToLocalStorage(players) {
-    // Save players to local storage
-    localStorage.setItem('databasePlayers', JSON.stringify(players));
+async function importTournamentListFromDb(url) {
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        saveDatabaseTournamentsToLocalStorage(data);
+        displayImportSuccessMessage();
+        
+      })
+      .catch(error => console.error('Error:', error));
+
+      function displayImportSuccessMessage() {
+        const message = document.createElement('h3');
+        message.className = 'import-success';
+        message.textContent = 'Turneringene ble importert fra databasen!';
+        message.style.color = 'green';
+        message.style.textAlign = 'center';
+        document.body.appendChild(message);
+        setTimeout(() => {
+            message.remove();
+        }, 3000);
+    
+    }
 }
 
-export { generateUniqueId, checkForIncompleteMatches, checkForWalkoverPlayers, deleteWalkoverPlayers, shuffleArray, sortPlayers, generateRandomString, setPlayerRanks, importPlayerListFromDb, saveDatabasePlayersToLocalStorage };
+function saveDatabasePlayersToLocalStorage(databasePlayers) {
+    // Save players to local storage
+    localStorage.setItem('databasePlayers', JSON.stringify(databasePlayers));
+}
+
+function saveDatabaseTournamentsToLocalStorage(databaseTournaments) {
+    // Save tournaments to local storage
+    localStorage.setItem('databaseTournaments', JSON.stringify(databaseTournaments));
+}
+
+export { generateUniqueId, checkForIncompleteMatches, checkForWalkoverPlayers, deleteWalkoverPlayers, shuffleArray, sortPlayers, generateRandomString, setPlayerRanks, importPlayerListFromDb, saveDatabasePlayersToLocalStorage, importTournamentListFromDb, saveDatabaseTournamentsToLocalStorage };

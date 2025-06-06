@@ -5,15 +5,19 @@ import { mainContainer } from '../UI/UI-main.js';
 import { createMatchSetup } from '../generateMatches.js';
 import { displayTournamentOverview } from '../UI/UI-tournament.js';
 import { displayTournamentsList, createEditTournamentPopup } from '../UI/UI-tournaments-list.js';
-import { importPlayerListFromDb } from './utils.js';
+import { importPlayerListFromDb, importTournamentListFromDb } from './utils.js';
 
 mainContainer.innerHTML = '';
 
-function onImportDbPlayers() {
-            const url = location.hostname === 'localhost' || location.hostname === '127.0.0.1' ? 'http://127.0.0.1:5500/kastere.json' : 'https://resultater.hesteskokasting.no/filer/eksport/kastere.json';
-        if (url) {
-            importPlayerListFromDb(url);
-        }
+function onImportFromDb() {
+    const playersUrl = location.hostname === 'localhost' || location.hostname === '127.0.0.1' ? 'http://127.0.0.1:5500/kastere.json' : 'https://resultater.hesteskokasting.no/filer/eksport/kastere.json';
+    const tournamentsUrl = location.hostname === 'localhost' || location.hostname === '127.0.0.1' ? 'http://127.0.0.1:5500/stevner.json' : 'https://resultater.hesteskokasting.no/filer/eksport/stevner.json';
+    if (playersUrl) {
+        importPlayerListFromDb(playersUrl);
+    }
+    if (tournamentsUrl) {
+        importTournamentListFromDb(tournamentsUrl);
+    }
 }
 
 export function onCreateTournament() {
@@ -100,12 +104,12 @@ function loadEventListeners() {
     document.getElementById('printContent').addEventListener('click', onPrintContent);
     document.getElementById('createTournamentBtn').addEventListener('click', onCreateTournament);
     document.getElementById('showTournamentsBtn').addEventListener('click', onShowTournaments);
-    document.getElementById('importDbPlayersBtn').addEventListener('click', onImportDbPlayers);
+    document.getElementById('importDbPlayersBtn').addEventListener('click', onImportFromDb);
 }
 
 // Remove existing event listeners and call loadEventListeners
 document.getElementById('printContent').removeEventListener('click', onPrintContent);
 document.getElementById('createTournamentBtn').removeEventListener('click', onCreateTournament);
 document.getElementById('showTournamentsBtn').removeEventListener('click', onShowTournaments);
-document.getElementById('importDbPlayersBtn').removeEventListener('click', onImportDbPlayers);
+document.getElementById('importDbPlayersBtn').removeEventListener('click', onImportFromDb);
 loadEventListeners();
