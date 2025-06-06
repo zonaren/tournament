@@ -1,5 +1,5 @@
 // Finals logic - Pure business logic functions for finals management
-import { generateUniqueId, sortPlayers, shuffleArray } from '../scripts/utils.js';
+import { generateUniqueId, sortPlayers, shuffleArray } from './scripts/utils.js';
 import { displayFinalsBracketSetupPopup } from './UI/UI-finals.js';
 
 // Utility to get all recommended group sizes for a given totalPlayers
