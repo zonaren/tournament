@@ -203,6 +203,62 @@ function displayPlayerOverview(parentContainer) {
 }
 
 /**
+ * Renders the normal ungrouped player table
+ */
+function renderNormalPlayerTable(tbody, currentTournament) {
+    const players = Players.getAll();
+    const sortedPlayers = sortPlayers(players);
+    
+    sortedPlayers
+        .filter(player => player.name !== 'Walkover')
+        .forEach((player, index) => {
+            tbody.appendChild(createPlayerRow(player, index, tbody.parentElement, currentTournament));
+        });
+}
+
+/**
+ * Renders the grouped finals player table
+ */
+function renderGroupedPlayerTable(tbody, currentTournament) {
+    const players = Players.getAll();
+    const grouped = {};
+    
+    // Group players by finalsGroup
+    players.forEach(player => {
+        if (!player.finalsGroup) return;
+        if (!grouped[player.finalsGroup]) grouped[player.finalsGroup] = [];
+        grouped[player.finalsGroup].push(player);
+    });
+    
+    const groupKeys = Object.keys(grouped).sort();
+    if (groupKeys.length === 0) {
+        // No grouped players found, fallback to normal table
+        renderNormalPlayerTable(tbody, currentTournament);
+        return;
+    }
+    
+    let rowIndex = 0;
+    groupKeys.forEach(group => {
+        // Add a group header row
+        const groupRow = document.createElement('tr');
+        const groupCell = document.createElement('td');
+        groupCell.colSpan = 6;
+        groupCell.textContent = `Gruppe ${group}`;
+        groupCell.style.fontWeight = 'bold';
+        groupCell.style.background = '#f0f0f0';
+        groupRow.appendChild(groupCell);
+        tbody.appendChild(groupRow);
+        
+        // Sort players in group
+        const sortedGroup = sortPlayers(grouped[group]).filter(player => player.name !== 'Walkover');
+        sortedGroup.forEach((player) => {
+            tbody.appendChild(createPlayerRow(player, rowIndex, tbody.parentElement, currentTournament));
+            rowIndex++;
+        });
+    });
+}
+
+/**
  * Updates only the player table contents
  */
 function updatePlayerTable() {
@@ -213,47 +269,16 @@ function updatePlayerTable() {
     const tbody = table.getElementsByTagName('tbody')[0];
     tbody.innerHTML = '';
     
-    const players = Players.getAll();
     const currentTournament = Tournaments.getCurrentTournament && Tournaments.getCurrentTournament();
     const isFinalsStage = currentTournament && currentTournament.stage === 'finals';
     const isCompletedStage = currentTournament && currentTournament.stage === 'completed';
     const hasFinalsFormat = currentTournament && currentTournament.finalsFormat !== null;
 
+    // Determine which table format to use
     if (hasFinalsFormat && (isFinalsStage || isCompletedStage)) {
-        // Group players by finalsGroup
-        const grouped = {};
-        players.forEach(player => {
-            if (!player.finalsGroup) return;
-            if (!grouped[player.finalsGroup]) grouped[player.finalsGroup] = [];
-            grouped[player.finalsGroup].push(player);
-        });
-        // Sort group keys (A, B, ...)
-        const groupKeys = Object.keys(grouped).sort();
-        let rowIndex = 0;
-        groupKeys.forEach(group => {
-            // Add a group header row
-            const groupRow = document.createElement('tr');
-            const groupCell = document.createElement('td');
-            groupCell.colSpan = 6;
-            groupCell.textContent = `Gruppe ${group}`;
-            groupCell.style.fontWeight = 'bold';
-            groupCell.style.background = '#f0f0f0';
-            groupRow.appendChild(groupCell);
-            tbody.appendChild(groupRow);
-            // Sort players in group
-            const sortedGroup = sortPlayers(grouped[group]).filter(player => player.name !== 'Walkover');
-            sortedGroup.forEach((player) => {
-                tbody.appendChild(createPlayerRow(player, rowIndex, table.parentElement, currentTournament));
-                rowIndex++;
-            });
-        });
+        renderGroupedPlayerTable(tbody, currentTournament);
     } else {
-        const sortedPlayers = sortPlayers(players);
-        sortedPlayers
-            .filter(player => player.name !== 'Walkover')
-            .forEach((player, index) => {
-                tbody.appendChild(createPlayerRow(player, index, table.parentElement, currentTournament));
-            });
+        renderNormalPlayerTable(tbody, currentTournament);
     }
 
     // Update player count
