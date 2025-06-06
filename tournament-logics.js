@@ -1,6 +1,6 @@
-import Tournaments from '../classes/Tournament.js';
-import Players from '../classes/Player.js';
-import { displayTournamentOverview } from '../UI/UI-tournament.js';
+import Tournaments from './classes/Tournament.js';
+import Players from './classes/Player.js';
+import { displayTournamentOverview } from './UI/UI-tournament.js';
 
 export function deleteTournamentAndRow(id, row) {
         Tournaments.delete(id);
