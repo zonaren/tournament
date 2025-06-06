@@ -142,13 +142,12 @@ function createDatabasePlayersPopupUI({ onAddPlayers, onRemovePlayers, filteredP
             updateUI();
             renderAvailableList();
         }, getFilteredPlayers, searchInput);
-    };
-      const renderAvailableList = () => {
+    };    const renderAvailableList = () => {
         if (getFilteredPlayers) {
             renderList(getFilteredPlayers(searchInput.value), list, selectedPlayerIds, getCurrentTournamentPlayers, selectedList, selectedCounter, (selectedPlayer) => {
                 selectedPlayerIds.add(selectedPlayer.Id);
                 updateUI();
-                renderAvailableList();
+                renderAvailableList(); // Re-render available list to remove selected player
             }, getFilteredPlayers, searchInput);
         }
     };
@@ -312,10 +311,13 @@ function renderList(players, list, selectedPlayerIds, getCurrentTournamentPlayer
             if (p.dbId) addedDbIds.add(p.dbId);
             if (p.Id) addedDbIds.add(p.Id);
         });
-        const isAlreadyInTournament = addedDbIds.has(player.Id);
-          const row = createAvailablePlayerRow(player, isAlreadyInTournament, (selectedPlayer) => {
+        const isAlreadyInTournament = addedDbIds.has(player.Id);        const row = createAvailablePlayerRow(player, isAlreadyInTournament, (selectedPlayer) => {
             selectedPlayerIds.add(selectedPlayer.Id);
             updateSelectedPlayersList(selectedList, selectedPlayerIds, selectedCounter, onRemove, getFilteredPlayers, searchInput);
+            // Re-render the available list to remove the selected player
+            if (getFilteredPlayers) {
+                renderList(getFilteredPlayers(searchInput.value), list, selectedPlayerIds, getCurrentTournamentPlayers, selectedList, selectedCounter, onRemove, getFilteredPlayers, searchInput);
+            }
         });
           list.appendChild(row);
     });
