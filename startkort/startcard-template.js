@@ -16,7 +16,7 @@ function createHeader() {
     return header;
 }
 
-function createInfoTable(playerId, playerName, tournamentName) {
+function createInfoTable(playerId, playerName, clubName, tournamentName) {
     const infoTable = document.createElement('table');
     infoTable.className = 'info-table';
 
@@ -31,7 +31,7 @@ function createInfoTable(playerId, playerName, tournamentName) {
     // Row 2: Club and class/group
     const clubRow = document.createElement('tr');
     clubRow.appendChild(createInfoCell('Klubb:'));
-    clubRow.appendChild(createInfoCell('', 'value', 'player-club'));
+    clubRow.appendChild(createInfoCell(clubName, 'value', 'player-club'));
     clubRow.appendChild(createInfoCell('Klasse/Gruppe'));
     clubRow.appendChild(createInfoCell('', 'value', null));
     infoTable.appendChild(clubRow);
@@ -178,12 +178,12 @@ function createCupTable() {
     return cupTable;
 }
 
-export function startcardTemplate(playerId, playerName, tournamentName, roundInfos) {
+export function startcardTemplate(playerId, playerName, clubName, tournamentName, roundInfos) {
     // Returns a DOM element representing the start card
     const container = document.createElement('div');
     container.className = 'startcard';
     container.appendChild(createHeader());
-    container.appendChild(createInfoTable(playerId, playerName, tournamentName));
+    container.appendChild(createInfoTable(playerId, playerName, clubName, tournamentName));
     container.appendChild(createRoundsTable(roundInfos));
     container.appendChild(createNotes());
     container.appendChild(createCupTable());

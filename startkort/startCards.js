@@ -3,8 +3,8 @@
 import { startcardTemplate } from './startcard-template.js';
 import Tournaments from '../classes/Tournament.js';
 
-export function createStartCard(playerId, playerName, tournamentName) {
-    return startcardTemplate(playerId, playerName, tournamentName);
+export function createStartCard(playerId, playerName, clubName, tournamentName) {
+    return startcardTemplate(playerId, playerName, clubName, tournamentName);
 }
 
 export function createPrintStartCardsButton() {
@@ -54,7 +54,7 @@ export function createPrintStartCardsButton() {
                         }
                     }
                 }
-                const startCardTemplate = startcardTemplate(player.id, player.name, tournamentName, roundInfos);
+                const startCardTemplate = startcardTemplate(player.id, player.name, player.clubName, tournamentName, roundInfos);
                 printWindow.document.body.appendChild(startCardTemplate);
             });
             printWindow.document.close();
