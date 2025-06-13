@@ -319,10 +319,6 @@ function displayBracketStructure(container, structure) {
 // Function to update player preview based on seeding option
 function displayNextRoundPlayersPreview(container, players, useSeeding, structure, tournament, groupName) {
     container.innerHTML = '';
-    
-    const title = document.createElement('h3');
-    title.textContent = 'Spillere:';
-    container.appendChild(title);
 
     // Determine which round structure to use based on current round number
     const currentRoundNumber = getNextFinalsRoundNumber(tournament, groupName);
@@ -356,7 +352,7 @@ function displayNextRoundPlayersPreview(container, players, useSeeding, structur
         
         walkoverPlayers.forEach(player => {
             const playerDiv = document.createElement('div');
-            playerDiv.textContent = `${player.name} (${player.matchPoints,player.scorePoints}p)`;
+            playerDiv.textContent = `${player.name} - ${player.matchPoints}p (${player.scorePoints})`;
             playerDiv.className = 'finals-walkover-player';
             walkoverDiv.appendChild(playerDiv);
         });
@@ -379,7 +375,7 @@ function displayNextRoundPlayersPreview(container, players, useSeeding, structur
 
             pool.forEach(player => {
                 const playerDiv = document.createElement('div');
-                playerDiv.textContent = `${player.name} (${player.scorePoints}p)`;
+                playerDiv.textContent = `${player.name} - ${player.matchPoints}p (${player.scorePoints})`;
                 playerDiv.className = 'finals-pool-player';
                 poolDiv.appendChild(playerDiv);
             });
@@ -394,7 +390,7 @@ function displayNextRoundPlayersPreview(container, players, useSeeding, structur
 
         remainingPlayers.forEach((player, index) => {
             const playerDiv = document.createElement('div');
-            playerDiv.textContent = `${index + 1}. ${player.name} (${player.scorePoints}p, ${player.matchPoints}kp)`;
+            playerDiv.textContent = `${index + 1}. ${player.name} - ${player.matchPoints}p (${player.scorePoints})`;
             playerDiv.className = 'finals-player-item';
             playersList.appendChild(playerDiv);
         });
