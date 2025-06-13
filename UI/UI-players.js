@@ -11,7 +11,7 @@ import { sortPlayers } from '../scripts/utils.js';
  */
 function createTableHeader() {
     const headerRow = document.createElement('tr');
-    const headers = ['#', 'S', 'Navn', 'Ant.', 'Skår', 'Poeng'];
+    const headers = ['#', 'S', 'Navn', 'Ant.', 'Kp', 'Sp'];
     
     headers.forEach(text => {
         const th = document.createElement('th');
@@ -56,16 +56,16 @@ function createPlayerRow(player, index, playerOverviewContainer, currentTourname
     numberOfMatchesCell.textContent = player.matches.length ? player.matches.length : 0;
     row.appendChild(numberOfMatchesCell);
 
-    // Score points column
-    const scoreCell = document.createElement('td');
-    scoreCell.textContent = player.scorePoints;
-    row.appendChild(scoreCell);
-
     // Match points column
     const matchPointsCell = document.createElement('td');
     matchPointsCell.classList.add('total-points');
     matchPointsCell.textContent = player.matchPoints;
     row.appendChild(matchPointsCell);
+
+    // Score points column
+    const scoreCell = document.createElement('td');
+    scoreCell.textContent = player.scorePoints;
+    row.appendChild(scoreCell);
 
     // Add context menu event (right click)
     row.addEventListener('contextmenu', function(e) {
