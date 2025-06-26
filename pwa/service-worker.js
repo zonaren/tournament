@@ -1,4 +1,4 @@
-const VERSION = '0.0.1m'; // Update this version when you want to clear the cache
+const VERSION = '0.0.2'; // Update this version when you want to clear the cache
 const CACHE_NAME = 'tournament-app-cache-' + VERSION;
 
 self.addEventListener('install', event => {
