@@ -9,6 +9,9 @@ import { importPlayerListFromDb, importTournamentListFromDb } from './utils.js';
 
 mainContainer.innerHTML = '';
 
+displayTournamentsList();
+onImportFromDb();
+
 function onImportFromDb() {
     const playersUrl = location.hostname === 'localhost' || location.hostname === '127.0.0.1' ? 'http://127.0.0.1:5500/kastere.json' : 'https://resultater.hesteskokasting.no/filer/eksport/kastere.json';
     const tournamentsUrl = location.hostname === 'localhost' || location.hostname === '127.0.0.1' ? 'http://127.0.0.1:5500/stevner.json' : 'https://resultater.hesteskokasting.no/filer/eksport/stevner.json';

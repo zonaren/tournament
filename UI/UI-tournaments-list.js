@@ -11,11 +11,16 @@ export function displayTournamentsList() {
     const loadTournamentFromDbBtn = document.createElement('button');
     loadTournamentFromDbBtn.textContent = 'Hent turnering fra database';
     loadTournamentFromDbBtn.id = 'loadTournamentFromDbBtn';
-    
     tableContainer.appendChild(loadTournamentFromDbBtn);
     loadTournamentFromDbBtn.onclick = () => {
         loadTournamentsFromDbPopup();
     };
+
+    const createTournamentBtn = document.createElement('button');
+    createTournamentBtn.id = 'createTournamentBtn';
+    createTournamentBtn.textContent = 'Opprett lokal turnering';
+    tableContainer.appendChild(createTournamentBtn);
+
     tableContainer.id = 'tournamentsList';
     tableContainer.className = 'tournaments-list';
 
@@ -237,13 +242,18 @@ export function createEditTournamentPopup(id) {
         select.style.backgroundColor = '#fff';
         select.style.color = '#333';
 
-        const dbTournaments = JSON.parse(localStorage.getItem('databaseTournaments')) || [];
-        dbTournaments.forEach(tournament => {
-            const option = document.createElement('option');
-            option.value = tournament.id;
-            option.textContent = tournament.navn;
-            select.appendChild(option);
-        });
+const dbTournaments = JSON.parse(localStorage.getItem('databaseTournaments')) || [];
+const localTournaments = Tournaments.getAll();
+const usedDbIds = new Set(localTournaments.map(t => t.dbId));
+
+dbTournaments.forEach(tournament => {
+    if (!usedDbIds.has(tournament.id)) { // Only show if not already added
+        const option = document.createElement('option');
+        option.value = tournament.id;
+        option.textContent = tournament.navn;
+        select.appendChild(option);
+    }
+});
 
         // Save button
         const saveBtn = document.createElement('button');

@@ -17,26 +17,26 @@ const menuButtons = document.createElement('div');
 menuButtons.id = 'menu-buttons';
 menuButtons.className = 'no-print';
 
-const createTournamentBtn = document.createElement('button');
-createTournamentBtn.id = 'createTournamentBtn';
-createTournamentBtn.textContent = 'Opprett turnering';
-menuButtons.appendChild(createTournamentBtn);
+// const createTournamentBtn = document.createElement('button');
+// createTournamentBtn.id = 'createTournamentBtn';
+// createTournamentBtn.textContent = 'Opprett turnering';
+// menuButtons.appendChild(createTournamentBtn);
 
-const showTournamentsBtn = document.createElement('button');
-showTournamentsBtn.id = 'showTournamentsBtn';
-showTournamentsBtn.textContent = 'Vis turneringer';
-menuButtons.appendChild(showTournamentsBtn);
+// const showTournamentsBtn = document.createElement('button');
+// showTournamentsBtn.id = 'showTournamentsBtn';
+// showTournamentsBtn.textContent = 'Vis turneringer';
+// menuButtons.appendChild(showTournamentsBtn);
 
-const importDbPlayersBtn = document.createElement('button');
-importDbPlayersBtn.id = 'importDbPlayersBtn';
-importDbPlayersBtn.textContent = 'Hent fra database';
-menuButtons.appendChild(importDbPlayersBtn);
+// const importDbPlayersBtn = document.createElement('button');
+// importDbPlayersBtn.id = 'importDbPlayersBtn';
+// importDbPlayersBtn.textContent = 'Hent fra database';
+// menuButtons.appendChild(importDbPlayersBtn);
 
-const printContentBtn = document.createElement('button');
-printContentBtn.id = 'printContent';
-printContentBtn.className = 'print-btn hidden';
-printContentBtn.textContent = 'Skriv ut';
-menuButtons.appendChild(printContentBtn);
+// const printContentBtn = document.createElement('button');
+// printContentBtn.id = 'printContent';
+// printContentBtn.className = 'print-btn hidden';
+// printContentBtn.textContent = 'Skriv ut';
+// menuButtons.appendChild(printContentBtn);
 
 header.appendChild(menuButtons);
 
@@ -49,4 +49,4 @@ mainContainer.className = 'main-container';
 document.body.appendChild(header);
 document.body.appendChild(mainContainer);
 
-export { createTournamentBtn, printContentBtn, mainContainer, titleText };
+export { mainContainer, titleText };
