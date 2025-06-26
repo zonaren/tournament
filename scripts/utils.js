@@ -190,69 +190,66 @@ function exportTournamentResults(tournamentId) {
 
     const safeName = tournament.name.replace(/[^a-z0-9]/gi, '_'); // Replace non-alphanumeric with _
 
-    // Prepare CSV rows - used to import to database directly
-    const header = ["StevneId", "Plassering", "KasterId", "KlubbId", "KlasseId", "GruppeId"];
-    const classId = 1; // Default class ID
+    //if(tournament.dbId !== null && tournament.dbId !== undefined) {
+    exportCsvForDatabase();
+    //}
 
-    const rows = tournament.players.map(player => [
-        tournament.dbId,
-        player.finalRank,
-        player.dbId,
-        player.clubId,
-        classId,
-        player.finalsGroup === "A" ? 1 : player.finalsGroup === "B" ? 2 : 1
-    ]);
+    exportCsvForExcel();
 
-    // Build CSV content
-    const csvContent = "data:text/csv;charset=utf-8," +
-        [header, ...rows].map(e => e.join(",")).join("\n");
+    function exportCsvForExcel() {
+        const headerExcel = ["Pl.nr", "St.nr", "Navn", "Klubb", "Poeng", "Skår"];
 
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `DATABASE_${tournamentId}_${safeName}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-
-    const headerExcel = ["Pl.nr", "St.nr", "Navn", "Klubb", "Poeng", "Skår"];
-
-    // Prepare the second csv row - used in excel
-const excelRows = tournament.players
-    .slice()
-    .sort((a, b) => a.finalRank - b.finalRank)
-    .map(player => [
-        player.finalRank, //plassering
-        player.id, //startnummer
-        player.name, //navn
-        player.clubName, //klubb
-        player.matchPoints, //poeng
-        player.scorePoints //skår
-    ]);
+        // Prepare the second csv row - used in excel
+        const excelRows = tournament.players
+            .slice()
+            .sort((a, b) => a.finalRank - b.finalRank)
+            .map(player => [
+                player.finalRank, //plassering
+                player.id, //startnummer
+                player.name, //navn
+                player.clubName, //klubb
+                player.matchPoints, //poeng
+                player.scorePoints //skår
+            ]);
 
         // Build CSV content
-    const excelContent = "data:text/csv;charset=utf-8," +
-        [headerExcel, ...excelRows].map(e => e.join(",")).join("\n");
+        const excelContent = "data:text/csv;charset=utf-8," +
+            [headerExcel, ...excelRows].map(e => e.join(",")).join("\n");
 
-    const encodedUri2 = encodeURI(excelContent);
-    const link2 = document.createElement("a");
-    link2.setAttribute("href", encodedUri2);
-    link2.setAttribute("download", `EXCEL_${tournamentId}_${safeName}.csv`);
-    document.body.appendChild(link2);
-    link2.click();
-    document.body.removeChild(link2);
+        const encodedUri2 = encodeURI(excelContent);
+        const link2 = document.createElement("a");
+        link2.setAttribute("href", encodedUri2);
+        link2.setAttribute("download", `EXCEL_${tournamentId}_${safeName}.csv`);
+        document.body.appendChild(link2);
+        link2.click();
+        document.body.removeChild(link2);
+    }
 
-    // Optionally, you can display a success message to the user
-    const message = document.createElement('h3');
-    message.className = 'export-success';
-    message.textContent = 'Turneringsresultatene ble eksportert!';
-    message.style.color = 'green';
-    message.style.textAlign = 'center';
-    document.body.appendChild(message);
-    setTimeout(() => {
-        message.remove();
-    }, 20000);
+    function exportCsvForDatabase() {
+        const header = ["StevneId", "Plassering", "KasterId", "KlubbId", "KlasseId", "GruppeId"];
+        const classId = 1; // Default class ID
+
+        const rows = tournament.players.map(player => [
+            tournament.dbId,
+            player.finalRank,
+            player.dbId,
+            player.clubId,
+            classId,
+            player.finalsGroup === "A" ? 1 : player.finalsGroup === "B" ? 2 : 1
+        ]);
+
+        // Build CSV content
+        const csvContent = "data:text/csv;charset=utf-8," +
+            [header, ...rows].map(e => e.join(",")).join("\n");
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", `DATABASE_${tournamentId}_${safeName}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
 }
 
 export { generateUniqueId, checkForIncompleteMatches, checkForWalkoverPlayers, deleteWalkoverPlayers, shuffleArray, sortPlayers, generateRandomString, setPlayerRanks, importPlayerListFromDb, saveDatabasePlayersToLocalStorage, importTournamentListFromDb, saveDatabaseTournamentsToLocalStorage, exportTournamentResults };
