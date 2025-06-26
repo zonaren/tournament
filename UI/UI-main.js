@@ -32,11 +32,11 @@ menuButtons.className = 'no-print';
 // importDbPlayersBtn.textContent = 'Hent fra database';
 // menuButtons.appendChild(importDbPlayersBtn);
 
-// const printContentBtn = document.createElement('button');
-// printContentBtn.id = 'printContent';
-// printContentBtn.className = 'print-btn hidden';
-// printContentBtn.textContent = 'Skriv ut';
-// menuButtons.appendChild(printContentBtn);
+const printContentBtn = document.createElement('button');
+printContentBtn.id = 'printContent';
+printContentBtn.className = 'print-btn hidden';
+printContentBtn.textContent = 'Skriv ut';
+menuButtons.appendChild(printContentBtn);
 
 header.appendChild(menuButtons);
 

@@ -25,8 +25,8 @@ class Tournaments {
         this.loadFromLocalStorage();
     }    
     
-    create(totalRounds, totalCourts, matchSchedule, tournamentName, tournamentType, players, isStarted = false, finalsFormat = null, finalsMatchSchedule = null, stage = null, dbId = null) {
-        const tournament = new Tournament(totalRounds, totalCourts, matchSchedule, tournamentName, tournamentType, finalsFormat, finalsMatchSchedule, players, isStarted, stage, dbId);
+    create(totalRounds, totalCourts, matchSchedule, tournamentName, prelimsFormat, players, isStarted = false, finalsFormat = null, finalsMatchSchedule = null, stage = null, dbId = null) {
+        const tournament = new Tournament(totalRounds, totalCourts, matchSchedule, tournamentName, prelimsFormat, finalsFormat, finalsMatchSchedule, players, isStarted, stage, dbId);
         this.tournaments.push(tournament);
         this.saveToLocalStorage();
         console.log("Tournament created: ", tournament);
@@ -92,7 +92,7 @@ class Tournaments {
                     tournamentData.totalCourts,
                     tournamentData.matchSchedule,
                     tournamentData.name,
-                    tournamentData.type,
+                    tournamentData.prelimsFormat || null,
                     tournamentData.finalsFormat || null,
                     tournamentData.finalsMatchSchedule || null,
                     tournamentData.players,
@@ -108,7 +108,7 @@ class Tournaments {
     }
 }
 
-class Tournament {    constructor(totalRounds, totalCourts, matchSchedule, tournamentName, tournamentType, finalsFormat = null, finalsMatchSchedule = null, players, isStarted = false, stage = null, dbId = null) {
+class Tournament {    constructor(totalRounds, totalCourts, matchSchedule, tournamentName, prelimsFormat, finalsFormat = null, finalsMatchSchedule = null, players, isStarted = false, stage = null, dbId = null) {
         // Set stage - prioritize explicit stage parameter, otherwise use isStarted for backward compatibility
         if (stage !== null) {
             this.stage = stage;
@@ -122,7 +122,7 @@ class Tournament {    constructor(totalRounds, totalCourts, matchSchedule, tourn
         this.dbId = dbId; // Optional database ID for persistence
         this.name = tournamentName;
         this.dateCreated = new Date().toLocaleString();
-        this.type = tournamentType;
+        this.prelimsFormat = prelimsFormat;
         this.finalsFormat = finalsFormat;
         this.finalsMatchSchedule = finalsMatchSchedule;
         this.totalRounds = totalRounds;

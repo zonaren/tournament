@@ -65,10 +65,10 @@ function checkPlayerCount(playerCount, totalRounds, type) {
 
 export function onStartTournament() {
     const tournament = Tournaments.getCurrentTournament();
-    if (checkPlayerCount(Players.count(), tournament.totalRounds, tournament.type)) {
+    if (checkPlayerCount(Players.count(), tournament.totalRounds, tournament.prelimsFormat)) {
         return; // failed
     }
-    const matchSetup = createMatchSetup(Players.count(), tournament.totalRounds, tournament.type);
+    const matchSetup = createMatchSetup(Players.count(), tournament.totalRounds, tournament.prelimsFormat);
     console.log('Match setup:', matchSetup);
     if (tournament) {
 
@@ -110,4 +110,5 @@ document.getElementById('printContent').removeEventListener('click', onPrintCont
 document.getElementById('createTournamentBtn').removeEventListener('click', onCreateTournament);
 document.getElementById('showTournamentsBtn').removeEventListener('click', onShowTournaments);
 document.getElementById('importDbPlayersBtn').removeEventListener('click', onImportFromDb);
+
 loadEventListeners();

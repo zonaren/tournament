@@ -1,6 +1,7 @@
 import Tournaments from '../classes/Tournament.js';
 import { deleteTournamentAndRow, loadTournament } from '../tournament-logics.js';
 import { displayTournamentOverview } from './UI-tournament.js';
+import { onCreateTournament } from '../scripts/events.js';
 
 export function displayTournamentsList() {
     const mainContainer = document.getElementById('mainContainer');
@@ -20,6 +21,7 @@ export function displayTournamentsList() {
     createTournamentBtn.id = 'createTournamentBtn';
     createTournamentBtn.textContent = 'Opprett lokal turnering';
     tableContainer.appendChild(createTournamentBtn);
+    createTournamentBtn.onclick = onCreateTournament;
 
     tableContainer.id = 'tournamentsList';
     tableContainer.className = 'tournaments-list';
@@ -29,7 +31,7 @@ export function displayTournamentsList() {
     
     const thead = table.createTHead();
     const headerRow = thead.insertRow();
-    ['Navn', 'Type', 'Finaler', 'Opprettet', 'Runder', "Baner", 'Spillere', 'Fase', 'Eier', ''].forEach(text => {
+    ['Navn', 'Innl.', 'Avsl.', 'Opprettet', 'Runder', "Baner", 'Spillere', 'Fase', 'Eier', ''].forEach(text => {
         const th = document.createElement('th');
         th.textContent = text;
         headerRow.appendChild(th);
@@ -42,7 +44,7 @@ export function displayTournamentsList() {
         const row = tbody.insertRow();
         
         row.insertCell().textContent = tournament.name;
-        row.insertCell().textContent = tournament.type;
+        row.insertCell().textContent = tournament.prelimsFormat;
         row.insertCell().textContent = tournament.finalsFormat || '';
         row.insertCell().textContent = tournament.dateCreated;
         row.insertCell().textContent = tournament.totalRounds;
@@ -124,22 +126,22 @@ export function createEditTournamentPopup(id) {
     popup.appendChild(nameInput);
 
     // Type input
-    const typeLabel = document.createElement('label');
-    typeLabel.textContent = 'Type:';
-    typeLabel.style.display = 'block';
-    typeLabel.style.marginTop = '1em';
-    const typeSelect = document.createElement('select');
+    const prelimsLabel = document.createElement('label');
+    prelimsLabel.textContent = 'Innledende:';
+    prelimsLabel.style.display = 'block';
+    prelimsLabel.style.marginTop = '1em';
+    const prelimsSelect = document.createElement('select');
     ['Gloppen', 'Alle mot alle', 'NHM'].forEach(opt => {
         const option = document.createElement('option');
         option.value = opt;
         option.textContent = opt;
-        if (opt === tournament.type) option.selected = true;
-        typeSelect.appendChild(option);
+        if (opt === tournament.prelimsFormat) option.selected = true;
+        prelimsSelect.appendChild(option);
     });
-    typeSelect.style.width = '100%';
-    typeSelect.style.marginTop = '0.2em';
-    popup.appendChild(typeLabel);
-    popup.appendChild(typeSelect);
+    prelimsSelect.style.width = '100%';
+    prelimsSelect.style.marginTop = '0.2em';
+    popup.appendChild(prelimsLabel);
+    popup.appendChild(prelimsSelect);
 
     // Finals input
     const finalsLabel = document.createElement('label');
@@ -205,7 +207,7 @@ export function createEditTournamentPopup(id) {
     function editTournament() {
         saveBtn.onclick = () => {
             const newName = nameInput.value.trim();
-            const newType = typeSelect.value;
+            const newPrelimsFormat = prelimsSelect.value === 'Ikke valgt' ? null : prelimsSelect.value;
             const newFinalsFormat = finalsSelect.value === 'Ikke valgt' ? null : finalsSelect.value;
             const newRounds = parseInt(roundsInput.value, 10);
             if (!newName) {
@@ -216,7 +218,7 @@ export function createEditTournamentPopup(id) {
             // Update using the class method
             Tournaments.update(id, {
                 name: newName,
-                type: newType,
+                prelimsFormat: newPrelimsFormat,
                 finalsFormat: newFinalsFormat,
                 totalRounds: isNaN(newRounds) ? tournament.totalRounds : newRounds
             });

@@ -23,7 +23,7 @@ export function displayTournamentOverview(tournament) {
     tournamentInfoDiv.id = 'tournamentInfo';
     tournamentInfoDiv.innerHTML = '';
     const tournamentName = document.createElement('h3');
-    tournamentName.textContent = tournament.name + ' - ' + tournament.type;
+    tournamentName.textContent = tournament.name;
     tournamentInfoDiv.appendChild(tournamentName);
 
     if(tournament.getCurrentStage() === 'preliminary' && tournament.finalsFormat !== null) {
