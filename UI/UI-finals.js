@@ -610,14 +610,11 @@ export function displayFinalsMatches(tournament, groupContainer, groupName) {
     matchesContainer.className = 'finals-matches-container';
 
     // Handle regular 2-player matches
-    if (tournament.finalsMatchSchedule && tournament.finalsMatchSchedule.length > 0) {
-        displayRegularFinalsMatches(tournament, matchesContainer, groupName);
-    }
+    // if (tournament.finalsMatchSchedule && tournament.finalsMatchSchedule.length > 0) {
+    //     displayRegularFinalsMatches(tournament, matchesContainer, groupName);
+    // }
 
-    // Handle 3-player court assignments
-    if (tournament.finalsCourtAssignments && tournament.finalsCourtAssignments.length > 0) {
-        displayThreePlayerCourtAssignments(tournament, matchesContainer, groupName);
-    }
+    displayThreePlayerCourtAssignments(tournament, matchesContainer, groupName);
 
     groupContainer.appendChild(matchesContainer);
 }
