@@ -267,17 +267,24 @@ function updateSelectedPlayersList(selectedList, selectedPlayerIds, selectedCoun
     
     // Sort selected players
     const sortedSelected = selectedPlayers.sort((a, b) => {
-        const klubbA = (a.KlubbId || '').toString();
-        const klubbB = (b.KlubbId || '').toString();
-        
-        if (klubbA !== klubbB) {
-            return klubbA.localeCompare(klubbB);
-        }
-        
-        const navnA = (a.Navn || '').toString();
-        const navnB = (b.Navn || '').toString();
-        return navnA.localeCompare(navnB);
-    });
+    const klubbA = (a.KlubbId || '').toString();
+    const klubbB = (b.KlubbId || '').toString();
+
+    if (klubbA !== klubbB) {
+        return klubbA.localeCompare(klubbB);
+    }
+
+    const etternavnA = (a.Etternavn || '').toString();
+    const etternavnB = (b.Etternavn || '').toString();
+    if (etternavnA !== etternavnB) {
+        return etternavnA.localeCompare(etternavnB);
+    }
+
+    const fornavnA = (a.Fornavn || '').toString();
+    const fornavnB = (b.Fornavn || '').toString();
+    return fornavnA.localeCompare(fornavnB);
+});
+
       sortedSelected.forEach(player => {
         const row = createSelectedPlayerRow(player, (playerToRemove) => {
             selectedPlayerIds.delete(playerToRemove.Id);
@@ -290,18 +297,24 @@ function renderList(players, list, selectedPlayerIds, getCurrentTournamentPlayer
     list.innerHTML = '';
     
     // Sort players by KlubbId first, then by Navn
-    const sortedPlayers = [...players].sort((a, b) => {
-        const klubbA = (a.KlubbId || '').toString();
-        const klubbB = (b.KlubbId || '').toString();
-        
-        if (klubbA !== klubbB) {
-            return klubbA.localeCompare(klubbB);
-        }
-        
-        const navnA = (a.Navn || '').toString();
-        const navnB = (b.Navn || '').toString();
-        return navnA.localeCompare(navnB);
-    });
+const sortedPlayers = [...players].sort((a, b) => {
+    const klubbA = (a.KlubbId || '').toString();
+    const klubbB = (b.KlubbId || '').toString();
+
+    if (klubbA !== klubbB) {
+        return klubbA.localeCompare(klubbB);
+    }
+
+    const etternavnA = (a.Etternavn || '').toString();
+    const etternavnB = (b.Etternavn || '').toString();
+    if (etternavnA !== etternavnB) {
+        return etternavnA.localeCompare(etternavnB);
+    }
+
+    const fornavnA = (a.Fornavn || '').toString();
+    const fornavnB = (b.Fornavn || '').toString();
+    return fornavnA.localeCompare(fornavnB);
+});
     
     sortedPlayers.forEach(player => {
         // Check if this player is already in the tournament
