@@ -23,8 +23,10 @@ class Tournaments {
         this.tournaments = [];
         this.currentTournament = null;
         this.loadFromLocalStorage();
-    }    create(totalRounds, totalCourts, matchSchedule, tournamentName, tournamentType, players, isStarted = false, finalsFormat = null, finalsMatchSchedule = null, stage = null) {
-        const tournament = new Tournament(totalRounds, totalCourts, matchSchedule, tournamentName, tournamentType, finalsFormat, finalsMatchSchedule, players, isStarted, stage);
+    }    
+    
+    create(totalRounds, totalCourts, matchSchedule, tournamentName, tournamentType, players, isStarted = false, finalsFormat = null, finalsMatchSchedule = null, stage = null, dbId = null) {
+        const tournament = new Tournament(totalRounds, totalCourts, matchSchedule, tournamentName, tournamentType, finalsFormat, finalsMatchSchedule, players, isStarted, stage, dbId);
         this.tournaments.push(tournament);
         this.saveToLocalStorage();
         console.log("Tournament created: ", tournament);
@@ -95,7 +97,8 @@ class Tournaments {
                     tournamentData.finalsMatchSchedule || null,
                     tournamentData.players,
                     tournamentData.isStarted || false,
-                    stage
+                    stage,
+                    tournamentData.dbId || null
                 );
                 tournament.id = tournamentData.id;
                 tournament.dateCreated = tournamentData.dateCreated;
@@ -105,7 +108,7 @@ class Tournaments {
     }
 }
 
-class Tournament {    constructor(totalRounds, totalCourts, matchSchedule, tournamentName, tournamentType, finalsFormat = null, finalsMatchSchedule = null, players, isStarted = false, stage = null) {
+class Tournament {    constructor(totalRounds, totalCourts, matchSchedule, tournamentName, tournamentType, finalsFormat = null, finalsMatchSchedule = null, players, isStarted = false, stage = null, dbId = null) {
         // Set stage - prioritize explicit stage parameter, otherwise use isStarted for backward compatibility
         if (stage !== null) {
             this.stage = stage;
@@ -116,6 +119,7 @@ class Tournament {    constructor(totalRounds, totalCourts, matchSchedule, tourn
         // Update isStarted for backward compatibility
         this.isStarted = this.stage !== TOURNAMENT_STAGES.NOT_STARTED;
         this.id = generateUniqueId(new Set());
+        this.dbId = dbId; // Optional database ID for persistence
         this.name = tournamentName;
         this.dateCreated = new Date().toLocaleString();
         this.type = tournamentType;

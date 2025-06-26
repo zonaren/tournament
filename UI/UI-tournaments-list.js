@@ -8,9 +8,10 @@ export function displayTournamentsList() {
     
     const tableContainer = document.createElement('div');
 
-        const loadTournamentFromDbBtn = document.createElement('button');
-    loadTournamentFromDbBtn.textContent = 'Last inn turnering fra database';
+    const loadTournamentFromDbBtn = document.createElement('button');
+    loadTournamentFromDbBtn.textContent = 'Hent turnering fra database';
     loadTournamentFromDbBtn.id = 'loadTournamentFromDbBtn';
+    
     tableContainer.appendChild(loadTournamentFromDbBtn);
     loadTournamentFromDbBtn.onclick = () => {
         loadTournamentsFromDbPopup();
@@ -252,10 +253,10 @@ export function createEditTournamentPopup(id) {
         overlay.appendChild(saveBtn);
 
         saveBtn.onclick = () => {
-            const selectedId = select.value;
+            const selectedId = parseInt(select.value);
             const selectedName = select.options[select.selectedIndex].textContent;
             if (selectedId) {
-                Tournaments.create(4, 4, [], selectedName, "Gloppen", []);
+                Tournaments.create(4, 4, [], selectedName, "Gloppen", [], false,null,null,null, selectedId);
                 document.body.removeChild(overlay); // Remove popup first
                 displayTournamentsList();
             } else {
