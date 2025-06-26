@@ -69,11 +69,6 @@ export function displayTournamentOverview(tournament) {
         // Display matches
     displayMatchOverview(tournament, matchOverviewContainer, tournamentInfoDiv);
     }
-
-
-    if(tournament.type === 'NHM') {
-
-    }
     
 }
 
@@ -173,7 +168,7 @@ function displayMatchOverview(tournament, matchOverviewContainer, tournamentInfo
 }
 
 function displayPreliminaryRounds(tournament, tournamentInfoDiv, matchOverviewContainer) {
-    switch (tournament.type) {
+    switch (tournament.prelimsFormat) {
         case 'NHM':
             const nextRoundButton = proceedToNextRoundBtn(tournament);
             tournamentInfoDiv.appendChild(nextRoundButton);
@@ -181,7 +176,7 @@ function displayPreliminaryRounds(tournament, tournamentInfoDiv, matchOverviewCo
             tournamentInfoDiv.appendChild(toggleAllRoundsButton);
 
             tournament.matchSchedule.sort((a, b) => a.roundNumber - b.roundNumber);
-            console.log('Gametype is ', tournament.type, ". Sorting rounds in descending order", tournament.matchSchedule);
+            console.log('Preliminary format is ', tournament.prelimsFormat, ". Sorting rounds in descending order", tournament.matchSchedule);
             console.log('Round', tournament.matchSchedule[0].roundNumber);
 
             if (showAllRounds) {
@@ -196,7 +191,7 @@ function displayPreliminaryRounds(tournament, tournamentInfoDiv, matchOverviewCo
             }
             break;
         default:
-            // Display all rounds for other tournament types
+            // Display all rounds for other tournament formats
             for (let index of tournament.matchSchedule) {
                 displayRound(index, matchOverviewContainer);
             }

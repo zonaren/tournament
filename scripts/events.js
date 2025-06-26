@@ -48,7 +48,7 @@ export function onEditPlayers() {
     }
 }
 
-function checkPlayerCount(playerCount, totalRounds, type) {
+function checkPlayerCount(playerCount, totalRounds, prelimsFormat) {
     if (playerCount % 2 !== 0) {
         playerCount += 1;
     }
@@ -56,7 +56,7 @@ function checkPlayerCount(playerCount, totalRounds, type) {
         alert('Det må være minst 4 spillere for å starte turneringen!');
         return true; // failed
     }
-    if (type === "Gloppen" && totalRounds > playerCount/2) {
+    if (prelimsFormat === "Gloppen" && totalRounds > playerCount/2) {
         alert('Det er for mange runder (maks. ' + playerCount/2 + '). Reduser antall runder eller endre til NHM eller Alle mot alle.');
         return true; // failed
     }

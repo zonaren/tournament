@@ -82,7 +82,7 @@ export function displayTournamentsList() {
 }
 
 export function createEditTournamentPopup(id) {
-    // Inline editing popup for tournament name, type, and rounds
+    // Inline editing popup for tournament name, format, and rounds
     const tournament = Tournaments.get(id);
     if (!tournament) return;
 
@@ -125,7 +125,7 @@ export function createEditTournamentPopup(id) {
     popup.appendChild(nameLabel);
     popup.appendChild(nameInput);
 
-    // Type input
+    // preliminary format input
     const prelimsLabel = document.createElement('label');
     prelimsLabel.textContent = 'Innledende:';
     prelimsLabel.style.display = 'block';

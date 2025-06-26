@@ -3,24 +3,24 @@ import Players from './classes/Player.js';
 import TournamentManager from './classes/TournamentManager.js';
 
 
-export function createMatchSetup(totalPlayers, totalRounds, gametype) {
+export function createMatchSetup(totalPlayers, totalRounds, prelimsFormat) {
     totalPlayers = addWalkover(totalPlayers);
     const totalCourts = totalPlayers / 2;
     const manager = new TournamentManager();
 
-    console.log('gametype: ', gametype);
+    console.log('prelimsFormat: ', prelimsFormat);
 
-    if (gametype === 'Gloppen') {
+    if (prelimsFormat === 'Gloppen') {
         manager.generateCascadeSystem(totalRounds, totalCourts);
         console.log(`Cascade system (Gloppen) is selected`);
-    } else if (gametype === 'Alle mot alle') {
+    } else if (prelimsFormat === 'Alle mot alle') {
         manager.generateRoundRobinSystem();
         console.log(`Round robin system (Alle mot alle) is selected`);
-    } else if (gametype === 'NHM') {
+    } else if (prelimsFormat === 'NHM') {
         manager.generateSwissSystem(totalCourts);
         console.log(`Swiss system (NHM) is selected`);
     } else {
-        console.log(`No valid gametype selected`);
+        console.log(`No valid prelimsFormat selected`);
         return [];
     }
 
