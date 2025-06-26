@@ -37,8 +37,6 @@ export function onEditPlayers() {
     const tournament = Tournaments.getCurrentTournament();
     if (tournament) {
 
-        const playerCount = Players.count();
-        checkPlayerCount(playerCount, tournament.totalRounds, tournament.type);
         Tournaments.update(tournament.id, {
             players: tournament.players,
         });
@@ -53,23 +51,20 @@ function checkPlayerCount(playerCount, totalRounds, type) {
     }
     if (playerCount < 4) {
         alert('Det må være minst 4 spillere for å starte turneringen!');
-        return false;
+        return true; // failed
     }
-    if (type === "Gloppen" && totalRounds >= playerCount) {
-        TournamentSettings.setRoundCount(playerCount / 2);
-        // Update the current tournament's totalRounds as well
-        const tournament = Tournaments.getCurrentTournament();
-        if (tournament) {
-            tournament.totalRounds = playerCount / 2;
-            Tournaments.update(tournament.id, { totalRounds: playerCount / 2 });
-        }
-        alert('Antall runder er satt til ' + playerCount / 2 + ' fordi det var for mange runder.');
-        return true;
+    if (type === "Gloppen" && totalRounds > playerCount/2) {
+        alert('Det er for mange runder (maks. ' + playerCount/2 + '). Reduser antall runder eller endre til NHM eller Alle mot alle.');
+        return true; // failed
     }
+    return false; // all good
 }
 
 export function onStartTournament() {
     const tournament = Tournaments.getCurrentTournament();
+    if (checkPlayerCount(Players.count(), tournament.totalRounds, tournament.type)) {
+        return; // failed
+    }
     const matchSetup = createMatchSetup(Players.count(), tournament.totalRounds, tournament.type);
     console.log('Match setup:', matchSetup);
     if (tournament) {
