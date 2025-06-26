@@ -800,7 +800,7 @@ export function displayThreePlayerCourtAssignments(tournament, container, groupN
                         statusCell.appendChild(advancedDiv);
                     } else {
                         const selectBtn = document.createElement('button');
-                        selectBtn.textContent = 'Velg videre';
+                        selectBtn.textContent = 'Velg vinnere';
                         selectBtn.className = 'finals-edit-button';
                         selectBtn.addEventListener('click', () => {
                             showPlayerSelectionPopup(assignment, tournament);
