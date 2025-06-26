@@ -2,6 +2,7 @@ import Tournaments from '../classes/Tournament.js';
 import { deleteTournamentAndRow, loadTournament } from '../tournament-logics.js';
 import { displayTournamentOverview } from './UI-tournament.js';
 import { onCreateTournament } from '../scripts/events.js';
+import { exportTournamentResults } from '../scripts/utils.js';
 
 export function displayTournamentsList() {
     const mainContainer = document.getElementById('mainContainer');
@@ -70,11 +71,15 @@ export function displayTournamentsList() {
             this.replaceWith(confirmDelete);
         };
 
+        const exportBtn = document.createElement('button');
+        exportBtn.textContent = 'Last ned csv';
+        exportBtn.onclick = () => exportTournamentResults(tournament.id);
+
         const confirmDelete = document.createElement('button');
         confirmDelete.textContent = 'Bekreft sletting';
         confirmDelete.onclick = () => deleteTournamentAndRow(tournament.id, row);
 
-        actionsCell.append(loadBtn, deleteBtn);
+        actionsCell.append(loadBtn, deleteBtn, exportBtn);
     });
 
     tableContainer.appendChild(table);

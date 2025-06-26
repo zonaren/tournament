@@ -1,3 +1,5 @@
+import Tournaments from "../classes/Tournament.js";
+
 // General player sorting function for ranking, finals, tables, etc.
 function sortPlayers(players) {
     // Helper: get mutual result between two players (returns 1 if a beat b, -1 if b beat a, 0 if draw or not found)
@@ -182,4 +184,34 @@ function saveDatabaseTournamentsToLocalStorage(databaseTournaments) {
     localStorage.setItem('databaseTournaments', JSON.stringify(databaseTournaments));
 }
 
-export { generateUniqueId, checkForIncompleteMatches, checkForWalkoverPlayers, deleteWalkoverPlayers, shuffleArray, sortPlayers, generateRandomString, setPlayerRanks, importPlayerListFromDb, saveDatabasePlayersToLocalStorage, importTournamentListFromDb, saveDatabaseTournamentsToLocalStorage };
+function exportTournamentResults(tournamentId) {
+    const tournament = Tournaments.get(tournamentId);
+    if (!tournament) return;
+
+    // Prepare CSV rows
+    const header = ["StevneId", "Plassering", "KasterId", "KlubbId", "KlasseId", "GruppeId"];
+    const classId = 1; // Default class ID
+
+    const rows = tournament.players.map(player => [
+        tournament.dbId,
+        player.finalRank,
+        player.dbId,
+        player.clubId,
+        classId,
+        player.finalsGroup === "A" ? 1 : player.finalsGroup === "B" ? 2 : 1
+    ]);
+
+    // Build CSV content
+    const csvContent = "data:text/csv;charset=utf-8," +
+        [header, ...rows].map(e => e.join(",")).join("\n");
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `tournament_${tournamentId}_results.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+export { generateUniqueId, checkForIncompleteMatches, checkForWalkoverPlayers, deleteWalkoverPlayers, shuffleArray, sortPlayers, generateRandomString, setPlayerRanks, importPlayerListFromDb, saveDatabasePlayersToLocalStorage, importTournamentListFromDb, saveDatabaseTournamentsToLocalStorage, exportTournamentResults };
