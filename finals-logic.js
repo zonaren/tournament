@@ -246,15 +246,6 @@ export function assignPlayersWithoutSeeding(players, structure, roundStructure =
 export function getNextFinalsRoundNumber(tournament, groupName) {
     let maxRound = 0;
     
-    // Check regular finals matches
-    if (tournament.finalsMatchSchedule) {
-        tournament.finalsMatchSchedule.forEach(round => {
-            if (round.groupName === groupName && round.roundNumber > maxRound) {
-                maxRound = round.roundNumber;
-            }
-        });
-    }
-    
     // Check court assignments
     if (tournament.finalsCourtAssignments) {
         tournament.finalsCourtAssignments.forEach(round => {
@@ -277,138 +268,10 @@ export function hasThreePlayerCourts(structure) {
     return firstRound.courts && firstRound.courts.some(court => court.players === 3);
 }
 
-/**
- * Create 2-player finals matches
- * @param {Object} tournament - Tournament object
- * @param {string} groupName - Group name
- * @param {Array} players - Array of players
- * @param {Object} structure - Finals structure
- * @param {boolean} useSeeding - Whether to use seeding
- * @param {number} originalPlayerCount - Original number of players in group (for structure consistency)
- * @returns {Object} - Result object with success status and data
- */
-export async function createTwoPlayerMatches(tournament, groupName, players, structure, useSeeding, originalPlayerCount) {
-    try {
-        // Import needed classes
-        const matchModule = await import('./classes/Match.js');
-        const { Match } = matchModule;
-          // Sort players for consistent ordering
-        const sortedPlayers = sortPlayers(players);
-        
-        // Initialize finals match schedule if it doesn't exist
-        if (!tournament.finalsMatchSchedule) {
-            tournament.finalsMatchSchedule = [];
-        }
-        
-        // Determine which round structure to use based on current round number
-        const currentRoundNumber = getNextFinalsRoundNumber(tournament, groupName);
-        const roundIndex = currentRoundNumber - 1; // Convert to 0-based index
-        
-        // Get the appropriate round from structure, or fallback to first round
-        const roundStructure = structure.rounds[roundIndex] || structure.rounds[0];
-        
-        let assignedPlayers;
-        
-        if (useSeeding) {
-            assignedPlayers = assignPlayersWithSeeding(sortedPlayers, structure, roundStructure);
-        } else {
-            assignedPlayers = assignPlayersWithoutSeeding(sortedPlayers, structure, roundStructure);
-        }
-        
-        const matches = [];
-        const usedIds = new Set();
-        
-        // Get existing match IDs to avoid duplicates
-        if (tournament.matchSchedule) {
-            tournament.matchSchedule.forEach(round => {
-                round.matches.forEach(match => usedIds.add(match.matchId));
-            });
-        }
-        if (tournament.finalsMatchSchedule) {
-            tournament.finalsMatchSchedule.forEach(round => {
-                round.matches.forEach(match => usedIds.add(match.matchId));
-            });
-        }
-          // Create matches for first round
-        let playerIndex = 0;
-        let courtNumber = 1;
-        
-        for (const court of roundStructure.courts) {
-            if (court.court === 'WO1' || court.court.toString().startsWith('WO')) {
-                // Handle walkover
-                if (playerIndex < assignedPlayers.length) {
-                    const walkoverPlayer = assignedPlayers[playerIndex];
-                    const matchId = generateUniqueId(usedIds);
-                    usedIds.add(matchId);
-                    
-                    // Create a walkover match (player vs bye)
-                    const walkoverMatch = new Match(
-                        matchId,
-                        `WO-${groupName}`,
-                        walkoverPlayer,
-                        { id: 'BYE', name: 'Walkover', scorePoints: 0, matchPoints: 0 },
-                        false
-                    );
-                    
-                    // Set walkover scores
-                    walkoverMatch.p1.scorePoints = 21;
-                    walkoverMatch.p2.scorePoints = 0;
-                    walkoverMatch.isCompleted = true;
-                    
-                    matches.push(walkoverMatch);
-                    playerIndex++;
-                }
-            } else {
-                // Regular match
-                if (playerIndex + 1 < assignedPlayers.length) {
-                    const p1 = assignedPlayers[playerIndex];
-                    const p2 = assignedPlayers[playerIndex + 1];
-                    const matchId = generateUniqueId(usedIds);
-                    usedIds.add(matchId);
-                    
-                    const match = new Match(
-                        matchId,
-                        `${courtNumber}-${groupName}`,
-                        p1,
-                        p2,
-                        false
-                    );
-                    
-                    matches.push(match);
-                    playerIndex += 2;
-                    courtNumber++;
-                }
-            }
-        }
-          // Create Round object and add to tournament
-        const roundNumber = getNextFinalsRoundNumber(tournament, groupName);
-        const finalsRound = {
-            roundNumber: roundNumber,
-            matches: matches,
-            groupName: groupName,
-            roundName: roundStructure.name || `Round ${roundNumber} - Group ${groupName}`
-        };
-        
-        tournament.finalsMatchSchedule.push(finalsRound);
-        tournament.saveToLocalStorage();
-        
-        return {
-            success: true,
-            matches: matches.length,
-            round: finalsRound
-        };
-        
-    } catch (error) {
-        console.error('Error creating 2-player matches:', error);
-        return {
-            success: false,
-            error: error.message
-        };
-    }
-}
 
 /**
- * Create 3-player court assignments
+/**
+ * Create court assignments for any round (2-player or 3-player courts)
  * @param {Object} tournament - Tournament object
  * @param {string} groupName - Group name
  * @param {Array} players - Array of players
@@ -417,41 +280,28 @@ export async function createTwoPlayerMatches(tournament, groupName, players, str
  * @param {number} originalPlayerCount - Original number of players in group (for structure consistency)
  * @returns {Object} - Result object with success status and data
  */
-export async function createThreePlayerCourtAssignments(tournament, groupName, players, structure, useSeeding, originalPlayerCount) {
-    try {        // Sort players for consistent ordering
+export async function createCourtAssignments(tournament, groupName, players, structure, useSeeding, originalPlayerCount) {
+    try {
         const sortedPlayers = sortPlayers(players);
-        
-        // Initialize finals court assignments if it doesn't exist
         if (!tournament.finalsCourtAssignments) {
             tournament.finalsCourtAssignments = [];
         }
-        
-        // Determine which round structure to use based on current round number
         const currentRoundNumber = getNextFinalsRoundNumber(tournament, groupName);
-        const roundIndex = currentRoundNumber - 1; // Convert to 0-based index
-        
-        // Get the appropriate round from structure, or fallback to first round
+        const roundIndex = currentRoundNumber - 1;
         const roundStructure = structure.rounds[roundIndex] || structure.rounds[0];
-        
         let assignedPlayers;
-        
         if (useSeeding) {
             assignedPlayers = assignPlayersWithSeeding(sortedPlayers, structure, roundStructure);
         } else {
             assignedPlayers = assignPlayersWithoutSeeding(sortedPlayers, structure, roundStructure);
         }
-        
         const courtAssignments = [];
-          // Create court assignments for first round
         let playerIndex = 0;
         let courtNumber = 1;
-        
         for (const court of roundStructure.courts) {
             if (court.court.toString().startsWith('WO')) {
-                // Handle walkover
                 if (playerIndex < assignedPlayers.length) {
                     const walkoverPlayer = assignedPlayers[playerIndex];
-                    
                     courtAssignments.push({
                         courtNumber: `WO-${courtNumber}`,
                         players: [walkoverPlayer],
@@ -460,17 +310,15 @@ export async function createThreePlayerCourtAssignments(tournament, groupName, p
                         isCompleted: false,
                         advancedPlayers: []
                     });
-                    
                     playerIndex++;
                 }
             } else {
-                // Regular 3-player court
+                // Handles both 2-player and 3-player courts
                 const courtPlayers = [];
                 for (let i = 0; i < court.players && playerIndex < assignedPlayers.length; i++) {
                     courtPlayers.push(assignedPlayers[playerIndex]);
                     playerIndex++;
                 }
-                
                 if (courtPlayers.length > 0) {
                     courtAssignments.push({
                         courtNumber: courtNumber,
@@ -484,27 +332,23 @@ export async function createThreePlayerCourtAssignments(tournament, groupName, p
                 }
             }
         }
-          // Create Round object and add to tournament
         const roundNumber = getNextFinalsRoundNumber(tournament, groupName);
         const finalsRound = {
             roundNumber: roundNumber,
             courtAssignments: courtAssignments,
             groupName: groupName,
             roundName: roundStructure.name || `Round ${roundNumber} - Group ${groupName}`,
-            isThreePlayerRound: true
+            isThreePlayerRound: roundStructure.courts.some(c => c.players === 3)
         };
-        
         tournament.finalsCourtAssignments.push(finalsRound);
         tournament.saveToLocalStorage();
-        
         return {
             success: true,
             assignments: courtAssignments.length,
             round: finalsRound
         };
-        
     } catch (error) {
-        console.error('Error creating 3-player court assignments:', error);
+        console.error('Error creating court assignments:', error);
         return {
             success: false,
             error: error.message
@@ -513,7 +357,8 @@ export async function createThreePlayerCourtAssignments(tournament, groupName, p
 }
 
 /**
- * Main function to create finals matches/assignments
+/**
+ * Main function to create finals court assignments (2- or 3-player courts)
  * @param {Object} tournament - Tournament object
  * @param {string} groupName - Group name
  * @param {Array} players - Array of players
@@ -529,13 +374,8 @@ export async function createFinalsMatches(tournament, groupName, players, struct
         structure, 
         useSeeding 
     });
-    
-    // Check if structure uses 3-player courts
-    if (hasThreePlayerCourts(structure)) {
-        return await createThreePlayerCourtAssignments(tournament, groupName, players, structure, useSeeding, originalPlayerCount);
-    } else {
-        return await createTwoPlayerMatches(tournament, groupName, players, structure, useSeeding, originalPlayerCount);
-    }
+    // Always use court assignments for all rounds (2- or 3-player courts)
+    return await createCourtAssignments(tournament, groupName, players, structure, useSeeding, originalPlayerCount);
 }
 
 /**

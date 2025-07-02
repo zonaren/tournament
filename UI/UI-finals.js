@@ -609,120 +609,12 @@ export function displayFinalsMatches(tournament, groupContainer, groupName) {
     matchesContainer.id = 'finalsMatches';
     matchesContainer.className = 'finals-matches-container';
 
-    // Handle regular 2-player matches
-    // if (tournament.finalsMatchSchedule && tournament.finalsMatchSchedule.length > 0) {
-    //     displayRegularFinalsMatches(tournament, matchesContainer, groupName);
-    // }
-
-    displayThreePlayerCourtAssignments(tournament, matchesContainer, groupName);
+    displayCourtAssignments(tournament, matchesContainer, groupName);
 
     groupContainer.appendChild(matchesContainer);
 }
 
-export function displayRegularFinalsMatches(tournament, container, groupName) {
-    // Group matches by group name
-    const matchesByGroup = {};
-    tournament.finalsMatchSchedule.forEach(round => {
-        if (!matchesByGroup[round.groupName]) {
-            matchesByGroup[round.groupName] = [];
-        }
-        matchesByGroup[round.groupName].push(round);
-    });
-
-    // Display matches only for the specified group
-    if (matchesByGroup[groupName]) {
-        const groupMatchesDiv = document.createElement('div');
-        groupMatchesDiv.className = 'finals-group-matches';
-
-        matchesByGroup[groupName].forEach(round => {
-            const roundDiv = document.createElement('div');
-            roundDiv.className = 'finals-round';
-
-            // Create table for matches
-            const table = document.createElement('table');
-            table.classList.add('finals-matches-table');
-
-            // Create table header to show group name and round number
-            const thead1 = table.createTHead();
-            const headerRow1 = thead1.insertRow();
-            const groupHeaderCell = document.createElement('th');
-            groupHeaderCell.textContent = `Gruppe ${groupName} - Runde ${round.roundNumber}`;
-            groupHeaderCell.colSpan = 3;
-            groupHeaderCell.className = 'finals-group-header';
-            headerRow1.appendChild(groupHeaderCell);
-            // Create main header row
-
-            const thead = table.createTHead();
-            const headerRow = thead.insertRow();
-            ['Bane', 'Spiller 1', 'Resultat', 'Spiller 2', 'Status'].forEach(text => {
-                const th = document.createElement('th');
-                th.textContent = text;
-                th.className = 'finals-table-header';
-                headerRow.appendChild(th);
-            });
-
-            const tbody = table.createTBody();
-            round.matches.forEach(match => {
-                const row = tbody.insertRow();
-                row.className = 'finals-table-row';
-
-                // Court
-                const courtCell = row.insertCell();
-                courtCell.textContent = match.court;
-                courtCell.className = 'finals-table-cell finals-court-cell';
-
-                // Player 1
-                const p1Cell = row.insertCell();
-                p1Cell.textContent = match.p1.name;
-                p1Cell.className = 'finals-table-cell';
-
-                // Score
-                const scoreCell = row.insertCell();
-                if (match.p2.id === 'BYE') {
-                    scoreCell.textContent = 'Walkover';
-                } else {
-                    scoreCell.textContent = `${match.p1.scorePoints} - ${match.p2.scorePoints}`;
-                }
-                scoreCell.className = 'finals-table-cell finals-score-cell';
-                scoreCell.addEventListener('click', () => {
-                    if (match.p2.id !== 'BYE') {
-                        openScorePopup(match, match.p1, match.p2);
-                    }
-                });
-
-                // Player 2
-                const p2Cell = row.insertCell();
-                p2Cell.textContent = match.p2.name;
-                p2Cell.className = 'finals-table-cell';
-
-                // Status
-                const statusCell = row.insertCell();
-                statusCell.className = 'finals-table-cell finals-status-cell';
-
-                if (match.p2.id === 'BYE') {
-                    statusCell.textContent = 'Walkover';
-                    statusCell.classList.add('finals-walkover');
-                } else if (match.isCompleted) {
-                    statusCell.textContent = 'Fullført';
-                    statusCell.classList.add('finals-completed');
-                } else {
-                    const editBtn = document.createElement('button');
-                    editBtn.textContent = 'Rediger';
-                    editBtn.className = 'finals-edit-button';
-                    editBtn.addEventListener('click', () => {
-                        openScorePopup(match, match.p1, match.p2);
-                    });
-                    statusCell.appendChild(editBtn);
-                }
-            });            roundDiv.appendChild(table);
-            groupMatchesDiv.appendChild(roundDiv);
-        });
-
-        container.appendChild(groupMatchesDiv);
-    }
-}
-
-export function displayThreePlayerCourtAssignments(tournament, container, groupName) {
+export function displayCourtAssignments(tournament, container, groupName) {
     // Group court assignments by group name
     const assignmentsByGroup = {};
     tournament.finalsCourtAssignments.forEach(round => {
