@@ -139,12 +139,13 @@ function createCompleteTournamentButton() {
     completeTournamentBtn.textContent = 'Fullfør turnering';
     completeTournamentBtn.classList.add('complete-tournament-btn');
     completeTournamentBtn.addEventListener('click', () => {
-        const tournament = Tournaments.getCurrentTournament();
-        tournament.setStage('completed');
-        setPlayerRanks(tournament);
-        tournament.saveToLocalStorage();
-        displayTournamentOverview(tournament);
-        alert('Turneringen er fullført!');
+        if (confirm('Er du sikker på at du vil fullføre turneringen? Dette kan ikke angres.')) {
+            const tournament = Tournaments.getCurrentTournament();
+            tournament.setStage('completed');
+            setPlayerRanks(tournament);
+            tournament.saveToLocalStorage();
+            displayTournamentOverview(tournament);
+        }
     });
     return completeTournamentBtn;
 }
