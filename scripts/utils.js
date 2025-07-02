@@ -21,6 +21,12 @@ function sortPlayers(players) {
     }
 
     return players.slice().sort((a, b) => {
+
+        // 0. Prioritize finalRank if available
+        if (a.finalRank != null && b.finalRank != null) {
+            return a.finalRank - b.finalRank;
+        }
+
         // 1. Group by finalsGroup alphabetically (players without finalsGroup go last)
         const aGroup = a.finalsGroup || 'ZZZ'; // Players without group go to end
         const bGroup = b.finalsGroup || 'ZZZ';
