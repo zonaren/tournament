@@ -20,6 +20,12 @@ function sortPlayers(players) {
         return Math.max(...player.matches.map(m => m.scorePoints || 0));
     }
 
+    // If no matches are completed, sort by id
+    const tournament = Tournaments.getCurrentTournament();
+    if (tournament && !anyMatchesCompleted(tournament)) {
+        return players.slice().sort((a, b) => a.id - b.id);
+    }
+
     return players.slice().sort((a, b) => {
 
 
@@ -63,8 +69,8 @@ function sortPlayers(players) {
         }
         
         // 6. Highest single match scorePoints
-        return getHighestSingleScore(b) - getHighestSingleScore(a);
-    if (scoreDiff !== 0) return scoreDiff;
+        const scoreDiff = getHighestSingleScore(b) - getHighestSingleScore(a);
+        if (scoreDiff !== 0) return scoreDiff;
 
         // 7. Finally, sort by id (start number) if all else is equal
         // This ensures that players with same points are sorted by their start number
