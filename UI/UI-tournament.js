@@ -32,7 +32,9 @@ export function displayTournamentOverview(tournament) {
     }
 
     if(tournament.isStarted === true && tournament.getCurrentStage() !== 'completed') {
-        tournamentInfoDiv.appendChild(createPrintStartCardsButton());
+        if(tournament.prelimsFormat === 'Gloppen') {
+                    tournamentInfoDiv.appendChild(createPrintStartCardsButton());
+        }
         const completeTournamentBtn = createCompleteTournamentButton();
         tournamentInfoDiv.appendChild(completeTournamentBtn);
     }
