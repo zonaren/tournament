@@ -19,6 +19,10 @@ export function createPrintStartCardsButton() {
             return;
         }
         const players = currentTournament.getPlayers();
+        // sort players by id
+        players.sort((a, b) => {
+            return a.id - b.id; // Then by id for players with same finalRank
+        });
         const tournamentName = currentTournament.name;
         if (players && players.length > 0) {
             const printWindow = window.open('', '_blank');
