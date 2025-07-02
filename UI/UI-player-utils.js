@@ -105,7 +105,7 @@ function makeEliminatedPlayersLessVisible() {
         const player = Players.get(playerId);
         
         if (player && player.eliminated) {
-            row.style.opacity = '0.5'; // Make eliminated players less visible
+            row.style.opacity = '0.8'; // Make eliminated players less visible
         } else {
             row.style.opacity = '1'; // Reset for non-eliminated players
         }
