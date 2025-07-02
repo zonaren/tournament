@@ -160,11 +160,14 @@ function displayMatchOverview(tournament, matchOverviewContainer, tournamentInfo
 
 
     // show finals if stage is set to finals
-    if(currentStage === 'finals') {
+    if(currentStage === 'finals' || currentStage === 'completed') {
     displayFinalsOverview(tournament, matchOverviewContainer);
     }
+
         // show preliminary rounds
-    displayPreliminaryRounds(tournament, tournamentInfoDiv, matchOverviewContainer);
+        if(currentStage === 'preliminary' || currentStage === 'completed') {
+            displayPreliminaryRounds(tournament, tournamentInfoDiv, matchOverviewContainer);
+        }
 
 
 }
