@@ -85,7 +85,7 @@ class Player {
         this.scorePoints = 0; // sum of all score points from all matches
         this.matchPoints = 0; // sum of all match points from all matches
         this.scorePointsDiff = 0; // difference between score points for and against
-        this.finalRank = 0; // final rank in the tournament
+        this.finalRank = null; // final rank in the tournament
         this.startNumber = null; // start number for the player. Will be set when the tournament is started to avoid manipulation
         this.matches = [];
     }
