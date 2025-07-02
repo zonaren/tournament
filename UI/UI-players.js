@@ -99,6 +99,18 @@ function createPlayerRow(player, index, playerOverviewContainer, currentTourname
         if (touchTimer) clearTimeout(touchTimer);
     }, { passive: true });
     // (Left click context menu removed)
+
+    row.setAttribute('draggable', true);
+
+    row.addEventListener('dragstart', (e) => {
+        e.dataTransfer.setData('text/plain', player.id);
+        row.classList.add('dragging');
+    });
+
+    row.addEventListener('dragend', () => {
+        row.classList.remove('dragging');
+    });
+
     return row;
 }
 
@@ -286,8 +298,80 @@ function updatePlayerTable() {
     if (playerCount) {
         playerCount.textContent = `${Players.count()} spillere`;
     }
+
+    // Drag and drop logic for reordering players and updating finalRank
+    let dragSrcRow = null;
+
+    tbody.addEventListener('dragstart', (e) => {
+        const row = e.target.closest('tr[data-player-id]');
+        if (row) {
+            dragSrcRow = row;
+            row.classList.add('dragging');
+        }
+    });
+
+    tbody.addEventListener('dragend', (e) => {
+        const row = e.target.closest('tr[data-player-id]');
+        if (row) {
+            row.classList.remove('dragging');
+        }
+        dragSrcRow = null;
+    });
+
+    tbody.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        const afterElement = getDragAfterElement(tbody, e.clientY);
+        const dragging = tbody.querySelector('.dragging');
+        if (dragging && afterElement !== dragging) {
+            tbody.insertBefore(dragging, afterElement);
+        }
+    });
+
+    tbody.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const dragging = tbody.querySelector('.dragging');
+        if (!dragging) return;
+        const afterElement = getDragAfterElement(tbody, e.clientY);
+        if (afterElement !== dragging) {
+            tbody.insertBefore(dragging, afterElement);
+        }
+        // After drop, update finalRank for all visible rows and update positionCell text
+        const currentTournament = Tournaments.getCurrentTournament && Tournaments.getCurrentTournament();
+        const rows = Array.from(tbody.querySelectorAll('tr[data-player-id]'));
+        rows.forEach((row, idx) => {
+            const playerId = row.getAttribute('data-player-id');
+            const player = Players.get(Number(playerId));
+            if (player) {
+                Players.setFinalRank(player.id, idx + 1);
+                console.log(`Updated player ${player.name} finalRank to ${player.finalRank}`);
+            }
+            else{
+                console.warn(`Player with ID ${playerId} not found for finalRank update.`);
+            }
+            // Always update the first cell (positionCell) to show the correct rank
+            const positionCell = row.querySelector('td');
+            if (positionCell) {
+                positionCell.textContent = idx + 1;
+            }
+        });
+        onEditPlayers(); // Trigger the event to update the tournament
+        // No need to call updatePlayerTable() here, as the DOM already reflects the new order
+    });
     // Make eliminated players less visible
     makeEliminatedPlayersLessVisible();
+}
+
+function getDragAfterElement(container, y) {
+    const draggableElements = [...container.querySelectorAll('tr[data-player-id]:not(.dragging)')];
+    return draggableElements.reduce((closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+        if (offset < 0 && offset > closest.offset) {
+            return { offset: offset, element: child };
+        } else {
+            return closest;
+        }
+    }, { offset: -Infinity }).element;
 }
 
 function playerOverviewContent(playerOverview) {

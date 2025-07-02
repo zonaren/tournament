@@ -39,6 +39,14 @@ class Players {
         this.saveToLocalStorage();
     }
 
+    setFinalRank(id, rank) {
+        const player = this.get(id);
+        if (player) {
+            player.finalRank = rank;
+        }
+        this.saveToLocalStorage();
+    }
+
     delete(id) {
         const index = this.players.findIndex(player => player.id === id);
         if (index !== -1) {

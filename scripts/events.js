@@ -39,12 +39,18 @@ export function onCreateTournament() {
 export function onEditPlayers() {
     const tournament = Tournaments.getCurrentTournament();
     if (tournament) {
-
+        // Always update tournament.players from Players.getAll() to ensure latest data (including finalRank)
+        tournament.players = Players.getAll().map(p => ({ ...p }));
         Tournaments.update(tournament.id, {
             players: tournament.players,
         });
         console.log('Tournament updated:', tournament);
-        displayTournamentOverview(tournament);
+
+        if(tournament.stage !== 'completed') {
+            displayTournamentOverview(tournament);
+        }
+
+        
     }
 }
 
