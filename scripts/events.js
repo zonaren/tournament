@@ -94,11 +94,6 @@ export function onStartTournament() {
     }   
 }
 
-
-function onShowTournaments() {
-    displayTournamentsList();
-}
-
 function onPrintContent() {
     window.print();
 }
@@ -107,14 +102,10 @@ function loadEventListeners() {
     // Add event listeners for buttons
     document.getElementById('printContent').addEventListener('click', onPrintContent);
     document.getElementById('createTournamentBtn').addEventListener('click', onCreateTournament);
-    document.getElementById('showTournamentsBtn').addEventListener('click', onShowTournaments);
-    document.getElementById('importDbPlayersBtn').addEventListener('click', onImportFromDb);
 }
 
 // Remove existing event listeners and call loadEventListeners
 document.getElementById('printContent').removeEventListener('click', onPrintContent);
 document.getElementById('createTournamentBtn').removeEventListener('click', onCreateTournament);
-document.getElementById('showTournamentsBtn').removeEventListener('click', onShowTournaments);
-document.getElementById('importDbPlayersBtn').removeEventListener('click', onImportFromDb);
 
 loadEventListeners();
