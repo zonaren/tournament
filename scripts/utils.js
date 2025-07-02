@@ -64,7 +64,28 @@ function sortPlayers(players) {
         
         // 6. Highest single match scorePoints
         return getHighestSingleScore(b) - getHighestSingleScore(a);
+    if (scoreDiff !== 0) return scoreDiff;
+
+        // 7. Finally, sort by id (start number) if all else is equal
+        // This ensures that players with same points are sorted by their start number
+        return a.id - b.id;
     });
+}
+
+function completeAllMatches(tournament) {
+    // Iterate through all rounds and matches, marking them as completed
+    tournament.matchSchedule.forEach(round => {
+        round.matches.forEach(match => {
+            match.isCompleted = true; // Mark match as completed
+        });
+    });
+}
+
+function anyMatchesCompleted(tournament) {
+    // Returns true if at least one match in the tournament is completed
+    return tournament.matchSchedule.some(round =>
+        round.matches.some(match => match.isCompleted)
+    );
 }
 
 // Function to set player ranks based on their scores
@@ -264,4 +285,4 @@ function exportTournamentResults(tournamentId) {
     }
 }
 
-export { generateUniqueId, checkForIncompleteMatches, checkForWalkoverPlayers, deleteWalkoverPlayers, shuffleArray, sortPlayers, generateRandomString, setPlayerRanks, importPlayerListFromDb, saveDatabasePlayersToLocalStorage, importTournamentListFromDb, saveDatabaseTournamentsToLocalStorage, exportTournamentResults };
+export { generateUniqueId, checkForIncompleteMatches, checkForWalkoverPlayers, deleteWalkoverPlayers, shuffleArray, sortPlayers, generateRandomString, setPlayerRanks, importPlayerListFromDb, saveDatabasePlayersToLocalStorage, importTournamentListFromDb, saveDatabaseTournamentsToLocalStorage, exportTournamentResults, completeAllMatches };
