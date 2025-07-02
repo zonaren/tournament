@@ -580,16 +580,31 @@ export function displayFinalsOverview(tournament, matchOverviewContainer) {
 
         // Add button to draw next round for this group (above table)
         const drawFinalsButton = document.createElement('button');
-        
         drawFinalsButton.textContent = `Trekk neste runde`;
         drawFinalsButton.classList.add('draw-finals-btn');
-        
         drawFinalsButton.dataset.group = groupName;
+
+        // Disable button if not all assignments in the last round are completed
+        let allCompleted = true;
+        let hasAssignments = false;
+        if (tournament.finalsCourtAssignments && tournament.finalsCourtAssignments.length > 0) {
+            const groupRounds = tournament.finalsCourtAssignments.filter(r => r.groupName === groupName);
+            const allAssignments = groupRounds.flatMap(r => r.courtAssignments || []);
+            if (allAssignments.length > 0) {
+                hasAssignments = true;
+                allCompleted = allAssignments.every(a => a.isCompleted || a.isWalkover);
+            }
+        }
+        if (hasAssignments && !allCompleted) {
+            drawFinalsButton.disabled = true;
+            drawFinalsButton.title = 'Alle kamper må være fullført før du kan trekke neste runde.';
+        }
         drawFinalsButton.addEventListener('click', () => {
-            drawFinalsForGroup(tournament, groupName);
+            if (!drawFinalsButton.disabled) {
+                drawFinalsForGroup(tournament, groupName);
+            }
         });
-        
-        groupContainer.appendChild(drawFinalsButton);        // Show finals matches if they exist
+        groupContainer.appendChild(drawFinalsButton); // Show finals matches if they exist
         if ((tournament.finalsMatchSchedule && tournament.finalsMatchSchedule.length > 0) ||
             (tournament.finalsCourtAssignments && tournament.finalsCourtAssignments.length > 0)) {
             displayFinalsMatches(tournament, groupContainer, groupName);
@@ -651,7 +666,7 @@ export function displayCourtAssignments(tournament, container, groupName) {
             // Create main header row
             const thead = table.createTHead();
             const headerRow = thead.insertRow();
-            ['Bane', 'Spillere', 'Status'].forEach(text => {
+            ['Bane', 'Spillere', ''].forEach(text => {
                 const th = document.createElement('th');
                 th.textContent = text;
                 th.className = 'finals-table-header';
