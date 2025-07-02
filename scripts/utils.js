@@ -22,9 +22,15 @@ function sortPlayers(players) {
 
     return players.slice().sort((a, b) => {
 
+
         // 0. Prioritize finalRank if available
         if (a.finalRank != null && b.finalRank != null) {
             return a.finalRank - b.finalRank;
+        }
+
+                // Order by id (startnumber) if all players have 0 matchPoints
+        if (a.matchPoints === 0 && b.matchPoints === 0 && a.scorePoints === 0 && b.scorePoints === 0) {
+            return a.id - b.id; // Sort by start number (id)
         }
 
         // 1. Group by finalsGroup alphabetically (players without finalsGroup go last)
