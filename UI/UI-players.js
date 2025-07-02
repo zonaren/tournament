@@ -299,66 +299,75 @@ function updatePlayerTable() {
         playerCount.textContent = `${Players.count()} spillere`;
     }
 
+    if(isCompletedStage) {
     // Drag and drop logic for reordering players and updating finalRank
-    let dragSrcRow = null;
+        dragAndDropPlayers();
+    }
 
-    tbody.addEventListener('dragstart', (e) => {
-        const row = e.target.closest('tr[data-player-id]');
-        if (row) {
-            dragSrcRow = row;
-            row.classList.add('dragging');
-        }
-    });
-
-    tbody.addEventListener('dragend', (e) => {
-        const row = e.target.closest('tr[data-player-id]');
-        if (row) {
-            row.classList.remove('dragging');
-        }
-        dragSrcRow = null;
-    });
-
-    tbody.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        const afterElement = getDragAfterElement(tbody, e.clientY);
-        const dragging = tbody.querySelector('.dragging');
-        if (dragging && afterElement !== dragging) {
-            tbody.insertBefore(dragging, afterElement);
-        }
-    });
-
-    tbody.addEventListener('drop', (e) => {
-        e.preventDefault();
-        const dragging = tbody.querySelector('.dragging');
-        if (!dragging) return;
-        const afterElement = getDragAfterElement(tbody, e.clientY);
-        if (afterElement !== dragging) {
-            tbody.insertBefore(dragging, afterElement);
-        }
-        // After drop, update finalRank for all visible rows and update positionCell text
-        const currentTournament = Tournaments.getCurrentTournament && Tournaments.getCurrentTournament();
-        const rows = Array.from(tbody.querySelectorAll('tr[data-player-id]'));
-        rows.forEach((row, idx) => {
-            const playerId = row.getAttribute('data-player-id');
-            const player = Players.get(Number(playerId));
-            if (player) {
-                Players.setFinalRank(player.id, idx + 1);
-                console.log(`Updated player ${player.name} finalRank to ${player.finalRank}`);
-            }
-            else{
-                console.warn(`Player with ID ${playerId} not found for finalRank update.`);
-            }
-            // Always update the first cell (positionCell) to show the correct rank
-            const positionCell = row.querySelector('td');
-            if (positionCell) {
-                positionCell.textContent = idx + 1;
-            }
-        });
-        onEditPlayers(); // Trigger the event to update the tournament
-        // No need to call updatePlayerTable() here, as the DOM already reflects the new order
-    });
     // Make eliminated players less visible
     makeEliminatedPlayersLessVisible();
+
+    function dragAndDropPlayers() {
+
+        let dragSrcRow = null;
+
+        tbody.addEventListener('dragstart', (e) => {
+            const row = e.target.closest('tr[data-player-id]');
+            if (row) {
+                dragSrcRow = row;
+                row.classList.add('dragging');
+            }
+        });
+
+        tbody.addEventListener('dragend', (e) => {
+            const row = e.target.closest('tr[data-player-id]');
+            if (row) {
+                row.classList.remove('dragging');
+            }
+            dragSrcRow = null;
+        });
+
+        tbody.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            const afterElement = getDragAfterElement(tbody, e.clientY);
+            const dragging = tbody.querySelector('.dragging');
+            if (dragging && afterElement !== dragging) {
+                tbody.insertBefore(dragging, afterElement);
+            }
+        });
+
+        tbody.addEventListener('drop', (e) => {
+            e.preventDefault();
+
+            const dragging = tbody.querySelector('.dragging');
+            if (!dragging) return;
+            const afterElement = getDragAfterElement(tbody, e.clientY);
+            if (afterElement !== dragging) {
+                tbody.insertBefore(dragging, afterElement);
+            }
+            // After drop, update finalRank for all visible rows and update positionCell text
+            const rows = Array.from(tbody.querySelectorAll('tr[data-player-id]'));
+            rows.forEach((row, idx) => {
+                const playerId = row.getAttribute('data-player-id');
+                const player = Players.get(Number(playerId));
+                if (player) {
+                    Players.setFinalRank(player.id, idx + 1);
+                    console.log(`Updated player ${player.name} finalRank to ${player.finalRank}`);
+                }
+                else {
+                    console.warn(`Player with ID ${playerId} not found for finalRank update.`);
+                }
+                // Always update the first cell (positionCell) to show the correct rank
+                const positionCell = row.querySelector('td');
+                if (positionCell) {
+                    positionCell.textContent = idx + 1;
+                }
+            });
+            onEditPlayers();
+
+        });
+        }
+    
 }
 
 function getDragAfterElement(container, y) {
