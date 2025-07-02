@@ -25,8 +25,8 @@ class Tournaments {
         this.loadFromLocalStorage();
     }    
     
-    create(totalRounds, totalCourts, matchSchedule, tournamentName, prelimsFormat, players, isStarted = false, finalsFormat = null, finalsMatchSchedule = null, stage = null, dbId = null) {
-        const tournament = new Tournament(totalRounds, totalCourts, matchSchedule, tournamentName, prelimsFormat, finalsFormat, finalsMatchSchedule, players, isStarted, stage, dbId);
+    create(totalRounds, totalCourts, matchSchedule, tournamentName, prelimsFormat, players, isStarted = false, finalsFormat = null, finalsCourtAssignments = null, stage = null, dbId = null) {
+        const tournament = new Tournament(totalRounds, totalCourts, matchSchedule, tournamentName, prelimsFormat, finalsFormat, finalsCourtAssignments, players, isStarted, stage, dbId);
         this.tournaments.push(tournament);
         this.saveToLocalStorage();
         console.log("Tournament created: ", tournament);
@@ -94,7 +94,7 @@ class Tournaments {
                     tournamentData.name,
                     tournamentData.prelimsFormat || null,
                     tournamentData.finalsFormat || null,
-                    tournamentData.finalsMatchSchedule || null,
+                    tournamentData.finalsCourtAssignments || [],
                     tournamentData.players,
                     tournamentData.isStarted || false,
                     stage,
@@ -108,7 +108,7 @@ class Tournaments {
     }
 }
 
-class Tournament {    constructor(totalRounds, totalCourts, matchSchedule, tournamentName, prelimsFormat, finalsFormat = null, finalsMatchSchedule = null, players, isStarted = false, stage = null, dbId = null) {
+class Tournament {    constructor(totalRounds, totalCourts, matchSchedule, tournamentName, prelimsFormat, finalsFormat = null, finalsCourtAssignments = [], players, isStarted = false, stage = null, dbId = null) {
         // Set stage - prioritize explicit stage parameter, otherwise use isStarted for backward compatibility
         if (stage !== null) {
             this.stage = stage;
@@ -124,7 +124,7 @@ class Tournament {    constructor(totalRounds, totalCourts, matchSchedule, tourn
         this.dateCreated = new Date().toLocaleString();
         this.prelimsFormat = prelimsFormat;
         this.finalsFormat = finalsFormat;
-        this.finalsMatchSchedule = finalsMatchSchedule;
+        this.finalsCourtAssignments = finalsCourtAssignments || [];
         this.totalRounds = totalRounds;
         this.totalCourts = totalCourts;
         // Convert plain match objects to Match instances in each round
@@ -211,24 +211,19 @@ class Tournament {    constructor(totalRounds, totalCourts, matchSchedule, tourn
         switch (stage) {
             case TOURNAMENT_STAGES.NOT_STARTED:
                 return this.stage !== TOURNAMENT_STAGES.NOT_STARTED;
-            
             case TOURNAMENT_STAGES.PRELIMINARY:
-                // Check if all preliminary rounds are completed
                 if (!this.matchSchedule || this.matchSchedule.length === 0) return false;
                 return this.matchSchedule.every(round => 
                     round.matches.every(match => match.isCompleted)
                 );
-            
             case TOURNAMENT_STAGES.FINALS:
-                // Check if finals are completed
-                if (!this.finalsMatchSchedule || this.finalsMatchSchedule.length === 0) return true; // No finals = completed
-                return this.finalsMatchSchedule.every(round => 
-                    round.matches.every(match => match.isCompleted)
+                // Check if finals are completed (all court assignments completed)
+                if (!this.finalsCourtAssignments || this.finalsCourtAssignments.length === 0) return true;
+                return this.finalsCourtAssignments.every(round => 
+                    round.courtAssignments.every(assignment => assignment.isCompleted || assignment.isWalkover)
                 );
-            
             case TOURNAMENT_STAGES.COMPLETED:
                 return true;
-                
             default:
                 return false;
         }
@@ -279,7 +274,11 @@ class Tournament {    constructor(totalRounds, totalCourts, matchSchedule, tourn
     saveToLocalStorage() {
         const tournaments = JSON.parse(localStorage.getItem('tournaments'));
         const index = tournaments.findIndex(tournament => tournament.id === this.id);
-        tournaments[index] = this;
+        // Ensure finalsCourtAssignments is saved
+        tournaments[index] = {
+            ...this,
+            finalsCourtAssignments: this.finalsCourtAssignments
+        };
         localStorage.setItem('tournaments', JSON.stringify(tournaments));
     }
 }
