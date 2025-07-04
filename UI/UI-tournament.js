@@ -162,7 +162,7 @@ function displayMatchOverview(tournament, matchOverviewContainer, tournamentInfo
 
 
     // show finals if stage is set to finals
-    if(currentStage === 'finals' || currentStage === 'completed') {
+    if(currentStage === 'finals' || currentStage === 'completed' && tournament.finalsFormat !== null) {
     displayFinalsOverview(tournament, matchOverviewContainer);
     }
 
