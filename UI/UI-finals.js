@@ -498,15 +498,26 @@ function showPlayerSelectionPopup(assignment, tournament) {
             }
             
             // Update elimination status for all players in this court assignment
-            assignment.players.forEach(player => {
-                if (selectedPlayers.includes(player)) {
-                    // Selected players advance - clear elimination status
-                    player.eliminated = null;
-                } else {
-                    // Non-selected players are eliminated at this round
-                    player.eliminated = currentRoundNumber;
+            assignment.players.forEach(assignmentPlayer => {
+                // Find the actual player object in the tournament
+                const actualPlayer = tournament.getPlayers().find(p => p.id === assignmentPlayer.id);
+                if (actualPlayer) {
+                    if (selectedPlayers.some(sp => sp.id === assignmentPlayer.id)) {
+                        // Selected players advance - clear elimination status
+                        actualPlayer.eliminated = null;
+                        assignmentPlayer.eliminated = null; // Keep assignment in sync
+                        console.log(`Player ${actualPlayer.name} advanced to the next round.`);
+                    } else {
+                        // Non-selected players are eliminated at this round
+                        actualPlayer.eliminated = currentRoundNumber;
+                        assignmentPlayer.eliminated = currentRoundNumber; // Keep assignment in sync
+                        console.log(`Player ${actualPlayer.name} eliminated in round ${currentRoundNumber}.`);
+                    }
                 }
             });
+            
+            // Save player elimination updates to localStorage
+            tournament.saveToLocalStorage();
             
             const success = updatePlayerAdvancement(tournament, assignment, selectedPlayers);
             if (success) {
