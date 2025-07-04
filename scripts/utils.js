@@ -41,28 +41,25 @@ function sortPlayers(players) {
             return aGroup.localeCompare(bGroup);
         }
 
-        // 2. Within same group, sort by eliminated status (non-eliminated first, then by elimination round descending)
-        if (a.eliminated !== b.eliminated) {
-            // Non-eliminated (null) should come first
-            if (a.eliminated === null || a.eliminated === undefined) return -1;
-            if (b.eliminated === null || b.eliminated === undefined) return 1;
-            
-            // Both are eliminated, sort by elimination round descending (higher rounds first)
-            return b.eliminated - a.eliminated;
+        // 2. Within same group, sort by eliminated status (non-eliminated first, then by elimination round ascending)
+        const aElim = (a.eliminated === null || a.eliminated === undefined) ? -1 : a.eliminated;
+        const bElim = (b.eliminated === null || b.eliminated === undefined) ? -1 : b.eliminated;
+        if (aElim !== bElim) {
+            return aElim - bElim;
         }
 
         // 3. Match points (descending)
         if (b.matchPoints !== a.matchPoints) return b.matchPoints - a.matchPoints;
-        
+
         // 4. Score points (descending)
         if (b.scorePoints !== a.scorePoints) return b.scorePoints - a.scorePoints;
-        
+
         // 5. Mutual result (if only two players have same points)
         if (a.matches && b.matches && players.filter(p => p.matchPoints === a.matchPoints && p.scorePoints === a.scorePoints).length === 2) {
             const mutual = getMutualResult(a, b);
             if (mutual !== 0) return -mutual;
         }
-        
+
         // 6. Highest single match scorePoints
         const scoreDiff = getHighestSingleScore(b) - getHighestSingleScore(a);
         if (scoreDiff !== 0) return scoreDiff;
