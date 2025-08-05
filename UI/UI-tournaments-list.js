@@ -22,7 +22,6 @@ export function displayTournamentsList() {
     createTournamentBtn.id = 'createTournamentBtn';
     createTournamentBtn.textContent = 'Opprett lokal turnering';
     tableContainer.appendChild(createTournamentBtn);
-    createTournamentBtn.onclick = onCreateTournament;
 
     tableContainer.id = 'tournamentsList';
     tableContainer.className = 'tournaments-list';
