@@ -41,11 +41,23 @@ function sortPlayers(players) {
             return aGroup.localeCompare(bGroup);
         }
 
-        // 2. Within same group, sort by eliminated status (non-eliminated first, then by elimination round ascending)
-        const aElim = (a.eliminated === null || a.eliminated === undefined) ? -1 : a.eliminated;
-        const bElim = (b.eliminated === null || b.eliminated === undefined) ? -1 : b.eliminated;
-        if (aElim !== bElim) {
-            return aElim - bElim;
+        // 2. Within same group, sort by eliminated status:
+        //    - Non-eliminated (null/undefined) come first
+        //    - Eliminated players sorted by elimination round descending (higher number first)
+        //    - Then continue with the rest of the sorting rules
+        const aNone = (a.eliminated === null || a.eliminated === undefined);
+        const bNone = (b.eliminated === null || b.eliminated === undefined);
+        if (aNone !== bNone) {
+            return aNone ? -1 : 1;
+        }
+
+        // If both are eliminated (not null/undefined), sort by elimination round descending
+        if (!aNone && !bNone) {
+            const aNum = Number(a.eliminated);
+            const bNum = Number(b.eliminated);
+            if (!isNaN(aNum) && !isNaN(bNum) && aNum !== bNum) {
+                return bNum - aNum;
+            }
         }
 
         // 3. Match points (descending)
