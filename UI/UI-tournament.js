@@ -263,9 +263,15 @@ function displayRound(round, matchOverviewContainer) {
     const headerRow = thead.insertRow();
 
     // Create header
-    ['B', 'P1', 'S1', 'S2', 'P2', ''].forEach(text => {
+    ['B', 'P1', 'S1', 'S2', 'P2'].forEach(text => {
         headerRow.appendChild(document.createElement('th')).textContent = text;
     });
+
+    const buttonCellHeader = document.createElement('th');
+    
+    buttonCellHeader.textContent = '';
+    headerRow.appendChild(buttonCellHeader);
+    buttonCellHeader.classList.add('button-cell-header');
 
     for (let match of round.matches) {
         const row = tbody.insertRow();
