@@ -49,11 +49,6 @@
 }
 
 @media print {
-    /* General page setup */
-    @page {
-        size: landscape;
-        margin: 0.5cm;
-    }
 
     #matchOverview table, #playerOverview table {
         margin: 0 auto; /* Centers the table */
