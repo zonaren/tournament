@@ -48,7 +48,12 @@ export function displayTournamentOverview(tournament) {
         tournamentStatusText.style.fontWeight = 'bold';
         tournamentInfoDiv.appendChild(tournamentStatusText);
     }
-    
+
+    // show this button if localhost or 127.0.0.1
+    if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+        tournamentInfoDiv.appendChild(createFillRandomScoresButton());
+    }
+
     const mainContainer = document.getElementById('mainContainer');
     mainContainer.replaceChildren(tournamentOverview);
     tournamentOverview.appendChild(tournamentInfoDiv);
@@ -153,6 +158,17 @@ function createCompleteTournamentButton() {
     return completeTournamentBtn;
 }
 
+function createFillRandomScoresButton() {
+    const button = document.createElement('button');
+    button.textContent = 'Fyll testpoeng (0–26)';
+    button.addEventListener('click', () => {
+        const tournament = Tournaments.getCurrentTournament();
+        addRandomScoresToAllMatches(tournament, { complete: true });
+        displayMatchOverview(tournament, document.getElementById('matchOverview'), document.getElementById('tournamentInfo'));
+    });
+    return button;
+}
+
 function displayMatchOverview(tournament, matchOverviewContainer, tournamentInfoDiv) {
     // if the tournament is NHM, sort the rounds in descending order
     matchOverviewContainer.innerHTML = '';
@@ -172,6 +188,35 @@ function displayMatchOverview(tournament, matchOverviewContainer, tournamentInfo
         }
 
 
+}
+
+function addRandomScoresToAllMatches(tournament, { complete = false } = {}) {
+    const rand0to26 = () => Math.floor(Math.random() * 27); // 0–26 inclusive
+    for (const round of tournament.matchSchedule) {
+        for (const match of round.matches) {
+            // If we're completing, allow re-fill even for completed matches
+            if (match.isCompleted && !complete) continue;
+
+            let s1 = rand0to26();
+            let s2 = rand0to26();
+
+            if (s1 < 21 && s2 < 21) {
+                if (Math.random() < 0.5) s1 = 21 + Math.floor(Math.random() * 6);
+                else s2 = 21 + Math.floor(Math.random() * 6);
+            }
+
+            s1 = Math.min(26, Math.max(0, s1));
+            s2 = Math.min(26, Math.max(0, s2));
+
+            match.p1.scorePoints = s1;
+            match.p2.scorePoints = s2;
+
+            if (complete) {
+                match.isCompleted = true;
+                updateTotalScores(match.matchId, match.p1.id, match.p2.id, s1, s2);
+            }
+        }
+    }
 }
 
 function displayPreliminaryRounds(tournament, tournamentInfoDiv, matchOverviewContainer) {
