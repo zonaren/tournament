@@ -161,10 +161,11 @@ function createCompleteTournamentButton() {
 function createFillRandomScoresButton() {
     const button = document.createElement('button');
     button.textContent = 'Fyll testpoeng (0–26)';
+
     button.addEventListener('click', () => {
         const tournament = Tournaments.getCurrentTournament();
-        addRandomScoresToAllMatches(tournament, { complete: true });
-        displayMatchOverview(tournament, document.getElementById('matchOverview'), document.getElementById('tournamentInfo'));
+        addRandomScoresToAllMatches(tournament);
+        displayTournamentOverview(tournament);
     });
     return button;
 }
@@ -190,12 +191,15 @@ function displayMatchOverview(tournament, matchOverviewContainer, tournamentInfo
 
 }
 
-function addRandomScoresToAllMatches(tournament, { complete = false } = {}) {
+function addRandomScoresToAllMatches(tournament = {}) {
     const rand0to26 = () => Math.floor(Math.random() * 27); // 0–26 inclusive
     for (const round of tournament.matchSchedule) {
         for (const match of round.matches) {
-            // If we're completing, allow re-fill even for completed matches
-            if (match.isCompleted && !complete) continue;
+            // Skip completed matches unless prelimsFormat is NHM
+            if (match.isCompleted && tournament.prelimsFormat === 'NHM') continue;
+
+            // Skip matches where one of the players is "Walkover"
+            if (match.p1.name === "Walkover" || match.p2.name === "Walkover") continue;
 
             let s1 = rand0to26();
             let s2 = rand0to26();
@@ -210,11 +214,10 @@ function addRandomScoresToAllMatches(tournament, { complete = false } = {}) {
 
             match.p1.scorePoints = s1;
             match.p2.scorePoints = s2;
+            match.isCompleted = true;
 
-            if (complete) {
-                match.isCompleted = true;
-                updateTotalScores(match.matchId, match.p1.id, match.p2.id, s1, s2);
-            }
+            updateTotalScores(match.matchId, match.p1.id, match.p2.id, s1, s2);
+            
         }
     }
 }
