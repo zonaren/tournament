@@ -19,9 +19,6 @@ export function startFinals() {
     }
 
     if( checkForWalkoverPlayers(tournament)) {
-        if (!confirm('Det finnes spillere med walkover. Vil du fjerne dem?')) {
-            return;
-        }
         deleteWalkoverPlayers(tournament);
     }
     // Get recommended group sizes and show selection popup

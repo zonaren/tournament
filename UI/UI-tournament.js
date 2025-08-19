@@ -8,7 +8,7 @@ import { shuffleStartNumbers } from '../shuffle-players.js';
 import Tournaments  from '../classes/Tournament.js';
 import { createEditTournamentPopup } from './UI-tournaments-list.js';
 import { startFinals, displayFinalsOverview } from './UI-finals.js';
-import { setPlayerRanks, completeAllMatches } from '../scripts/utils.js';
+import { setPlayerRanks, completeAllMatches, checkForWalkoverPlayers, deleteWalkoverPlayers } from '../scripts/utils.js';
 import { showDatabasePlayersPopup, onAddPlayers, onRemovePlayers } from './UI-dbplayers.js';
 
 
@@ -149,6 +149,9 @@ function createCompleteTournamentButton() {
         if (confirm('Er du sikker på at du vil fullføre turneringen? Dette kan ikke angres.')) {
             const tournament = Tournaments.getCurrentTournament();
             tournament.setStage('completed');
+            if (checkForWalkoverPlayers(tournament)) {
+                deleteWalkoverPlayers(tournament);
+            }
             setPlayerRanks(tournament);
             completeAllMatches(tournament);
             tournament.saveToLocalStorage();
