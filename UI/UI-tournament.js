@@ -294,9 +294,17 @@ function displayRound(round, matchOverviewContainer) {
         p1NameCell.textContent = match.p1.name + ' (' + match.p1.id + ')';
         row.appendChild(p1NameCell);
 
+        function checkZeroZeroScores() {
+            if (match.p1.scorePoints === 0 && match.p2.scorePoints === 0) {
+                return true;
+            }
+            return false;
+        }
+
         const p1ScoreCell = document.createElement('td');
         p1ScoreCell.id = 'p1-score-' + match.matchId;
-        p1ScoreCell.textContent = match.p1.scorePoints;
+        p1ScoreCell.classList.add('match-score-cell');
+        p1ScoreCell.textContent = checkZeroZeroScores() ? '' : match.p1.scorePoints;
         p1ScoreCell.addEventListener('click', function() {
             openScorePopup(match, match.p1, match.p2);
         });
@@ -304,7 +312,8 @@ function displayRound(round, matchOverviewContainer) {
 
         const p2ScoreCell = document.createElement('td');
         p2ScoreCell.id = 'p2-score-' + match.matchId;
-        p2ScoreCell.textContent = match.p2.scorePoints;
+        p2ScoreCell.classList.add('match-score-cell');
+        p2ScoreCell.textContent = checkZeroZeroScores() ? '' : match.p2.scorePoints;
         p2ScoreCell.addEventListener('click', function() {
             openScorePopup(match, match.p1, match.p2);
         });
