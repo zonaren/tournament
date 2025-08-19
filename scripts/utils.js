@@ -295,4 +295,78 @@ function exportTournamentResults(tournamentId) {
     }
 }
 
-export { generateUniqueId, checkForIncompleteMatches, checkForWalkoverPlayers, deleteWalkoverPlayers, shuffleArray, sortPlayers, generateRandomString, setPlayerRanks, importPlayerListFromDb, saveDatabasePlayersToLocalStorage, importTournamentListFromDb, saveDatabaseTournamentsToLocalStorage, exportTournamentResults, completeAllMatches };
+function printElementById(elementId, printTitle) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+
+    const originalTitle = document.title;
+    if (printTitle) document.title = printTitle;
+
+    // Create header for the tournament name
+    const tournamentName = Tournaments.getCurrentTournament().name;
+    const header = document.createElement('h1');
+    header.textContent = tournamentName;
+    header.style.textAlign = 'center';
+    header.style.marginBottom = '20px';
+    el.insertBefore(header, el.firstChild);
+
+    const style = document.createElement('style');
+    style.textContent = `
+@media print {
+  body * { visibility: hidden !important; }
+  #${elementId}, #${elementId} * { visibility: visible !important; }
+  #${elementId} { position: absolute; left: 0; top: 0; width: 100%; }
+}`;
+    document.head.appendChild(style);
+
+    const cleanup = () => {
+        if (style.parentNode) style.parentNode.removeChild(style);
+        if (header.parentNode) header.parentNode.removeChild(header);
+        document.title = originalTitle;
+        window.removeEventListener('afterprint', cleanup);
+    };
+    window.addEventListener('afterprint', cleanup);
+    window.print();
+}
+
+function printPlayerAndMatchTables() {
+    const tournamentName = Tournaments.getCurrentTournament().name; // Get tournament name
+
+    // Create a temporary container for combined content
+    const combinedContainer = document.createElement('div');
+    combinedContainer.id = 'combinedPrintContainer';
+
+    // Clone and append playerOverview content
+    const playerOverview = document.getElementById('playerOverview');
+    if (playerOverview) {
+        const clonedPlayerOverview = playerOverview.cloneNode(true);
+        combinedContainer.appendChild(clonedPlayerOverview);
+    }
+
+    // Clone and append matchOverview content
+    const matchOverview = document.getElementById('matchOverview');
+    if (matchOverview) {
+        const clonedMatchOverview = matchOverview.cloneNode(true);
+        combinedContainer.appendChild(clonedMatchOverview);
+    }
+
+    // Append the combined container to the body temporarily
+    document.body.appendChild(combinedContainer);
+
+    // Print the combined container
+    printElementById('combinedPrintContainer', 'Print Player and Match Tables');
+
+    // Remove the combined container after printing
+    document.body.removeChild(combinedContainer);
+}
+
+function printPlayerTable() {
+    printElementById('playerOverview', 'Print Player Table');
+}
+
+function printMatches() {
+    // Note: container id is 'matchOverview' in UI
+    printElementById('matchOverview', 'Print Matches');
+}
+
+export { generateUniqueId, checkForIncompleteMatches, checkForWalkoverPlayers, deleteWalkoverPlayers, shuffleArray, sortPlayers, generateRandomString, setPlayerRanks, importPlayerListFromDb, saveDatabasePlayersToLocalStorage, importTournamentListFromDb, saveDatabaseTournamentsToLocalStorage, exportTournamentResults, completeAllMatches, printPlayerTable, printMatches, printPlayerAndMatchTables };

@@ -3,7 +3,7 @@ import Tournaments from '../classes/Tournament.js';
 import { onEditPlayers } from '../scripts/events.js';
 import { createNameCell, makeEliminatedPlayersLessVisible, startCellEdit } from './UI-player-utils.js';
 import { shuffleStartNumbers } from '../shuffle-players.js';
-import { sortPlayers } from '../scripts/utils.js';
+import { sortPlayers, printPlayerTable, printMatches, printPlayerAndMatchTables } from '../scripts/utils.js';
 
 /**
  * Creates and returns the table header row for the player overview
@@ -129,14 +129,10 @@ function showPlayerContextMenu(e, player, row, container) {
     menu.style.top = `${e.clientY}px`;
     menu.style.left = `${e.clientX}px`;
 
-    // Check if tournament is started using imported Tournaments class
+    // Check if tournament is started
     let isStarted = false;
     const currentTournament = Tournaments.getCurrentTournament && Tournaments.getCurrentTournament();
     isStarted = currentTournament && currentTournament.isStarted;
-    if (isStarted) {
-        alert('Turneringen er startet. Det er ikke lenger mulig å redigere spillere.');
-        return;
-    }
 
     // Add new player option
     const newPlayerBtn = document.createElement('button');
@@ -147,7 +143,7 @@ function showPlayerContextMenu(e, player, row, container) {
         removeExistingPlayerContextMenu();
         createNewPlayerPrompt();
     };
-    menu.appendChild(newPlayerBtn);
+    
 
     // Edit option
     const editBtn = document.createElement('button');
@@ -161,7 +157,7 @@ function showPlayerContextMenu(e, player, row, container) {
         const currentRowIndex = Array.from(container.getElementsByTagName('tr')).indexOf(row);
         startCellEdit(nameCell, player.id, currentRowIndex);
     };
-    menu.appendChild(editBtn);
+    
 
     // Delete option
     const deleteBtn = document.createElement('button');
@@ -176,8 +172,42 @@ function showPlayerContextMenu(e, player, row, container) {
             onEditPlayers();
         }
     };
-    menu.appendChild(deleteBtn);
 
+    const printPlayerTableBtn = document.createElement('button');
+    printPlayerTableBtn.className = 'player-context-menu__item';
+    printPlayerTableBtn.textContent = 'Skriv ut resultatliste';
+    printPlayerTableBtn.onclick = function(ev) {
+        ev.stopPropagation();
+        removeExistingPlayerContextMenu();
+        printPlayerTable();
+    };
+
+    const printMatchesBtn = document.createElement('button');
+    printMatchesBtn.className = 'player-context-menu__item';
+    printMatchesBtn.textContent = 'Skriv ut kamper';
+    printMatchesBtn.onclick = function(ev) {
+        ev.stopPropagation();
+        removeExistingPlayerContextMenu();
+        printMatches();
+    };
+
+    const printBothBtn = document.createElement('button');
+    printBothBtn.className = 'player-context-menu__item';
+    printBothBtn.textContent = 'Skriv ut resultatliste og kamper';
+    printBothBtn.onclick = function(ev) {
+        ev.stopPropagation();
+        removeExistingPlayerContextMenu();
+        printPlayerAndMatchTables();
+    };
+
+    if (!isStarted) {
+    menu.appendChild(newPlayerBtn);
+    menu.appendChild(editBtn);
+    menu.appendChild(deleteBtn);
+    }
+    menu.appendChild(printPlayerTableBtn);
+    menu.appendChild(printMatchesBtn);
+    menu.appendChild(printBothBtn);
     document.body.appendChild(menu);
 
     // Remove menu on click elsewhere

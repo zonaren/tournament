@@ -47,3 +47,35 @@
     background-color: white;
     color: #3D679D;
 }
+
+@media print {
+    /* General page setup */
+    @page {
+        size: landscape;
+        margin: 0.5cm;
+    }
+
+    #matchOverview table, #playerOverview table {
+        margin: 0 auto; /* Centers the table */
+        width: 90%; /* Adjusts the width */
+        border-collapse: collapse; /* Ensures single borders */
+        border: 1px solid black; /* Applies a single border to the table */
+        border-radius: 0%; /* Removes rounded corners for print */
+    }
+
+    #matchOverview th, 
+    #matchOverview td,
+    #playerOverview th,
+    #playerOverview td {
+        border: 1px solid black; /* Applies borders to cells */
+        padding: 8px; /* Adds spacing inside cells */
+        text-align: center; /* Centers text inside cells */
+        color: black; /* Sets text color to black for print */
+    }
+
+    /* Hide all buttons and controls during print */
+    .button-cell-container,
+    .button-cell-header{
+        display: none !important;
+    }
+}
