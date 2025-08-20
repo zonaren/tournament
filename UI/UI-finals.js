@@ -1,5 +1,6 @@
 // This file handles the UI for the finals stage of the tournament
 import Tournaments from '../classes/Tournament.js';
+import Players from '../classes/Player.js';
 import { displayTournamentOverview } from './UI-tournament.js';
 import { checkForIncompleteMatches, checkForWalkoverPlayers, deleteWalkoverPlayers, sortPlayers } from '../scripts/utils.js';
 import { createFinalsMatches, updatePlayerAdvancement,createSeedingPools,getNextFinalsRoundNumber, drawFinalsForGroup, getRecommendedFinalsGroupSizes} from '../finals-logic.js';
@@ -409,11 +410,11 @@ function showPlayerSelectionPopup(assignment, tournament) {
 
     // Title
     const title = document.createElement('h3');
-    title.textContent = `Bane ${assignment.courtNumber} - Velg vinnere`;
+    title.textContent = `Bane ${assignment.courtNumber}`;
     popup.appendChild(title);
 
     // Instructions
-    const instructions = document.createElement('p');
+    const instructions = document.createElement('h4');
     instructions.textContent = `Velg ${assignment.playersToAdvance} av ${assignment.players.length} spillere som går videre til neste runde:`;
     instructions.className = 'finals-instructions';
     popup.appendChild(instructions);
@@ -694,7 +695,7 @@ export function displayCourtAssignments(tournament, container, groupName) {
                 // Players
                 const playersCell = row.insertCell();
                 playersCell.textContent = assignment.players.slice().sort((a,b) => a.id - b.id).map(p => p.name).join(', ');
-                playersCell.className = 'finals-table-cell';
+                playersCell.className = 'finals-table-cell finals-name-cell';
 
                 // Status
                 const statusCell = row.insertCell();
@@ -724,7 +725,7 @@ export function displayCourtAssignments(tournament, container, groupName) {
                     }
                 } else {
                     const selectBtn = document.createElement('button');
-                    selectBtn.textContent = 'Velg vinnere';
+                    selectBtn.textContent = 'Velg';
                     selectBtn.className = 'finals-edit-button';
                     selectBtn.addEventListener('click', () => {
                         showPlayerSelectionPopup(assignment, tournament);

@@ -382,6 +382,11 @@
     text-align: center;
 }
 
+.finals-name-cell {
+    text-align: left;
+    font-size: small;
+}
+
 .finals-score-cell {
     text-align: center;
     cursor: pointer;
