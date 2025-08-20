@@ -165,12 +165,12 @@ export function displayFinalsBracketSetupPopup(tournament, groupName, players, s
 
     // Title - show both counts if different
     const title = document.createElement('h2');
-    if (originalPlayerCount && originalPlayerCount !== players.length) {
-        title.textContent = `Sluttspill Gruppe ${groupName} - ${players.length}/${originalPlayerCount} spillere (struktur basert på ${originalPlayerCount})`;
-    } else {
-        title.textContent = `Sluttspill Gruppe ${groupName} - ${players.length} spillere`;
-    }
+    title.textContent = `Sluttspill Gruppe ${groupName}`;
     popup.appendChild(title);
+
+    const playerCountText = document.createElement('h4');
+    playerCountText.textContent = `${players.length} av ${originalPlayerCount} spillere igjen`;
+    popup.appendChild(playerCountText);
 
     // Seeding option
     const seedingContainer = document.createElement('div');
@@ -190,7 +190,7 @@ export function displayFinalsBracketSetupPopup(tournament, groupName, players, s
     
     const seedingExplanation = document.createElement('div');
     seedingExplanation.className = 'finals-seeding-explanation';
-    seedingExplanation.textContent = 'Med seeding deles spillerne basert på rangering.';
+    seedingExplanation.textContent = '';
     
     seedingContainer.appendChild(seedingLabel);
     seedingContainer.appendChild(seedingExplanation);
@@ -248,14 +248,14 @@ export function displayFinalsBracketSetupPopup(tournament, groupName, players, s
 function displayBracketStructure(container, structure) {
     // Create toggle button
     const toggleButton = document.createElement('button');
-    toggleButton.textContent = 'Vis bracket struktur';
+    toggleButton.textContent = 'Vis sluttspillstruktur';
     toggleButton.className = 'finals-toggle-structure-btn';
     toggleButton.style.marginBottom = '10px';
     container.appendChild(toggleButton);
 
     // Create title and structure container
     const title = document.createElement('h3');
-    title.textContent = 'Bracket struktur:';
+    title.textContent = 'Sluttspillstruktur:';
     title.style.display = 'none'; // Hidden by default
 
     const structureDiv = document.createElement('div');
