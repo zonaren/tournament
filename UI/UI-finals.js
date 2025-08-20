@@ -497,7 +497,7 @@ function showPlayerSelectionPopup(assignment, tournament) {
             // Update elimination status for all players in this court assignment
             assignment.players.forEach(assignmentPlayer => {
                 // Find the actual player object in the tournament
-                const actualPlayer = tournament.getPlayers().find(p => p.id === assignmentPlayer.id);
+                const actualPlayer = Players.get(assignmentPlayer.id);
                 if (actualPlayer) {
                     if (selectedPlayers.some(sp => sp.id === assignmentPlayer.id)) {
                         // Selected players advance - clear elimination status
