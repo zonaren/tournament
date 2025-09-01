@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dobbel Eliminering - Interaktiv Demo</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        h1 { color: #333; margin-bottom: 20px; }
+        .setup { background: white; padding: 15px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .setup label { font-weight: bold; margin-right: 10px; }
+        .setup select, .setup button { padding: 8px 12px; margin: 5px; font-size: 14px; }
+        .setup button { background: #007acc; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .setup button:hover { background: #005999; }
+        .setup button:disabled { background: #ccc; cursor: not-allowed; }
+        
+        .tournament-area { display: flex; gap: 30px; align-items: flex-start; flex-wrap: wrap; }
+        .bracket { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); min-width: 280px; }
+        .bracket h2 { margin: 0 0 15px 0; padding: 10px; background: #007acc; color: white; border-radius: 4px; text-align: center; }
+        .bracket h2.losers { background: #cc6600; }
+        .bracket h2.finals { background: #006600; }
+        
+        .round { margin-bottom: 20px; }
+        .round h3 { font-size: 14px; text-align: center; margin: 0 0 10px 0; color: #555; }
+        .match { border: 2px solid #ddd; border-radius: 6px; margin: 8px 0; padding: 8px; background: #fafafa; }
+        .player { display: flex; justify-content: space-between; padding: 6px 8px; margin: 2px 0; border-radius: 4px; font-weight: bold; }
+        .player.winner { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .player.loser { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .player.pending { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        
+        .match-buttons { margin-top: 8px; display: flex; gap: 5px; flex-wrap: wrap; }
+        .match-buttons button { padding: 4px 8px; font-size: 11px; cursor: pointer; border: 1px solid #007acc; background: white; color: #007acc; border-radius: 3px; }
+        .match-buttons button:hover { background: #007acc; color: white; }
+        
+        .controls { margin: 15px 0; display: flex; gap: 10px; flex-wrap: wrap; }
+        .controls button { padding: 8px 15px; font-size: 13px; border: none; border-radius: 4px; cursor: pointer; }
+        .controls .primary { background: #28a745; color: white; }
+        .controls .primary:hover { background: #218838; }
+        .controls .secondary { background: #6c757d; color: white; }
+        .controls .secondary:hover { background: #5a6268; }
+        .controls button:disabled { background: #e9ecef; color: #6c757d; cursor: not-allowed; }
+        
+        .info { background: #e7f3ff; padding: 15px; border-radius: 6px; margin: 20px 0; border-left: 4px solid #007acc; }
+        .champion { text-align: center; font-size: 24px; color: #006600; font-weight: bold; margin: 20px 0; padding: 20px; background: #d4edda; border-radius: 8px; }
+        .pool-info { font-size: 12px; color: #666; margin-top: 10px; }
+        .pool-player { display: inline-block; background: #fff3cd; padding: 3px 8px; margin: 2px; border-radius: 12px; font-size: 11px; }
+    </style>
+</head>
+<body>
+    <h1>Dobbel Eliminering - Interaktiv Demo</h1>
+    
+    <div class="setup">
+        <label for="dbl-player-count">Antall spillere:</label>
+        <select id="dbl-player-count"></select>
+        <button id="dbl-generate-bracket">Start ny turnering</button>
+        
+        <div class="controls" id="game-controls" style="display: none;">
+            <button id="next-wb" class="primary" disabled>Neste Winners-runde</button>
+            <button id="next-lb" class="secondary" disabled>Neste Losers-runde</button>
+            <button id="auto-play" class="secondary">Auto-spill til slutt</button>
+            <button id="reset" class="secondary">Reset</button>
+        </div>
+    </div>
+
+    <!-- <div class="info">
+        <strong>Hvordan dobbel eliminering fungerer:</strong><br>
+        • Alle starter i Winners bracket<br>
+        • Tapere flyttes til Losers bracket (får andre sjanse)<br>
+        • I Losers bracket er man ute ved neste tap<br>
+        • Finalen er mellom Winners-vinneren og Losers-vinneren<br>
+        • Hvis Losers-vinneren tar første finale, spilles det reset (Winners-vinneren må tape to ganger)
+    </div> -->
+
+    <div class="tournament-area">
+        <div class="bracket" id="winners-bracket">
+            <h2>Winners Bracket</h2>
+            <div id="dbl-bracket-A"></div>
+        </div>
+        
+        <div class="bracket" id="losers-bracket">
+            <h2 class="losers">Losers Bracket</h2>
+            <div id="dbl-bracket-B"></div>
+            <div class="pool-info" id="loser-pool"></div>
+        </div>
+        
+        <div class="bracket" id="finals-bracket" style="display: none;">
+            <h2 class="finals">Grand Final</h2>
+            <div id="finals-area"></div>
+        </div>
+    </div>
+
+    <script>
+        // Global state
+        let currentTournament = null;
+
+        // DOM elements
+        const playerSelect = document.getElementById('dbl-player-count');
+        const generateBtn = document.getElementById('dbl-generate-bracket');
+        const gameControls = document.getElementById('game-controls');
+        const nextWBBtn = document.getElementById('next-wb');
+        const nextLBBtn = document.getElementById('next-lb');
+        const autoPlayBtn = document.getElementById('auto-play');
+        const resetBtn = document.getElementById('reset');
+        const winnersArea = document.getElementById('dbl-bracket-A');
+        const losersArea = document.getElementById('dbl-bracket-B');
+        const loserPoolArea = document.getElementById('loser-pool');
+        const finalsArea = document.getElementById('finals-area');
+        const finalsBracket = document.getElementById('finals-bracket');
+
+        // Initialize player count options
+        for (let i = 4; i <= 32; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i;
+            playerSelect.appendChild(option);
+        }
+        playerSelect.value = 8;
+
+        // Tournament state class
+        class Tournament {
+            constructor(playerCount) {
+                this.players = Array.from({length: playerCount}, (_, i) => ({
+                    id: i + 1,
+                    name: `Spiller ${i + 1}`,
+                    losses: 0,
+                    eliminated: false
+                }));
+                this.winnersRounds = [];
+                this.losersRounds = [];
+                this.loserPool = [];
+                this.finished = false;
+                this.champion = null;
+                this.finalsStarted = false;
+            }
+
+            startFirstRound() {
+                this.winnersRounds.push(this.createMatches(this.players));
+            }
+
+            createMatches(players) {
+                const matches = [];
+                for (let i = 0; i < players.length; i += 2) {
+                    const p1 = players[i];
+                    const p2 = players[i + 1];
+                    if (p2) {
+                        matches.push({
+                            player1: p1,
+                            player2: p2,
+                            winner: null,
+                            finished: false,
+                            walkover: false
+                        });
+                    } else {
+                        matches.push({
+                            player1: p1,
+                            player2: null,
+                            winner: p1,
+                            finished: true,
+                            walkover: true
+                        });
+                    }
+                }
+                return matches;
+            }
+
+            setMatchWinner(match, winner) {
+                match.winner = winner;
+                match.finished = true;
+                
+                const loser = match.player2 ? 
+                    (winner === match.player1 ? match.player2 : match.player1) : null;
+                    
+                if (loser) {
+                    loser.losses++;
+                    if (loser.losses === 1) {
+                        this.loserPool.push(loser);
+                    } else {
+                        loser.eliminated = true;
+                    }
+                }
+            }
+
+            canAdvanceWinnersRound() {
+                const currentRound = this.winnersRounds[this.winnersRounds.length - 1];
+                if (!currentRound || !currentRound.every(m => m.finished)) return false;
+                
+                const winners = currentRound.map(m => m.winner).filter(Boolean);
+                return winners.length > 1;
+            }
+
+            canStartLosersRound() {
+                // Can start if we have new losers in pool OR if previous losers round is complete and has winners
+                const hasNewLosers = this.loserPool.length > 0;
+                const hasAdvancingLosers = this.losersRounds.length > 0 && 
+                    this.isCurrentLosersRoundComplete() && 
+                    this.losersRounds[this.losersRounds.length - 1].some(m => m.winner);
+                
+                return (hasNewLosers || hasAdvancingLosers) && this.isCurrentLosersRoundComplete();
+            }
+
+            isCurrentWinnersRoundComplete() {
+                const current = this.winnersRounds[this.winnersRounds.length - 1];
+                return current && current.every(m => m.finished);
+            }
+
+            isCurrentLosersRoundComplete() {
+                if (this.losersRounds.length === 0) return true;
+                const current = this.losersRounds[this.losersRounds.length - 1];
+                return current.every(m => m.finished);
+            }
+
+            advanceWinnersRound() {
+                if (!this.canAdvanceWinnersRound()) return false;
+                
+                const currentRound = this.winnersRounds[this.winnersRounds.length - 1];
+                const winners = currentRound.map(m => m.winner).filter(Boolean);
+                this.winnersRounds.push(this.createMatches(winners));
+                return true;
+            }
+
+            startNextLosersRound() {
+                if (!this.canStartLosersRound()) return false;
+                
+                // Get winners from previous losers round (if any)
+                let advancingPlayers = [];
+                if (this.losersRounds.length > 0) {
+                    const lastLosersRound = this.losersRounds[this.losersRounds.length - 1];
+                    advancingPlayers = lastLosersRound.map(m => m.winner).filter(Boolean);
+                }
+                
+                // Combine with new losers from loser pool
+                const allPlayers = [...advancingPlayers, ...this.loserPool];
+                this.loserPool = [];
+                
+                if (allPlayers.length > 0) {
+                    this.losersRounds.push(this.createMatches(allPlayers));
+                }
+                return true;
+            }
+
+            getWinnersFinalist() {
+                const lastRound = this.winnersRounds[this.winnersRounds.length - 1];
+                if (!lastRound || !this.isCurrentWinnersRoundComplete()) return null;
+                
+                const winners = lastRound.map(m => m.winner).filter(Boolean);
+                return winners.length === 1 ? winners[0] : null;
+            }
+
+            getLosersFinalist() {
+                if (this.losersRounds.length === 0) return null;
+                const lastRound = this.losersRounds[this.losersRounds.length - 1];
+                if (!this.isCurrentLosersRoundComplete()) return null;
+                
+                const winners = lastRound.map(m => m.winner).filter(Boolean);
+                return winners.length === 1 ? winners[0] : null;
+            }
+
+            canStartFinals() {
+                return this.getWinnersFinalist() && this.getLosersFinalist() && !this.finalsStarted;
+            }
+        }
+
+        function startNewTournament() {
+            const playerCount = parseInt(playerSelect.value);
+            currentTournament = new Tournament(playerCount);
+            currentTournament.startFirstRound();
+            
+            gameControls.style.display = 'flex';
+            finalsBracket.style.display = 'none';
+            finalsArea.innerHTML = '';
+            
+            render();
+            updateButtons();
+        }
+
+        function render() {
+            if (!currentTournament) return;
+            
+            renderWinnersBracket();
+            renderLosersBracket();
+            renderLoserPool();
+            checkForFinals();
+        }
+
+        function renderWinnersBracket() {
+            winnersArea.innerHTML = '';
+            
+            currentTournament.winnersRounds.forEach((round, index) => {
+                const roundDiv = document.createElement('div');
+                roundDiv.className = 'round';
+                
+                const title = document.createElement('h3');
+                title.textContent = `Runde ${index + 1}`;
+                roundDiv.appendChild(title);
+                
+                round.forEach(match => {
+                    roundDiv.appendChild(createMatchElement(match));
+                });
+                
+                winnersArea.appendChild(roundDiv);
+            });
+        }
+
+        function renderLosersBracket() {
+            losersArea.innerHTML = '';
+            
+            currentTournament.losersRounds.forEach((round, index) => {
+                const roundDiv = document.createElement('div');
+                roundDiv.className = 'round';
+                
+                const title = document.createElement('h3');
+                title.textContent = `Losers Runde ${index + 1}`;
+                roundDiv.appendChild(title);
+                
+                round.forEach(match => {
+                    roundDiv.appendChild(createMatchElement(match));
+                });
+                
+                losersArea.appendChild(roundDiv);
+            });
+        }
+
+        function renderLoserPool() {
+            if (currentTournament.loserPool.length === 0) {
+                loserPoolArea.innerHTML = '';
+                return;
+            }
+            
+            loserPoolArea.innerHTML = '<strong>Venter på neste Losers-runde:</strong><br>';
+            currentTournament.loserPool.forEach(player => {
+                const span = document.createElement('span');
+                span.className = 'pool-player';
+                span.textContent = player.name;
+                loserPoolArea.appendChild(span);
+            });
+        }
+
+        function createMatchElement(match) {
+            const matchDiv = document.createElement('div');
+            matchDiv.className = 'match';
+            
+            const player1Div = createPlayerElement(match.player1, match);
+            matchDiv.appendChild(player1Div);
+            
+            if (match.player2) {
+                const player2Div = createPlayerElement(match.player2, match);
+                matchDiv.appendChild(player2Div);
+                
+                if (!match.finished) {
+                    const buttonsDiv = document.createElement('div');
+                    buttonsDiv.className = 'match-buttons';
+                    
+                    const btn1 = document.createElement('button');
+                    btn1.textContent = match.player1.name;
+                    btn1.onclick = () => selectWinner(match, match.player1);
+                    
+                    const btn2 = document.createElement('button');
+                    btn2.textContent = match.player2.name;
+                    btn2.onclick = () => selectWinner(match, match.player2);
+                    
+                    const randomBtn = document.createElement('button');
+                    randomBtn.textContent = 'Tilfeldig';
+                    randomBtn.onclick = () => selectWinner(match, Math.random() > 0.5 ? match.player1 : match.player2);
+                    
+                    buttonsDiv.appendChild(btn1);
+                    buttonsDiv.appendChild(btn2);
+                    buttonsDiv.appendChild(randomBtn);
+                    matchDiv.appendChild(buttonsDiv);
+                }
+            } else {
+                const walkoverDiv = document.createElement('div');
+                walkoverDiv.className = 'player pending';
+                walkoverDiv.textContent = 'Walkover';
+                matchDiv.appendChild(walkoverDiv);
+            }
+            
+            return matchDiv;
+        }
+
+        function createPlayerElement(player, match) {
+            const div = document.createElement('div');
+            div.className = 'player';
+            div.textContent = player.name;
+            
+            if (match.finished) {
+                if (match.winner === player) {
+                    div.classList.add('winner');
+                } else if (match.player2) {
+                    div.classList.add('loser');
+                }
+            } else {
+                div.classList.add('pending');
+            }
+            
+            return div;
+        }
+
+        function selectWinner(match, winner) {
+            currentTournament.setMatchWinner(match, winner);
+            render();
+            updateButtons();
+        }
+
+        function updateButtons() {
+            if (!currentTournament) {
+                nextWBBtn.disabled = true;
+                nextLBBtn.disabled = true;
+                autoPlayBtn.disabled = true;
+                return;
+            }
+            
+            nextWBBtn.disabled = !currentTournament.canAdvanceWinnersRound() || currentTournament.finished;
+            nextLBBtn.disabled = !currentTournament.canStartLosersRound() || currentTournament.finished;
+            autoPlayBtn.disabled = currentTournament.finished;
+        }
+
+        function checkForFinals() {
+            if (!currentTournament.canStartFinals()) return;
+            
+            currentTournament.finalsStarted = true;
+            finalsBracket.style.display = 'block';
+            
+            const wbFinalst = currentTournament.getWinnersFinalist();
+            const lbFinalist = currentTournament.getLosersFinalist();
+            
+            renderFinals(wbFinalst, lbFinalist, false);
+        }
+
+        function renderFinals(wbPlayer, lbPlayer, isReset) {
+            finalsArea.innerHTML = '';
+            
+            const title = document.createElement('h3');
+            title.textContent = isReset ? 'Reset Match' : 'Første Finale';
+            finalsArea.appendChild(title);
+            
+            const match = {
+                player1: wbPlayer,
+                player2: lbPlayer,
+                winner: null,
+                finished: false,
+                walkover: false
+            };
+            
+            const matchDiv = createMatchElement(match);
+            finalsArea.appendChild(matchDiv);
+            
+            // Override the button handlers for finals
+            const buttons = matchDiv.querySelectorAll('button');
+            buttons[0].onclick = () => finalizeFinals(match, wbPlayer, isReset);
+            buttons[1].onclick = () => finalizeFinals(match, lbPlayer, isReset);
+            buttons[2].onclick = () => finalizeFinals(match, Math.random() > 0.5 ? wbPlayer : lbPlayer, isReset);
+        }
+
+        function finalizeFinals(match, winner, isReset) {
+            match.winner = winner;
+            match.finished = true;
+            
+            const wbPlayer = match.player1;
+            const lbPlayer = match.player2;
+            
+            if (!isReset && winner === lbPlayer) {
+                // Losers bracket winner won first final - need reset
+                renderFinals(wbPlayer, lbPlayer, true);
+            } else {
+                // Tournament is over
+                currentTournament.finished = true;
+                currentTournament.champion = winner;
+                showChampion(winner);
+                updateButtons();
+            }
+            
+            render();
+        }
+
+        function showChampion(champion) {
+            const championDiv = document.createElement('div');
+            championDiv.className = 'champion';
+            championDiv.textContent = `🏆 CHAMPION: ${champion.name} 🏆`;
+            finalsArea.appendChild(championDiv);
+        }
+
+        function autoPlay() {
+            if (!currentTournament || currentTournament.finished) return;
+            
+            let iterations = 0;
+            const maxIterations = 1000;
+            
+            while (!currentTournament.finished && iterations < maxIterations) {
+                iterations++;
+                
+                // Play current round matches
+                const allRounds = [...currentTournament.winnersRounds, ...currentTournament.losersRounds];
+                let madeMoves = false;
+                
+                for (const round of allRounds) {
+                    for (const match of round) {
+                        if (!match.finished && match.player2) {
+                            const winner = Math.random() > 0.5 ? match.player1 : match.player2;
+                            currentTournament.setMatchWinner(match, winner);
+                            madeMoves = true;
+                        }
+                    }
+                }
+                
+                // Try to advance winners round
+                if (currentTournament.canAdvanceWinnersRound()) {
+                    currentTournament.advanceWinnersRound();
+                    madeMoves = true;
+                }
+                
+                // Try to start next losers round
+                if (currentTournament.canStartLosersRound()) {
+                    currentTournament.startNextLosersRound();
+                    madeMoves = true;
+                }
+                
+                // Check for finals
+                if (currentTournament.canStartFinals()) {
+                    currentTournament.finalsStarted = true;
+                    
+                    // Auto-play finals
+                    const wbFinalist = currentTournament.getWinnersFinalist();
+                    const lbFinalist = currentTournament.getLosersFinalist();
+                    
+                    const firstWinner = Math.random() > 0.5 ? wbFinalist : lbFinalist;
+                    if (firstWinner === lbFinalist) {
+                        // Need reset match
+                        const resetWinner = Math.random() > 0.5 ? wbFinalist : lbFinalist;
+                        currentTournament.champion = resetWinner;
+                    } else {
+                        currentTournament.champion = wbFinalist;
+                    }
+                    
+                    currentTournament.finished = true;
+                    madeMoves = true;
+                }
+                
+                if (!madeMoves) break;
+            }
+            
+            render();
+            updateButtons();
+            
+            if (currentTournament.finished) {
+                finalsBracket.style.display = 'block';
+                showChampion(currentTournament.champion);
+            }
+        }
+
+        function resetTournament() {
+            currentTournament = null;
+            winnersArea.innerHTML = '';
+            losersArea.innerHTML = '';
+            loserPoolArea.innerHTML = '';
+            finalsArea.innerHTML = '';
+            finalsBracket.style.display = 'none';
+            gameControls.style.display = 'none';
+        }
+
+        // Event listeners
+        generateBtn.addEventListener('click', startNewTournament);
+        nextWBBtn.addEventListener('click', () => {
+            if (currentTournament.advanceWinnersRound()) {
+                render();
+                updateButtons();
+            }
+        });
+        nextLBBtn.addEventListener('click', () => {
+            if (currentTournament.startNextLosersRound()) {
+                render();
+                updateButtons();
+            }
+        });
+        autoPlayBtn.addEventListener('click', autoPlay);
+        resetBtn.addEventListener('click', resetTournament);
+
+        // Legacy function for compatibility
+        function genererKamper(antallSpillere) {
+            playerSelect.value = antallSpillere;
+            startNewTournament();
+        }
+    </script>
