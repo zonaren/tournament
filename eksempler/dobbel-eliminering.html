@@ -14,22 +14,27 @@
         .setup button:hover { background: #005999; }
         .setup button:disabled { background: #ccc; cursor: not-allowed; }
         
-        .tournament-area { display: flex; gap: 30px; align-items: flex-start; flex-wrap: wrap; }
-        .bracket { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); min-width: 280px; }
-        .bracket h2 { margin: 0 0 15px 0; padding: 10px; background: #007acc; color: white; border-radius: 4px; text-align: center; }
+        .tournament-area { display: flex; flex-direction: column; gap: 15px; }
+        .bracket { background: white; padding: 10px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .bracket h2 { margin: 0 0 10px 0; padding: 8px; background: #007acc; color: white; border-radius: 4px; text-align: center; font-size: 16px; }
         .bracket h2.losers { background: #cc6600; }
         .bracket h2.finals { background: #006600; }
         
-        .round { margin-bottom: 20px; }
-        .round h3 { font-size: 14px; text-align: center; margin: 0 0 10px 0; color: #555; }
-        .match { border: 2px solid #ddd; border-radius: 6px; margin: 8px 0; padding: 8px; background: #fafafa; }
-        .player { display: flex; justify-content: space-between; padding: 6px 8px; margin: 2px 0; border-radius: 4px; font-weight: bold; }
+        .bracket-container { display: flex; align-items: flex-start; gap: 15px; overflow-x: auto; padding: 5px 0; }
+        .round { display: flex; flex-direction: column; gap: 6px; min-width: 140px; }
+        .round h3 { font-size: 11px; text-align: center; margin: 0 0 8px 0; color: #555; background: #f0f0f0; padding: 3px; border-radius: 3px; }
+        .match { border: 1px solid #ddd; border-radius: 4px; margin: 3px 0; padding: 4px; background: #fafafa; position: relative; min-height: 40px; display: flex; flex-direction: column; }
+        .match.play-in { border-color: #ff6b35; background: #fff5f0; }
+        .match.empty { background: #f8f9fa; border-style: dashed; }
+        .match-number { font-size: 9px; font-weight: bold; text-align: left; color: #666; margin-bottom: 2px; padding: 2px 0; border-bottom: 1px solid #ddd; }
+        .player { padding: 2px 4px; margin: 1px 0; border-radius: 3px; font-weight: bold; font-size: 11px; }
         .player.winner { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         .player.loser { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
         .player.pending { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        .player.empty { background: #e9ecef; color: #6c757d; font-style: italic; }
         
-        .match-buttons { margin-top: 8px; display: flex; gap: 5px; flex-wrap: wrap; }
-        .match-buttons button { padding: 4px 8px; font-size: 11px; cursor: pointer; border: 1px solid #007acc; background: white; color: #007acc; border-radius: 3px; }
+        .match-buttons { margin-top: 4px; display: flex; gap: 2px; flex-wrap: wrap; }
+        .match-buttons button { padding: 2px 4px; font-size: 9px; cursor: pointer; border: 1px solid #007acc; background: white; color: #007acc; border-radius: 2px; }
         .match-buttons button:hover { background: #007acc; color: white; }
         
         .controls { margin: 15px 0; display: flex; gap: 10px; flex-wrap: wrap; }
@@ -55,37 +60,25 @@
         <button id="dbl-generate-bracket">Start ny turnering</button>
         
         <div class="controls" id="game-controls" style="display: none;">
-            <button id="next-wb" class="primary" disabled>Neste Winners-runde</button>
-            <button id="next-lb" class="secondary" disabled>Neste Losers-runde</button>
             <button id="auto-play" class="secondary">Auto-spill til slutt</button>
             <button id="reset" class="secondary">Reset</button>
         </div>
     </div>
 
-    <!-- <div class="info">
-        <strong>Hvordan dobbel eliminering fungerer:</strong><br>
-        • Alle starter i Winners bracket<br>
-        • Tapere flyttes til Losers bracket (får andre sjanse)<br>
-        • I Losers bracket er man ute ved neste tap<br>
-        • Finalen er mellom Winners-vinneren og Losers-vinneren<br>
-        • Hvis Losers-vinneren tar første finale, spilles det reset (Winners-vinneren må tape to ganger)
-    </div> -->
-
     <div class="tournament-area">
         <div class="bracket" id="winners-bracket">
             <h2>Winners Bracket</h2>
-            <div id="dbl-bracket-A"></div>
+            <div class="bracket-container" id="dbl-bracket-A"></div>
         </div>
         
         <div class="bracket" id="losers-bracket">
             <h2 class="losers">Losers Bracket</h2>
-            <div id="dbl-bracket-B"></div>
-            <div class="pool-info" id="loser-pool"></div>
+            <div class="bracket-container" id="dbl-bracket-B"></div>
         </div>
         
         <div class="bracket" id="finals-bracket" style="display: none;">
             <h2 class="finals">Grand Final</h2>
-            <div id="finals-area"></div>
+            <div class="bracket-container" id="finals-area"></div>
         </div>
     </div>
 
@@ -97,13 +90,10 @@
         const playerSelect = document.getElementById('dbl-player-count');
         const generateBtn = document.getElementById('dbl-generate-bracket');
         const gameControls = document.getElementById('game-controls');
-        const nextWBBtn = document.getElementById('next-wb');
-        const nextLBBtn = document.getElementById('next-lb');
         const autoPlayBtn = document.getElementById('auto-play');
         const resetBtn = document.getElementById('reset');
         const winnersArea = document.getElementById('dbl-bracket-A');
         const losersArea = document.getElementById('dbl-bracket-B');
-        const loserPoolArea = document.getElementById('loser-pool');
         const finalsArea = document.getElementById('finals-area');
         const finalsBracket = document.getElementById('finals-bracket');
 
@@ -131,30 +121,267 @@
                 this.finished = false;
                 this.champion = null;
                 this.finalsStarted = false;
+                this.pendingMainPlayers = null;
+                this.playInLoser = null;
+                this.bracketStructure = null; // Pre-generated bracket structure
+                this.generateBracketStructure();
+            }
+
+            generateBracketStructure() {
+                const playerCount = this.players.length;
+                this.bracketStructure = {
+                    winners: [],
+                    losers: [],
+                    finals: { match1: null, reset: null }
+                };
+
+                let matchNumberCounter = 1;
+                let currentPlayers = playerCount;
+                let roundIndex = 0;
+
+                // Handle play-in if odd number
+                if (currentPlayers % 2 === 1) {
+                    this.bracketStructure.winners.push({
+                        roundNumber: roundIndex++,
+                        name: 'Play-in',
+                        matches: [{ id: 'playin-1', players: [], winner: null, matchNumber: matchNumberCounter++ }]
+                    });
+                    currentPlayers = currentPlayers - 1; // One eliminated, rest go to main
+                }
+
+                // Generate proper double elimination structure
+                this.generateDoubleEliminationStructure(currentPlayers, matchNumberCounter, roundIndex);
+            }
+
+            generateDoubleEliminationStructure(playerCount, startMatchNumber, startRoundIndex) {
+                let matchNumberCounter = startMatchNumber;
+                
+                // For 8 players: Proper double elimination structure
+                // Winners: R1 (1-4), R2 (7-8), R3 (11)
+                // Losers: LR1 (5-6), LR2 (9-10), LR3 (12), LR4 (13)
+                
+                if (playerCount === 8) {
+                    // Winners Bracket
+                    this.bracketStructure.winners.push({
+                        roundNumber: 0,
+                        name: 'R1',
+                        matches: [
+                            {id: 'w1-1', players: [], winner: null, matchNumber: 1},
+                            {id: 'w1-2', players: [], winner: null, matchNumber: 2},
+                            {id: 'w1-3', players: [], winner: null, matchNumber: 3},
+                            {id: 'w1-4', players: [], winner: null, matchNumber: 4}
+                        ]
+                    });
+                    
+                    this.bracketStructure.winners.push({
+                        roundNumber: 1,
+                        name: 'R2',
+                        matches: [
+                            {id: 'w2-1', players: [], winner: null, matchNumber: 7},
+                            {id: 'w2-2', players: [], winner: null, matchNumber: 8}
+                        ]
+                    });
+                    
+                    this.bracketStructure.winners.push({
+                        roundNumber: 2,
+                        name: 'R3',
+                        matches: [
+                            {id: 'w3-1', players: [], winner: null, matchNumber: 11}
+                        ]
+                    });
+                    
+                    // Losers Bracket
+                    this.bracketStructure.losers.push({
+                        roundNumber: 0,
+                        name: 'LR1',
+                        matches: [
+                            {id: 'l1-1', players: [], winner: null, matchNumber: 5},
+                            {id: 'l1-2', players: [], winner: null, matchNumber: 6}
+                        ]
+                    });
+                    
+                    this.bracketStructure.losers.push({
+                        roundNumber: 1,
+                        name: 'LR2',
+                        matches: [
+                            {id: 'l2-1', players: [], winner: null, matchNumber: 9},
+                            {id: 'l2-2', players: [], winner: null, matchNumber: 10}
+                        ]
+                    });
+                    
+                    this.bracketStructure.losers.push({
+                        roundNumber: 2,
+                        name: 'LR3',
+                        matches: [
+                            {id: 'l3-1', players: [], winner: null, matchNumber: 12}
+                        ]
+                    });
+                    
+                    this.bracketStructure.losers.push({
+                        roundNumber: 3,
+                        name: 'LR4',
+                        matches: [
+                            {id: 'l4-1', players: [], winner: null, matchNumber: 13}
+                        ]
+                    });
+                    
+                    return;
+                }
+                
+                // Generic structure for other player counts (fallback)
+                // Calculate total rounds needed for winners bracket
+                const winnersRounds = Math.ceil(Math.log2(playerCount));
+                
+                // Phase 1: Initial Winners Bracket Round (Kamp 1-4)
+                const initialMatchCount = Math.floor(playerCount / 2);
+                this.bracketStructure.winners.push({
+                    roundNumber: startRoundIndex,
+                    name: `R${startRoundIndex + 1}`,
+                    matches: Array.from({length: initialMatchCount}, (_, i) => ({
+                        id: `w${startRoundIndex + 1}-${i+1}`,
+                        players: [],
+                        winner: null,
+                        matchNumber: matchNumberCounter++
+                    }))
+                });
+
+                // Phase 2: First Losers Bracket Round (Kamp 5-6: tapere fra kamp 1-4)
+                const firstLosersMatchCount = Math.floor(initialMatchCount / 2);
+                this.bracketStructure.losers.push({
+                    roundNumber: 0,
+                    name: 'LR1',
+                    matches: Array.from({length: firstLosersMatchCount}, (_, i) => ({
+                        id: `l1-${i+1}`,
+                        players: [],
+                        winner: null,
+                        matchNumber: matchNumberCounter++
+                    }))
+                });
+
+                // Phase 3: Continue alternating between Winners and Losers brackets
+                let winnersPlayers = initialMatchCount;
+                let losersPlayers = firstLosersMatchCount;
+                let winnersRoundIndex = startRoundIndex + 1;
+                let losersRoundIndex = 1;
+
+                while (winnersPlayers > 1 || losersPlayers > 0) {
+                    // Winners bracket round (if more than 1 player left)
+                    if (winnersPlayers > 1) {
+                        const winnersMatchCount = Math.floor(winnersPlayers / 2);
+                        this.bracketStructure.winners.push({
+                            roundNumber: winnersRoundIndex,
+                            name: `R${winnersRoundIndex + 1}`,
+                            matches: Array.from({length: winnersMatchCount}, (_, i) => ({
+                                id: `w${winnersRoundIndex + 1}-${i+1}`,
+                                players: [],
+                                winner: null,
+                                matchNumber: matchNumberCounter++
+                            }))
+                        });
+                        winnersPlayers = winnersMatchCount;
+                        winnersRoundIndex++;
+                    }
+
+                    // Losers bracket round - gets losers from winners + advancing losers
+                    if (losersPlayers > 0) {
+                        // Losers from winners bracket join advancing losers
+                        const newLosersFromWinners = winnersPlayers > 1 ? winnersPlayers : 0;
+                        const totalLosersPlayers = losersPlayers + newLosersFromWinners;
+                        
+                        if (totalLosersPlayers > 1) {
+                            const losersMatchCount = Math.floor(totalLosersPlayers / 2);
+                            this.bracketStructure.losers.push({
+                                roundNumber: losersRoundIndex,
+                                name: `LR${losersRoundIndex + 1}`,
+                                matches: Array.from({length: losersMatchCount}, (_, i) => ({
+                                    id: `l${losersRoundIndex + 1}-${i+1}`,
+                                    players: [],
+                                    winner: null,
+                                    matchNumber: matchNumberCounter++
+                                }))
+                            });
+                            losersPlayers = losersMatchCount;
+                        } else if (totalLosersPlayers === 1) {
+                            // Final losers bracket match vs winner from winners bracket
+                            this.bracketStructure.losers.push({
+                                roundNumber: losersRoundIndex,
+                                name: `LR${losersRoundIndex + 1}`,
+                                matches: [{
+                                    id: `l${losersRoundIndex + 1}-1`,
+                                    players: [],
+                                    winner: null,
+                                    matchNumber: matchNumberCounter++
+                                }]
+                            });
+                            losersPlayers = 1;
+                        }
+                        losersRoundIndex++;
+                    }
+
+                    // Break if we're down to final contestants
+                    if (winnersPlayers === 1 && losersPlayers === 1) {
+                        break;
+                    }
+                }
+                
+                // Finals for both 8-player and generic structure
+                this.bracketStructure.finals.match1 = { 
+                    id: 'final-1', 
+                    players: [], 
+                    winner: null, 
+                    matchNumber: 14 
+                };
+                this.bracketStructure.finals.reset = { 
+                    id: 'final-reset', 
+                    players: [], 
+                    winner: null, 
+                    matchNumber: 15 
+                };
             }
 
             startFirstRound() {
-                this.winnersRounds.push(this.createMatches(this.players));
+                const playerCount = this.players.length;
+                
+                if (playerCount % 2 === 1) {
+                    // Oddetall - lag play-in match mellom 2 lavest rangerte
+                    const playInPlayer1 = this.players[playerCount - 2]; // Nest lavest
+                    const playInPlayer2 = this.players[playerCount - 1]; // Lavest
+                    const mainPlayers = this.players.slice(0, playerCount - 2);
+                    
+                    // Opprett play-in runde
+                    this.winnersRounds.push([{
+                        player1: playInPlayer1,
+                        player2: playInPlayer2,
+                        winner: null,
+                        finished: false,
+                        walkover: false,
+                        isPlayIn: true
+                    }]);
+                    
+                    // Lagre hovedspillere for neste runde
+                    this.pendingMainPlayers = mainPlayers;
+                } else {
+                    // Partall - start normalt
+                    this.winnersRounds.push(this.createMatches(this.players));
+                }
             }
 
             createMatches(players) {
                 const matches = [];
                 for (let i = 0; i < players.length; i += 2) {
-                    const p1 = players[i];
-                    const p2 = players[i + 1];
-                    if (p2) {
+                    if (i + 1 < players.length) {
                         matches.push({
-                            player1: p1,
-                            player2: p2,
+                            player1: players[i],
+                            player2: players[i + 1],
                             winner: null,
                             finished: false,
                             walkover: false
                         });
                     } else {
                         matches.push({
-                            player1: p1,
+                            player1: players[i],
                             player2: null,
-                            winner: p1,
+                            winner: players[i],
                             finished: true,
                             walkover: true
                         });
@@ -172,10 +399,12 @@
                     
                 if (loser) {
                     loser.losses++;
-                    if (loser.losses === 1) {
-                        this.loserPool.push(loser);
+                    if (match.isPlayIn) {
+                        // Play-in taper venter på hovedrunde
+                        this.playInLoser = loser;
                     } else {
-                        loser.eliminated = true;
+                        // Normal taper til losers pool
+                        this.loserPool.push(loser);
                     }
                 }
             }
@@ -184,15 +413,29 @@
                 const currentRound = this.winnersRounds[this.winnersRounds.length - 1];
                 if (!currentRound || !currentRound.every(m => m.finished)) return false;
                 
+                // Sjekk om vi har en play-in runde som er ferdig
+                if (currentRound.length === 1 && currentRound[0].isPlayIn && this.pendingMainPlayers) {
+                    return true;
+                }
+                
                 const winners = currentRound.map(m => m.winner).filter(Boolean);
                 return winners.length > 1;
             }
 
             canStartLosersRound() {
-                // Can start if we have new losers in pool OR if previous losers round is complete and has winners
+                // Spesiell logikk for play-in taper
+                const hasPlayInLoser = this.playInLoser !== null;
+                const mainRoundComplete = this.winnersRounds.length >= 2 && this.isCurrentWinnersRoundComplete();
+                
+                // Play-in taper kan starte losers når hovedrunden (runde 2) er ferdig
+                if (hasPlayInLoser && mainRoundComplete && this.losersRounds.length === 0) {
+                    return true;
+                }
+                
+                // Normal losers logikk
                 const hasNewLosers = this.loserPool.length > 0;
                 const hasAdvancingLosers = this.losersRounds.length > 0 && 
-                    this.isCurrentLosersRoundComplete() && 
+                    this.losersRounds[this.losersRounds.length - 1].every(m => m.finished) &&
                     this.losersRounds[this.losersRounds.length - 1].some(m => m.winner);
                 
                 return (hasNewLosers || hasAdvancingLosers) && this.isCurrentLosersRoundComplete();
@@ -213,8 +456,22 @@
                 if (!this.canAdvanceWinnersRound()) return false;
                 
                 const currentRound = this.winnersRounds[this.winnersRounds.length - 1];
-                const winners = currentRound.map(m => m.winner).filter(Boolean);
-                this.winnersRounds.push(this.createMatches(winners));
+                
+                // Sjekk om vi har en play-in runde som er ferdig
+                if (currentRound.length === 1 && currentRound[0].isPlayIn && this.pendingMainPlayers) {
+                    // Kombinér play-in vinner med hovedspillere
+                    const playInWinner = currentRound[0].winner;
+                    const allMainPlayers = [...this.pendingMainPlayers, playInWinner];
+                    this.winnersRounds.push(this.createMatches(allMainPlayers));
+                    this.pendingMainPlayers = null;
+                } else {
+                    // Normal runde fremgang
+                    const winners = currentRound.map(m => m.winner).filter(Boolean);
+                    if (winners.length > 1) {
+                        this.winnersRounds.push(this.createMatches(winners));
+                    }
+                }
+                
                 return true;
             }
 
@@ -228,9 +485,15 @@
                     advancingPlayers = lastLosersRound.map(m => m.winner).filter(Boolean);
                 }
                 
-                // Combine with new losers from loser pool
-                const allPlayers = [...advancingPlayers, ...this.loserPool];
+                // Kombinér med nye tapere fra loser pool
+                let allPlayers = [...advancingPlayers, ...this.loserPool];
                 this.loserPool = [];
+                
+                // Legg til play-in taper hvis det er første losers runde og hovedrunden er ferdig
+                if (this.playInLoser && this.losersRounds.length === 0 && this.winnersRounds.length >= 2) {
+                    allPlayers.push(this.playInLoser);
+                    this.playInLoser = null;
+                }
                 
                 if (allPlayers.length > 0) {
                     this.losersRounds.push(this.createMatches(allPlayers));
@@ -270,7 +533,6 @@
             finalsArea.innerHTML = '';
             
             render();
-            updateButtons();
         }
 
         function render() {
@@ -278,23 +540,47 @@
             
             renderWinnersBracket();
             renderLosersBracket();
-            renderLoserPool();
+            
+            // Always show finals structure
+            finalsBracket.style.display = 'block';
+            const wbFinalist = currentTournament.getWinnersFinalist();
+            const lbFinalist = currentTournament.getLosersFinalist();
+            renderFinals(wbFinalist, lbFinalist, false);
+            
             checkForFinals();
         }
 
         function renderWinnersBracket() {
             winnersArea.innerHTML = '';
             
-            currentTournament.winnersRounds.forEach((round, index) => {
+            // Show full bracket structure
+            currentTournament.bracketStructure.winners.forEach((structureRound, structureIndex) => {
                 const roundDiv = document.createElement('div');
                 roundDiv.className = 'round';
                 
                 const title = document.createElement('h3');
-                title.textContent = `Runde ${index + 1}`;
+                title.textContent = structureRound.name;
                 roundDiv.appendChild(title);
                 
-                round.forEach(match => {
-                    roundDiv.appendChild(createMatchElement(match));
+                structureRound.matches.forEach((structureMatch, matchIndex) => {
+                    // Find actual match data or create populated match based on results
+                    const actualRound = currentTournament.winnersRounds[structureIndex];
+                    let actualMatch = actualRound && actualRound[matchIndex] ? actualRound[matchIndex] : null;
+                    
+                    // If no actual match exists, try to populate based on previous results
+                    if (!actualMatch && structureIndex > 0) {
+                        actualMatch = createPopulatedWinnersMatch(structureMatch, structureIndex, matchIndex);
+                    }
+                    
+                    const matchDiv = actualMatch ? 
+                        createMatchElement(actualMatch, structureMatch.matchNumber) : 
+                        createEmptyMatchElement(structureMatch.id, structureMatch.matchNumber, false);
+                    
+                    if (structureRound.name === 'Play-in') {
+                        matchDiv.classList.add('play-in');
+                    }
+                    
+                    roundDiv.appendChild(matchDiv);
                 });
                 
                 winnersArea.appendChild(roundDiv);
@@ -304,40 +590,396 @@
         function renderLosersBracket() {
             losersArea.innerHTML = '';
             
-            currentTournament.losersRounds.forEach((round, index) => {
+            // Show losers bracket structure
+            currentTournament.bracketStructure.losers.forEach((structureRound, roundIndex) => {
                 const roundDiv = document.createElement('div');
                 roundDiv.className = 'round';
                 
                 const title = document.createElement('h3');
-                title.textContent = `Losers Runde ${index + 1}`;
+                title.textContent = structureRound.name;
                 roundDiv.appendChild(title);
                 
-                round.forEach(match => {
-                    roundDiv.appendChild(createMatchElement(match));
+                structureRound.matches.forEach((structureMatch, matchIndex) => {
+                    const actualRound = currentTournament.losersRounds[roundIndex];
+                    let actualMatch = actualRound && actualRound[matchIndex] ? actualRound[matchIndex] : null;
+                    
+                    // If no actual match exists, try to populate based on results
+                    if (!actualMatch) {
+                        actualMatch = createPopulatedLosersMatch(structureMatch, roundIndex, matchIndex);
+                    }
+                    
+                    const matchDiv = actualMatch ? 
+                        createMatchElement(actualMatch, structureMatch.matchNumber) : 
+                        createEmptyMatchElement(structureMatch.id, structureMatch.matchNumber, true);
+                    
+                    roundDiv.appendChild(matchDiv);
                 });
                 
                 losersArea.appendChild(roundDiv);
             });
         }
 
-        function renderLoserPool() {
-            if (currentTournament.loserPool.length === 0) {
-                loserPoolArea.innerHTML = '';
-                return;
-            }
+        function createEmptyMatchElement(matchId, matchNumber, isLosers = false) {
+            const matchDiv = document.createElement('div');
+            matchDiv.className = 'match empty';
+            matchDiv.dataset.matchId = matchId;
             
-            loserPoolArea.innerHTML = '<strong>Venter på neste Losers-runde:</strong><br>';
-            currentTournament.loserPool.forEach(player => {
-                const span = document.createElement('span');
-                span.className = 'pool-player';
-                span.textContent = player.name;
-                loserPoolArea.appendChild(span);
-            });
+            // Add match number header
+            const matchHeader = document.createElement('div');
+            matchHeader.className = 'match-number';
+            matchHeader.textContent = `Kamp ${matchNumber}`;
+            matchDiv.appendChild(matchHeader);
+            
+            const player1Div = document.createElement('div');
+            player1Div.className = 'player empty';
+            player1Div.textContent = getPlayerReference(matchId, 1, isLosers);
+            matchDiv.appendChild(player1Div);
+            
+            const player2Div = document.createElement('div');
+            player2Div.className = 'player empty';
+            player2Div.textContent = getPlayerReference(matchId, 2, isLosers);
+            matchDiv.appendChild(player2Div);
+            
+            return matchDiv;
         }
 
-        function createMatchElement(match) {
+        function createPopulatedWinnersMatch(structureMatch, roundIndex, matchIndex) {
+            let player1, player2;
+            
+            if (roundIndex === 1) {
+                // Round 1: Winners from matches 0,1,2,3 -> matches 0,1
+                player1 = getWinnerFromPreviousWinnersRound(roundIndex, matchIndex * 2);
+                player2 = getWinnerFromPreviousWinnersRound(roundIndex, matchIndex * 2 + 1);
+            } else if (roundIndex === 2) {
+                // Round 2: Winners from matches 0,1 in previous round -> match 0
+                player1 = getWinnerFromPreviousWinnersRound(roundIndex, 0);
+                player2 = getWinnerFromPreviousWinnersRound(roundIndex, 1);
+            } else {
+                // Generic logic for other rounds
+                player1 = getWinnerFromPreviousWinnersRound(roundIndex, matchIndex * 2);
+                player2 = getWinnerFromPreviousWinnersRound(roundIndex, matchIndex * 2 + 1);
+            }
+            
+            if (player1 || player2) {
+                return {
+                    player1: player1,
+                    player2: player2,
+                    winner: null,
+                    finished: false,
+                    walkover: !player1 || !player2
+                };
+            }
+            return null;
+        }
+        
+        function createPopulatedLosersMatch(structureMatch, roundIndex, matchIndex) {
+            let player1 = null;
+            let player2 = null;
+            
+            if (roundIndex === 0) {
+                // LR1: Tapere fra Winners R1
+                player1 = getLoserFromWinnersRound(0, matchIndex * 2);
+                player2 = getLoserFromWinnersRound(0, matchIndex * 2 + 1);
+            } else if (roundIndex === 1) {
+                // LR2: Taper fra Winners R2 vs Vinner fra LR1
+                player1 = getLoserFromWinnersRound(1, matchIndex); // Taper av 7/8
+                player2 = getWinnerFromPreviousLosersRound(0, matchIndex); // Vinner av 5/6
+            } else if (roundIndex === 2) {
+                // LR3: Vinner av 9 vs Vinner av 10
+                player1 = getWinnerFromPreviousLosersRound(1, 0); // Vinner av 9
+                player2 = getWinnerFromPreviousLosersRound(1, 1); // Vinner av 10
+            } else if (roundIndex === 3) {
+                // LR4: Taper av 11 vs Vinner av 12
+                player1 = getLoserFromWinnersRound(2, 0); // Taper av 11
+                player2 = getWinnerFromPreviousLosersRound(2, 0); // Vinner av 12
+            }
+            
+            if (player1 || player2) {
+                return {
+                    player1: player1,
+                    player2: player2,
+                    winner: null,
+                    finished: false,
+                    walkover: !player1 || !player2
+                };
+            }
+            return null;
+        }
+        
+        function getWinnerFromPreviousWinnersRound(currentRoundIndex, matchIndex) {
+            const prevRoundIndex = currentRoundIndex - 1;
+            if (prevRoundIndex < 0 || !currentTournament.winnersRounds[prevRoundIndex]) return null;
+            
+            const prevRound = currentTournament.winnersRounds[prevRoundIndex];
+            const match = prevRound[matchIndex];
+            
+            return match && match.finished ? match.winner : null;
+        }
+        
+        function getLoserFromWinnersRound(roundIndex, matchIndex) {
+            if (!currentTournament.winnersRounds[roundIndex]) return null;
+            
+            const round = currentTournament.winnersRounds[roundIndex];
+            const match = round[matchIndex];
+            if (match && match.finished) {
+                return match.player1 === match.winner ? match.player2 : match.player1;
+            }
+            return null;
+        }
+        
+        function getWinnerFromPreviousLosersRound(roundIndex, matchIndex) {
+            if (!currentTournament.losersRounds[roundIndex]) return null;
+            
+            const round = currentTournament.losersRounds[roundIndex];
+            const match = round[matchIndex];
+            return match && match.finished ? match.winner : null;
+        }
+
+        function createReadyMatches() {
+            // Check and create Winners bracket matches
+            for (let roundIndex = 1; roundIndex < currentTournament.bracketStructure.winners.length; roundIndex++) {
+                if (!currentTournament.winnersRounds[roundIndex]) {
+                    const structureRound = currentTournament.bracketStructure.winners[roundIndex];
+                    const readyMatches = [];
+                    
+                    for (let matchIndex = 0; matchIndex < structureRound.matches.length; matchIndex++) {
+                        let player1, player2;
+                        
+                        if (roundIndex === 1) {
+                            // Round 1: Winners from matches 0,1,2,3 -> matches 0,1
+                            player1 = getWinnerFromPreviousWinnersRound(roundIndex, matchIndex * 2);
+                            player2 = getWinnerFromPreviousWinnersRound(roundIndex, matchIndex * 2 + 1);
+                        } else if (roundIndex === 2) {
+                            // Round 2: Winners from matches 0,1 in previous round -> match 0
+                            player1 = getWinnerFromPreviousWinnersRound(roundIndex, 0);
+                            player2 = getWinnerFromPreviousWinnersRound(roundIndex, 1);
+                        } else {
+                            // Generic logic for other rounds
+                            player1 = getWinnerFromPreviousWinnersRound(roundIndex, matchIndex * 2);
+                            player2 = getWinnerFromPreviousWinnersRound(roundIndex, matchIndex * 2 + 1);
+                        }
+                        
+                        if (player1 && player2) {
+                            readyMatches.push({
+                                player1: player1,
+                                player2: player2,
+                                winner: null,
+                                finished: false,
+                                walkover: false
+                            });
+                        } else if (structureRound.matches.length === 1 && (player1 || player2)) {
+                            // Final match - only create if we have at least one valid player
+                            if (player1 && player2) {
+                                readyMatches.push({
+                                    player1: player1,
+                                    player2: player2,
+                                    winner: null,
+                                    finished: false,
+                                    walkover: false
+                                });
+                            }
+                        }
+                    }
+                    
+                    if (readyMatches.length === structureRound.matches.length) {
+                        currentTournament.winnersRounds[roundIndex] = readyMatches;
+                    }
+                }
+            }
+            
+            // Check and create Losers bracket matches
+            for (let roundIndex = 0; roundIndex < currentTournament.bracketStructure.losers.length; roundIndex++) {
+                if (!currentTournament.losersRounds[roundIndex]) {
+                    const structureRound = currentTournament.bracketStructure.losers[roundIndex];
+                    const readyMatches = [];
+                    
+                    for (let matchIndex = 0; matchIndex < structureRound.matches.length; matchIndex++) {
+                        let player1 = null;
+                        let player2 = null;
+                        
+                        if (roundIndex === 0) {
+                            // LR1: Tapere fra Winners R1
+                            player1 = getLoserFromWinnersRound(0, matchIndex * 2);
+                            player2 = getLoserFromWinnersRound(0, matchIndex * 2 + 1);
+                        } else if (roundIndex === 1) {
+                            // LR2: Taper fra Winners R2 vs Vinner fra LR1
+                            player1 = getLoserFromWinnersRound(1, matchIndex);
+                            player2 = getWinnerFromPreviousLosersRound(0, matchIndex);
+                        } else if (roundIndex === 2) {
+                            // LR3: Vinner av 9 vs Vinner av 10
+                            player1 = getWinnerFromPreviousLosersRound(1, 0);
+                            player2 = getWinnerFromPreviousLosersRound(1, 1);
+                        } else if (roundIndex === 3) {
+                            // LR4: Taper av 11 vs Vinner av 12
+                            player1 = getLoserFromWinnersRound(2, 0);
+                            player2 = getWinnerFromPreviousLosersRound(2, 0);
+                        }
+                        
+                        if (player1 && player2) {
+                            readyMatches.push({
+                                player1: player1,
+                                player2: player2,
+                                winner: null,
+                                finished: false,
+                                walkover: false
+                            });
+                        } else if (structureRound.matches.length === 1 && (player1 || player2)) {
+                            // Single match in round - only need one player ready for some cases
+                            if (roundIndex === 2 && (player1 || player2)) {
+                                // LR3 needs both players
+                                continue;
+                            }
+                            readyMatches.push({
+                                player1: player1,
+                                player2: player2,
+                                winner: null,
+                                finished: false,
+                                walkover: !player1 || !player2
+                            });
+                        }
+                    }
+                    
+                    if (readyMatches.length === structureRound.matches.length && readyMatches.every(m => m.player1 && m.player2)) {
+                        currentTournament.losersRounds[roundIndex] = readyMatches;
+                    }
+                }
+            }
+        }
+
+        function getPlayerReference(matchId, playerSlot, isLosers) {
+            if (!currentTournament || !currentTournament.bracketStructure) return 'TBD';
+            
+            // Find this match in structure
+            let matchInfo = null;
+            let roundIndex = -1;
+            let actualIsLosers = false;
+            
+            // Search in winners bracket
+            for (let i = 0; i < currentTournament.bracketStructure.winners.length; i++) {
+                const round = currentTournament.bracketStructure.winners[i];
+                const match = round.matches.find(m => m.id === matchId);
+                if (match) {
+                    matchInfo = match;
+                    roundIndex = i;
+                    break;
+                }
+            }
+            
+            // Search in losers bracket if not found
+            if (!matchInfo) {
+                for (let i = 0; i < currentTournament.bracketStructure.losers.length; i++) {
+                    const round = currentTournament.bracketStructure.losers[i];
+                    const match = round.matches.find(m => m.id === matchId);
+                    if (match) {
+                        matchInfo = match;
+                        roundIndex = i;
+                        actualIsLosers = true;
+                        break;
+                    }
+                }
+            }
+            
+            if (!matchInfo) return 'TBD';
+            
+            // For play-in match
+            if (matchId.startsWith('playin')) {
+                const playerIndex = currentTournament.players.length - 2 + (playerSlot - 1);
+                return currentTournament.players[playerIndex] ? currentTournament.players[playerIndex].name : 'TBD';
+            }
+            
+            // For first winners round, show player names
+            if (!actualIsLosers && roundIndex === 0 && !matchId.startsWith('playin')) {
+                const hasPlayIn = currentTournament.players.length % 2 === 1;
+                const adjustedPlayerCount = hasPlayIn ? currentTournament.players.length - 2 : currentTournament.players.length;
+                const matchIndexInRound = matchInfo.matchNumber - (hasPlayIn ? 2 : 1);
+                const playerIndex = (matchIndexInRound - 1) * 2 + (playerSlot - 1);
+                return currentTournament.players[playerIndex] ? currentTournament.players[playerIndex].name : 'TBD';
+            }
+            
+            // For losers bracket references
+            if (actualIsLosers) {
+                if (roundIndex === 0) {
+                    // LR1: Taper av kamp 1 vs Taper av kamp 2, etc.
+                    const winnersRound1 = currentTournament.bracketStructure.winners[0];
+                    const sourceMatchIndex = (matchInfo.matchNumber - 5) * 2;
+                    const sourceMatch1 = winnersRound1.matches[sourceMatchIndex];
+                    const sourceMatch2 = winnersRound1.matches[sourceMatchIndex + 1];
+                    
+                    if (playerSlot === 1 && sourceMatch1) {
+                        return `Taper av ${sourceMatch1.matchNumber}`;
+                    } else if (playerSlot === 2 && sourceMatch2) {
+                        return `Taper av ${sourceMatch2.matchNumber}`;
+                    }
+                } else if (roundIndex === 1) {
+                    // LR2: Kamp 9: Taper av 7 vs Vinner av 5, Kamp 10: Taper av 8 vs Vinner av 6
+                    const winnersRound2 = currentTournament.bracketStructure.winners[1];
+                    const prevLosersRound = currentTournament.bracketStructure.losers[0];
+                    const currentLosersRound = currentTournament.bracketStructure.losers[roundIndex];
+                    const matchIndexInCurrentRound = currentLosersRound.matches.findIndex(m => m.id === matchId);
+                    
+                    if (playerSlot === 1) {
+                        // Taper from winners round 2
+                        if (winnersRound2 && winnersRound2.matches[matchIndexInCurrentRound]) {
+                            return `Taper av ${winnersRound2.matches[matchIndexInCurrentRound].matchNumber}`;
+                        }
+                    } else {
+                        // Vinner from previous losers round
+                        if (prevLosersRound && prevLosersRound.matches[matchIndexInCurrentRound]) {
+                            return `Vinner av ${prevLosersRound.matches[matchIndexInCurrentRound].matchNumber}`;
+                        }
+                    }
+                } else if (roundIndex === 2) {
+                    // LR3: Kamp 12: Vinner av 9 vs Vinner av 10
+                    const prevLosersRound = currentTournament.bracketStructure.losers[1];
+                    
+                    if (playerSlot === 1 && prevLosersRound.matches[0]) {
+                        return `Vinner av ${prevLosersRound.matches[0].matchNumber}`; // Vinner av 9
+                    } else if (playerSlot === 2 && prevLosersRound.matches[1]) {
+                        return `Vinner av ${prevLosersRound.matches[1].matchNumber}`; // Vinner av 10
+                    }
+                } else if (roundIndex === 3) {
+                    // LR4: Kamp 13: Taper av 11 vs Vinner av 12
+                    const winnersRound3 = currentTournament.bracketStructure.winners[2];
+                    const prevLosersRound = currentTournament.bracketStructure.losers[2];
+                    
+                    if (playerSlot === 1 && winnersRound3.matches[0]) {
+                        return `Taper av ${winnersRound3.matches[0].matchNumber}`; // Taper av 11
+                    } else if (playerSlot === 2 && prevLosersRound.matches[0]) {
+                        return `Vinner av ${prevLosersRound.matches[0].matchNumber}`; // Vinner av 12
+                    }
+                }
+            } else {
+                // Winners bracket references
+                if (roundIndex > 0) {
+                    const prevRound = currentTournament.bracketStructure.winners[roundIndex - 1];
+                    
+                    // Find which match this is in current round
+                    const currentRound = currentTournament.bracketStructure.winners[roundIndex];
+                    const matchIndexInCurrentRound = currentRound.matches.findIndex(m => m.id === matchId);
+                    
+                    // Each match in current round takes 2 matches from previous round
+                    const firstSourceMatchIndex = matchIndexInCurrentRound * 2 + (playerSlot - 1);
+                    
+                    if (prevRound.matches[firstSourceMatchIndex]) {
+                        return `Vinner av ${prevRound.matches[firstSourceMatchIndex].matchNumber}`;
+                    }
+                }
+            }
+            
+            return 'TBD';
+        }
+
+        function createMatchElement(match, matchNumber) {
             const matchDiv = document.createElement('div');
             matchDiv.className = 'match';
+            
+            // Add match number header if provided
+            if (matchNumber) {
+                const matchHeader = document.createElement('div');
+                matchHeader.className = 'match-number';
+                matchHeader.textContent = `Kamp ${matchNumber}`;
+                matchDiv.appendChild(matchHeader);
+            }
             
             const player1Div = createPlayerElement(match.player1, match);
             matchDiv.appendChild(player1Div);
@@ -346,7 +988,7 @@
                 const player2Div = createPlayerElement(match.player2, match);
                 matchDiv.appendChild(player2Div);
                 
-                if (!match.finished) {
+                if (!match.finished && match.player1 && match.player2) {
                     const buttonsDiv = document.createElement('div');
                     buttonsDiv.className = 'match-buttons';
                     
@@ -380,16 +1022,24 @@
         function createPlayerElement(player, match) {
             const div = document.createElement('div');
             div.className = 'player';
+            
+            if (!player) {
+                div.textContent = 'TBD';
+                div.classList.add('empty');
+                return div;
+            }
+            
             div.textContent = player.name;
             
             if (match.finished) {
-                if (match.winner === player) {
+                if (player === match.winner) {
                     div.classList.add('winner');
-                } else if (match.player2) {
+                } else {
                     div.classList.add('loser');
                 }
             } else {
                 div.classList.add('pending');
+                div.onclick = () => selectWinner(match, player);
             }
             
             return div;
@@ -397,21 +1047,11 @@
 
         function selectWinner(match, winner) {
             currentTournament.setMatchWinner(match, winner);
-            render();
-            updateButtons();
-        }
-
-        function updateButtons() {
-            if (!currentTournament) {
-                nextWBBtn.disabled = true;
-                nextLBBtn.disabled = true;
-                autoPlayBtn.disabled = true;
-                return;
-            }
             
-            nextWBBtn.disabled = !currentTournament.canAdvanceWinnersRound() || currentTournament.finished;
-            nextLBBtn.disabled = !currentTournament.canStartLosersRound() || currentTournament.finished;
-            autoPlayBtn.disabled = currentTournament.finished;
+            // Automatically create new matches when players are ready
+            createReadyMatches();
+            
+            render();
         }
 
         function checkForFinals() {
@@ -429,26 +1069,59 @@
         function renderFinals(wbPlayer, lbPlayer, isReset) {
             finalsArea.innerHTML = '';
             
-            const title = document.createElement('h3');
-            title.textContent = isReset ? 'Reset Match' : 'Første Finale';
-            finalsArea.appendChild(title);
+            // Always show both final slots
+            const finalRoundDiv = document.createElement('div');
+            finalRoundDiv.className = 'round';
             
-            const match = {
-                player1: wbPlayer,
-                player2: lbPlayer,
-                winner: null,
-                finished: false,
-                walkover: false
-            };
+            const finalTitle = document.createElement('h3');
+            finalTitle.textContent = 'Final';
+            finalRoundDiv.appendChild(finalTitle);
             
-            const matchDiv = createMatchElement(match);
-            finalsArea.appendChild(matchDiv);
+            // First final match
+            if (wbPlayer && lbPlayer) {
+                const match = {
+                    player1: wbPlayer,
+                    player2: lbPlayer,
+                    winner: null,
+                    finished: false,
+                    walkover: false
+                };
+                const finalMatchNumber = currentTournament.bracketStructure.finals && currentTournament.bracketStructure.finals.match1 
+                    ? currentTournament.bracketStructure.finals.match1.matchNumber 
+                    : 14;
+                const matchDiv = createMatchElement(match, finalMatchNumber);
+                finalRoundDiv.appendChild(matchDiv);
+                
+                // Override button handlers
+                const buttons = matchDiv.querySelectorAll('.match-buttons button');
+                buttons[0].onclick = () => finalizeFinals(match, wbPlayer, isReset);
+                buttons[1].onclick = () => finalizeFinals(match, lbPlayer, isReset);
+                buttons[2].onclick = () => finalizeFinals(match, Math.random() > 0.5 ? wbPlayer : lbPlayer, isReset);
+            } else {
+                const finalMatchNumber = currentTournament.bracketStructure.finals && currentTournament.bracketStructure.finals.match1 
+                    ? currentTournament.bracketStructure.finals.match1.matchNumber 
+                    : 14;
+                const emptyMatch = createEmptyMatchElement('final-1', finalMatchNumber);
+                finalRoundDiv.appendChild(emptyMatch);
+            }
             
-            // Override the button handlers for finals
-            const buttons = matchDiv.querySelectorAll('button');
-            buttons[0].onclick = () => finalizeFinals(match, wbPlayer, isReset);
-            buttons[1].onclick = () => finalizeFinals(match, lbPlayer, isReset);
-            buttons[2].onclick = () => finalizeFinals(match, Math.random() > 0.5 ? wbPlayer : lbPlayer, isReset);
+            finalsArea.appendChild(finalRoundDiv);
+            
+            // Reset match slot
+            const resetRoundDiv = document.createElement('div');
+            resetRoundDiv.className = 'round';
+            
+            const resetTitle = document.createElement('h3');
+            resetTitle.textContent = 'Reset';
+            resetRoundDiv.appendChild(resetTitle);
+            
+            const resetMatchNumber = currentTournament.bracketStructure.finals && currentTournament.bracketStructure.finals.reset 
+                ? currentTournament.bracketStructure.finals.reset.matchNumber 
+                : 15;
+            const emptyReset = createEmptyMatchElement('final-reset', resetMatchNumber);
+            resetRoundDiv.appendChild(emptyReset);
+            
+            finalsArea.appendChild(resetRoundDiv);
         }
 
         function finalizeFinals(match, winner, isReset) {
@@ -459,24 +1132,27 @@
             const lbPlayer = match.player2;
             
             if (!isReset && winner === lbPlayer) {
-                // Losers bracket winner won first final - need reset
+                // Losers bracket winner wins first final, need reset
                 renderFinals(wbPlayer, lbPlayer, true);
             } else {
                 // Tournament is over
-                currentTournament.finished = true;
                 currentTournament.champion = winner;
+                currentTournament.finished = true;
                 showChampion(winner);
-                updateButtons();
             }
             
             render();
         }
 
         function showChampion(champion) {
+            const roundDiv = document.createElement('div');
+            roundDiv.className = 'round';
+            
             const championDiv = document.createElement('div');
             championDiv.className = 'champion';
-            championDiv.textContent = `🏆 CHAMPION: ${champion.name} 🏆`;
-            finalsArea.appendChild(championDiv);
+            championDiv.textContent = `🏆 ${champion.name} 🏆`;
+            roundDiv.appendChild(championDiv);
+            finalsArea.appendChild(roundDiv);
         }
 
         function autoPlay() {
@@ -488,61 +1164,68 @@
             while (!currentTournament.finished && iterations < maxIterations) {
                 iterations++;
                 
-                // Play current round matches
-                const allRounds = [...currentTournament.winnersRounds, ...currentTournament.losersRounds];
-                let madeMoves = false;
+                // Play all unfinished matches in current rounds
+                let playedMatch = false;
                 
-                for (const round of allRounds) {
+                // Winners rounds
+                for (const round of currentTournament.winnersRounds) {
                     for (const match of round) {
-                        if (!match.finished && match.player2) {
+                        if (!match.finished && match.player1 && match.player2) {
                             const winner = Math.random() > 0.5 ? match.player1 : match.player2;
                             currentTournament.setMatchWinner(match, winner);
-                            madeMoves = true;
+                            playedMatch = true;
+                            break;
                         }
                     }
+                    if (playedMatch) break;
                 }
                 
-                // Try to advance winners round
-                if (currentTournament.canAdvanceWinnersRound()) {
-                    currentTournament.advanceWinnersRound();
-                    madeMoves = true;
-                }
-                
-                // Try to start next losers round
-                if (currentTournament.canStartLosersRound()) {
-                    currentTournament.startNextLosersRound();
-                    madeMoves = true;
-                }
-                
-                // Check for finals
-                if (currentTournament.canStartFinals()) {
-                    currentTournament.finalsStarted = true;
-                    
-                    // Auto-play finals
-                    const wbFinalist = currentTournament.getWinnersFinalist();
-                    const lbFinalist = currentTournament.getLosersFinalist();
-                    
-                    const firstWinner = Math.random() > 0.5 ? wbFinalist : lbFinalist;
-                    if (firstWinner === lbFinalist) {
-                        // Need reset match
-                        const resetWinner = Math.random() > 0.5 ? wbFinalist : lbFinalist;
-                        currentTournament.champion = resetWinner;
-                    } else {
-                        currentTournament.champion = wbFinalist;
+                if (!playedMatch) {
+                    // Losers rounds
+                    for (const round of currentTournament.losersRounds) {
+                        for (const match of round) {
+                            if (!match.finished && match.player1 && match.player2) {
+                                const winner = Math.random() > 0.5 ? match.player1 : match.player2;
+                                currentTournament.setMatchWinner(match, winner);
+                                playedMatch = true;
+                                break;
+                            }
+                        }
+                        if (playedMatch) break;
                     }
-                    
-                    currentTournament.finished = true;
-                    madeMoves = true;
                 }
                 
-                if (!madeMoves) break;
+                if (!playedMatch) {
+                    // Try to advance rounds
+                    if (currentTournament.canAdvanceWinnersRound()) {
+                        currentTournament.advanceWinnersRound();
+                    } else if (currentTournament.canStartLosersRound()) {
+                        currentTournament.startNextLosersRound();
+                    } else if (currentTournament.canStartFinals()) {
+                        // Play finals automatically
+                        const wbPlayer = currentTournament.getWinnersFinalist();
+                        const lbPlayer = currentTournament.getLosersFinalist();
+                        const winner = Math.random() > 0.5 ? wbPlayer : lbPlayer;
+                        
+                        if (winner === lbPlayer) {
+                            // Need reset
+                            const resetWinner = Math.random() > 0.5 ? wbPlayer : lbPlayer;
+                            currentTournament.champion = resetWinner;
+                        } else {
+                            currentTournament.champion = winner;
+                        }
+                        
+                        currentTournament.finished = true;
+                        break;
+                    } else {
+                        break; // No more moves possible
+                    }
+                }
             }
             
             render();
-            updateButtons();
             
             if (currentTournament.finished) {
-                finalsBracket.style.display = 'block';
                 showChampion(currentTournament.champion);
             }
         }
@@ -551,7 +1234,6 @@
             currentTournament = null;
             winnersArea.innerHTML = '';
             losersArea.innerHTML = '';
-            loserPoolArea.innerHTML = '';
             finalsArea.innerHTML = '';
             finalsBracket.style.display = 'none';
             gameControls.style.display = 'none';
@@ -559,18 +1241,6 @@
 
         // Event listeners
         generateBtn.addEventListener('click', startNewTournament);
-        nextWBBtn.addEventListener('click', () => {
-            if (currentTournament.advanceWinnersRound()) {
-                render();
-                updateButtons();
-            }
-        });
-        nextLBBtn.addEventListener('click', () => {
-            if (currentTournament.startNextLosersRound()) {
-                render();
-                updateButtons();
-            }
-        });
         autoPlayBtn.addEventListener('click', autoPlay);
         resetBtn.addEventListener('click', resetTournament);
 
@@ -580,3 +1250,5 @@
             startNewTournament();
         }
     </script>
+</body>
+</html>
