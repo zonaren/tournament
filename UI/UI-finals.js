@@ -18,17 +18,13 @@ export function startFinals() {
             return;
         }
     }
-
-    if( checkForWalkoverPlayers(tournament)) {
-        deleteWalkoverPlayers(tournament);
-    }
     // Get recommended group sizes and show selection popup
     displayFinalsGroupSizeSelectionPopup(tournament);
 }
 
 // Display a popup to select recommended finals group sizes
 export async function displayFinalsGroupSizeSelectionPopup(tournament) {
-    const totalPlayers = tournament.getPlayers().filter(player => player.eliminated == null).length;
+    const totalPlayers = tournament.getPlayers().filter(player => player.eliminated == null && player.name !== "Walkover").length;
     const recommendedGroupSizes = await getRecommendedFinalsGroupSizes(totalPlayers);
     console.log("Recommended group sizes: ", recommendedGroupSizes);
     if (!recommendedGroupSizes.length) {
@@ -74,7 +70,7 @@ export async function displayFinalsGroupSizeSelectionPopup(tournament) {
         const selectedIdx = Array.from(popup.querySelectorAll('input[name="finals-group-size"]')).findIndex(r => r.checked);
         if (selectedIdx === -1) return;
         const selected = recommendedGroupSizes[selectedIdx];
-        const players = sortPlayers(tournament.getPlayers().filter(player => player.eliminated == null));
+        const players = sortPlayers(tournament.getPlayers().filter(player => player.eliminated == null && player.name !== "Walkover"));
         let html = '';
         html += '<table class="finals-preview-table">';
         html += `<tr><th>Gruppe A (${selected.A})</th><th>Gruppe B (${selected.B})</th></tr>`;
@@ -120,6 +116,13 @@ export async function displayFinalsGroupSizeSelectionPopup(tournament) {
 
     function setGroupSizes() {
         confirmBtn.onclick = () => {
+                if( checkForWalkoverPlayers(tournament)) {
+        if (!confirm('Det finnes spillere med walkover. Vil du fjerne dem?')) {
+            return;
+        }
+        deleteWalkoverPlayers(tournament);
+    }
+            // Get selected option
             const selectedIdx = Array.from(popup.querySelectorAll('input[name="finals-group-size"]')).findIndex(r => r.checked);
             if (selectedIdx === -1) {
                 alert('Velg en gruppestørrelse.');
