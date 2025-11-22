@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Viewport settings to prevent zooming and ensure correct sizing on mobile -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <title>Sinking Funds</title>
+
+    <!-- --- MOBILE APP CONFIGURATION --- -->
+    <!-- Chrome / Android -->
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <!-- iOS / Apple -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sinking Funds">
+
+    <!-- Manifest for "Install App" behavior (Embedded directly) -->
+    <link rel="manifest" href='data:application/manifest+json;base64,ewogICJuYW1lIjogIlNpbmtpbmcgRnVuZHMgVHJhY2tlciIsCiAgInNob3J0X25hbWUiOiAiRnVuZHMiLAogICJzdGFydF91cmwiOiAiLiIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29xvciI6ICIjZjhmYWZjIiwKICAidGhlbWVfY29xvciI6ICIjNGY0NmU1IiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiaHR0cHM6Ly9jZG4taWNvbnstcG5nLmZsYXRpY29uLmNvbS81MTIvNjAvNjAzNzguanBnIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciCiAgICB9CiAgXQp9' />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        /* Custom Animations and Mobile Tweaks */
+        .fade-in { animation: fadeIn 0.3s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Force font size to 16px to prevent iOS zoom on focus */
+        input, select, button { font-size: 16px !important; }
+        
+        /* Disable pull-to-refresh on mobile to feel more like an app */
+        body { overscroll-behavior-y: none; }
+
+        /* Safe area padding for iPhones with notches */
+        body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans pb-24 select-none">
+
+    <!-- App Container -->
+    <div id="app"></div>
+
+    <script>
+        // --- ICONS ---
+        const ICONS = {
+            TrendingUp: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>`,
+            Plus: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>`,
+            Calendar: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>`,
+            Wallet: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>`,
+            Trash: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`,
+            Alert: `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y1="16"></line></svg>`
+        };
+
+        // --- STATE ---
+        let state = {
+            view: 'dashboard', 
+            expenses: JSON.parse(localStorage.getItem('sinkingFundsData_mobile')) || [],
+            formData: resetForm()
+        };
+
+        function resetForm() {
+            const now = new Date();
+            const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+            return {
+                name: '',
+                amount: '',
+                frequency: 'monthly',
+                recurrenceMonths: 12,
+                dueMonth: currentMonth
+            };
+        }
+
+        // --- HELPERS ---
+        const formatMoney = (amount) => {
+            return new Intl.NumberFormat('nb-NO', {
+                style: 'currency',
+                currency: 'NOK',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+            }).format(amount);
+        };
+
+        const getMonthDiff = (startStr, endStr) => {
+            const [startYear, startMonth] = startStr.split('-').map(Number);
+            const [endYear, endMonth] = endStr.split('-').map(Number);
+            return (endYear - startYear) * 12 + (endMonth - startMonth);
+        };
+
+        const addMonthsToStr = (dateStr, monthsToAdd) => {
+            const [year, month] = dateStr.split('-').map(Number);
+            const date = new Date(year, month - 1 + monthsToAdd);
+            return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+        };
+
+        const getReadableMonth = (dateStr) => {
+            const [year, month] = dateStr.split('-').map(Number);
+            const date = new Date(year, month - 1);
+            return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+        };
+
+        // --- LOGIC ---
+        function calculateProjection() {
+            const months = [];
+            const now = new Date();
+            const currentMonthStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+            
+            for (let i = 0; i < 24; i++) {
+                const targetMonth = addMonthsToStr(currentMonthStr, i);
+                let total = 0;
+                const items = [];
+
+                state.expenses.forEach(exp => {
+                    let contribution = 0;
+                    let status = 'saving';
+
+                    if (exp.frequency === 'monthly') {
+                        contribution = parseFloat(exp.amount);
+                    } else if (exp.frequency === 'one-time') {
+                        const monthsUntilDue = getMonthDiff(currentMonthStr, exp.dueMonth);
+                        const monthsUntilTarget = getMonthDiff(targetMonth, exp.dueMonth);
+
+                        if (monthsUntilTarget >= 0) {
+                            const divisor = Math.max(1, monthsUntilDue + 1);
+                            contribution = parseFloat(exp.amount) / divisor;
+                            if (monthsUntilTarget === 0) status = 'due';
+                        } else {
+                            status = 'paid';
+                        }
+                    } else if (exp.frequency === 'recurring') {
+                        const cycle = parseInt(exp.recurrenceMonths) || 12;
+                        
+                        if (getMonthDiff(exp.dueMonth, targetMonth) > 0) {
+                            const past = getMonthDiff(exp.dueMonth, targetMonth);
+                            const cycles = Math.floor(past / cycle) + 1;
+                        }
+
+                        const isBeforeFirst = getMonthDiff(targetMonth, exp.dueMonth) >= 0;
+                        const divisor = isBeforeFirst 
+                            ? Math.max(1, getMonthDiff(currentMonthStr, exp.dueMonth) + 1)
+                            : cycle;
+
+                        contribution = parseFloat(exp.amount) / divisor;
+
+                        const diff = getMonthDiff(exp.dueMonth, targetMonth);
+                        if (diff === 0 || (diff > 0 && diff % cycle === 0)) status = 'due';
+                    }
+
+                    contribution = Math.ceil(contribution);
+                    if (contribution > 0 || status === 'due') {
+                        total += contribution;
+                        items.push({ ...exp, contribution, status });
+                    }
+                });
+
+                months.push({ dateStr: targetMonth, readable: getReadableMonth(targetMonth), total, items });
+            }
+            return months;
+        }
+
+        // --- ACTIONS ---
+        function setView(v) {
+            state.view = v;
+            if(v === 'add') state.formData = resetForm();
+            render();
+        }
+
+        function updateForm(field, value) {
+            state.formData[field] = value;
+            // Rerender only if structure changes
+            if (field === 'frequency') render();
+        }
+
+        function saveExpense() {
+            if(!state.formData.name || !state.formData.amount) return alert('Please fill in name and amount');
+            
+            const newExpense = {
+                id: Date.now(),
+                ...state.formData,
+                amount: parseFloat(state.formData.amount)
+            };
+            
+            state.expenses.push(newExpense);
+            localStorage.setItem('sinkingFundsData_mobile', JSON.stringify(state.expenses));
+            setView('dashboard');
+        }
+
+        function deleteExpense(id) {
+            if(!confirm('Delete this expense?')) return;
+            state.expenses = state.expenses.filter(e => e.id !== id);
+            localStorage.setItem('sinkingFundsData_mobile', JSON.stringify(state.expenses));
+            render();
+        }
+
+        // --- RENDERING ---
+        const app = document.getElementById('app');
+
+        function render() {
+            let html = '';
+
+            // Sticky Header
+            html += `
+                <div class="bg-white border-b border-slate-200 sticky top-0 z-20 shadow-sm pt-safe">
+                    <div class="max-w-3xl mx-auto px-4 h-16 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white">
+                                ${ICONS.TrendingUp}
+                            </div>
+                            <span class="font-bold text-lg tracking-tight">SinkingFunds</span>
+                        </div>
+                        ${state.view === 'dashboard' ? `
+                            <button onclick="setView('add')" class="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-indigo-700 active:scale-95 transition-all shadow-sm">
+                                ${ICONS.Plus} Add
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+
+            html += `<div class="max-w-3xl mx-auto px-4 py-6 pb-safe">`;
+
+            if (state.view === 'add') {
+                html += renderForm();
+            } else {
+                html += renderDashboard();
+            }
+
+            html += `</div>`;
+            app.innerHTML = html;
+        }
+
+        function renderForm() {
+            const f = state.formData;
+            return `
+                <div class="max-w-md mx-auto bg-white p-6 rounded-2xl shadow-lg border border-slate-100 fade-in">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-bold text-slate-800">New Expense</h2>
+                        <button onclick="setView('dashboard')" class="text-slate-400 hover:text-slate-600 p-2">Cancel</button>
+                    </div>
+                    
+                    <div class="space-y-5">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Name</label>
+                            <input type="text" value="${f.name}" oninput="updateForm('name', this.value)" class="w-full p-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none bg-slate-50 focus:bg-white transition-colors" placeholder="e.g. Insurance">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Amount (NOK)</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-3 text-slate-400 font-medium">kr</span>
+                                <input type="number" value="${f.amount}" oninput="updateForm('amount', this.value)" class="w-full p-3 pl-9 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none bg-slate-50 focus:bg-white transition-colors" placeholder="0">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Type</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                ${['monthly', 'recurring', 'one-time'].map(t => `
+                                    <button onclick="updateForm('frequency', '${t}')" class="p-3 text-sm rounded-xl border capitalize transition-all ${f.frequency === t ? 'bg-indigo-50 border-indigo-500 text-indigo-700 font-bold shadow-sm' : 'border-slate-200 text-slate-600 bg-white'}">
+                                        ${t.replace('-', ' ')}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        ${f.frequency !== 'monthly' ? `
+                            <div class="fade-in">
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Target Date</label>
+                                <input type="month" value="${f.dueMonth}" onchange="updateForm('dueMonth', this.value)" class="w-full p-3 border border-slate-200 rounded-xl outline-none bg-white">
+                                <p class="text-xs text-slate-500 mt-2 flex items-center gap-1 bg-slate-50 p-2 rounded">
+                                    ${ICONS.Alert} Calculating monthly savings until date.
+                                </p>
+                            </div>
+                        ` : ''}
+
+                        ${f.frequency === 'recurring' ? `
+                            <div class="fade-in">
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Repeats Every</label>
+                                <select onchange="updateForm('recurrenceMonths', this.value)" class="w-full p-3 border border-slate-200 rounded-xl bg-white outline-none">
+                                    <option value="3" ${f.recurrenceMonths == 3 ? 'selected' : ''}>3 Months</option>
+                                    <option value="6" ${f.recurrenceMonths == 6 ? 'selected' : ''}>6 Months</option>
+                                    <option value="12" ${f.recurrenceMonths == 12 ? 'selected' : ''}>12 Months</option>
+                                    <option value="24" ${f.recurrenceMonths == 24 ? 'selected' : ''}>2 Years</option>
+                                </select>
+                            </div>
+                        ` : ''}
+
+                        <button onclick="saveExpense()" class="w-full bg-indigo-600 text-white p-4 rounded-xl font-bold hover:bg-indigo-700 active:scale-95 transition-all shadow-lg shadow-indigo-200 mt-4">
+                            Save Expense
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderDashboard() {
+            const projection = calculateProjection();
+            const current = projection[0];
+            const next = projection[1];
+
+            let html = `
+                <div class="grid grid-cols-1 gap-4 mb-6 fade-in">
+                    <div class="bg-indigo-600 p-6 rounded-2xl shadow-lg text-white relative overflow-hidden">
+                        <div class="absolute top-0 right-0 opacity-10 transform translate-x-2 -translate-y-2">
+                            <svg width="100" height="100" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.36 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.2-1.9-2.96-3.66-3.42z"/></svg>
+                        </div>
+                        <p class="text-indigo-200 text-sm font-medium mb-1">Save for ${current.readable}</p>
+                        <h3 class="text-4xl font-bold">${formatMoney(current.total)}</h3>
+                        <p class="text-indigo-200 text-xs mt-2">Total needed this month</p>
+                    </div>
+                </div>
+            `;
+
+            if (state.expenses.length === 0) {
+                html += `
+                    <div class="text-center py-16 bg-white rounded-2xl border border-dashed border-slate-300 fade-in">
+                        <div class="text-slate-300 mb-4 flex justify-center scale-150">${ICONS.Wallet}</div>
+                        <h3 class="text-lg font-semibold text-slate-700">No expenses yet</h3>
+                        <p class="text-slate-400 text-sm px-8 mt-2">Add bills or goals to see your monthly savings plan.</p>
+                        <button onclick="setView('add')" class="mt-6 text-indigo-600 font-semibold hover:underline">Create Plan</button>
+                    </div>
+                `;
+            } else {
+                html += `
+                    <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                        ${ICONS.Calendar} Timeline
+                    </h3>
+                    <div class="space-y-4">
+                `;
+
+                projection.slice(0, 12).forEach((month, idx) => {
+                    html += `
+                        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden fade-in shadow-sm">
+                            <div class="bg-slate-50 px-5 py-3 border-b border-slate-100 flex justify-between items-center">
+                                <h4 class="font-bold text-slate-700">${month.readable}</h4>
+                                <span class="text-indigo-600 font-bold bg-indigo-100 px-3 py-1 rounded-full text-sm">${formatMoney(month.total)}</span>
+                            </div>
+                            <div class="divide-y divide-slate-50">
+                    `;
+
+                    if(month.items.length === 0) {
+                        html += `<div class="px-6 py-4 text-slate-400 text-sm italic">No payments required.</div>`;
+                    }
+
+                    month.items.forEach(item => {
+                        html += `
+                            <div class="px-5 py-4 flex items-center justify-between hover:bg-slate-50 active:bg-slate-100 transition-colors group">
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-medium text-slate-900">${item.name}</span>
+                                        ${item.status === 'due' ? `<span class="text-[10px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-bold flex items-center gap-1 tracking-wide">DUE</span>` : ''}
+                                    </div>
+                                    <div class="text-xs text-slate-400 mt-1">
+                                        ${item.frequency === 'one-time' ? 'Targeting ' + getReadableMonth(item.dueMonth) : item.frequency}
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="font-mono text-slate-600 font-medium bg-slate-50 px-2 py-1 rounded">${formatMoney(item.contribution)}</span>
+                                    ${idx === 0 ? `<button onclick="deleteExpense(${item.id})" class="w-8 h-8 flex items-center justify-center text-slate-300 hover:text-red-500 active:text-red-600 transition-colors rounded-full hover:bg-red-50" title="Delete">${ICONS.Trash}</button>` : ''}
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    html += `</div></div>`;
+                });
+                html += `</div>`;
+            }
+
+            return html;
+        }
+
+        // Initial Render
+        render();
+
+    </script>
+</body>
+</html>
+
