@@ -1,8 +1,18 @@
 // Script to generate recommended_group_sizes.json
 const fs = require('fs');
 
+// Load finals structure data to get walkover counts
+const finalsData = JSON.parse(fs.readFileSync('finals_structure_detailed.json'));
+
 // Valid sizes for single-group tournaments (can use walkovers)
 const validSizes = [4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,22,23,24,26,27,30,31,32,34,35,36,40,46,47,48,52,53,54,62,63,64,70,71,72,80,81,94,95,96];
+
+// Get walkover count for a specific group size
+function getWalkoverCount(groupSize) {
+    if (groupSize === 0) return 0;
+    const structure = finalsData.find(s => s.totalPlayers === groupSize);
+    return structure ? structure.totalWalkovers : 0;
+}
 
 // Check if a group size is valid (must eventually reach 2 or 4 players)
 function isValidGroupSize(size) {
@@ -58,9 +68,12 @@ function generateRecommendations() {
             // Check if remaining players form a valid group B
             if (remainingPlayers === 0) {
                 // Single group scenario - all players advance to finals
+                const walkoversA = getWalkoverCount(sizeA);
                 recommendations.push({
                     A: sizeA,
-                    B: 0
+                    B: 0,
+                    walkoversA: walkoversA,
+                    walkoversB: 0
                 });
             } else if (remainingPlayers > 0 && isValidGroupSize(remainingPlayers) && isValidGroupSize(sizeA)) {
                 // Two group scenario - both groups must be divisible by 2 or 3
@@ -73,9 +86,13 @@ function generateRecommendations() {
                     const totalAdvancing = advanceA + advanceB;
                     
                     if (validSizes.includes(totalAdvancing)) {
+                        const walkoversA = getWalkoverCount(sizeA);
+                        const walkoversB = getWalkoverCount(remainingPlayers);
                         recommendations.push({
                             A: sizeA,
-                            B: remainingPlayers
+                            B: remainingPlayers,
+                            walkoversA: walkoversA,
+                            walkoversB: walkoversB
                         });
                     }
                 }
@@ -113,6 +130,6 @@ console.log('\nExample entries:');
 data.slice(0, 3).forEach(entry => {
     console.log(`${entry.totalPlayers} players: ${entry.recommended.length} options`);
     entry.recommended.forEach(rec => {
-        console.log(`  A:${rec.A}, B:${rec.B}`);
+        console.log(`  A:${rec.A} (WO:${rec.walkoversA}), B:${rec.B} (WO:${rec.walkoversB})`);
     });
 });

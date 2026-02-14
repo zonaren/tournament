@@ -73,14 +73,43 @@ export async function displayFinalsGroupSizeSelectionPopup(tournament) {
         const players = sortPlayers(tournament.getPlayers().filter(player => player.eliminated == null && player.name !== "Walkover"));
         let html = '';
         html += '<table class="finals-preview-table">';
-        html += `<tr><th>Gruppe A (${selected.A})</th><th>Gruppe B (${selected.B})</th></tr>`;
+        
+        // Build header with walkover info
+        let headerA = `Gruppe A (${selected.A})`;
+        if (selected.walkoversA && selected.walkoversA > 0) {
+            headerA += ` - WO: ${selected.walkoversA}`;
+        }
+        let headerB = `Gruppe B (${selected.B})`;
+        if (selected.walkoversB && selected.walkoversB > 0) {
+            headerB += ` - WO: ${selected.walkoversB}`;
+        }
+        
+        html += `<tr><th>${headerA}</th><th>${headerB}</th></tr>`;
         const groupA = players.slice(0, selected.A);
         const groupB = players.slice(selected.A, selected.A + selected.B);
         const maxRows = Math.max(groupA.length, groupB.length);
         for (let i = 0; i < maxRows; i++) {
             html += '<tr>';
-            html += `<td>${groupA[i] ? groupA[i].name : ''}</td>`;
-            html += `<td>${groupB[i] ? groupB[i].name : ''}</td>`;
+            // Group A player with WO indicator
+            if (groupA[i]) {
+                let nameA = groupA[i].name;
+                if (selected.walkoversA && i < selected.walkoversA) {
+                    nameA += ' (WO)';
+                }
+                html += `<td>${nameA}</td>`;
+            } else {
+                html += `<td></td>`;
+            }
+            // Group B player with WO indicator
+            if (groupB[i]) {
+                let nameB = groupB[i].name;
+                if (selected.walkoversB && i < selected.walkoversB) {
+                    nameB += ' (WO)';
+                }
+                html += `<td>${nameB}</td>`;
+            } else {
+                html += `<td></td>`;
+            }
             html += '</tr>';
         }
         html += '</table>';
