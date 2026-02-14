@@ -84,31 +84,33 @@ export async function displayFinalsGroupSizeSelectionPopup(tournament) {
             headerB += ` - WO: ${selected.walkoversB}`;
         }
         
-        html += `<tr><th>${headerA}</th><th>${headerB}</th></tr>`;
+        html += `<tr><th>#</th><th>${headerA}</th><th>#</th><th>${headerB}</th></tr>`;
         const groupA = players.slice(0, selected.A);
         const groupB = players.slice(selected.A, selected.A + selected.B);
         const maxRows = Math.max(groupA.length, groupB.length);
         for (let i = 0; i < maxRows; i++) {
             html += '<tr>';
-            // Group A player with WO indicator
+            // Group A placement and player
             if (groupA[i]) {
+                html += `<td>${i + 1}</td>`;
                 let nameA = groupA[i].name;
                 if (selected.walkoversA && i < selected.walkoversA) {
                     nameA += ' (WO)';
                 }
                 html += `<td>${nameA}</td>`;
             } else {
-                html += `<td></td>`;
+                html += `<td></td><td></td>`;
             }
-            // Group B player with WO indicator
+            // Group B placement and player
             if (groupB[i]) {
+                html += `<td>${selected.A + i + 1}</td>`;
                 let nameB = groupB[i].name;
                 if (selected.walkoversB && i < selected.walkoversB) {
                     nameB += ' (WO)';
                 }
                 html += `<td>${nameB}</td>`;
             } else {
-                html += `<td></td>`;
+                html += `<td></td><td></td>`;
             }
             html += '</tr>';
         }
