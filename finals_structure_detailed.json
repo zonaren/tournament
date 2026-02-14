@@ -8,47 +8,23 @@
         "courts": [
           {
             "court": 1,
-            "players": 2,
-            "advance": 1,
+            "players": 3,
+            "advance": 2,
             "eliminated": 1
           },
           {
-            "court": 2,
-            "players": 2,
+            "court": "WO1",
+            "players": 1,
             "advance": 1,
-            "eliminated": 1
+            "eliminated": 0
           }
         ],
-        "totalAdvance": 2,
-        "totalEliminated": 2,
-        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
-      },
-      {
-        "name": "Finale",
-        "players": 2,
-        "courts": [
-          {
-            "court": "Finale",
-            "players": 2,
-            "advance": 1,
-            "eliminated": 1
-          }
-        ]
-      },
-      {
-        "name": "Bronsefinale",
-        "players": 2,
-        "courts": [
-          {
-            "court": "Bronsefinale",
-            "players": 2,
-            "advance": 1,
-            "eliminated": 1
-          }
-        ]
+        "totalAdvance": 3,
+        "totalEliminated": 1,
+        "note": "Walkover(s) for 1 player(s)"
       }
     ],
-    "totalWalkovers": 0
+    "totalWalkovers": 1
   },
   {
     "totalPlayers": 5,
@@ -198,6 +174,90 @@
       }
     ],
     "totalWalkovers": 0
+  },
+  {
+    "totalPlayers": 7,
+    "rounds": [
+      {
+        "name": "Runde 1",
+        "players": 7,
+        "courts": [
+          {
+            "court": 1,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 2,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 3,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": "WO1",
+            "players": 1,
+            "advance": 1,
+            "eliminated": 0
+          }
+        ],
+        "totalAdvance": 4,
+        "totalEliminated": 3,
+        "note": "Walkover(s) for 1 player(s)"
+      },
+      {
+        "name": "Semifinale",
+        "players": 4,
+        "courts": [
+          {
+            "court": 1,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 2,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          }
+        ],
+        "totalAdvance": 2,
+        "totalEliminated": 2,
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
+      },
+      {
+        "name": "Finale",
+        "players": 2,
+        "courts": [
+          {
+            "court": "Finale",
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          }
+        ]
+      },
+      {
+        "name": "Bronsefinale",
+        "players": 2,
+        "courts": [
+          {
+            "court": "Bronsefinale",
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          }
+        ]
+      }
+    ],
+    "totalWalkovers": 1
   },
   {
     "totalPlayers": 8,
@@ -888,6 +948,146 @@
       }
     ],
     "totalWalkovers": 1
+  },
+  {
+    "totalPlayers": 14,
+    "rounds": [
+      {
+        "name": "Runde 1",
+        "players": 14,
+        "courts": [
+          {
+            "court": 1,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 2,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 3,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 4,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 5,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 6,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": "WO1",
+            "players": 1,
+            "advance": 1,
+            "eliminated": 0
+          },
+          {
+            "court": "WO2",
+            "players": 1,
+            "advance": 1,
+            "eliminated": 0
+          }
+        ],
+        "totalAdvance": 8,
+        "totalEliminated": 6,
+        "note": "Walkover(s) for 2 player(s)"
+      },
+      {
+        "name": "Runde 2",
+        "players": 8,
+        "courts": [
+          {
+            "court": 1,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 2,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 3,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 4,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          }
+        ],
+        "totalAdvance": 4,
+        "totalEliminated": 4
+      },
+      {
+        "name": "Semifinale",
+        "players": 4,
+        "courts": [
+          {
+            "court": 1,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 2,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          }
+        ],
+        "totalAdvance": 2,
+        "totalEliminated": 2,
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
+      },
+      {
+        "name": "Finale",
+        "players": 2,
+        "courts": [
+          {
+            "court": "Finale",
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          }
+        ]
+      },
+      {
+        "name": "Bronsefinale",
+        "players": 2,
+        "courts": [
+          {
+            "court": "Bronsefinale",
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          }
+        ]
+      }
+    ],
+    "totalWalkovers": 2
   },
   {
     "totalPlayers": 15,
@@ -2799,6 +2999,250 @@
       }
     ],
     "totalWalkovers": 2
+  },
+  {
+    "totalPlayers": 31,
+    "rounds": [
+      {
+        "name": "Runde 1",
+        "players": 31,
+        "courts": [
+          {
+            "court": 1,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 2,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 3,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 4,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 5,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 6,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 7,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 8,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 9,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 10,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 11,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 12,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 13,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 14,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 15,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": "WO1",
+            "players": 1,
+            "advance": 1,
+            "eliminated": 0
+          }
+        ],
+        "totalAdvance": 16,
+        "totalEliminated": 15,
+        "note": "Walkover(s) for 1 player(s)"
+      },
+      {
+        "name": "Runde 2",
+        "players": 16,
+        "courts": [
+          {
+            "court": 1,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 2,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 3,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 4,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 5,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 6,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 7,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 8,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          }
+        ],
+        "totalAdvance": 8,
+        "totalEliminated": 8
+      },
+      {
+        "name": "Runde 3",
+        "players": 8,
+        "courts": [
+          {
+            "court": 1,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 2,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 3,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 4,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          }
+        ],
+        "totalAdvance": 4,
+        "totalEliminated": 4
+      },
+      {
+        "name": "Semifinale",
+        "players": 4,
+        "courts": [
+          {
+            "court": 1,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 2,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          }
+        ],
+        "totalAdvance": 2,
+        "totalEliminated": 2,
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
+      },
+      {
+        "name": "Finale",
+        "players": 2,
+        "courts": [
+          {
+            "court": "Finale",
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          }
+        ]
+      },
+      {
+        "name": "Bronsefinale",
+        "players": 2,
+        "courts": [
+          {
+            "court": "Bronsefinale",
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          }
+        ]
+      }
+    ],
+    "totalWalkovers": 1
   },
   {
     "totalPlayers": 32,
@@ -6419,6 +6863,450 @@
       }
     ],
     "totalWalkovers": 0
+  },
+  {
+    "totalPlayers": 62,
+    "rounds": [
+      {
+        "name": "Runde 1",
+        "players": 62,
+        "courts": [
+          {
+            "court": 1,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 2,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 3,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 4,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 5,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 6,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 7,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 8,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 9,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 10,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 11,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 12,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 13,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 14,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 15,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 16,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 17,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 18,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 19,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 20,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 21,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 22,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 23,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 24,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 25,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 26,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 27,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 28,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 29,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 30,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": "WO1",
+            "players": 1,
+            "advance": 1,
+            "eliminated": 0
+          },
+          {
+            "court": "WO2",
+            "players": 1,
+            "advance": 1,
+            "eliminated": 0
+          }
+        ],
+        "totalAdvance": 32,
+        "totalEliminated": 30,
+        "note": "Walkover(s) for 2 player(s)"
+      },
+      {
+        "name": "Runde 2",
+        "players": 32,
+        "courts": [
+          {
+            "court": 1,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 2,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 3,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 4,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 5,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 6,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 7,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 8,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 9,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 10,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 11,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 12,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 13,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 14,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 15,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 16,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          }
+        ],
+        "totalAdvance": 16,
+        "totalEliminated": 16
+      },
+      {
+        "name": "Runde 3",
+        "players": 16,
+        "courts": [
+          {
+            "court": 1,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 2,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 3,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 4,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 5,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 6,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 7,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 8,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          }
+        ],
+        "totalAdvance": 8,
+        "totalEliminated": 8
+      },
+      {
+        "name": "Runde 4",
+        "players": 8,
+        "courts": [
+          {
+            "court": 1,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 2,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 3,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 4,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          }
+        ],
+        "totalAdvance": 4,
+        "totalEliminated": 4
+      },
+      {
+        "name": "Semifinale",
+        "players": 4,
+        "courts": [
+          {
+            "court": 1,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          },
+          {
+            "court": 2,
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          }
+        ],
+        "totalAdvance": 2,
+        "totalEliminated": 2,
+        "note": "Vinnere av semifinaler går til finale, tapere til bronsefinale"
+      },
+      {
+        "name": "Finale",
+        "players": 2,
+        "courts": [
+          {
+            "court": "Finale",
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          }
+        ]
+      },
+      {
+        "name": "Bronsefinale",
+        "players": 2,
+        "courts": [
+          {
+            "court": "Bronsefinale",
+            "players": 2,
+            "advance": 1,
+            "eliminated": 1
+          }
+        ]
+      }
+    ],
+    "totalWalkovers": 2
   },
   {
     "totalPlayers": 63,

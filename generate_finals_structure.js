@@ -1,8 +1,10 @@
 // Generates finals bracket structures for totalPlayers from 4 to 100
 // Rules:
-// - 3 players per court when possible, 2 per court in semifinals/finals
+// - 3 players per court when possible, otherwise 2 players per court
+// - the structure needs to be consistent with the number of players advancing and eliminated in each round
 // - 2 best advance from 3-player courts, 1 from 2-player courts
-// - Walkovers (byes) go to best ranked in first round if needed (max 2)
+// - Walkovers (byes) go to the best ranked players in the first round if needed (max 3 walkovers)
+// - Players can only be given walkovers in the first round, not in later rounds
 // - All courts in a round must have same number of players (2 or 3)
 // - All players must play in every round (except walkovers in first round)
 
@@ -46,7 +48,7 @@ function generateBracket(totalPlayers) {
   }
 
   // Try to find a valid tournament structure with different walkover counts
-  function tryGenerateRounds(startPlayers, startWalkovers = 0) {
+  function tryGenerateRounds(startPlayers, startWalkovers = 0, forcePlayersPerCourt = null) {
     let testRounds = [];
     let testPlayers = startPlayers;
     let testRoundNum = 1;
@@ -58,7 +60,15 @@ function generateBracket(totalPlayers) {
       let courts = 0;
       let playersPerCourt = 0;
       
-      if (roundPlayers % 3 === 0) {
+      if (forcePlayersPerCourt !== null) {
+        // Use forced configuration
+        if (roundPlayers % forcePlayersPerCourt === 0) {
+          courts = roundPlayers / forcePlayersPerCourt;
+          playersPerCourt = forcePlayersPerCourt;
+        } else {
+          return null; // Invalid configuration
+        }
+      } else if (roundPlayers % 3 === 0) {
         courts = roundPlayers / 3;
         playersPerCourt = 3;
       } else if (roundPlayers % 2 === 0) {
@@ -147,31 +157,45 @@ function generateBracket(totalPlayers) {
     
     return { rounds: testRounds, finalPlayers: testPlayers, walkovers: totalWalkovers };
   }
-  // Try different walkover counts, preferring configurations with 3-player courts
+  // Try different walkover counts and court configurations, preferring 3-player courts
   let bestResult = null;
   let bestScore = -1;
   
   for (let wo = 0; wo <= 2; wo++) {
-    let result = tryGenerateRounds(players, wo);
-    if (result) {
-      // Calculate score: prefer fewer courts and 3-player courts over 2-player courts
-      let score = 0;
-      if (result.rounds.length > 0) {
-        let firstRound = result.rounds[0];
-        let playingCourts = firstRound.courts.filter(c => typeof c.court === 'number');
-        if (playingCourts.length > 0) {
-          let playersPerCourt = playingCourts[0].players;
-          if (playersPerCourt === 3) {
-            score = 1000 - playingCourts.length; // High score for 3-player courts, fewer courts is better
-          } else {
-            score = 500 - playingCourts.length; // Lower score for 2-player courts
+    // Try both 2-player and 3-player configurations for first round
+    let configurations = [];
+    
+    // Check if 3-player courts are possible
+    if ((players - wo) % 3 === 0) {
+      configurations.push(3);
+    }
+    // Check if 2-player courts are possible
+    if ((players - wo) % 2 === 0) {
+      configurations.push(2);
+    }
+    
+    for (let config of configurations) {
+      let result = tryGenerateRounds(players, wo, wo > 0 ? config : null);
+      if (result) {
+        // Calculate score: prefer 3-player courts, then fewer courts
+        let score = 0;
+        if (result.rounds.length > 0) {
+          let firstRound = result.rounds[0];
+          let playingCourts = firstRound.courts.filter(c => typeof c.court === 'number');
+          if (playingCourts.length > 0) {
+            let playersPerCourt = playingCourts[0].players;
+            if (playersPerCourt === 3) {
+              score = 1000 - playingCourts.length; // High score for 3-player courts, fewer courts is better
+            } else {
+              score = 500 - playingCourts.length; // Lower score for 2-player courts
+            }
           }
         }
-      }
-      
-      if (score > bestScore) {
-        bestScore = score;
-        bestResult = result;
+        
+        if (score > bestScore) {
+          bestScore = score;
+          bestResult = result;
+        }
       }
     }
   }
