@@ -34,7 +34,7 @@ function openPop(lane, pid) {
   if (already) { toast(`${p.name} er allerede ført — trykk ✏ for å redigere`); return; }
 
   SC.lane = lane; SC.pid = pid; SC.score = ''; SC.rings = null; SC.editId = null;
-  SC.origScore = null; SC.origRings = null; SC.pendingReplace = false;
+  SC.origScore = null; SC.origRings = null; SC.pendingReplace = false; SC.fromTov = false;
   document.getElementById('pop-lane').textContent = `Bane ${lane} · Runde ${S.round}`;
   document.getElementById('pop-name').textContent = p.name;
   document.getElementById('pop-edit-badge').style.display = 'none';
