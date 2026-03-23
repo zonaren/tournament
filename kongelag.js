@@ -516,16 +516,8 @@ function goRings() {
     ringsFrom.style.display = 'none';
   }
   document.querySelectorAll('.r-btn').forEach(b => b.classList.remove('sel'));
-  const rb = document.getElementById('regBtn');
-  if (SC.editId && SC.rings !== null) {
-    document.querySelectorAll('.r-btn').forEach(b => {
-      b.classList.toggle('sel', parseInt(b.dataset.v) === SC.rings);
-    });
-    rb.disabled = false;
-  } else {
-    SC.rings = null;
-    rb.disabled = true;
-  }
+  document.getElementById('regBtn').disabled = true;
+  applyRingRules(newScore);
 }
 function backScore() {
   document.getElementById('st-score').style.display = '';
