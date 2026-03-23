@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Hestesko kasting — Turneringssystem</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<link rel="stylesheet" href="kongelag.css">
+</head>
+<body>
+
+<!-- ═══════════ SCREEN: REGISTRATION ═══════════ -->
+<div class="screen active" id="s-reg">
+  <div class="hdr">
+    <div class="hdr-left">
+      <div class="logo-mark">HK</div>
+      <div>
+        <div class="hdr-title">Hestesko kasting</div>
+        <div class="hdr-sub">Registrer deltakere</div>
+      </div>
+    </div>
+  </div>
+
+   
+  <div class="tool-row">
+    <button class="tool-btn" onclick="newTournament()">
+      <span class="tb-ico">🆕</span> Ny Turnering
+    </button>
+    <label class="tool-btn">
+      <span class="tb-ico">📂</span> Last opp CSV
+      <input type="file" accept=".csv" id="csvInput" onchange="importCSV(event)">
+    </label>
+    <button class="tool-btn" onclick="openArchive()">
+      <span class="tb-ico">🏆</span> Fullførte
+    </button>
+    <button class="tool-btn" onclick="generateTestData()" title="Generer testdata: 4 deltakere, 3 runder, maks 20 poeng">
+      <span class="tb-ico">🧪</span> Test
+    </button>
+  </div>
+
+        
+  <div class="content">
+    <div style="margin-bottom: 18px;">
+      <div class="input-wrap">
+        <input class="input-field" id="nameInput" placeholder="Deltakerens navn…"
+          onkeydown="if(event.key==='Enter')addParticipant()">
+        <button class="add-btn" onclick="addParticipant()">+</button>
+      </div>
+   
+    </div>
+    <div id="pList">
+      <div class="empty" id="pEmpty">
+        <div class="empty-ico">🎯</div>
+        <div class="empty-ttl">Ingen deltakere ennå</div>
+        <div class="empty-sub">Legg til minst 2 deltakere for å starte</div>
+      </div>
+    </div>
+  </div>
+
+<div>
+  <img class="backround-turnament" src="backround-turnament.png" alt="">
+</div>
+
+  <div class="footer">
+    <div class="foot-info">
+      <span style="font-size: 14px; color: var(--text2);" id="pCount">0 deltakere</span>
+      <span class="chip chip-warn" id="readyChip">Minst 2 kreves</span>
+    </div>
+    <button class="btn btn-primary" id="startBtn" onclick="startTournament()" disabled>
+      Start turnering →
+    </button>
+  </div>
+</div>
+
+
+<!-- ═══════════ SCREEN: OVERVIEW ═══════════ -->
+<div class="screen" id="s-overview">
+  <div class="hdr">
+    <div class="hdr-left">
+      <div class="logo-mark">NHF</div>
+      <div>
+        <div class="hdr-title">Kongelag</div>
+        <div class="hdr-sub" id="ov-sub">Runde 1</div>
+      </div>
+    </div>
+    <button class="btn-ghost btn" onclick="go('tov')">📋 Vis detaljer</button>
+  </div>
+
+  <div class="content">
+    <div class="round-bar">
+      <div>
+        <div style="font-size: 15px; font-weight: 700;">Runde <span id="ov-round">1</span></div>
+        <div style="font-size: 12px; color: var(--text2); margin-top: 3px;" id="ov-prog-txt">0 av X fullført</div>
+      </div>
+      <button class="btn-ghost btn" onclick="nextRound()" id="nextRoundBtn">Neste runde →</button>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="ov-bar" style="width:0%"></div></div>
+
+    <div class="tbl-head">
+      <div>Deltaker</div>
+      <div style="text-align:center">Bane</div>
+      <div style="text-align:center">Poeng</div>
+      <div style="text-align:center">Ringer</div>
+      <div></div>
+    </div>
+    <div id="ov-table"></div>
+  </div>
+
+  <div class="footer">
+    <button class="btn btn-primary" id="nextScoreBtn" onclick="scoreNext()">
+      Før poengsummer →
+    </button>
+  </div>
+</div>
+
+
+<!-- ═══════════ SCREEN: RESULTS ═══════════ -->
+<div class="screen" id="s-results">
+  <div class="hdr">
+    <div class="hdr-left">
+      <div class="logo-mark">🏆</div>
+      <div>
+        <div class="hdr-title">Sluttresultat</div>
+        <div class="hdr-sub" id="res-sub">Turnering avsluttet</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="sum-grid" id="res-summary"></div>
+    <div class="divider"></div>
+    <div class="sec-lbl">Rangering</div>
+    <div id="res-lb"></div>
+  </div>
+
+  <div class="footer">
+    <button class="btn btn-secondary" onclick="goToReg()">Tilbake til registrering</button>
+  </div>
+</div>
+
+
+<!-- ═══════════ ARCHIVE POPUP ═══════════ -->
+<div class="arch-overlay" id="arch-overlay" onclick="handleArchOverlayClick(event)">
+  <div class="arch-popup" id="arch-popup">
+    <div class="drag-handle"></div>
+    <div class="arch-header">
+      <div class="arch-title">🏆 Fullførte turneringer</div>
+      <button class="arch-close" onclick="closeArchive()">✕</button>
+    </div>
+    <div id="arch-list"></div>
+  </div>
+</div>
+
+<!-- ═══════════ SCREEN: TURNERINGS OVERSIKT ═══════════ -->
+<div class="screen" id="s-tov">
+  <div class="hdr">
+    <div class="hdr-left">
+      <div class="logo-mark" style="font-size:20px;">📋</div>
+      <div>
+        <div class="hdr-title">Detaljer</div>
+        <div class="hdr-sub" id="tov-sub">Laster…</div>
+      </div>
+    </div>
+    <button class="btn-ghost btn" onclick="go('overview')">← Tilbake</button>
+  </div>
+  <div class="content">
+    <div id="tov-list"></div>
+  </div>
+  <div class="footer">
+    <div class="tov-warn">
+      <strong>⚠ Obs — permanent handling</strong>
+      Etter at turneringen er fullført kan ikke poeng lenger redigeres.
+    </div>
+    <button class="btn btn-danger-ghost" style="height:52px;width:100%;font-size:16px;border:1px solid rgba(240,76,110,0.3);" onclick="confirmEndTov()">
+      🏆 Fullfør turnering
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════ SCORING POPUP ═══════════ -->
+<div class="overlay" id="pop" onclick="handleOverlayClick(event)">
+  <div class="popup" id="popCard">
+    <div class="drag-handle"></div>
+    <div class="steps"><div class="step active" id="step1"></div><div class="step" id="step2"></div></div>
+
+    <div class="popup-lane" id="pop-lane">Bane 1 · Runde 1</div>
+    <div class="popup-name" id="pop-name">Navn</div>
+    <div class="pop-edit-badge" id="pop-edit-badge" style="display:none">✏ Redigerer poengsum</div>
+
+    <!-- STEP 1: Score -->
+    <div id="st-score">
+      <div class="score-disp">
+        <div class="score-lbl">Poengsum</div>
+        <div class="score-num ph" id="score-disp">0</div>
+        <div id="score-from" style="display:none;font-size:12px;color:var(--text3);margin-top:6px;font-weight:600;letter-spacing:0.2px;text-align:center"></div>
+      </div>
+      <div class="numpad">
+        <button class="n-btn" onclick="np('1')">1</button>
+        <button class="n-btn" onclick="np('2')">2</button>
+        <button class="n-btn" onclick="np('3')">3</button>
+        <button class="n-btn" onclick="np('4')">4</button>
+        <button class="n-btn" onclick="np('5')">5</button>
+        <button class="n-btn" onclick="np('6')">6</button>
+        <button class="n-btn" onclick="np('7')">7</button>
+        <button class="n-btn" onclick="np('8')">8</button>
+        <button class="n-btn" onclick="np('9')">9</button>
+        <button class="n-btn del" onclick="npDel()">⌫</button>
+        <button class="n-btn" onclick="np('0')">0</button>
+        <button class="n-btn go" onclick="goRings()">→</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Rings -->
+    <div id="st-rings" style="display:none">
+      <div class="score-disp" style="margin-bottom:16px">
+        <div class="score-lbl">Poengsum registrert</div>
+        <div class="score-num" id="score-confirm">0</div>
+        <div id="score-from-confirm" style="display:none;font-size:12px;color:var(--text3);margin-top:6px;font-weight:600;letter-spacing:0.2px;text-align:center"></div>
+      </div>
+      <div class="sec-lbl">Antall ringer <span style="color:var(--text3);font-weight:400;text-transform:none;letter-spacing:0">(maks 4)</span></div>
+      <div id="rings-from" style="display:none;font-size:12px;color:var(--text3);margin-top:-8px;margin-bottom:10px;font-weight:600;"></div>
+      <div class="rings-grid">
+        <button class="r-btn" data-v="1" onclick="selRings(1)"><span class="rv">1</span><span class="rl">ring</span></button>
+        <button class="r-btn" data-v="2" onclick="selRings(2)"><span class="rv">2</span><span class="rl">ringer</span></button>
+        <button class="r-btn" data-v="3" onclick="selRings(3)"><span class="rv">3</span><span class="rl">ringer</span></button>
+        <button class="r-btn" data-v="4" onclick="selRings(4)"><span class="rv">4</span><span class="rl">ringer</span></button>
+        <button class="r-btn r-btn-zero" data-v="0" onclick="selRings(0)"><span class="rv">0</span><span class="rl">ingen ringer</span></button>
+      </div>
+      <button class="btn btn-success" id="regBtn" onclick="registerScore()" disabled>
+        Registrer og fullfør ✓
+      </button>
+      <button class="btn btn-ghost" style="margin-top:10px" onclick="backScore()">← Tilbake til poeng</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ PARTICIPANT STATS POPUP ═══════════ -->
+<div class="pstat-overlay" id="pstat-overlay" onclick="handlePstatOverlayClick(event)">
+  <div class="pstat-popup" id="pstat-popup">
+    <div class="drag-handle"></div>
+    <div class="pstat-header">
+      <div class="pstat-title" id="pstat-name">—</div>
+      <button class="pstat-close" onclick="closePstatPopup()">✕</button>
+    </div>
+    <div class="pstat-sub" id="pstat-sub">—</div>
+    <div class="pstat-kpi" id="pstat-kpi"></div>
+    <div class="sec-lbl">Runde for runde</div>
+    <div class="pstat-round-row header">
+      <div>Runde</div><div>Bane</div><div style="text-align:right">Poeng</div><div style="text-align:right">Ringer</div>
+    </div>
+    <div id="pstat-rounds"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="kongelag.js"></script>
+</body>
+</html>
