@@ -22,32 +22,31 @@
     </div>
   </div>
 
-   
+
   <div class="tool-row">
-    <button class="tool-btn" onclick="newTournament()">
+    <button class="tool-btn" id="btn-new-tournament">
       <span class="tb-ico">🆕</span> Ny Turnering
     </button>
     <label class="tool-btn">
       <span class="tb-ico">📂</span> Last opp CSV
-      <input type="file" accept=".csv" id="csvInput" onchange="importCSV(event)">
+      <input type="file" accept=".csv" id="csvInput">
     </label>
-    <button class="tool-btn" onclick="openArchive()">
+    <button class="tool-btn" id="btn-open-archive">
       <span class="tb-ico">🏆</span> Fullførte
     </button>
-    <button class="tool-btn" onclick="generateTestData()" title="Generer testdata: 4 deltakere, 3 runder, maks 20 poeng">
+    <button class="tool-btn" id="btn-test-data" title="Generer testdata: 4 deltakere, 3 runder, maks 20 poeng">
       <span class="tb-ico">🧪</span> Test
     </button>
   </div>
 
-        
+
   <div class="content">
     <div style="margin-bottom: 18px;">
       <div class="input-wrap">
-        <input class="input-field" id="nameInput" placeholder="Deltakerens navn…"
-          onkeydown="if(event.key==='Enter')addParticipant()">
-        <button class="add-btn" onclick="addParticipant()">+</button>
+        <input class="input-field" id="nameInput" placeholder="Deltakerens navn…">
+        <button class="add-btn" id="btn-add-participant">+</button>
       </div>
-   
+
     </div>
     <div id="pList">
       <div class="empty" id="pEmpty">
@@ -58,16 +57,12 @@
     </div>
   </div>
 
-<div>
-  <img class="backround-turnament" src="backround-turnament.png" alt="">
-</div>
-
   <div class="footer">
     <div class="foot-info">
       <span style="font-size: 14px; color: var(--text2);" id="pCount">0 deltakere</span>
       <span class="chip chip-warn" id="readyChip">Minst 2 kreves</span>
     </div>
-    <button class="btn btn-primary" id="startBtn" onclick="startTournament()" disabled>
+    <button class="btn btn-primary" id="startBtn" disabled>
       Start turnering →
     </button>
   </div>
@@ -84,7 +79,7 @@
         <div class="hdr-sub" id="ov-sub">Runde 1</div>
       </div>
     </div>
-    <button class="btn-ghost btn" onclick="go('tov')">📋 Vis detaljer</button>
+    <button class="btn-ghost btn" id="btn-go-tov">📋 Vis detaljer</button>
   </div>
 
   <div class="content">
@@ -93,7 +88,7 @@
         <div style="font-size: 15px; font-weight: 700;">Runde <span id="ov-round">1</span></div>
         <div style="font-size: 12px; color: var(--text2); margin-top: 3px;" id="ov-prog-txt">0 av X fullført</div>
       </div>
-      <button class="btn-ghost btn" onclick="nextRound()" id="nextRoundBtn">Neste runde →</button>
+      <button class="btn-ghost btn" id="nextRoundBtn">Neste runde →</button>
     </div>
     <div class="progress-track"><div class="progress-fill" id="ov-bar" style="width:0%"></div></div>
 
@@ -108,7 +103,7 @@
   </div>
 
   <div class="footer">
-    <button class="btn btn-primary" id="nextScoreBtn" onclick="scoreNext()">
+    <button class="btn btn-primary" id="nextScoreBtn">
       Før poengsummer →
     </button>
   </div>
@@ -135,24 +130,24 @@
   </div>
 
   <div class="footer">
-    <button class="btn btn-secondary" onclick="goToReg()">Tilbake til registrering</button>
+    <button class="btn btn-secondary" id="btn-go-reg">Tilbake til registrering</button>
   </div>
 </div>
 
 
 <!-- ═══════════ ARCHIVE POPUP ═══════════ -->
-<div class="arch-overlay" id="arch-overlay" onclick="handleArchOverlayClick(event)">
+<div class="arch-overlay" id="arch-overlay">
   <div class="arch-popup" id="arch-popup">
     <div class="drag-handle"></div>
     <div class="arch-header">
       <div class="arch-title">🏆 Fullførte turneringer</div>
-      <button class="arch-close" onclick="closeArchive()">✕</button>
+      <button class="arch-close" id="btn-close-archive">✕</button>
     </div>
     <div id="arch-list"></div>
   </div>
 </div>
 
-<!-- ═══════════ SCREEN: TURNERINGS OVERSIKT ═══════════ -->
+<!-- ═══════════ SCREEN: TURNERINGSDETALJER ═══════════ -->
 <div class="screen" id="s-tov">
   <div class="hdr">
     <div class="hdr-left">
@@ -162,7 +157,7 @@
         <div class="hdr-sub" id="tov-sub">Laster…</div>
       </div>
     </div>
-    <button class="btn-ghost btn" onclick="go('overview')">← Tilbake</button>
+    <button class="btn-ghost btn" id="btn-go-overview">← Tilbake</button>
   </div>
   <div class="content">
     <div id="tov-list"></div>
@@ -172,14 +167,14 @@
       <strong>⚠ Obs — permanent handling</strong>
       Etter at turneringen er fullført kan ikke poeng lenger redigeres.
     </div>
-    <button class="btn btn-danger-ghost" style="height:52px;width:100%;font-size:16px;border:1px solid rgba(240,76,110,0.3);" onclick="confirmEndTov()">
+    <button class="btn btn-danger-ghost" id="btn-confirm-end-tov" style="height:52px;width:100%;font-size:16px;border:1px solid rgba(240,76,110,0.3);">
       🏆 Fullfør turnering
     </button>
   </div>
 </div>
 
 <!-- ═══════════ SCORING POPUP ═══════════ -->
-<div class="overlay" id="pop" onclick="handleOverlayClick(event)">
+<div class="overlay" id="pop">
   <div class="popup" id="popCard">
     <div class="drag-handle"></div>
     <div class="steps"><div class="step active" id="step1"></div><div class="step" id="step2"></div></div>
@@ -196,18 +191,18 @@
         <div id="score-from" style="display:none;font-size:12px;color:var(--text3);margin-top:6px;font-weight:600;letter-spacing:0.2px;text-align:center"></div>
       </div>
       <div class="numpad">
-        <button class="n-btn" onclick="np('1')">1</button>
-        <button class="n-btn" onclick="np('2')">2</button>
-        <button class="n-btn" onclick="np('3')">3</button>
-        <button class="n-btn" onclick="np('4')">4</button>
-        <button class="n-btn" onclick="np('5')">5</button>
-        <button class="n-btn" onclick="np('6')">6</button>
-        <button class="n-btn" onclick="np('7')">7</button>
-        <button class="n-btn" onclick="np('8')">8</button>
-        <button class="n-btn" onclick="np('9')">9</button>
-        <button class="n-btn del" onclick="npDel()">⌫</button>
-        <button class="n-btn" onclick="np('0')">0</button>
-        <button class="n-btn go" onclick="goRings()">→</button>
+        <button class="n-btn" data-digit="1">1</button>
+        <button class="n-btn" data-digit="2">2</button>
+        <button class="n-btn" data-digit="3">3</button>
+        <button class="n-btn" data-digit="4">4</button>
+        <button class="n-btn" data-digit="5">5</button>
+        <button class="n-btn" data-digit="6">6</button>
+        <button class="n-btn" data-digit="7">7</button>
+        <button class="n-btn" data-digit="8">8</button>
+        <button class="n-btn" data-digit="9">9</button>
+        <button class="n-btn del" id="btn-np-del">⌫</button>
+        <button class="n-btn" data-digit="0">0</button>
+        <button class="n-btn go" id="btn-go-rings">→</button>
       </div>
     </div>
 
@@ -221,27 +216,27 @@
       <div class="sec-lbl">Antall ringer <span style="color:var(--text3);font-weight:400;text-transform:none;letter-spacing:0">(maks 4)</span></div>
       <div id="rings-from" style="display:none;font-size:12px;color:var(--text3);margin-top:-8px;margin-bottom:10px;font-weight:600;"></div>
       <div class="rings-grid">
-        <button class="r-btn" data-v="1" onclick="selRings(1)"><span class="rv">1</span><span class="rl">ring</span></button>
-        <button class="r-btn" data-v="2" onclick="selRings(2)"><span class="rv">2</span><span class="rl">ringer</span></button>
-        <button class="r-btn" data-v="3" onclick="selRings(3)"><span class="rv">3</span><span class="rl">ringer</span></button>
-        <button class="r-btn" data-v="4" onclick="selRings(4)"><span class="rv">4</span><span class="rl">ringer</span></button>
-        <button class="r-btn r-btn-zero" data-v="0" onclick="selRings(0)"><span class="rv">0</span><span class="rl">ingen ringer</span></button>
+        <button class="r-btn" data-v="1"><span class="rv">1</span><span class="rl">ring</span></button>
+        <button class="r-btn" data-v="2"><span class="rv">2</span><span class="rl">ringer</span></button>
+        <button class="r-btn" data-v="3"><span class="rv">3</span><span class="rl">ringer</span></button>
+        <button class="r-btn" data-v="4"><span class="rv">4</span><span class="rl">ringer</span></button>
+        <button class="r-btn r-btn-zero" data-v="0"><span class="rv">0</span><span class="rl">ingen ringer</span></button>
       </div>
-      <button class="btn btn-success" id="regBtn" onclick="registerScore()" disabled>
-        Registrer og fullfør ✓
+      <button class="btn btn-success" id="regBtn" disabled>
+        Lagre ✓
       </button>
-      <button class="btn btn-ghost" style="margin-top:10px" onclick="backScore()">← Tilbake til poeng</button>
+      <button class="btn btn-ghost" id="btn-back-score" style="margin-top:10px">← Tilbake til poeng</button>
     </div>
   </div>
 </div>
 
 <!-- ═══════════ PARTICIPANT STATS POPUP ═══════════ -->
-<div class="pstat-overlay" id="pstat-overlay" onclick="handlePstatOverlayClick(event)">
+<div class="pstat-overlay" id="pstat-overlay">
   <div class="pstat-popup" id="pstat-popup">
     <div class="drag-handle"></div>
     <div class="pstat-header">
       <div class="pstat-title" id="pstat-name">—</div>
-      <button class="pstat-close" onclick="closePstatPopup()">✕</button>
+      <button class="pstat-close" id="btn-close-pstat">✕</button>
     </div>
     <div class="pstat-sub" id="pstat-sub">—</div>
     <div class="pstat-kpi" id="pstat-kpi"></div>
@@ -255,7 +250,6 @@
 
 <div class="toast" id="toast"></div>
 
-<script src="kongelag-rings.js"></script>
-<script src="kongelag.js"></script>
+<script type="module" src="kongelag.js"></script>
 </body>
 </html>
