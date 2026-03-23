@@ -562,7 +562,7 @@ function registerScore() {
       const rs = S.scores.filter(s => s.round === S.round);
       const pend = S.assignments.find(a => !rs.find(s => s.pid === a.pid));
       if (pend) openPop(pend.lane, pend.pid);
-    }, 1300);
+    }, 600);
   }
 }
 
