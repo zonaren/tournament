@@ -2,7 +2,7 @@ import { S, saveState } from './kongelag-state.js';
 import { toast } from './kongelag-utils.js';
 import { renderReg, importCSV, addParticipant, rmParticipant, startTournament, newTournament } from './kongelag-registration.js';
 import { renderOverview, scoreNext, nextRound, renderTov, toggleTovP, confirmEndTov } from './kongelag-tournament.js';
-import { openPop, editPop, handleOverlayClick, np, npDel, goRings, backScore, selRings, registerScore } from './kongelag-scoring.js';
+import { getRingOptions, openPop, editPop, handleOverlayClick, np, npDel, goRings, backScore, selRings, registerScore } from './kongelag-scoring.js';
 import { openArchive, closeArchive, handleArchOverlayClick, toggleArchItem, deleteArchEntry, generatePDF, archiveTournament } from './kongelag-archive.js';
 import { renderResults } from './kongelag-results.js';
 import { showParticipantStats, closePstatPopup, handlePstatOverlayClick } from './kongelag-stats.js';
@@ -19,7 +19,7 @@ function goToReg() { renderReg(); go('reg'); }
 
 // ═══ TEST DATA GENERATOR ═══
 function generateTestData() {
-  if (!confirm('Dette vil lage en ferdig 3-runders turnering med 4 testdeltakere og tilfeldige poeng (maks 20/runde). Fortsette?')) return;
+  if (!confirm('Dette vil lage en ferdig 10-runders turnering med 12 testdeltakere og tilfeldige poeng (maks 20/runde). Fortsette?')) return;
 
   S.participants = [];
   S.scores = [];
@@ -27,24 +27,20 @@ function generateTestData() {
   S.round = 1;
   S.active = false;
 
-  const names = ['Ola Nordmann', 'Kari Hansen', 'Per Dahl', 'Anne Berg'];
+  const names = ['Ola Nordmann', 'Kari Hansen', 'Per Dahl', 'Anne Berg', 'Lars Johansen', 'Eva Olsen', 'Tommy Nilsen', 'Mona Kristiansen', 'Erik Hansen', 'Ingrid Larsen', 'Svein Pedersen', 'Knut Andersen'];
   names.forEach((name, i) => {
     S.participants.push({ id: 'tp' + i, name });
   });
 
   S.assignments = S.participants.map((p, i) => ({ pid: p.id, lane: i + 1 }));
 
-  const ROUNDS = 3;
+  const ROUNDS = 10;
   for (let round = 1; round <= ROUNDS; round++) {
     S.assignments.forEach(a => {
-      S.scores.push({
-        id: 'tsc_r' + round + '_' + a.pid,
-        pid: a.pid,
-        lane: a.lane,
-        round: round,
-        score: Math.floor(Math.random() * 21),
-        rings: Math.floor(Math.random() * 5)
-      });
+      const score = Math.floor(Math.random() * 21);
+      const { allowed, auto } = getRingOptions(score);
+      const rings = auto !== null ? auto : allowed[Math.floor(Math.random() * allowed.length)];
+      S.scores.push({ id: 'tsc_r' + round + '_' + a.pid, pid: a.pid, lane: a.lane, round, score, rings });
     });
   }
 
@@ -56,7 +52,7 @@ function generateTestData() {
   saveState();
   renderReg();
   go('results');
-  toast('🧪 Testdata generert — 4 deltakere, 3 runder, maks 20 poeng/runde');
+  toast('🧪 Testdata generert — 12 deltakere, 10 runder, maks 20 poeng/runde');
 }
 
 // ═══ INIT ═══

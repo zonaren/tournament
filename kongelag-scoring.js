@@ -168,5 +168,5 @@ function registerScore() {
   document.dispatchEvent(new CustomEvent('score-registered', { detail: { fromTov: SC.fromTov } }));
 }
 
-export { openPop, editPop, closePop, handleOverlayClick,
+export { getRingOptions, openPop, editPop, closePop, handleOverlayClick,
          np, npDel, goRings, backScore, selRings, registerScore };
