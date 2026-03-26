@@ -596,3 +596,56 @@ body {
   font-size: 13px; color: rgba(240,180,41,0.9); font-weight: 500; line-height: 1.5;
 }
 .tov-warn strong { display: block; font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+
+/* ── SIDE MENU ── */
+.menu-btn {
+  background: none; border: 1px solid var(--border2);
+  border-radius: 9px; padding: 7px 13px;
+  color: var(--text2); font-size: 19px; line-height: 1; cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.menu-btn:hover { background: var(--card2); color: var(--text); }
+
+.side-menu-overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(0,0,0,0.45);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.22s;
+}
+.side-menu-overlay.open { opacity: 1; pointer-events: all; }
+
+.side-menu {
+  position: absolute; top: 0; right: 0; bottom: 0; width: 250px;
+  background: var(--surface);
+  border-left: 1px solid var(--border2);
+  display: flex; flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.side-menu-overlay.open .side-menu { transform: translateX(0); }
+
+.side-menu-hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 18px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.side-menu-title { font-size: 16px; font-weight: 700; color: var(--text); }
+.side-menu-close {
+  background: none; border: none; cursor: pointer;
+  color: var(--text3); font-size: 17px; padding: 4px 6px;
+  border-radius: 6px; transition: background 0.15s, color 0.15s;
+}
+.side-menu-close:hover { background: var(--card2); color: var(--text); }
+
+.side-menu-nav { flex: 1; padding: 6px 0; overflow-y: auto; }
+
+.side-menu-item {
+  display: flex; align-items: center; gap: 13px;
+  width: 100%; padding: 13px 18px;
+  background: none; border: none; cursor: pointer;
+  text-align: left; color: var(--text); font-size: 15px; font-weight: 500;
+  transition: background 0.13s;
+}
+.side-menu-item:hover { background: var(--card); }
+.side-menu-item:active { background: var(--card2); }
+.smi-ico { font-size: 17px; flex-shrink: 0; }

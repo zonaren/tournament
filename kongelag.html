@@ -75,11 +75,11 @@
     <div class="hdr-left">
       <div class="logo-mark">NHF</div>
       <div>
-        <div class="hdr-title">Kongelag</div>
-        <div class="hdr-sub" id="ov-sub">Runde 1</div>
+        <div class="hdr-title" id="ov-tourney-name">Kongelag</div>
+        <div class="hdr-sub" id="ov-sub"></div>
       </div>
     </div>
-    <button class="btn-ghost btn" id="btn-go-tov">📋 Vis detaljer</button>
+    <button class="menu-btn" id="btn-menu">☰</button>
   </div>
 
   <div class="content">
@@ -88,7 +88,7 @@
         <div style="font-size: 15px; font-weight: 700;">Runde <span id="ov-round">1</span></div>
         <div style="font-size: 12px; color: var(--text2); margin-top: 3px;" id="ov-prog-txt">0 av X fullført</div>
       </div>
-      <button class="btn-ghost btn" id="nextRoundBtn">Neste runde →</button>
+      <button class="btn-ghost btn" id="btn-go-tov">📋 Vis detaljer</button>
     </div>
     <div class="progress-track"><div class="progress-fill" id="ov-bar" style="width:0%"></div></div>
 
@@ -245,6 +245,26 @@
       <div>Runde</div><div>Bane</div><div style="text-align:right">Poeng</div><div style="text-align:right">Ringer</div>
     </div>
     <div id="pstat-rounds"></div>
+  </div>
+</div>
+
+<!-- ═══════════ SIDE MENU ═══════════ -->
+<div class="side-menu-overlay" id="side-menu-overlay">
+  <div class="side-menu" id="side-menu">
+    <div class="side-menu-hdr">
+      <div class="side-menu-title">Meny</div>
+      <button class="side-menu-close" id="btn-close-menu">✕</button>
+    </div>
+    <nav class="side-menu-nav">
+      <button class="side-menu-item" id="menu-new-tournament">
+        <span class="smi-ico">🆕</span>
+        <span class="smi-lbl">Ny turnering</span>
+      </button>
+      <button class="side-menu-item" id="menu-select-tournament">
+        <span class="smi-ico">🏆</span>
+        <span class="smi-lbl">Velg turnering</span>
+      </button>
+    </nav>
   </div>
 </div>
 

@@ -1,7 +1,7 @@
 import { S, saveState } from './kongelag-state.js';
 import { toast } from './kongelag-utils.js';
 import { renderReg, importCSV, addParticipant, rmParticipant, startTournament, newTournament } from './kongelag-registration.js';
-import { renderOverview, scoreNext, nextRound, renderTov, toggleTovP, confirmEndTov } from './kongelag-tournament.js';
+import { renderOverview, scoreNext, renderTov, toggleTovP, confirmEndTov } from './kongelag-tournament.js';
 import { getRingOptions, openPop, editPop, handleOverlayClick, np, npDel, goRings, backScore, selRings, registerScore } from './kongelag-scoring.js';
 import { openArchive, closeArchive, handleArchOverlayClick, toggleArchItem, deleteArchEntry, generatePDF, archiveTournament } from './kongelag-archive.js';
 import { renderResults } from './kongelag-results.js';
@@ -84,7 +84,11 @@ document.getElementById('nameInput').addEventListener('keydown', e => { if (e.ke
 document.getElementById('btn-add-participant').addEventListener('click', addParticipant);
 document.getElementById('startBtn').addEventListener('click', startTournament);
 document.getElementById('btn-go-tov').addEventListener('click', () => go('tov'));
-document.getElementById('nextRoundBtn').addEventListener('click', nextRound);
+document.getElementById('btn-menu').addEventListener('click', () => document.getElementById('side-menu-overlay').classList.add('open'));
+document.getElementById('btn-close-menu').addEventListener('click', () => document.getElementById('side-menu-overlay').classList.remove('open'));
+document.getElementById('side-menu-overlay').addEventListener('click', e => { if (e.target.id === 'side-menu-overlay') document.getElementById('side-menu-overlay').classList.remove('open'); });
+document.getElementById('menu-new-tournament').addEventListener('click', () => { document.getElementById('side-menu-overlay').classList.remove('open'); newTournament(); });
+document.getElementById('menu-select-tournament').addEventListener('click', () => { document.getElementById('side-menu-overlay').classList.remove('open'); openArchive(); });
 document.getElementById('nextScoreBtn').addEventListener('click', scoreNext);
 document.getElementById('btn-go-reg').addEventListener('click', goToReg);
 document.getElementById('arch-overlay').addEventListener('click', handleArchOverlayClick);
