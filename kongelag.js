@@ -2,7 +2,7 @@ import { S, saveState } from './kongelag-state.js';
 import { toast } from './kongelag-utils.js';
 import { renderReg, importCSV, addParticipant, rmParticipant, startTournament, newTournament } from './kongelag-registration.js';
 import { renderOverview, scoreNext, renderTov, toggleTovP, confirmEndTov } from './kongelag-tournament.js';
-import { getRingOptions, openPop, editPop, handleOverlayClick, np, npDel, goRings, backScore, selRings, registerScore } from './kongelag-scoring.js';
+import { getRingOptions, openPop, editPop, closePop, handleOverlayClick, np, npDel, goRings, backScore, selRings, registerScore } from './kongelag-scoring.js';
 import { openArchive, closeArchive, handleArchOverlayClick, toggleArchItem, deleteArchEntry, generatePDF, archiveTournament } from './kongelag-archive.js';
 import { renderResults } from './kongelag-results.js';
 import { showParticipantStats, closePstatPopup, handlePstatOverlayClick } from './kongelag-stats.js';
@@ -100,6 +100,7 @@ document.querySelector('.numpad').addEventListener('click', e => {
   const btn = e.target.closest('[data-digit]');
   if (btn) np(btn.dataset.digit);
 });
+document.getElementById('btn-close-pop').addEventListener('click', closePop);
 document.getElementById('btn-np-del').addEventListener('click', npDel);
 document.getElementById('btn-go-rings').addEventListener('click', goRings);
 document.querySelector('.rings-grid').addEventListener('click', e => {
