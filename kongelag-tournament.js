@@ -37,26 +37,18 @@ function renderOverview() {
       ? `<div class="prev-rnd">Runde ${S.round - 1}: ${row.prevRnd.score} p · ${row.prevRnd.rings} ★${row.prevCount > 1 ? ` &nbsp;|&nbsp; Samlet: ${row.prevTotal} p · ${row.prevTotalRings} ★` : ''}</div>`
       : '';
     d.innerHTML = `
-      <div class="name-cell" style="display:flex;align-items:center;gap:9px">
-        <div class="avatar ${avClass(row.p.id)}" style="width:34px;height:34px;font-size:11px">${initials(row.p.name)}</div>
-        <div>
-          <div class="nm">${escHtml(row.p.name)}</div>
-          <div class="st${row.rs?' ok':''}">${row.rs ? '✓ Ført' : 'Venter…'}</div>
-          ${prevLine}
-        </div>
-      </div>
       <div class="lane-pill">B${row.a.lane}</div>
+      <div class="name-cell">
+        <div class="nm">${escHtml(row.p.name)}</div>
+        <div class="st${row.rs?' ok':''}">${row.rs ? '✓ Ført' : 'Venter…'}</div>
+        ${prevLine}
+      </div>
       <div class="score-cell" style="color:${row.rs?'var(--text)':'var(--text3)'}">
         ${row.rs ? row.totScore : '—'}
       </div>
-      <div class="rings-cell">${row.rs ? row.totRings + ' ★' : '—'}</div>
-      <div style="display:flex;align-items:center;justify-content:center">
-        ${row.rs ? `<button class="edit-btn" title="Rediger poengsum">✏</button>` : ''}
-      </div>`;
+      <div class="rings-cell">${row.rs ? row.totRings + ' ★' : '—'}</div>`;
     if (row.rs) {
-      const eb = d.querySelector('.edit-btn');
-      eb.onclick = (e) => { e.stopPropagation(); editPop(row.a.lane, row.a.pid); };
-      d.onclick = () => {};
+      d.onclick = () => editPop(row.a.lane, row.a.pid);
     } else {
       d.onclick = () => openPop(row.a.lane, row.a.pid);
     }
