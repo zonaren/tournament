@@ -82,7 +82,6 @@ document.addEventListener('score-registered', e => {
 
 // ═══ EVENT LISTENERS ═══
 document.getElementById('csvInput').addEventListener('change', importCSV);
-document.getElementById('btn-test-data').addEventListener('click', generateTestData);
 document.getElementById('nameInput').addEventListener('keydown', e => { if (e.key === 'Enter') addParticipant(); });
 document.getElementById('tournamentNameInput').addEventListener('input', e => { S.name = e.target.value.trim(); });
 document.getElementById('lanesInput').addEventListener('input', e => { S.lanes = parseInt(e.target.value) || 4; renderHeatPreview(); });
@@ -97,6 +96,7 @@ document.getElementById('btn-close-menu').addEventListener('click', () => docume
 document.getElementById('side-menu-overlay').addEventListener('click', e => { if (e.target.id === 'side-menu-overlay') document.getElementById('side-menu-overlay').classList.remove('open'); });
 document.getElementById('menu-new-tournament').addEventListener('click', () => { document.getElementById('side-menu-overlay').classList.remove('open'); newTournament(); });
 document.getElementById('menu-select-tournament').addEventListener('click', () => { document.getElementById('side-menu-overlay').classList.remove('open'); openArchive(); });
+document.getElementById('menu-test-data').addEventListener('click', () => { document.getElementById('side-menu-overlay').classList.remove('open'); generateTestData(); });
 document.getElementById('nextScoreBtn').addEventListener('click', scoreNext);
 document.getElementById('btn-go-reg').addEventListener('click', goToReg);
 document.getElementById('btn-open-settings').addEventListener('click', openSettings);
