@@ -41,6 +41,7 @@ function openPop(lane, pid) {
   document.getElementById('regBtn').textContent = 'Registrer og fullfør ✓';
   document.getElementById('st-score').style.display = '';
   document.getElementById('st-rings').style.display = 'none';
+  document.getElementById('btn-back-score').style.display = 'none';
   document.getElementById('step1').className = 'step active';
   document.getElementById('step2').className = 'step';
   updateScoreDisp();
@@ -64,6 +65,7 @@ function editPop(lane, pid, round, fromTov) {
   document.getElementById('regBtn').textContent = 'Lagre endringer ✓';
   document.getElementById('st-score').style.display = '';
   document.getElementById('st-rings').style.display = 'none';
+  document.getElementById('btn-back-score').style.display = 'none';
   document.getElementById('step1').className = 'step active';
   document.getElementById('step2').className = 'step';
   updateScoreDisp();
@@ -105,6 +107,7 @@ function updateScoreDisp() {
 function goRings() {
   document.getElementById('st-score').style.display = 'none';
   document.getElementById('st-rings').style.display = '';
+  document.getElementById('btn-back-score').style.display = '';
   document.getElementById('step1').className = 'step done';
   document.getElementById('step2').className = 'step active';
   const newScore = parseInt(SC.score || '0');
@@ -130,6 +133,7 @@ function goRings() {
 function backScore() {
   document.getElementById('st-score').style.display = '';
   document.getElementById('st-rings').style.display = 'none';
+  document.getElementById('btn-back-score').style.display = 'none';
   document.getElementById('step1').className = 'step active';
   document.getElementById('step2').className = 'step';
 }
