@@ -76,16 +76,14 @@ document.addEventListener('score-registered', e => {
 });
 
 // ═══ EVENT LISTENERS ═══
-document.getElementById('btn-new-tournament').addEventListener('click', newTournament);
 document.getElementById('csvInput').addEventListener('change', importCSV);
-document.getElementById('btn-open-archive').addEventListener('click', openArchive);
 document.getElementById('btn-test-data').addEventListener('click', generateTestData);
 document.getElementById('nameInput').addEventListener('keydown', e => { if (e.key === 'Enter') addParticipant(); });
 document.getElementById('tournamentNameInput').addEventListener('input', e => { S.name = e.target.value.trim(); });
 document.getElementById('btn-add-participant').addEventListener('click', addParticipant);
 document.getElementById('startBtn').addEventListener('click', startTournament);
 document.getElementById('btn-go-tov').addEventListener('click', () => go('tov'));
-document.getElementById('btn-menu').addEventListener('click', () => document.getElementById('side-menu-overlay').classList.add('open'));
+document.querySelectorAll('.btn-menu').forEach(btn => btn.addEventListener('click', () => document.getElementById('side-menu-overlay').classList.add('open')));
 document.getElementById('btn-close-menu').addEventListener('click', () => document.getElementById('side-menu-overlay').classList.remove('open'));
 document.getElementById('side-menu-overlay').addEventListener('click', e => { if (e.target.id === 'side-menu-overlay') document.getElementById('side-menu-overlay').classList.remove('open'); });
 document.getElementById('menu-new-tournament').addEventListener('click', () => { document.getElementById('side-menu-overlay').classList.remove('open'); newTournament(); });
