@@ -13,8 +13,8 @@ function archiveTournament() {
   const arch = loadArchive();
   const ranked = S.participants.map(p => {
     const ps = S.scores.filter(s => s.pid === p.id);
-    const roundScores = ps.map(s => ({ round: s.round, lane: s.lane, score: s.score, rings: s.rings }))
-      .sort((a, b) => a.round - b.round);
+    const roundScores = ps.map(s => ({ heat: s.heat ?? 1, round: s.round, lane: s.lane, score: s.score, rings: s.rings }))
+      .sort((a, b) => a.heat - b.heat || a.round - b.round);
     return {
       name: p.name,
       tot: ps.reduce((a,x)=>a+x.score,0),
@@ -24,10 +24,12 @@ function archiveTournament() {
     };
   }).sort((a,b) => b.tot - a.tot || b.rings - a.rings);
   arch.push({
-    id: 'arc' + Date.now(),
-    name: S.name || 'Kongelag',
-    date: new Date().toLocaleDateString('no-NO', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' }),
-    rounds: S.round,
+    id:       'arc' + Date.now(),
+    name:     S.name || 'Kongelag',
+    location: S.location || '',
+    date:     new Date().toLocaleDateString('no-NO', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' }),
+    rounds:   10,
+    heats:    S.numHeats || 1,
     ranked
   });
   saveArchive(arch);
@@ -78,7 +80,7 @@ function renderArchive() {
         <div class="arch-trophy">🏆</div>
         <div style="flex:1;min-width:0">
           <div class="arch-winner">${escHtml(t.name || 'Kongelag')}</div>
-          <div class="arch-date">${t.date} · ${t.ranked.length} deltakere · ${t.rounds} runde${t.rounds!==1?'r':''}</div>
+          <div class="arch-date">${t.date} · ${t.ranked.length} deltakere · ${t.heats > 1 ? t.heats + ' puljer · ' : ''}${t.rounds} runder</div>
           <div class="arch-meta">Vinner: ${escHtml(winner.name)} · ${winner.tot} poeng</div>
         </div>
         <div class="arch-chevron" id="chev-${t.id}">▼</div>

@@ -30,7 +30,7 @@ function applyRingRules(score) {
 // ═══ SCORING POPUP ═══
 function openPop(lane, pid) {
   const p = S.participants.find(x => x.id === pid);
-  const already = S.scores.find(s => s.pid === pid && s.round === S.round);
+  const already = S.scores.find(s => s.pid === pid && s.round === S.round && s.heat === S.heat);
   if (already) { toast(`${p.name} er allerede ført — trykk ✏ for å redigere`); return; }
 
   SC.lane = lane; SC.pid = pid; SC.score = ''; SC.rings = null; SC.editId = null;
@@ -48,10 +48,11 @@ function openPop(lane, pid) {
   document.getElementById('pop').classList.add('open');
 }
 
-function editPop(lane, pid, round, fromTov) {
+function editPop(lane, pid, round, heat, fromTov) {
   round = (round !== undefined) ? round : S.round;
+  heat  = (heat  !== undefined) ? heat  : S.heat;
   const p = S.participants.find(x => x.id === pid);
-  const existing = S.scores.find(s => s.pid === pid && s.round === round);
+  const existing = S.scores.find(s => s.pid === pid && s.round === round && s.heat === heat);
   if (!existing) { openPop(lane, pid); return; }
 
   SC.lane = lane; SC.pid = pid; SC.editId = existing.id; SC.fromTov = !!fromTov;
@@ -165,7 +166,7 @@ function registerScore() {
     const ringsPart = SC.rings !== SC.origRings ? `${SC.origRings}→${SC.rings} ringer` : `${SC.rings} ringer`;
     toast(`${p.name}: ${scorePart}, ${ringsPart} ✏`);
   } else {
-    S.scores.push({ id: 'sc' + Date.now(), pid: SC.pid, lane: SC.lane, round: S.round, score, rings: SC.rings });
+    S.scores.push({ id: 'sc' + Date.now(), pid: SC.pid, lane: SC.lane, heat: S.heat, round: S.round, score, rings: SC.rings });
     saveState(); closePop();
     toast(`${p.name}: ${score} poeng, ${SC.rings} ringer ✓`);
   }

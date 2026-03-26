@@ -25,6 +25,9 @@
 
 
   <div class="tool-row">
+    <button class="tool-btn" id="btn-open-settings">
+      <span class="tb-ico">⚙️</span> Innstillinger
+    </button>
     <label class="tool-btn">
       <span class="tb-ico">📂</span> Hent fra CSV
       <input type="file" accept=".csv" id="csvInput">
@@ -36,9 +39,7 @@
 
 
   <div class="content">
-    <div style="margin-bottom: 18px;">
-      <input class="input-field" id="tournamentNameInput" placeholder="Turneringsnavn…" style="width:100%">
-    </div>
+    <div id="settings-summary" class="settings-summary"></div>
     <div style="margin-bottom: 18px;">
       <div class="input-wrap">
         <input class="input-field" id="nameInput" placeholder="Deltakerens navn…">
@@ -82,7 +83,10 @@
   <div class="content">
     <div class="round-bar">
       <div>
-        <div style="font-size: 15px; font-weight: 700;">Runde <span id="ov-round">1</span></div>
+        <div style="font-size: 15px; font-weight: 700; display:flex; align-items:center; gap:8px;">
+          Runde <span id="ov-round">1</span>
+          <span class="heat-badge" id="ov-heat" style="display:none"></span>
+        </div>
         <div style="font-size: 12px; color: var(--text2); margin-top: 3px;" id="ov-prog-txt">0 av X fullført</div>
       </div>
       <button class="btn-ghost btn" id="btn-go-tov">📋 Vis detaljer</button>
@@ -243,6 +247,41 @@
       <div>Runde</div><div>Bane</div><div style="text-align:right">Poeng</div><div style="text-align:right">Ringer</div>
     </div>
     <div id="pstat-rounds"></div>
+  </div>
+</div>
+
+<!-- ═══════════ SETTINGS POPUP ═══════════ -->
+<div class="settings-overlay" id="settings-overlay">
+  <div class="settings-popup">
+    <div class="drag-handle"></div>
+    <div class="settings-popup-hdr">
+      <div class="settings-popup-title">Turneringsinnstillinger</div>
+      <button class="settings-close" id="btn-close-settings">✕</button>
+    </div>
+    <div style="margin-bottom:16px">
+      <label class="settings-lbl">Turneringsnavn</label>
+      <input class="input-field" id="tournamentNameInput" placeholder="Turneringsnavn…" style="width:100%">
+    </div>
+    <div class="settings-grid">
+      <div class="settings-field">
+        <label class="settings-lbl">Antall baner</label>
+        <input class="input-field" type="number" id="lanesInput" min="1" max="32" value="4">
+      </div>
+      <div class="settings-field">
+        <label class="settings-lbl">Sted</label>
+        <input class="input-field" type="text" id="locationInput" placeholder="Sted…">
+      </div>
+      <div class="settings-field">
+        <label class="settings-lbl">Dato</label>
+        <input class="input-field" type="date" id="eventDateInput">
+      </div>
+      <div class="settings-field">
+        <label class="settings-lbl">Tid</label>
+        <input class="input-field" type="time" id="eventTimeInput">
+      </div>
+    </div>
+    <div id="heat-preview" class="heat-preview"></div>
+    <button class="btn btn-primary" id="btn-save-settings" style="width:100%;margin-top:8px">Lagre ✓</button>
   </div>
 </div>
 

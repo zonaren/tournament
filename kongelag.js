@@ -1,6 +1,6 @@
-import { S, saveState } from './kongelag-state.js';
+import { S, saveState, calcHeats } from './kongelag-state.js';
 import { toast } from './kongelag-utils.js';
-import { renderReg, importCSV, addParticipant, rmParticipant, startTournament, newTournament } from './kongelag-registration.js';
+import { renderReg, renderHeatPreview, importCSV, addParticipant, rmParticipant, startTournament, newTournament, openSettings, closeSettings, handleSettingsOverlayClick } from './kongelag-registration.js';
 import { renderOverview, scoreNext, renderTov, toggleTovP, confirmEndTov } from './kongelag-tournament.js';
 import { getRingOptions, openPop, editPop, closePop, handleOverlayClick, np, npDel, goRings, backScore, selRings, registerScore } from './kongelag-scoring.js';
 import { openArchive, closeArchive, handleArchOverlayClick, toggleArchItem, deleteArchEntry, generatePDF, archiveTournament } from './kongelag-archive.js';
@@ -21,38 +21,43 @@ function goToReg() { renderReg(); go('reg'); }
 function generateTestData() {
   if (!confirm('Dette vil lage en ferdig 10-runders turnering med 12 testdeltakere og tilfeldige poeng (maks 20/runde). Fortsette?')) return;
 
-  S.participants = [];
-  S.scores = [];
-  S.assignments = [];
-  S.round = 1;
-  S.active = false;
+  const LANES  = 6;
+  const ROUNDS = 10;
+
+  S.name = 'Testurnering'; S.lanes = LANES;
+  S.location = 'Testarena'; S.eventDate = ''; S.eventTime = '';
+  S.participants = []; S.scores = []; S.assignments = [];
+  S.round = 1; S.active = false; S.heat = 1; S.numHeats = 1; S.heats = [];
 
   const names = ['Ola Nordmann', 'Kari Hansen', 'Per Dahl', 'Anne Berg', 'Lars Johansen', 'Eva Olsen', 'Tommy Nilsen', 'Mona Kristiansen', 'Erik Hansen', 'Ingrid Larsen', 'Svein Pedersen', 'Knut Andersen'];
-  names.forEach((name, i) => {
-    S.participants.push({ id: 'tp' + i, name });
+  names.forEach((name, i) => S.participants.push({ id: 'tp' + i, name }));
+
+  const heats = calcHeats(S.participants, LANES);
+  S.heats    = heats;
+  S.numHeats = heats.length;
+  S.active   = true;
+
+  heats.forEach((heat, hi) => {
+    for (let round = 1; round <= ROUNDS; round++) {
+      heat.assignments.forEach(a => {
+        const score = Math.floor(Math.random() * 21);
+        const { allowed, auto } = getRingOptions(score);
+        const rings = auto !== null ? auto : allowed[Math.floor(Math.random() * allowed.length)];
+        S.scores.push({ id: `tsc_h${hi+1}_r${round}_${a.pid}`, pid: a.pid, lane: a.lane, heat: hi + 1, round, score, rings });
+      });
+    }
   });
 
-  S.assignments = S.participants.map((p, i) => ({ pid: p.id, lane: i + 1 }));
-
-  const ROUNDS = 10;
-  for (let round = 1; round <= ROUNDS; round++) {
-    S.assignments.forEach(a => {
-      const score = Math.floor(Math.random() * 21);
-      const { allowed, auto } = getRingOptions(score);
-      const rings = auto !== null ? auto : allowed[Math.floor(Math.random() * allowed.length)];
-      S.scores.push({ id: 'tsc_r' + round + '_' + a.pid, pid: a.pid, lane: a.lane, round, score, rings });
-    });
-  }
-
-  S.round = ROUNDS;
-  S.active = true;
+  S.heat        = S.numHeats;
+  S.round       = ROUNDS;
+  S.assignments = heats[heats.length - 1].assignments;
   saveState();
   archiveTournament();
   S.active = false;
   saveState();
   renderReg();
   go('results');
-  toast('🧪 Testdata generert — 12 deltakere, 10 runder, maks 20 poeng/runde');
+  toast(`🧪 Testdata generert — 12 deltakere, ${S.numHeats} puljer, 10 runder`);
 }
 
 // ═══ INIT ═══
@@ -68,7 +73,7 @@ document.addEventListener('score-registered', e => {
   } else {
     renderOverview();
     setTimeout(() => {
-      const rs = S.scores.filter(s => s.round === S.round);
+      const rs = S.scores.filter(s => s.round === S.round && s.heat === S.heat);
       const pend = S.assignments.find(a => !rs.find(s => s.pid === a.pid));
       if (pend) openPop(pend.lane, pend.pid);
     }, 600);
@@ -80,6 +85,10 @@ document.getElementById('csvInput').addEventListener('change', importCSV);
 document.getElementById('btn-test-data').addEventListener('click', generateTestData);
 document.getElementById('nameInput').addEventListener('keydown', e => { if (e.key === 'Enter') addParticipant(); });
 document.getElementById('tournamentNameInput').addEventListener('input', e => { S.name = e.target.value.trim(); });
+document.getElementById('lanesInput').addEventListener('input', e => { S.lanes = parseInt(e.target.value) || 4; renderHeatPreview(); });
+document.getElementById('locationInput').addEventListener('input', e => { S.location = e.target.value.trim(); });
+document.getElementById('eventDateInput').addEventListener('input', e => { S.eventDate = e.target.value; });
+document.getElementById('eventTimeInput').addEventListener('input', e => { S.eventTime = e.target.value; });
 document.getElementById('btn-add-participant').addEventListener('click', addParticipant);
 document.getElementById('startBtn').addEventListener('click', startTournament);
 document.getElementById('btn-go-tov').addEventListener('click', () => go('tov'));
@@ -90,6 +99,10 @@ document.getElementById('menu-new-tournament').addEventListener('click', () => {
 document.getElementById('menu-select-tournament').addEventListener('click', () => { document.getElementById('side-menu-overlay').classList.remove('open'); openArchive(); });
 document.getElementById('nextScoreBtn').addEventListener('click', scoreNext);
 document.getElementById('btn-go-reg').addEventListener('click', goToReg);
+document.getElementById('btn-open-settings').addEventListener('click', openSettings);
+document.getElementById('btn-close-settings').addEventListener('click', closeSettings);
+document.getElementById('btn-save-settings').addEventListener('click', closeSettings);
+document.getElementById('settings-overlay').addEventListener('click', handleSettingsOverlayClick);
 document.getElementById('arch-overlay').addEventListener('click', handleArchOverlayClick);
 document.getElementById('btn-close-archive').addEventListener('click', closeArchive);
 document.getElementById('btn-go-overview').addEventListener('click', () => go('overview'));
@@ -128,7 +141,7 @@ document.getElementById('arch-list').addEventListener('click', e => {
 document.getElementById('tov-list').addEventListener('click', e => {
   const el = e.target.closest('[data-action]');
   if (!el) return;
-  const { action, pid, lane, rn } = el.dataset;
+  const { action, pid, lane, rn, heat } = el.dataset;
   if (action === 'toggle-tov') toggleTovP(pid);
-  else if (action === 'edit') { e.stopPropagation(); editPop(parseInt(lane), pid, parseInt(rn), true); }
+  else if (action === 'edit') { e.stopPropagation(); editPop(parseInt(lane), pid, parseInt(rn), parseInt(heat) || S.heat, true); }
 });

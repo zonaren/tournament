@@ -1,9 +1,27 @@
-import { S, AV, saveState, initials } from './kongelag-state.js';
+import { S, AV, saveState, calcHeats, initials } from './kongelag-state.js';
 import { escHtml, toast } from './kongelag-utils.js';
 
+function renderHeatPreview() {
+  const el = document.getElementById('heat-preview');
+  if (!el) return;
+  const n = S.participants.length;
+  const lanes = S.lanes || 4;
+  if (n < 2) { el.textContent = ''; return; }
+  const numHeats = Math.max(2, Math.ceil(n / lanes));
+  const baseSize = Math.floor(n / numHeats);
+  const extras = n % numHeats;
+  const sizeHigh = baseSize + (extras > 0 ? 1 : 0);
+  const sizeLow  = baseSize;
+  const sizeStr  = sizeHigh === sizeLow ? `${sizeHigh}` : `${sizeLow}–${sizeHigh}`;
+  el.textContent = `${numHeats} puljer · ${sizeStr} deltakere per pulje`;
+}
+
 function renderReg() {
-  document.getElementById('tournamentNameInput').value = S.name || '';
-  const list = document.getElementById('pList');
+  const parts = [S.name || 'Ingen navn', `${S.lanes || 4} baner`];
+  if (S.location) parts.push(S.location);
+  document.getElementById('settings-summary').textContent = parts.join(' · ');
+
+  const list  = document.getElementById('pList');
   const empty = document.getElementById('pEmpty');
   list.querySelectorAll('.p-item').forEach(e => e.remove());
 
@@ -27,6 +45,8 @@ function renderReg() {
   const ch = document.getElementById('readyChip');
   ch.className = 'chip ' + (ok ? 'chip-ok' : 'chip-warn');
   ch.textContent = ok ? '✓ Klar til start' : 'Minst 2 kreves';
+
+  renderHeatPreview();
 }
 
 function importCSV(event) {
@@ -80,19 +100,50 @@ function rmParticipant(id) {
 
 function startTournament() {
   if (S.participants.length < 2) return;
-  S.name = document.getElementById('tournamentNameInput').value.trim() || 'Kongelag';
-  const sh = [...S.participants].sort(() => Math.random() - 0.5);
-  S.assignments = sh.map((p, i) => ({ pid: p.id, lane: i + 1 }));
-  S.round = 1; S.scores = []; S.active = true;
+
+  S.name      = document.getElementById('tournamentNameInput').value.trim() || 'Kongelag';
+  S.lanes     = parseInt(document.getElementById('lanesInput').value) || 4;
+  S.location  = document.getElementById('locationInput').value.trim();
+  S.eventDate = document.getElementById('eventDateInput').value;
+  S.eventTime = document.getElementById('eventTimeInput').value;
+
+  const heats   = calcHeats(S.participants, S.lanes);
+  S.heats       = heats;
+  S.numHeats    = heats.length;
+  S.heat        = 1;
+  S.assignments = heats[0].assignments;
+  S.round       = 1;
+  S.scores      = [];
+  S.active      = true;
   saveState();
   document.dispatchEvent(new CustomEvent('tournament-started'));
 }
 
 function newTournament() {
   if (!confirm('Start ny turnering? All data slettes.')) return;
-  S.name = ''; S.participants = []; S.scores = []; S.assignments = []; S.round = 1; S.active = false;
+  S.name = ''; S.lanes = 4; S.location = ''; S.eventDate = ''; S.eventTime = '';
+  S.participants = []; S.scores = []; S.assignments = [];
+  S.round = 1; S.active = false;
+  S.heat = 1; S.numHeats = 1; S.heats = [];
   saveState(); renderReg();
   document.dispatchEvent(new CustomEvent('navigate', { detail: { screen: 'reg' } }));
 }
 
-export { renderReg, importCSV, addParticipant, rmParticipant, startTournament, newTournament };
+function openSettings() {
+  document.getElementById('tournamentNameInput').value = S.name || '';
+  document.getElementById('lanesInput').value          = S.lanes || 4;
+  document.getElementById('locationInput').value       = S.location || '';
+  document.getElementById('eventDateInput').value      = S.eventDate || '';
+  document.getElementById('eventTimeInput').value      = S.eventTime || '';
+  renderHeatPreview();
+  document.getElementById('settings-overlay').classList.add('open');
+}
+function closeSettings() {
+  document.getElementById('settings-overlay').classList.remove('open');
+  renderReg();
+}
+function handleSettingsOverlayClick(e) {
+  if (e.target.id === 'settings-overlay') closeSettings();
+}
+
+export { renderReg, renderHeatPreview, importCSV, addParticipant, rmParticipant, startTournament, newTournament, openSettings, closeSettings, handleSettingsOverlayClick };
