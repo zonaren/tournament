@@ -254,9 +254,29 @@ body {
   background: rgba(240,76,110,0.12); color: var(--red);
   border: none; border-radius: 8px; padding: 5px 10px;
   font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit;
-  margin-top: 12px;
 }
+.arch-action-row .arch-del-btn { margin-top: 12px; }
 .arch-del-btn:active { background: rgba(240,76,110,0.25); }
+.arch-item-hdr--static { cursor: default; }
+.arch-item-hdr--static:active { background: transparent; }
+.arch-tabs {
+  display: flex; background: var(--card); border-radius: 12px;
+  padding: 3px; gap: 3px; margin-bottom: 16px;
+}
+.arch-tab {
+  flex: 1; height: 38px; border: none; border-radius: 10px;
+  font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit;
+  background: transparent; color: var(--text2);
+  transition: background 0.15s, color 0.15s;
+}
+.arch-tab.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 4px rgba(0,0,0,0.35); }
+.arch-load-btn {
+  background: rgba(13,207,179,0.12); color: var(--teal);
+  border: none; border-radius: 10px; padding: 8px 13px;
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  white-space: nowrap; flex-shrink: 0; font-family: inherit;
+}
+.arch-load-btn:active { background: rgba(13,207,179,0.25); }
 
 /* ── PARTICIPANT STATS POPUP ── */
 .settings-overlay {

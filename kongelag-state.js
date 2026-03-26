@@ -16,11 +16,12 @@ function loadState() {
       heat:         parseInt(localStorage.getItem('sk_h') || '1'),
       numHeats:     parseInt(localStorage.getItem('sk_nh') || '1'),
       heats:        JSON.parse(localStorage.getItem('sk_hs') || '[]'),
+      ongoingId:    localStorage.getItem('sk_oid') || null,
     };
   } catch(e) {
     return { name:'', lanes:4, location:'', eventDate:'', eventTime:'',
              participants:[], scores:[], assignments:[], round:1, active:false,
-             heat:1, numHeats:1, heats:[] };
+             heat:1, numHeats:1, heats:[], ongoingId:null };
   }
 }
 
@@ -38,6 +39,7 @@ function saveState() {
   localStorage.setItem('sk_h',   S.heat);
   localStorage.setItem('sk_nh',  S.numHeats);
   localStorage.setItem('sk_hs',  JSON.stringify(S.heats));
+  localStorage.setItem('sk_oid', S.ongoingId || '');
 }
 
 function calcHeats(participants, lanes) {

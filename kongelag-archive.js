@@ -1,11 +1,89 @@
 import { S, saveState } from './kongelag-state.js';
 import { escHtml, toast } from './kongelag-utils.js';
 
+let archTab = 'pagaende';
+
 function loadArchive() {
   try { return JSON.parse(localStorage.getItem('sk_arch') || '[]'); } catch(e) { return []; }
 }
 function saveArchive(arch) {
   localStorage.setItem('sk_arch', JSON.stringify(arch));
+}
+
+function loadOngoing() {
+  try { return JSON.parse(localStorage.getItem('sk_ongoing') || '[]'); } catch(e) { return []; }
+}
+function saveOngoing(list) {
+  localStorage.setItem('sk_ongoing', JSON.stringify(list));
+}
+
+function saveCurrentToOngoing() {
+  if (!S.active || !S.participants.length) return;
+  const ongoing = loadOngoing();
+  const id = S.ongoingId || ('ong' + Date.now());
+  const entry = {
+    id,
+    name: S.name || 'Kongelag',
+    savedAt: new Date().toLocaleDateString('no-NO', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' }),
+    round: S.round,
+    heat: S.heat,
+    numHeats: S.numHeats,
+    participants: JSON.parse(JSON.stringify(S.participants)),
+    scores: JSON.parse(JSON.stringify(S.scores)),
+    assignments: JSON.parse(JSON.stringify(S.assignments)),
+    lanes: S.lanes,
+    location: S.location,
+    eventDate: S.eventDate,
+    eventTime: S.eventTime,
+    heats: JSON.parse(JSON.stringify(S.heats)),
+  };
+  const idx = ongoing.findIndex(t => t.id === id);
+  if (idx >= 0) ongoing[idx] = entry;
+  else ongoing.push(entry);
+  saveOngoing(ongoing);
+}
+
+function loadOngoingTournament(id) {
+  const snapshot = loadOngoing().find(x => x.id === id);
+  if (!snapshot) { toast('Turnering ikke funnet'); return; }
+
+  if (S.active) saveCurrentToOngoing();
+
+  // Reload list after saveCurrentToOngoing may have added a new entry
+  const freshOngoing = loadOngoing();
+
+  S.name = snapshot.name;
+  S.lanes = snapshot.lanes;
+  S.location = snapshot.location;
+  S.eventDate = snapshot.eventDate;
+  S.eventTime = snapshot.eventTime;
+  S.participants = snapshot.participants;
+  S.scores = snapshot.scores;
+  S.assignments = snapshot.assignments;
+  S.round = snapshot.round;
+  S.heat = snapshot.heat;
+  S.numHeats = snapshot.numHeats;
+  S.heats = snapshot.heats;
+  S.active = true;
+  S.ongoingId = snapshot.id;
+  saveState();
+
+  saveOngoing(freshOngoing.filter(x => x.id !== id));
+
+  closeArchive();
+  document.dispatchEvent(new CustomEvent('navigate', { detail: { screen: 'overview' } }));
+  toast('Turnering lastet inn ✓');
+}
+
+function deleteOngoingEntry(id) {
+  if (!confirm('Slette denne pågående turneringen?')) return;
+  saveOngoing(loadOngoing().filter(t => t.id !== id));
+  renderArchive();
+}
+
+function setArchTab(tab) {
+  archTab = tab;
+  renderArchive();
 }
 
 function archiveTournament() {
@@ -43,6 +121,61 @@ function closeArchive() { document.getElementById('arch-overlay').classList.remo
 function handleArchOverlayClick(e) { if (e.target.id === 'arch-overlay') closeArchive(); }
 
 function renderArchive() {
+  const tabPg = document.getElementById('arch-tab-pagaende');
+  const tabFf = document.getElementById('arch-tab-fullforte');
+  if (tabPg) tabPg.classList.toggle('active', archTab === 'pagaende');
+  if (tabFf) tabFf.classList.toggle('active', archTab === 'fullforte');
+  if (archTab === 'pagaende') renderPagaende();
+  else renderFullforte();
+}
+
+function renderPagaende() {
+  const ongoing = loadOngoing();
+  const list = document.getElementById('arch-list');
+  const items = [];
+
+  if (S.active && S.participants.length) {
+    items.push(`<div class="arch-item">
+      <div class="arch-item-hdr arch-item-hdr--static">
+        <div class="arch-trophy">⚡</div>
+        <div style="flex:1;min-width:0">
+          <div class="arch-winner">${escHtml(S.name || 'Kongelag')}</div>
+          <div class="arch-date">${S.participants.length} deltakere${S.numHeats > 1 ? ' · ' + S.numHeats + ' puljer' : ''} · Runde ${S.round}</div>
+          <div class="arch-meta" style="color:var(--teal)">Aktiv nå</div>
+        </div>
+        <button class="arch-load-btn" data-action="resume-current">Fortsett →</button>
+      </div>
+    </div>`);
+  }
+
+  [...ongoing].reverse().forEach(t => {
+    items.push(`<div class="arch-item">
+      <div class="arch-item-hdr arch-item-hdr--static">
+        <div class="arch-trophy">⏸</div>
+        <div style="flex:1;min-width:0">
+          <div class="arch-winner">${escHtml(t.name || 'Kongelag')}</div>
+          <div class="arch-date">${t.savedAt} · ${t.participants.length} deltakere${t.numHeats > 1 ? ' · ' + t.numHeats + ' puljer' : ''} · Runde ${t.round}</div>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
+          <button class="arch-load-btn" data-action="load-ongoing" data-id="${t.id}">Last inn →</button>
+          <button class="arch-del-btn" data-action="del-ongoing" data-id="${t.id}">🗑</button>
+        </div>
+      </div>
+    </div>`);
+  });
+
+  if (!items.length) {
+    list.innerHTML = `<div class="arch-empty">
+      <div class="arch-empty-ico">🎯</div>
+      <div class="arch-empty-ttl">Ingen pågående turneringer</div>
+      <div class="arch-empty-sub">Start en ny turnering for å komme i gang</div>
+    </div>`;
+    return;
+  }
+  list.innerHTML = items.join('');
+}
+
+function renderFullforte() {
   const arch = loadArchive();
   const list = document.getElementById('arch-list');
   if (!arch.length) {
@@ -251,4 +384,5 @@ function deleteArchEntry(id) {
 
 export { loadArchive, saveArchive, archiveTournament,
          openArchive, closeArchive, handleArchOverlayClick,
-         renderArchive, toggleArchItem, deleteArchEntry, generatePDF };
+         renderArchive, toggleArchItem, deleteArchEntry, generatePDF,
+         saveCurrentToOngoing, loadOngoingTournament, deleteOngoingEntry, setArchTab };

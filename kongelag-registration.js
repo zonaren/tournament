@@ -1,5 +1,6 @@
 import { S, AV, saveState, calcHeats, initials } from './kongelag-state.js';
 import { escHtml, toast } from './kongelag-utils.js';
+import { saveCurrentToOngoing } from './kongelag-archive.js';
 
 function renderHeatPreview() {
   const el = document.getElementById('heat-preview');
@@ -120,11 +121,16 @@ function startTournament() {
 }
 
 function newTournament() {
-  if (!confirm('Start ny turnering? All data slettes.')) return;
+  const msg = S.active
+    ? 'Start ny turnering? Gjeldende turnering lagres under Pågående.'
+    : 'Start ny turnering? All data slettes.';
+  if (!confirm(msg)) return;
+  if (S.active) saveCurrentToOngoing();
   S.name = ''; S.lanes = 4; S.location = ''; S.eventDate = ''; S.eventTime = '';
   S.participants = []; S.scores = []; S.assignments = [];
   S.round = 1; S.active = false;
   S.heat = 1; S.numHeats = 1; S.heats = [];
+  S.ongoingId = null;
   saveState(); renderReg();
   document.dispatchEvent(new CustomEvent('navigate', { detail: { screen: 'reg' } }));
 }

@@ -3,7 +3,7 @@ import { toast } from './kongelag-utils.js';
 import { renderReg, renderHeatPreview, importCSV, addParticipant, rmParticipant, startTournament, newTournament, openSettings, closeSettings, handleSettingsOverlayClick } from './kongelag-registration.js';
 import { renderOverview, scoreNext, renderTov, toggleTovP, confirmEndTov } from './kongelag-tournament.js';
 import { getRingOptions, openPop, editPop, closePop, handleOverlayClick, np, npDel, goRings, backScore, selRings, registerScore } from './kongelag-scoring.js';
-import { openArchive, closeArchive, handleArchOverlayClick, toggleArchItem, deleteArchEntry, generatePDF, archiveTournament } from './kongelag-archive.js';
+import { openArchive, closeArchive, handleArchOverlayClick, toggleArchItem, deleteArchEntry, generatePDF, archiveTournament, loadOngoingTournament, deleteOngoingEntry, setArchTab } from './kongelag-archive.js';
 import { renderResults } from './kongelag-results.js';
 import { showParticipantStats, closePstatPopup, handlePstatOverlayClick } from './kongelag-stats.js';
 
@@ -133,11 +133,16 @@ document.getElementById('arch-list').addEventListener('click', e => {
   const el = e.target.closest('[data-action]');
   if (!el) return;
   const { action, id, tid, idx } = el.dataset;
-  if (action === 'toggle-arch') toggleArchItem(id);
-  else if (action === 'pstat')  showParticipantStats(tid, parseInt(idx));
-  else if (action === 'pdf')    generatePDF(id);
-  else if (action === 'del-arch') deleteArchEntry(id);
+  if (action === 'toggle-arch')    toggleArchItem(id);
+  else if (action === 'pstat')     showParticipantStats(tid, parseInt(idx));
+  else if (action === 'pdf')       generatePDF(id);
+  else if (action === 'del-arch')  deleteArchEntry(id);
+  else if (action === 'resume-current') { closeArchive(); go('overview'); }
+  else if (action === 'load-ongoing')   loadOngoingTournament(id);
+  else if (action === 'del-ongoing')    deleteOngoingEntry(id);
 });
+document.getElementById('arch-tab-pagaende').addEventListener('click', () => setArchTab('pagaende'));
+document.getElementById('arch-tab-fullforte').addEventListener('click', () => setArchTab('fullforte'));
 document.getElementById('tov-list').addEventListener('click', e => {
   const el = e.target.closest('[data-action]');
   if (!el) return;
