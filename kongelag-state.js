@@ -3,6 +3,7 @@ const AV = ['av0','av1','av2','av3','av4','av5','av6','av7'];
 function loadState() {
   try {
     return {
+      name:         localStorage.getItem('sk_n') || '',
       participants: JSON.parse(localStorage.getItem('sk_p') || '[]'),
       scores:       JSON.parse(localStorage.getItem('sk_s') || '[]'),
       assignments:  JSON.parse(localStorage.getItem('sk_a') || '[]'),
@@ -13,6 +14,7 @@ function loadState() {
 }
 
 function saveState() {
+  localStorage.setItem('sk_n', S.name || '');
   localStorage.setItem('sk_p', JSON.stringify(S.participants));
   localStorage.setItem('sk_s', JSON.stringify(S.scores));
   localStorage.setItem('sk_a', JSON.stringify(S.assignments));

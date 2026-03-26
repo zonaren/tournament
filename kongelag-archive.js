@@ -25,6 +25,7 @@ function archiveTournament() {
   }).sort((a,b) => b.tot - a.tot || b.rings - a.rings);
   arch.push({
     id: 'arc' + Date.now(),
+    name: S.name || 'Kongelag',
     date: new Date().toLocaleDateString('no-NO', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' }),
     rounds: S.round,
     ranked
@@ -76,9 +77,9 @@ function renderArchive() {
       <div class="arch-item-hdr" data-action="toggle-arch" data-id="${t.id}">
         <div class="arch-trophy">🏆</div>
         <div style="flex:1;min-width:0">
+          <div class="arch-winner">${escHtml(t.name || 'Kongelag')}</div>
           <div class="arch-date">${t.date} · ${t.ranked.length} deltakere · ${t.rounds} runde${t.rounds!==1?'r':''}</div>
-          <div class="arch-winner">${escHtml(winner.name)}</div>
-          <div class="arch-meta">${winner.tot} poeng · ${winner.rings} ringer</div>
+          <div class="arch-meta">Vinner: ${escHtml(winner.name)} · ${winner.tot} poeng</div>
         </div>
         <div class="arch-chevron" id="chev-${t.id}">▼</div>
       </div>

@@ -81,6 +81,7 @@ document.getElementById('csvInput').addEventListener('change', importCSV);
 document.getElementById('btn-open-archive').addEventListener('click', openArchive);
 document.getElementById('btn-test-data').addEventListener('click', generateTestData);
 document.getElementById('nameInput').addEventListener('keydown', e => { if (e.key === 'Enter') addParticipant(); });
+document.getElementById('tournamentNameInput').addEventListener('input', e => { S.name = e.target.value.trim(); });
 document.getElementById('btn-add-participant').addEventListener('click', addParticipant);
 document.getElementById('startBtn').addEventListener('click', startTournament);
 document.getElementById('btn-go-tov').addEventListener('click', () => go('tov'));

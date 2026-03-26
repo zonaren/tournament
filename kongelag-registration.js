@@ -2,6 +2,7 @@ import { S, AV, saveState, initials } from './kongelag-state.js';
 import { escHtml, toast } from './kongelag-utils.js';
 
 function renderReg() {
+  document.getElementById('tournamentNameInput').value = S.name || '';
   const list = document.getElementById('pList');
   const empty = document.getElementById('pEmpty');
   list.querySelectorAll('.p-item').forEach(e => e.remove());
@@ -79,6 +80,7 @@ function rmParticipant(id) {
 
 function startTournament() {
   if (S.participants.length < 2) return;
+  S.name = document.getElementById('tournamentNameInput').value.trim() || 'Kongelag';
   const sh = [...S.participants].sort(() => Math.random() - 0.5);
   S.assignments = sh.map((p, i) => ({ pid: p.id, lane: i + 1 }));
   S.round = 1; S.scores = []; S.active = true;
@@ -88,7 +90,7 @@ function startTournament() {
 
 function newTournament() {
   if (!confirm('Start ny turnering? All data slettes.')) return;
-  S.participants = []; S.scores = []; S.assignments = []; S.round = 1; S.active = false;
+  S.name = ''; S.participants = []; S.scores = []; S.assignments = []; S.round = 1; S.active = false;
   saveState(); renderReg();
   document.dispatchEvent(new CustomEvent('navigate', { detail: { screen: 'reg' } }));
 }

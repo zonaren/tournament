@@ -10,6 +10,7 @@ function renderOverview() {
   const rScores = S.scores.filter(s => s.round === S.round);
   const total = S.assignments.length, done = rScores.length;
 
+  document.getElementById('ov-tourney-name').textContent = S.name || 'Kongelag';
   document.getElementById('ov-round').textContent = S.round;
   document.getElementById('ov-sub').textContent = `Runde ${S.round} · ${done}/${total} fullført`;
   document.getElementById('ov-prog-txt').textContent = `${done} av ${total} fullført denne runden`;
@@ -82,7 +83,7 @@ function renderTov() {
   const currentComplete = rsCurrent.length === S.assignments.length && S.assignments.length > 0;
 
   document.getElementById('tov-sub').textContent =
-    `Runde ${S.round} · ${S.participants.length} deltakere`;
+    `${S.name || 'Kongelag'} · Runde ${S.round} · ${S.participants.length} deltakere`;
 
   const list = document.getElementById('tov-list');
   const medals = ['🥇','🥈','🥉'];
